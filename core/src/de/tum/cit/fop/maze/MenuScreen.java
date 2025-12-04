@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,7 +29,7 @@ public class MenuScreen implements Screen {
      */
     public MenuScreen(MazeRunnerGame game) {
         var camera = new OrthographicCamera();
-        camera.zoom = 1.5f; // Set camera zoom for a closer view
+        camera.zoom = 1f; // Set camera zoom for a closer view
 
         Viewport viewport = new ScreenViewport(camera); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
@@ -37,18 +38,52 @@ public class MenuScreen implements Screen {
         table.setFillParent(true); // Make the table fill the stage
         stage.addActor(table); // Add the table to the stage
 
+        table.top();
+
         // Add a label as a title
-        table.add(new Label("Hello World from the Menu!", game.getSkin(), "title")).padBottom(80).row();
+        table.add(new Label("Main Menu", game.getSkin(), "title")).expandX().center().padTop(50).padBottom(80).row();// Some space between title and button.row();
+
 
         // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Go To Game", game.getSkin());
-        table.add(goToGameButton).width(300).row();
+        TextButton goToGameButton = new TextButton("Story mode", game.getSkin());
+        table.add(goToGameButton).width(300).left().padLeft(50).padBottom(50);
+
+        table.row();
+
+        TextButton goToEndlessButton = new TextButton("Endless mode", game.getSkin());
+        table.add(goToEndlessButton).width(300).left().padLeft(50).padBottom(50);
+
+        table.row();
+
+        TextButton goToSettingsButton = new TextButton("Settings", game.getSkin());
+        table.add(goToSettingsButton).width(300).left().padLeft(50).padBottom(50);
+
+        table.row();
+
+        TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin());
+        table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
+
+        table.row();
+
+        TextButton goToExitButton = new TextButton("Exit", game.getSkin());
+        table.add(goToExitButton).width(300).left().padLeft(50).padBottom(50);
+
+
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.goToGame(); // Change to the game screen when button is pressed
             }
         });
+
+        goToExitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.exit();
+            }
+        });
+
+        // TODO add listeners to Statistics, EndlessMode, Settings
     }
 
     @Override
