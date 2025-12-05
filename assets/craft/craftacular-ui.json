@@ -1,14 +1,17 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	bold: {
-		file: font-bold-export.fnt
-	}
-	font: {
-		file: font-export.fnt
-	}
-	title: {
-		file: font-title-export.fnt
-	}
+  bold: {
+    file: font-bold-export.fnt
+  }
+  font: {
+    file: font-export.fnt
+  }
+  title: {
+    file: font-title-export.fnt
+  }
+  vampire-font: {
+    file: Vampire-font32PX.fnt
+  }
 }
 com.badlogic.gdx.graphics.Color: {
 	gray: {
@@ -62,6 +65,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 		over: button-hover
 		disabled: button-disabled
 	}
+
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
@@ -134,7 +138,14 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: button
 		over: button-hover
 		disabled: button-disabled
-	}
+	},
+  vampire-style: {
+    font: vampire-font
+    up: button
+    fontColor: white,
+    over: button-hover
+    disabled: button-disabled
+  }
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {

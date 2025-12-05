@@ -45,27 +45,27 @@ public class MenuScreen implements Screen {
 
 
         // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Story mode", game.getSkin());
+        TextButton goToGameButton = new TextButton("Story mode", game.getSkin(), "vampire-style");
         table.add(goToGameButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToEndlessButton = new TextButton("Endless mode", game.getSkin());
+        TextButton goToEndlessButton = new TextButton("Endless mode", game.getSkin(),"vampire-style");
         table.add(goToEndlessButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToSettingsButton = new TextButton("Settings", game.getSkin());
+        TextButton goToSettingsButton = new TextButton("Settings", game.getSkin(),"vampire-style");
         table.add(goToSettingsButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin());
+        TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(),"vampire-style");
         table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToExitButton = new TextButton("Exit", game.getSkin());
+        TextButton goToExitButton = new TextButton("Exit", game.getSkin(),"vampire-style");
         table.add(goToExitButton).width(300).left().padLeft(50).padBottom(50);
 
 
