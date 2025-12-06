@@ -2,6 +2,7 @@ package de.tum.cit.fop.maze;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
+
+import java.util.Arrays;
+import java.util.List;
 
 import java.awt.*;
 
@@ -22,9 +26,10 @@ import static java.awt.Frame.getFrames;
  * It manages the screens and global resources like SpriteBatch and Skin.
  */
 public class MazeRunnerGame extends Game {
-    // Screens
+    // Screens IMPORTANT: add screens to disposeAllScreens when creating a new one
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
+    private SettingsScreen settingsScreen;
 
     // Sprite Batch for rendering
     private SpriteBatch spriteBatch;
@@ -42,6 +47,13 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
 
 
+    // GameInfo with all the useful variables
+    private GameInfo gameInfo;
+
+    public GameInfo getGameInfo() {
+        return this.gameInfo;
+    }
+
     /**
      * Constructor for MazeRunnerGame.
      *
@@ -49,6 +61,7 @@ public class MazeRunnerGame extends Game {
      */
     public MazeRunnerGame(NativeFileChooser fileChooser) {
         super();
+        this.gameInfo = new GameInfo();
     }
 
     /**
@@ -70,26 +83,38 @@ public class MazeRunnerGame extends Game {
         goToMenu(); // Navigate to the menu screen
     }
 
+    public void disposeAllScreens() {
+        List<Screen> allScreens = Arrays.asList(this.gameScreen, this.settingsScreen, this.menuScreen);
+        for (Screen screen : allScreens) {
+            if (screen != null) {
+                screen.dispose();
+                screen = null;
+            }
+        }
+    }
+
     /**
      * Switches to the menu screen.
      */
     public void goToMenu() {
+        disposeAllScreens();
         this.setScreen(new MenuScreen(this)); // Set the current screen to MenuScreen
-        if (gameScreen != null) {
-            gameScreen.dispose(); // Dispose the game screen if it exists
-            gameScreen = null;
-        }
     }
 
     /**
      * Switches to the game screen.
      */
     public void goToGame() {
+        disposeAllScreens();
         this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
-        if (menuScreen != null) {
-            menuScreen.dispose(); // Dispose the menu screen if it exists
-            menuScreen = null;
-        }
+    }
+
+    /**
+     * Switches to the settings screen.
+     */
+    public void goToSettings() {
+        disposeAllScreens();
+        this.setScreen(new SettingsScreen(this)); // Set the current screen to GameScreen
     }
 
     /**
