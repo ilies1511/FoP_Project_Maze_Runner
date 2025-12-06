@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
@@ -17,7 +19,12 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final BitmapFont font;
 
-    private float sinusInput = 0f;
+    private float xPlayer = 0f;
+    private float yPlayer = 0f;
+    private float speed = 120f;
+    private float animationTime = 0f;
+
+    private Animation<TextureRegion> currentAnimation;
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -32,6 +39,9 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false);
         camera.zoom = 0.75f;
 
+        // Start by looking down
+        currentAnimation = game.getCharacterDownAnimation();
+
         // Get the font from the game's skin
         font = game.getSkin().getFont("font");
     }
@@ -44,34 +54,108 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
         }
-
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
-        camera.update(); // Update the camera
+        // Input Handling New Class
+        handleInput(delta);
 
-        // Move text in a circular path to have an example of a moving object
-        sinusInput += delta;
-        float textX = (float) (camera.position.x + Math.sin(sinusInput) * 100);
-        float textY = (float) (camera.position.y + Math.cos(sinusInput) * 100);
+        //uncomment to center stage player
+        //camera.position.x = xPlayer + 8; // +8 to center on a 16px sprite
+        //camera.position.y = yPlayer + 8;
+        camera.update(); // Update the camera
 
         // Set up and begin drawing with the sprite batch
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
+        animationTime += delta;
 
         // Render the text
-        font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
+        //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
 
         // Draw the character next to the text :) / We can reuse sinusInput here
         game.getSpriteBatch().draw(
-                game.getCharacterDownAnimation().getKeyFrame(sinusInput, true),
-                textX - 96,
-                textY - 64,
+                currentAnimation.getKeyFrame(animationTime, true),
+                xPlayer,
+                yPlayer,
                 64,
                 128
         );
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
+    }
+    private void handleInput(float delta) {
+        boolean isMoving = false;
+        float currentSpeed = speed;
+
+        // Speed boost
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
+            currentSpeed *= 1.8f;
+        }
+
+        // --- MOVEMENT LOGIC ---
+
+        // Y-Axis
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+            yPlayer += currentSpeed * delta;
+            currentAnimation = game.getCharacterUpAnimation();
+            isMoving = true;
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            yPlayer -= currentSpeed * delta;
+            currentAnimation = game.getCharacterDownAnimation();
+            isMoving = true;
+        }
+
+        // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+            xPlayer -= currentSpeed * delta;
+            currentAnimation = game.getCharacterLeftAnimation();
+            isMoving = true;
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            xPlayer += currentSpeed * delta;
+            currentAnimation = game.getCharacterRightAnimation();
+            isMoving = true;
+        }
+
+        // Jump (Fix proper logic when final image of dracula is confirmed)
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // Check which direction we are currently facing/moving to pick the right jump
+            if (currentAnimation == game.getCharacterUpAnimation() || currentAnimation == game.getCharacterUpJumpAnimation()) {
+                currentAnimation = game.getCharacterUpJumpAnimation();
+            } else if (currentAnimation == game.getCharacterLeftAnimation() || currentAnimation == game.getCharacterLeftJumpAnimation()) {
+                currentAnimation = game.getCharacterLeftJumpAnimation();
+            } else if (currentAnimation == game.getCharacterRightAnimation() || currentAnimation == game.getCharacterRightJumpAnimation()) {
+                currentAnimation = game.getCharacterRightJumpAnimation();
+            } else {
+                currentAnimation = game.getCharacterDownJumpAnimation();
+            }
+            isMoving = true; // Keep animating while jumping
+        }
+
+        // Victory pose
+        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+            currentAnimation = game.getCharacterDownWin();
+            isMoving = true;
+        }
+        // Loser pose
+        if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+            currentAnimation = game.getCharacterDownSad();
+            isMoving = true;
+        }
+
+        // Animation Timer
+        if (isMoving) {
+            animationTime += delta;
+        } else {
+            animationTime = 0; // Reset to standing frame when not moving
+        }
+
+        // Go to Menu
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.goToMenu();
+        }
     }
 
     @Override
