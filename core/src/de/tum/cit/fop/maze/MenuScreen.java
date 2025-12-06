@@ -83,7 +83,14 @@ public class MenuScreen implements Screen {
             }
         });
 
-        // TODO add listeners to Statistics, EndlessMode, Settings
+        goToSettingsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.goToSettings(); // Change to the game screen when button is pressed
+            }
+        });
+
+        // TODO add listeners to Statistics, EndlessMode
     }
 
     @Override
