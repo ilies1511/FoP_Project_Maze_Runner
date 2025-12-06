@@ -64,3 +64,27 @@ Example:
 3. `git merge origin/main`
     1. if merge conflicts appear, solve with concerned peer
 
+    
+## Safe Integration Workflow (Testing Before Merging to Main)
+
+**Context:**  
+You want to merge your work into `main`, but you're not sure if your changes will break the work of others.  
+To avoid issues, use a temporary integration branch:
+
+1. `git checkout main`
+2. `git pull origin main`
+    - Make sure your local `main` is up to date.
+3. `git checkout -b integration_<YourName>`
+    - Create a safe testing branch.
+4. `git merge <your_branch>`
+    - Merge your feature into the integration branch.
+5. Resolve merge conflicts here (if any).
+6. Test or run the program in this branch.  
+   **Only proceed if everything works correctly.**
+7. `git push`
+    - Optional: push the integration branch for backup
+8. `git checkout main`
+9. `git merge integration_<YourName>`
+    - Now merge the already tested branch into `main`.
+10. `git push`
+    - Main is now safely updated.
