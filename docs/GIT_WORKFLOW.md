@@ -31,8 +31,24 @@ Example:
 
 1. `git checkout main`
 2. `git pull origin main`
-3. `git merge feature-branch`
-    1. if merge conflicts appear, solve with concerned peer
+3. `git merge --no-ff feature-branch`
+    - if merge conflicts appear, solve with concerned peer
+
+    <details>
+      <summary>Show Merge Process (after running <code>git merge --no-ff feature-branch</code>)</summary>
+
+   ![Merge Step 2](./img/img2.png)
+
+   ### Finish the merge in Vim
+    1. Press `ESC`
+    2. Press `SHIFT` + `:`
+    3. Type `wq`
+        - `w` = write (save)
+        - `q` = quit
+    4. Press `ENTER`
+    5. Finished - merge completes
+
+    </details>
 4. `git push origin main`
 
 
