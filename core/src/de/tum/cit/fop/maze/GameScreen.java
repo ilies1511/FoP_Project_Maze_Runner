@@ -96,24 +96,24 @@ public class GameScreen implements Screen {
         // --- MOVEMENT LOGIC ---
 
         // Y-Axis
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
             yPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterUpAnimation();
             isMoving = true;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
             yPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterDownAnimation();
             isMoving = true;
         }
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
             isMoving = true;
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
             xPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;
