@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -25,6 +24,7 @@ public class GameScreen implements Screen {
     private final OrthographicCamera camera;
     private final BitmapFont font;
 
+    private float sinusInput = 0f;
     private float xPlayer = 0f;
     private float yPlayer = 0f;
     private float speed = 120f;
@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
 
     private Animation<TextureRegion> currentAnimation;
 
-    private Player player;
+    private final Player player;
     private int playerHealth;
 
     private final Stage stage;
@@ -224,9 +224,9 @@ public class GameScreen implements Screen {
         table.bottom().left();
         playerHealth = player.getHealth();
         // int numberOfFullHearts;
-      // float notFullHeart;
-      //  numberOfFullHearts = player.getHealth();
-       // notFullHeart = player.getHealth() - numberOfFullHearts;
+        // float notFullHeart;
+        //  numberOfFullHearts = player.getHealth();
+        // notFullHeart = player.getHealth() - numberOfFullHearts;
         for(int i = 0;i<playerHealth; i++ ){
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
@@ -235,7 +235,7 @@ public class GameScreen implements Screen {
     }
 
     private void updatePlayerHealth(int damage){
-       table.clearChildren();
+        table.clearChildren();
         for(int i = 0;i<playerHealth - damage; i++ ){
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
