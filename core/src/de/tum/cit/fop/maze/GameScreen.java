@@ -6,8 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -26,6 +32,15 @@ public class GameScreen implements Screen {
 
     private Animation<TextureRegion> currentAnimation;
 
+    private Player player;
+    private int playerHealth;
+
+    private final Stage stage;
+
+    Table table;
+
+  //  int i = 0;
+    //For testing
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -33,6 +48,8 @@ public class GameScreen implements Screen {
      */
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
+
+        player = new Player(); //create an instance of the player
 
         // Create and configure the camera for the game view
         camera = new OrthographicCamera();
@@ -43,7 +60,12 @@ public class GameScreen implements Screen {
         currentAnimation = game.getCharacterDownAnimation();
 
         // Get the font from the game's skin
-        font = game.getSkin().getFont("font");
+        font = game.getSkin().getFont("vampire-font");
+
+        Viewport viewport = new ScreenViewport(); // TODO maybe add camera in the brackets
+        stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+
+        renderHUD();
     }
 
 
@@ -83,6 +105,16 @@ public class GameScreen implements Screen {
         );
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
+
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+
+// For Testing
+//        i++;
+//        if(i == 1){
+//            updatePlayerHealth(player.getDamage(1));
+//        }
+//        System.out.println(player.getHealth());
     }
     private void handleInput(float delta) {
         boolean isMoving = false;
@@ -160,7 +192,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -184,5 +216,34 @@ public class GameScreen implements Screen {
     public void dispose() {
     }
 
+    private void renderHUD(){
+        table = new Table(); // Create a table for layout
+        table.setFillParent(true); // Make the table fill the stage
+        table.debug();
+        stage.addActor(table);
+        table.bottom().left();
+        playerHealth = player.getHealth();
+        // int numberOfFullHearts;
+      // float notFullHeart;
+      //  numberOfFullHearts = player.getHealth();
+       // notFullHeart = player.getHealth() - numberOfFullHearts;
+        for(int i = 0;i<playerHealth; i++ ){
+            Image heart = new Image(game.getSkin().getDrawable("heart"));
+            table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
+        }
+
+    }
+
+    private void updatePlayerHealth(int damage){
+       table.clearChildren();
+        for(int i = 0;i<playerHealth - damage; i++ ){
+            Image heart = new Image(game.getSkin().getDrawable("heart"));
+            table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
+        }
+        for(int i =0; i < damage; i++){
+            Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
+            table.add(emptyHeart).width(100).height(100).padBottom(30).padLeft(30);
+        }
+    }
     // Additional methods and logic can be added as needed for the game screen
 }
