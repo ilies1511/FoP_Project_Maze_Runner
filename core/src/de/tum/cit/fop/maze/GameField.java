@@ -78,4 +78,20 @@ public class GameField {
     public Vector2 getPlayerStartPos() {
         return  this.playerStartPos;
     }
+
+    public boolean isInsideWall(float x, float y, Vector2 size) {
+        int minX = (int) x;
+        int maxX = (int) (x + size.x - 0.001f);
+        int minY = (int) y;
+        int maxY = (int) (y + size.y - 0.001f);
+
+        for (int row = minY; row <= maxY; row++) {
+            for (int col = minX; col <= maxX; col++) {
+                if (this.getTile(col, row) == TileType.WALL) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

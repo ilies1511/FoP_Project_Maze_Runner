@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
         this.gameField = new GameField();
 
         // Use startpos from the GameField
-        this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f, 0f), 3f, new Vector2(1f, 1f));
+        this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f, 0f), 3f, new Vector2(0.4f, 0.4f));
 
         float viewportWidth = 25f;  // Visible world width
         float viewportHeight = 18.75f; // Visible world height
@@ -217,10 +217,20 @@ public class GameScreen implements Screen {
     }
 
     private void updateEntitiesPositions(float delta) {
-        Vector2 nextPlayerPosition = this.playerEntity.nextPosition(delta);
-        // Move only if the next position is not inside the wall
-        if (this.gameField.getTile((int) nextPlayerPosition.x, (int) nextPlayerPosition.y) == TileType.EMPTY) {
-            this.playerEntity.move(delta);
+        // X and Y are calculated separately to avoid going through walls diagonally
+
+        float nextX = playerEntity.position.x + playerEntity.velocity.x * delta;
+        float currentY = playerEntity.position.y;
+
+        if (!this.gameField.isInsideWall(nextX, currentY, this.playerEntity.getSize())) {
+            this.playerEntity.position.x = nextX;
+        }
+
+        float currentX = playerEntity.position.x;
+        float nextY = playerEntity.position.y + playerEntity.velocity.y * delta;
+
+        if (!this.gameField.isInsideWall(currentX, nextY, this.playerEntity.getSize())) {
+            playerEntity.position.y = nextY;
         }
     }
 
