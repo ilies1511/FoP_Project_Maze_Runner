@@ -231,11 +231,14 @@ public class GameScreen implements Screen {
     }
 
     private void drawGameField() {
-        for (int x = 0; x <= gameField.getHeight(); x++) {
-            for (int y = 0; y <= gameField.getWidth(); y++) {
+        for (int y = 0; y < gameField.getHeight(); y++) {
+            for (int x = 0; x < gameField.getWidth(); x++) {
                 TileType tileType = gameField.getTile(x, y);
                 if (tileType == TileType.WALL) {
-                    game.getSpriteBatch().draw(currentAnimation.getKeyFrame(animationTime, true), x, y, 1, 1);
+                    game.getSpriteBatch().draw(
+                            currentAnimation.getKeyFrame(animationTime, true),
+                            x, y, 1, 1
+                    );
                 }
             }
         }
