@@ -9,11 +9,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.ArrayList;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -38,6 +41,7 @@ public class GameScreen implements Screen {
     private Entity playerEntity;
 
     private GameField gameField;
+    private ArrayList<Enemy> enemies;
 
     Table table;
 
@@ -50,6 +54,9 @@ public class GameScreen implements Screen {
      */
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
+
+        this.enemies = new ArrayList<>();
+        this.enemies.add(new Enemy(new Vector2(10f, 3f)));
 
         this.player = new Player(); //create an instance of the player
 
@@ -108,6 +115,7 @@ public class GameScreen implements Screen {
 
         drawGameField();
 
+
         // Draw the character next to the text :) / We can reuse sinusInput here
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
@@ -116,6 +124,14 @@ public class GameScreen implements Screen {
                 0.4f,
                 0.8f
         );
+
+        for (Enemy enemy : enemies) {
+            game.getSpriteBatch().draw(
+                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // Static Victory for testing
+                    enemy.getEnemyEntity().position.x, enemy.getEnemyEntity().position.y,
+                    0.5f,   0.8f
+            );
+        }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
 
@@ -154,12 +170,12 @@ public class GameScreen implements Screen {
             isMoving = true;
         }
 
-        else {
-            playerEntity.velocity.y = 0f;
-        }
+        //else {
+          //  playerEntity.velocity.y = 0f;
+        //}
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
-        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
+        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             playerEntity.velocity.x = -playerEntity.speed;
 //            xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
@@ -172,10 +188,30 @@ public class GameScreen implements Screen {
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;
         }
-
         else {
             playerEntity.velocity.x = 0f;
+            playerEntity.velocity.y = 0f;   //remove to add 'proper' diagonals and also partitions the 4 else-ifs to two if
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            System.out.println("Attacking!"); // Debug print
+
+            var iterator = enemies.iterator();
+            while (iterator.hasNext()) {
+                Enemy enemy = iterator.next();
+
+                // distance between Player and Enemy
+                float distance = playerEntity.position.dst(enemy.getEnemyEntity().position);
+
+                //if enemy within 1.5, kill
+                if (distance < 1.5f) {
+                    iterator.remove(); // remove enemy from the game
+                    System.out.println("Enemy Killed!");
+
+                }
+            }
+        }
+
 
         // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
 //        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -221,6 +257,25 @@ public class GameScreen implements Screen {
         // Move only if the next position is not inside the wall
         if (this.gameField.getTile((int) nextPlayerPosition.x, (int) nextPlayerPosition.y) == TileType.EMPTY) {
             this.playerEntity.move(delta);
+        }
+
+        var iterator = enemies.iterator();
+        while(iterator.hasNext()){
+            Enemy enemy = iterator.next();
+            Entity enemyEntity = enemy.getEnemyEntity(); // Get Character
+
+            enemy.updateBehavior(playerEntity.position);
+            Vector2 nextPos = enemyEntity.nextPosition(delta);
+
+            if (gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY) {
+                enemyEntity.move(delta);
+            }
+
+            // Check if they touch
+            if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
+                // print to console. .
+                System.out.println("YOU DIED!");
+            }
         }
     }
 
