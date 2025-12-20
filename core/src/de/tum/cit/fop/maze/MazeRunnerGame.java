@@ -46,6 +46,10 @@ public class MazeRunnerGame extends Game {
     // Happy/Win/PowerUp Animations
     private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
 
+    // Maze Textures
+    private TextureRegion wallTile;
+    private TextureRegion emptyTile;
+
 
     // GameInfo with all the useful variables
     private final GameInfo gameInfo;
@@ -73,6 +77,7 @@ public class MazeRunnerGame extends Game {
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         this.loadCharacterAnimation(); // Load character animation
+        this.loadMazeTiles();
 
         // Play some background music
         // Background sound
@@ -168,6 +173,19 @@ public class MazeRunnerGame extends Game {
       //  characterDownAnimation = new Animation<>(0.1f, walkFrames);
     }
 
+    private void loadMazeTiles() {
+        try {
+            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
+            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
+
+            this.wallTile = new TextureRegion(wallTexture);
+            this.emptyTile = new TextureRegion(emptyTexture);
+        } catch (Exception e) {
+            System.err.println("Error loading maze tiles: " + e.getMessage());
+            System.err.println("Make sure maze_wall.png and maze_empty.png exist in the assets folder");
+        }
+    }
+
     private Array<TextureRegion> getFrames(TextureRegion[] row, int start, int count) {
         Array<TextureRegion> frames = new Array<>();
         for (int i = start; i < start + count; i++) {
@@ -255,5 +273,14 @@ public class MazeRunnerGame extends Game {
 
     public Animation<TextureRegion> getCharacterRightWin() {
         return characterRightWin;
+    }
+
+    // Maze Tile Getters
+    public TextureRegion getWallTile() {
+        return wallTile;
+    }
+
+    public TextureRegion getEmptyTile() {
+        return emptyTile;
     }
 }
