@@ -236,7 +236,12 @@ public class GameScreen implements Screen {
                 TileType tileType = gameField.getTile(x, y);
                 if (tileType == TileType.WALL) {
                     game.getSpriteBatch().draw(
-                            currentAnimation.getKeyFrame(animationTime, true),
+                            game.getWallTile(),
+                            x, y, 1, 1
+                    );
+                } else if (tileType == TileType.EMPTY) {
+                    game.getSpriteBatch().draw(
+                            game.getEmptyTile(),
                             x, y, 1, 1
                     );
                 }
