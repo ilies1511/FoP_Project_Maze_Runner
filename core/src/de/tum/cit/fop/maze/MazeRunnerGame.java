@@ -48,7 +48,7 @@ public class MazeRunnerGame extends Game {
 
 
     // GameInfo with all the useful variables
-    private GameInfo gameInfo;
+    private final GameInfo gameInfo;
 
     public GameInfo getGameInfo() {
         return this.gameInfo;

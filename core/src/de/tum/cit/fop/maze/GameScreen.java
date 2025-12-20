@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -25,9 +26,6 @@ public class GameScreen implements Screen {
     private final BitmapFont font;
 
     private float sinusInput = 0f;
-    private float xPlayer = 0f;
-    private float yPlayer = 0f;
-    private float speed = 120f;
     private float animationTime = 0f;
 
     private Animation<TextureRegion> currentAnimation;
@@ -36,6 +34,8 @@ public class GameScreen implements Screen {
     private int playerHealth;
 
     private final Stage stage;
+
+    private Entity playerEntity;
 
     Table table;
 
@@ -50,6 +50,8 @@ public class GameScreen implements Screen {
         this.game = game;
 
         player = new Player(); //create an instance of the player
+
+        playerEntity = new Entity(new Vector2(0f, 0f), new Vector2(0f, 0f), 180f, new Vector2(1f, 1f));
 
         // Create and configure the camera for the game view
         camera = new OrthographicCamera();
@@ -81,6 +83,8 @@ public class GameScreen implements Screen {
         // Input Handling New Class
         handleInput(delta);
 
+        updateEntitiesPositions(delta);
+
         //uncomment to center stage player
         //camera.position.x = xPlayer + 8; // +8 to center on a 16px sprite
         //camera.position.y = yPlayer + 8;
@@ -98,8 +102,8 @@ public class GameScreen implements Screen {
         // Draw the character next to the text :) / We can reuse sinusInput here
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
-                xPlayer,
-                yPlayer,
+                playerEntity.position.x,
+                playerEntity.position.y,
                 64,
                 128
         );
@@ -118,53 +122,66 @@ public class GameScreen implements Screen {
     }
     private void handleInput(float delta) {
         boolean isMoving = false;
-        float currentSpeed = speed;
 
-        // Speed boost
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-            currentSpeed *= 1.8f;
-        }
+        // Speed boost // TODO: Add boost to keybindings, handle it via playerEntity
+//        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
+//            currentSpeed *= 1.8f;
+//        }
 
         // --- MOVEMENT LOGIC ---
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-            yPlayer += currentSpeed * delta;
+              playerEntity.velocity.y = playerEntity.speed;
+//            yPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterUpAnimation();
             isMoving = true;
         }
+
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-            yPlayer -= currentSpeed * delta;
+            playerEntity.velocity.y = -playerEntity.speed;
+//            yPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterDownAnimation();
             isMoving = true;
         }
 
+        else {
+            playerEntity.velocity.y = 0f;
+        }
+
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-            xPlayer -= currentSpeed * delta;
+            playerEntity.velocity.x = -playerEntity.speed;
+//            xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
             isMoving = true;
         }
+
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-            xPlayer += currentSpeed * delta;
+            playerEntity.velocity.x = playerEntity.speed;
+//            xPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;
         }
 
-        // Jump (Fix proper logic when final image of dracula is confirmed)
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // Check which direction we are currently facing/moving to pick the right jump
-            if (currentAnimation == game.getCharacterUpAnimation() || currentAnimation == game.getCharacterUpJumpAnimation()) {
-                currentAnimation = game.getCharacterUpJumpAnimation();
-            } else if (currentAnimation == game.getCharacterLeftAnimation() || currentAnimation == game.getCharacterLeftJumpAnimation()) {
-                currentAnimation = game.getCharacterLeftJumpAnimation();
-            } else if (currentAnimation == game.getCharacterRightAnimation() || currentAnimation == game.getCharacterRightJumpAnimation()) {
-                currentAnimation = game.getCharacterRightJumpAnimation();
-            } else {
-                currentAnimation = game.getCharacterDownJumpAnimation();
-            }
-            isMoving = true; // Keep animating while jumping
+        else {
+            playerEntity.velocity.x = 0f;
         }
+
+        // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
+//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+//            // Check which direction we are currently facing/moving to pick the right jump
+//            if (currentAnimation == game.getCharacterUpAnimation() || currentAnimation == game.getCharacterUpJumpAnimation()) {
+//                currentAnimation = game.getCharacterUpJumpAnimation();
+//            } else if (currentAnimation == game.getCharacterLeftAnimation() || currentAnimation == game.getCharacterLeftJumpAnimation()) {
+//                currentAnimation = game.getCharacterLeftJumpAnimation();
+//            } else if (currentAnimation == game.getCharacterRightAnimation() || currentAnimation == game.getCharacterRightJumpAnimation()) {
+//                currentAnimation = game.getCharacterRightJumpAnimation();
+//            } else {
+//                currentAnimation = game.getCharacterDownJumpAnimation();
+//            }
+//            isMoving = true; // Keep animating while jumping
+//        }
 
         // Victory pose
         if (Gdx.input.isKeyPressed(Input.Keys.K)) {
@@ -188,6 +205,11 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.goToMenu();
         }
+    }
+
+    private void updateEntitiesPositions(float delta) {
+        this.playerEntity.position.x += playerEntity.velocity.x * delta;
+        this.playerEntity.position.y += playerEntity.velocity.y * delta;
     }
 
     @Override
