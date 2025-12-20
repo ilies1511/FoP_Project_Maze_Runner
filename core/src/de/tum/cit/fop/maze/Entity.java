@@ -23,4 +23,9 @@ public class Entity {
     public static Boolean entitiesOverlap(Entity entity1, Entity entity2) {
         return entity1.getBoundingBox().overlaps(entity2.getBoundingBox());
     }
+
+    public void move(float deltaTime) {
+        this.position.x += deltaTime * this.velocity.x;
+        this.position.y += deltaTime * this.velocity.y;
+    }
 }

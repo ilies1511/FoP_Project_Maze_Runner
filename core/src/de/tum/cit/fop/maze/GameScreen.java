@@ -208,8 +208,7 @@ public class GameScreen implements Screen {
     }
 
     private void updateEntitiesPositions(float delta) {
-        this.playerEntity.position.x += playerEntity.velocity.x * delta;
-        this.playerEntity.position.y += playerEntity.velocity.y * delta;
+        this.playerEntity.move(delta);
     }
 
     @Override
