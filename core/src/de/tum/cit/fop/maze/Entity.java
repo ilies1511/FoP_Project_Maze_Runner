@@ -16,6 +16,10 @@ public class Entity {
         this.sizes = sizes;
     }
 
+    public Vector2 getSize() {
+        return this.sizes;
+    }
+
     private Rectangle getBoundingBox() {
         return new Rectangle(this.position.x, this.position.y, this.sizes.x, this.sizes.y);
     }
