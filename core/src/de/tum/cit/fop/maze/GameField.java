@@ -31,39 +31,47 @@ public class GameField {
         return this.width;
     }
 
-    public GameField() { // temporary constructor: emulates loading from a File
+    public GameField() {
         this.height = 15;
         this.width = 20;
         this.grid = new TileType[this.width * this.height];
+
+        // Visual representation (Top-Down view)
         String[] layout = {
-                "####################", // Row 0
-                "#..................#", // Row 1
-                "#.###.########.###.#", // Row 2
-                "#.#...#......#...#.#", // Row 3
-                "#.#.###.####.###.#.#", // Row 4
-                "#.#.....#........#.#", // Row 5
-                "#.#######.########.#", // Row 6
-                "#..................#", // Row 7
-                "#####.##########.###", // Row 8
-                "#...#......#.......#", // Row 9
-                "#.#####.##.#####.###", // Row 10
-                "#.......##.........#", // Row 11
-                "#.################.#", // Row 12
-                "#..................#", // Row 13
-                "####################"  // Row 14
+                "####################", // Visual Top
+                "#..................#",
+                "#.###.########.###.#",
+                "#.#...#......#...#.#",
+                "#.#.###.####.###.#.#",
+                "#.#.....#........#.#",
+                "#.#######.########.#",
+                "#..................#",
+                "#####.##########.###",
+                "#...#......#.......#",
+                "#.#####.##.#####.###",
+                "#.......##.........#",
+                "#.################.#",
+                "#..................#",
+                "####################"  // Visual Bottom
         };
-            for (int y = 0; y < this.height; y++) {
-                for (int x = 0; x < this.width; x++) {
 
-                    char c = layout[y].charAt(x);
+        // Iterate through the VISUAL layout rows (i = 0 is Top)
+        for (int i = 0; i < this.height; i++) {
 
-                    if (c == '#') {
-                        this.setTile(x, y, TileType.WALL);
-                    } else {
-                        this.setTile(x, y, TileType.EMPTY);
-                    }
+            // FLIP THE Y AXIS (because libgdx is stupid)
+            int y = (this.height - 1) - i;
+
+            for (int x = 0; x < this.width; x++) {
+                char c = layout[i].charAt(x);
+
+                if (c == '#') {
+                    this.setTile(x, y, TileType.WALL);
+                } else {
+                    this.setTile(x, y, TileType.EMPTY);
                 }
             }
+        }
+
         this.playerStartPos = new Vector2(1f, 1f);
     }
 
