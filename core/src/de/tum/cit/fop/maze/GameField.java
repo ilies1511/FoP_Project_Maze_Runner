@@ -1,9 +1,12 @@
 package de.tum.cit.fop.maze;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class GameField {
     private final int width;
     private final int height;
     private final TileType[] grid;
+    private final Vector2 playerStartPos;
 
     public TileType getTile(int x, int y) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
@@ -61,5 +64,10 @@ public class GameField {
                     }
                 }
             }
+        this.playerStartPos = new Vector2(1f, 1f);
+    }
+
+    public Vector2 getPlayerStartPos() {
+        return  this.playerStartPos;
     }
 }

@@ -24,8 +24,11 @@ public class Entity {
         return entity1.getBoundingBox().overlaps(entity2.getBoundingBox());
     }
 
+    public Vector2 nextPosition(float deltaTime) {
+        return new Vector2(this.position.x + deltaTime * this.velocity.x, this.position.y + deltaTime * this.velocity.y);
+    }
+
     public void move(float deltaTime) {
-        this.position.x += deltaTime * this.velocity.x;
-        this.position.y += deltaTime * this.velocity.y;
+        this.position =  this.nextPosition(deltaTime);
     }
 }

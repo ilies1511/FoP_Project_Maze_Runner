@@ -51,11 +51,12 @@ public class GameScreen implements Screen {
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
 
-        player = new Player(); //create an instance of the player
+        this.player = new Player(); //create an instance of the player
 
-        playerEntity = new Entity(new Vector2(0f, 0f), new Vector2(0f, 0f), 3f, new Vector2(1f, 1f));
+        this.gameField = new GameField();
 
-        gameField = new GameField();
+        // Use startpos from the GameField
+        this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f, 0f), 3f, new Vector2(1f, 1f));
 
         float viewportWidth = 25f;  // Visible world width
         float viewportHeight = 18.75f; // Visible world height
@@ -216,7 +217,11 @@ public class GameScreen implements Screen {
     }
 
     private void updateEntitiesPositions(float delta) {
-        this.playerEntity.move(delta);
+        Vector2 nextPlayerPosition = this.playerEntity.nextPosition(delta);
+        // Move only if the next position is not inside the wall
+        if (this.gameField.getTile((int) nextPlayerPosition.x, (int) nextPlayerPosition.y) == TileType.EMPTY) {
+            this.playerEntity.move(delta);
+        }
     }
 
     private void moveCamera(float delta) {
@@ -226,8 +231,8 @@ public class GameScreen implements Screen {
     }
 
     private void drawGameField() {
-        for (int x = 0; x < gameField.getHeight(); x++) {
-            for (int y = 0; y < gameField.getWidth(); y++) {
+        for (int x = 0; x <= gameField.getHeight(); x++) {
+            for (int y = 0; y <= gameField.getWidth(); y++) {
                 TileType tileType = gameField.getTile(x, y);
                 if (tileType == TileType.WALL) {
                     game.getSpriteBatch().draw(currentAnimation.getKeyFrame(animationTime, true), x, y, 1, 1);
