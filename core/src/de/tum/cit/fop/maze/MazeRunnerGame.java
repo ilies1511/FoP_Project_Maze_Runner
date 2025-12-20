@@ -51,6 +51,13 @@ public class MazeRunnerGame extends Game {
     private TextureRegion emptyTile;
 
 
+    //UI
+    private Texture spriteSheet;
+    private Texture effectsSheet;
+    private TextureRegion woodenSign;
+    private TextureRegion bloodEffect;
+    private TextureRegion poisonEffect;
+
     // GameInfo with all the useful variables
     private final GameInfo gameInfo;
 
@@ -74,6 +81,13 @@ public class MazeRunnerGame extends Game {
     @Override
     public void create() {
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
+
+        effectsSheet = new Texture(Gdx.files.internal("statusEffects.png"));
+        spriteSheet = new Texture(Gdx.files.internal("UI.png"));
+        woodenSign = new TextureRegion(spriteSheet, 0, 128, 130, 48);
+        bloodEffect = new TextureRegion(effectsSheet, 128, 0, 32, 32);
+        poisonEffect = new TextureRegion(effectsSheet, 0, 0, 32, 32);
+
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         this.loadCharacterAnimation(); // Load character animation
@@ -283,4 +297,12 @@ public class MazeRunnerGame extends Game {
     public TextureRegion getEmptyTile() {
         return emptyTile;
     }
+
+    public Texture getSpriteSheet() { return spriteSheet; }
+
+    public TextureRegion getWoodenSign() { return woodenSign; }
+
+    public TextureRegion getPoisonEffect() {return poisonEffect;}
+
+    public TextureRegion getBloodEffect() {return bloodEffect;}
 }
