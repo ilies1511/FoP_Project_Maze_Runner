@@ -20,6 +20,14 @@ public class GameField {
         this.grid[y * width + x] = tile;
     }
 
+    public int getHeight() {
+        return this.height;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
     public GameField() { // temporary constructor: emulates loading from a File
         this.height = 15;
         this.width = 20;

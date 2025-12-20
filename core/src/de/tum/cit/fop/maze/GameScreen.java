@@ -37,6 +37,8 @@ public class GameScreen implements Screen {
 
     private Entity playerEntity;
 
+    private GameField gameField;
+
     Table table;
 
   //  int i = 0;
@@ -51,11 +53,16 @@ public class GameScreen implements Screen {
 
         player = new Player(); //create an instance of the player
 
-        playerEntity = new Entity(new Vector2(0f, 0f), new Vector2(0f, 0f), 180f, new Vector2(1f, 1f));
+        playerEntity = new Entity(new Vector2(0f, 0f), new Vector2(0f, 0f), 3f, new Vector2(1f, 1f));
+
+        gameField = new GameField();
+
+        float viewportWidth = 25f;  // Visible world width
+        float viewportHeight = 18.75f; // Visible world height
 
         // Create and configure the camera for the game view
         camera = new OrthographicCamera();
-        camera.setToOrtho(false);
+        camera.setToOrtho(false, viewportWidth, viewportHeight);
         camera.zoom = 0.75f;
 
         // Start by looking down
@@ -83,12 +90,11 @@ public class GameScreen implements Screen {
         // Input Handling New Class
         handleInput(delta);
 
+        // Move all the entities
         updateEntitiesPositions(delta);
 
-        //uncomment to center stage player
-        //camera.position.x = xPlayer + 8; // +8 to center on a 16px sprite
-        //camera.position.y = yPlayer + 8;
-        camera.update(); // Update the camera
+        // Update camera to move with the player
+        moveCamera(delta);
 
         // Set up and begin drawing with the sprite batch
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
@@ -99,13 +105,15 @@ public class GameScreen implements Screen {
         // Render the text
         //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
 
+        drawGameField();
+
         // Draw the character next to the text :) / We can reuse sinusInput here
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
                 playerEntity.position.x,
                 playerEntity.position.y,
-                64,
-                128
+                0.4f,
+                0.8f
         );
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
@@ -209,6 +217,23 @@ public class GameScreen implements Screen {
 
     private void updateEntitiesPositions(float delta) {
         this.playerEntity.move(delta);
+    }
+
+    private void moveCamera(float delta) {
+        camera.position.x = playerEntity.position.x;
+        camera.position.y = playerEntity.position.y;
+        camera.update();
+    }
+
+    private void drawGameField() {
+        for (int x = 0; x < gameField.getHeight(); x++) {
+            for (int y = 0; y < gameField.getWidth(); y++) {
+                TileType tileType = gameField.getTile(x, y);
+                if (tileType == TileType.WALL) {
+                    game.getSpriteBatch().draw(currentAnimation.getKeyFrame(animationTime, true), x, y, 1, 1);
+                }
+            }
+        }
     }
 
     @Override
