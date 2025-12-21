@@ -37,6 +37,7 @@ public class HUD {
     private final MazeRunnerGame game;
     private final GameScreen gameScreen;
 
+    private int emptyHearts;
 
     private final Stage stage;
     public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen){
@@ -82,13 +83,14 @@ public class HUD {
     }
 
     public void updatePlayerHP(int damage){
+        emptyHearts += damage;
         heartTable.clearChildren();
-        for(int i = 0;i<playerHealth - damage; i++ ){
+        for(int i = 0;i<playerHealth - emptyHearts; i++ ){
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
         }
         if(damage>0){
-            for(int i =0; i < damage; i++){
+            for(int i =0; i < emptyHearts; i++){
                 Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
                 heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
             }
