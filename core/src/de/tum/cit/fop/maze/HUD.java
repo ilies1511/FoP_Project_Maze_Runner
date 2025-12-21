@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -34,15 +35,17 @@ public class HUD {
     private int playerHealth;
 
     private final MazeRunnerGame game;
+    private final GameScreen gameScreen;
+
 
     private final Stage stage;
-    public HUD(Player player, Stage stage, MazeRunnerGame game){
+    public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen){
         shapeRenderer = new ShapeRenderer();
 
      this.player = player;
      this.stage = stage;
      this.game = game;
-
+     this.gameScreen = gameScreen;
         renderHUD();
     }
 
@@ -104,7 +107,16 @@ public class HUD {
     }
 
     private void drawRing(Image img, float maxT, String effect ){
-        Stack stack = new Stack();
+        Stack stack = new Stack(){
+            @Override
+            public void act(float delta) {
+                // Only update this stack (and its children/actions) if the game is running
+                if (!gameScreen.isPaused()) {
+                    super.act(delta);
+                }
+            }
+        };
+
         Image newEffect = img;
         stack.add(newEffect);
 
