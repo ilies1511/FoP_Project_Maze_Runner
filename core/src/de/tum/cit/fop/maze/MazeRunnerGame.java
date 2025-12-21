@@ -84,7 +84,7 @@ public class MazeRunnerGame extends Game {
 
         effectsSheet = new Texture(Gdx.files.internal("statusEffects.png"));
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
-        woodenSign = new TextureRegion(spriteSheet, 0, 128, 130, 48);
+        woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
         bloodEffect = new TextureRegion(effectsSheet, 128, 0, 32, 32);
         poisonEffect = new TextureRegion(effectsSheet, 0, 0, 32, 32);
 
