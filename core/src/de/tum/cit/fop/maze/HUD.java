@@ -56,7 +56,7 @@ public class HUD {
         playerHealth = player.getHealth();
 
         uiContainer = new Table();
-        //uiContainer.debug();
+        uiContainer.debug();
         uiContainer.top();
         TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
         uiContainer.setBackground(signDrawable);
@@ -65,7 +65,7 @@ public class HUD {
         // heartTable.debug();
 
         statusEffectsTable = new Table();
-        //statusEffectsTable.debug();
+        statusEffectsTable.debug();
         for(int i = 0;i<playerHealth; i++ ){
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             heartTable.add(heart).width(50).height(50);
@@ -104,16 +104,34 @@ public class HUD {
     }
 
     private void drawRing(Image img, float maxT, String effect ){
+//     Stack existingStack = null;
+//        if (Objects.equals(effect, "Poisoned")) {
+//            if (poisonEffect != null) {
+//                existingStack = poisonEffect;
+//            } else if (Objects.equals(effect, "Buffed")) {
+//                if (bloodEffect != null) {
+//                    existingStack = bloodEffect;
+//                }
+//            }
+//        }
+//        if (existingStack != null) {
+//            Cell cell = statusEffectsTable.getCell(existingStack);
+//            existingStack.remove();
+//
+//
+//            if (cell != null) {
+//                cell.setActor(null);
+//                cell.size(0, 0).pad(0);
+//            }
+//
+//            statusEffectsTable.invalidateHierarchy();
+//        }
+
+
         Stack stack = new Stack();
         Image newEffect = img;
         stack.add(newEffect);
 
-        if(Objects.equals(effect, "Poisoned")){
-            poisonEffect = stack;
-        }
-        else if(Objects.equals(effect, "Buffed")){
-            bloodEffect = stack;
-        }
         Actor cooldownOverlay = new Actor() {
 
             float maxTime = maxT;
@@ -168,20 +186,51 @@ public class HUD {
 
         stack.add(cooldownOverlay);
 
-        statusEffectsTable.add(stack).size(60, 60).pad(5);
+        Stack previousStack = null;
+        if (Objects.equals(effect, "Poisoned")) previousStack = poisonEffect;
+        else if (Objects.equals(effect, "Buffed")) previousStack = bloodEffect;
+        boolean replace = false;
+
+        if(previousStack != null){
+            Cell cell = statusEffectsTable.getCell(previousStack);
+            if (cell != null) {
+                cell.setActor(stack);
+                replace = true;
+            }
+            previousStack.clearActions();
+        }
+        if (!replace) {
+            statusEffectsTable.add(stack).size(60, 60).pad(5);
+        }
+
+       // statusEffectsTable.add(stack).size(60, 60).pad(5);
+        statusEffectsTable.pack();
+
+
+        Stack finalStack = stack;
+
+        if (Objects.equals(effect, "Poisoned")) poisonEffect =stack;
+        else if (Objects.equals(effect, "Buffed")) bloodEffect = stack;
+
 
         stack.addAction(Actions.sequence(
                 Actions.delay(maxT),
                 Actions.run(() -> {
-                    if(Objects.equals(effect, "Poisoned")){
-                        Cell cell = statusEffectsTable.getCell(poisonEffect);
-                        poisonEffect.remove();
-                        statusEffectsTable.getCells().removeValue(cell, true);
+
+                    if(Objects.equals(effect, "Poisoned") && poisonEffect == finalStack || Objects.equals(effect, "Buffed") && bloodEffect == finalStack ){
+                        Cell cell = statusEffectsTable.getCell(finalStack);
+                        finalStack.remove();
+                        if (cell != null) {
+                            cell.setActor(null);
+                            cell.size(0).pad(0);
+                        }
+                        statusEffectsTable.invalidateHierarchy();
                     }
-                    else if(Objects.equals(effect, "Buffed")) {
-                        Cell cell = statusEffectsTable.getCell(bloodEffect);
-                        bloodEffect.remove();
-                        statusEffectsTable.getCells().removeValue(cell, true);
+                    if(Objects.equals(effect, "Poisoned") && poisonEffect == finalStack){
+                        poisonEffect = null;
+                    }
+                    else if(Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
+                        bloodEffect = null;
                     }
                 })
         ));
