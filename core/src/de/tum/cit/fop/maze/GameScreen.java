@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -25,6 +26,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Objects;
+
+import java.util.ArrayList;
+
+import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -38,6 +43,7 @@ public class GameScreen implements Screen {
 
     private float sinusInput = 0f;
     private float animationTime = 0f;
+    private float flickerTimer = 0f;
 
     private Animation<TextureRegion> currentAnimation;
 
@@ -49,6 +55,7 @@ public class GameScreen implements Screen {
     private Entity playerEntity;
 
     private GameField gameField;
+    private ArrayList<Enemy> enemies;
 
     private final HUD hud;
     private final PausedOverlay pausedScreen;
@@ -65,6 +72,12 @@ public class GameScreen implements Screen {
      */
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
+
+        this.enemies = new ArrayList<>();
+        //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
+        this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
+        this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+
 
         this.player = new Player(); //create an instance of the player
 
@@ -137,23 +150,43 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
+        animationTime += delta;
 
+        if (flickerTimer > 0f) {
+            flickerTimer -= delta;
+        }
+        //player visible if timer is 0 or if flickering
+        boolean isVisible = (flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f);
 
+        // Render the text
+        //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
 
         drawGameField();
 
+
+        // Draw the character next to the text :) / We can reuse sinusInput here
+        if (isVisible) {
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
                 playerEntity.position.x,
                 playerEntity.position.y,
                 0.4f,
                 0.8f
-        );
+        );}
+
+        for (Enemy enemy : enemies) {
+            game.getSpriteBatch().draw(
+                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // Static Victory for testing
+                    enemy.getEnemyEntity().position.x, enemy.getEnemyEntity().position.y,
+                    0.5f,   0.8f
+            );
+        }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
 // For Testing
 
 
@@ -185,12 +218,12 @@ public class GameScreen implements Screen {
             isMoving = true;
         }
 
-        else {
-            playerEntity.velocity.y = 0f;
-        }
+        //else {
+          //  playerEntity.velocity.y = 0f;
+        //}
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
-        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
+        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             playerEntity.velocity.x = -playerEntity.speed;
 //            xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
@@ -206,6 +239,24 @@ public class GameScreen implements Screen {
 
         else {
             playerEntity.velocity.x = 0f;
+            playerEntity.velocity.y = 0f;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            System.out.println("Attacking!"); // Debug print
+
+            var iterator = enemies.iterator();
+            while (iterator.hasNext()) {
+                Enemy enemy = iterator.next();
+
+                // distance between Player and Enemy
+                float distance = playerEntity.position.dst(enemy.getEnemyEntity().position);
+
+                //if enemy within 1.5, kill
+                if (distance < 1.5f) {
+                    iterator.remove(); // remove enemy from the game
+                    System.out.println("Enemy Killed!");
+                }
+            }
         }
 
         // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
@@ -242,6 +293,9 @@ public class GameScreen implements Screen {
         }
 
         // Go to Menu
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.goToMenu();
+        }
     }
 
     private void updateEntitiesPositions(float delta) {
@@ -259,6 +313,33 @@ public class GameScreen implements Screen {
 
         if (!this.gameField.isInsideWall(currentX, nextY, this.playerEntity.getSize())) {
             playerEntity.position.y = nextY;
+        }
+
+        var iterator = enemies.iterator();
+        while(iterator.hasNext()){
+            Enemy enemy = iterator.next();
+            Entity enemyEntity = enemy.getEnemyEntity(); // Get Character
+
+            enemy.updateBehavior(delta, playerEntity.position, gameField);
+            Vector2 nextPos = enemyEntity.nextPosition(delta);
+
+            //gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY to prev test
+            if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyEntity.getSize())) {
+                enemyEntity.move(delta);
+            }
+
+            // Check if they touch
+            if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
+                if (flickerTimer <= 0){
+                    // print to console. .
+                    System.out.println("YOU DIED!");
+                    iterator.remove();
+//                pdatePlayerHealth(1);
+                    hud.updatePlayerHP(1);
+                    flickerTimer = 3f;
+                }
+
+            }
         }
     }
 
