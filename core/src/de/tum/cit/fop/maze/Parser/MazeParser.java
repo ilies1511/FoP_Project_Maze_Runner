@@ -3,6 +3,9 @@ package de.tum.cit.fop.maze.Parser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.objects.Key;
+import de.tum.cit.fop.maze.objects.Trap;
 
 import java.io.*;
 import java.util.Properties;
@@ -38,10 +41,10 @@ import java.util.Properties;
 //	// END -- Methods
 //}
 
-
+//TODO (Connect Parser to Game Assets) - iziane
 public class MazeParser {
 	// BEGIN -- Methods
-	private static void processTile(GameField field, int x, int y, int id) {
+	private static void processTile(GameField field, int x, int y, int id, MazeRunnerGame game) {
 		switch (id) {
 			case 0:
 				field.setTile(x, y, TileType.WALL);
@@ -54,15 +57,15 @@ public class MazeParser {
 				field.setTile(x, y, TileType.EXIT); // TODO: iziane - Use Object later
 				break;
 			case 3:
-				// field.addGameObject(new Trap(x, y));  // TODO: iziane - Later, after GameObject is done
+				field.addGameObject(new Trap(x, y, game.getTrapTexture()));  // TODO: iziane - Later, after GameObject is done
 				field.setTile(x, y, TileType.EMPTY);
 				break;
 			case 4:
-				// field.addGameObject(new Enemy(x, y));
+//				 field.addGameObject(new Enemy(x, y)); // TODO: iziane - TBD with Saad
 				field.setTile(x, y, TileType.EMPTY);
 				break;
 			case 5:
-				// field.addGameObject(new Key(x, y));
+				field.addGameObject(new Key(x, y, game.getKeyTexture()));
 				field.setTile(x, y, TileType.EMPTY);
 				break;
 			default:
@@ -71,7 +74,7 @@ public class MazeParser {
 		}
 	}
 
-	private static void parseData(Properties properties, GameField gameField) {
+	private static void parseData(Properties properties, GameField gameField, MazeRunnerGame game) {
 
 		for (String key : properties.stringPropertyNames()) {
 			String value = properties.getProperty(key);
@@ -82,7 +85,7 @@ public class MazeParser {
 				int y = Integer.parseInt(parts[1].trim());
 				int typeId = Integer.parseInt(value.trim());
 
-				processTile(gameField, x, y, typeId);
+				processTile(gameField, x, y, typeId, game);
 			}
 		}
 	}
@@ -110,7 +113,8 @@ public class MazeParser {
 		return new GameField(maxX + 1, maxY + 1);
 	}
 
-	public static GameField loadMap(String filename) {
+	//	public static GameField loadMap(String filename) {
+	public static GameField loadMap(String filename, MazeRunnerGame game) {
 		Properties properties = new Properties();
 
 		FileHandle mazeFile = Gdx.files.internal("maps/" + filename);
@@ -129,7 +133,7 @@ public class MazeParser {
 //			throw new RuntimeException(e);
 		}
 		GameField gameField = calculateDimension(properties);
-		parseData(properties, gameField);
+		parseData(properties, gameField, game);
 		return gameField;
 	}
 	// END -- Methods
