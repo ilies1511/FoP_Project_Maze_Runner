@@ -150,7 +150,6 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
-        animationTime += delta;
 
         if (flickerTimer > 0f) {
             flickerTimer -= delta;
@@ -293,9 +292,7 @@ public class GameScreen implements Screen {
         }
 
         // Go to Menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.goToMenu();
-        }
+
     }
 
     private void updateEntitiesPositions(float delta) {
