@@ -88,6 +88,8 @@ public class GameScreen implements Screen {
 
         this.player = new Player(this); //create an instance of the player
 
+        //TODO: Timo please check everything, because i had a lot of merge conflicts and i dont know yor and saad's codes
+        //TODO: ps: without next line nothing was running
         this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f,0f), 3f, new Vector2(0.4f, 0.4f));
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
