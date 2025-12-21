@@ -25,7 +25,7 @@ public class Enemy extends GameObject {
         if (this.enemyEntity.position.dst(playerPosition) < detectionRange) {
             Vector2 direction = new Vector2(playerPosition).sub(this.enemyEntity.position); //chase character
             direction.nor(); // Normalize to length 1
-            this.enemyEntity.velocity = direction.scl(this.enemyEntity.speed);
+            this.enemyEntity.velocity = direction.scl(this.enemyEntity.getSpeed());
         } else {
             // Stand still
             this.enemyEntity.velocity.set(0, 0);

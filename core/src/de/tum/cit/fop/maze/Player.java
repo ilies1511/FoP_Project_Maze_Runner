@@ -1,14 +1,24 @@
 package de.tum.cit.fop.maze;
 
-public class Player {
-    private int health;
-    private boolean isPoisoned;
-    private boolean isBuffed;
-    private float poisonDuration;
-    private float buffDuration;
+import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.DashCooldown;
+import de.tum.cit.fop.maze.effects.Effect;
+import de.tum.cit.fop.maze.effects.Poisoned;
 
-    public Player() {
+import java.util.ArrayList;
+
+public class Player {
+    private final static float DEFAULT_PLAYER_SPEED = 3f;
+
+    private int health;
+    private final ArrayList<Effect> effects;
+    private final Entity playerEntity;
+
+    public Player(GameScreen gameScreen) {
         this.health = 3; //player has x hps
+        this.effects = new ArrayList<>();
+        this.playerEntity = new Entity(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
     }
 
     public int getDamage(int damage){
@@ -20,16 +30,38 @@ public class Player {
         return damage;
     }
 
-    public float getBuffed(float buffDuration){
-        isBuffed = true;
-        this.buffDuration = buffDuration;
-        return buffDuration;
+    private void removeEffect(Class<? extends Effect> effectType) {
+        // removes only one Effect (if exists)
+        for (int i = 0; i < effects.size(); i++) {
+            Effect e =  effects.get(i);
+            if (e.getClass() == effectType) {
+                e.onEnd();
+                effects.remove(i);
+                break;
+            }
+        }
     }
 
-    public float getPoisoned(float poisonDuration){
-        isPoisoned = true;
-        this.poisonDuration = poisonDuration;
-        return poisonDuration;
+    public void addOrReapplyEffect(Effect effect) {
+        if (effect.getClass() == Dash.class && this.isDashInCooldown()) { // do not apply dash if it's in cooldown
+            return;
+        }
+        this.removeEffect(effect.getClass());
+        effect.onStart();
+        this.effects.add(effect);
+    }
+
+    public void tickEffects(float deltaTime) {
+        ArrayList<Class<? extends Effect>> effectsToRemove = new ArrayList<>();
+        for (Effect effect : effects) {
+            boolean isFinished = effect.onTick(deltaTime);
+            if (isFinished) {
+                effectsToRemove.add(effect.getClass());
+            }
+        }
+        for (Class<? extends Effect> effectType : effectsToRemove) {
+            this.removeEffect(effectType);
+        }
     }
 
     public int getHealth() {
@@ -41,34 +73,37 @@ public class Player {
     }
 
     public boolean isPoisoned() {
-        return isPoisoned;
-    }
-
-    public void setPoisoned(boolean poisoned) {
-        isPoisoned = poisoned;
+        return effectInEffects(Poisoned.class);
     }
 
     public float getPoisonDuration() {
-        return poisonDuration;
+        for (Effect effect : effects) {
+            if (effect.getClass() == Poisoned.class) {
+                return ((Poisoned) effect).getTimeLeft();
+            }
+        }
+        return 0f;
     }
 
-    public void setPoisonDuration(float poisonDuration) {
-        this.poisonDuration = poisonDuration;
+//    public boolean isBuffed() {
+//        return isBuffed;
+//    }
+
+
+    public Entity getPlayerEntity() {
+        return playerEntity;
     }
 
-    public boolean isBuffed() {
-        return isBuffed;
+    private boolean effectInEffects(Class<? extends Effect> effectType) {
+        for (Effect effect : effects) {
+            if (effect.getClass() == effectType) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void setBuffed(boolean buffed) {
-        isBuffed = buffed;
-    }
-
-    public float getBuffDuration() {
-        return buffDuration;
-    }
-
-    public void setBuffDuration(float buffDuration) {
-        this.buffDuration = buffDuration;
+    private boolean isDashInCooldown() {
+        return effectInEffects(DashCooldown.class);
     }
 }

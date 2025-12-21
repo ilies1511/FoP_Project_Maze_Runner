@@ -36,7 +36,7 @@ public class patrolEnemy extends Enemy {
             // Up or Down
             this.enemyEntity.velocity.set(0, MathUtils.randomSign());
         }
-        this.enemyEntity.velocity.scl(this.enemyEntity.speed);
+        this.enemyEntity.velocity.scl(this.enemyEntity.getSpeed());
     }
 
 
