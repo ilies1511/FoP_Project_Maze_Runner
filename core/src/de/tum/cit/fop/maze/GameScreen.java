@@ -3,20 +3,33 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Objects;
+
 import java.util.ArrayList;
+
+import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -34,7 +47,7 @@ public class GameScreen implements Screen {
     private Animation<TextureRegion> currentAnimation;
 
     private final Player player;
-    private int playerHealth;
+
 
     private final Stage stage;
 
@@ -43,10 +56,10 @@ public class GameScreen implements Screen {
     private GameField gameField;
     private ArrayList<Enemy> enemies;
 
-    Table table;
+    private final HUD hud;
 
-  //  int i = 0;
-    //For testing
+//  For testing
+    int i = 0;
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -61,6 +74,7 @@ public class GameScreen implements Screen {
         this.player = new Player(); //create an instance of the player
 
         this.gameField = new GameField();
+
 
         // Use startpos from the GameField
         this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f, 0f), 3f, new Vector2(0.4f, 0.4f));
@@ -82,7 +96,9 @@ public class GameScreen implements Screen {
         Viewport viewport = new ScreenViewport(); // TODO maybe add camera in the brackets
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
-        renderHUD();
+        this.hud = new HUD(player, stage, game);
+//        shapeRenderer = new ShapeRenderer();
+
     }
 
 
@@ -141,9 +157,15 @@ public class GameScreen implements Screen {
 // For Testing
 //        i++;
 //        if(i == 1){
-//            updatePlayerHealth(player.getDamage(1));
+//           player.getPoisoned(5f);
+//           player.getBuffed(2f);
+//           hud.updatePlayerStatusEffects();
+//           hud.updatePlayerHP(player.getDamage(1));
+//
 //        }
-//        System.out.println(player.getHealth());
+
+
+
     }
     private void handleInput(float delta) {
         boolean isMoving = false;
@@ -188,30 +210,12 @@ public class GameScreen implements Screen {
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;
         }
+
         else {
             playerEntity.velocity.x = 0f;
-            playerEntity.velocity.y = 0f;   //remove to add 'proper' diagonals and also partitions the 4 else-ifs to two if
+            playerEntity.velocity.y = 0f;
+
         }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            System.out.println("Attacking!"); // Debug print
-
-            var iterator = enemies.iterator();
-            while (iterator.hasNext()) {
-                Enemy enemy = iterator.next();
-
-                // distance between Player and Enemy
-                float distance = playerEntity.position.dst(enemy.getEnemyEntity().position);
-
-                //if enemy within 1.5, kill
-                if (distance < 1.5f) {
-                    iterator.remove(); // remove enemy from the game
-                    System.out.println("Enemy Killed!");
-
-                }
-            }
-        }
-
 
         // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
 //        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -285,7 +289,8 @@ public class GameScreen implements Screen {
             if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
                 // print to console. .
                 System.out.println("YOU DIED!");
-                updatePlayerHealth(1);
+//                pdatePlayerHealth(1);
+                hud.updatePlayerHP(1);
             }
         }
     }
@@ -341,34 +346,34 @@ public class GameScreen implements Screen {
     public void dispose() {
     }
 
-    private void renderHUD(){
-        table = new Table(); // Create a table for layout
-        table.setFillParent(true); // Make the table fill the stage
-        table.debug();
-        stage.addActor(table);
-        table.bottom().left();
-        playerHealth = player.getHealth();
-        // int numberOfFullHearts;
-        // float notFullHeart;
-        //  numberOfFullHearts = player.getHealth();
-        // notFullHeart = player.getHealth() - numberOfFullHearts;
-        for(int i = 0;i<playerHealth; i++ ){
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
-        }
-
-    }
-
-    private void updatePlayerHealth(int damage){
-        table.clearChildren();
-        for(int i = 0;i<playerHealth - damage; i++ ){
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
-        }
-        for(int i =0; i < damage; i++){
-            Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
-            table.add(emptyHeart).width(100).height(100).padBottom(30).padLeft(30);
-        }
-    }
+//    private void renderHUD(){
+//        table = new Table(); // Create a table for layout
+//        table.setFillParent(true); // Make the table fill the stage
+//        table.debug();
+//        stage.addActor(table);
+//        table.bottom().left();
+//        playerHealth = player.getHealth();
+//        // int numberOfFullHearts;
+//        // float notFullHeart;
+//        //  numberOfFullHearts = player.getHealth();
+//        // notFullHeart = player.getHealth() - numberOfFullHearts;
+//        for(int i = 0;i<playerHealth; i++ ){
+//            Image heart = new Image(game.getSkin().getDrawable("heart"));
+//            table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
+//        }
+//
+//    }
+//
+//    private void updatePlayerHealth(int damage){
+//        table.clearChildren();
+//        for(int i = 0;i<playerHealth - damage; i++ ){
+//            Image heart = new Image(game.getSkin().getDrawable("heart"));
+//            table.add(heart).width(100).height(100).padBottom(30).padLeft(30);
+//        }
+//        for(int i =0; i < damage; i++){
+//            Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
+//            table.add(emptyHeart).width(100).height(100).padBottom(30).padLeft(30);
+//        }
+//    }
     // Additional methods and logic can be added as needed for the game screen
 }
