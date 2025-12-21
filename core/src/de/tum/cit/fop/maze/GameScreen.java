@@ -154,10 +154,10 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
         boolean isMoving = false;
 
-        // Speed boost // TODO: Add boost to keybindings, handle it via player.getPlayerEntity()
-//        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-//            currentSpeed *= 1.8f;
-//        }
+        // Dash // TODO: Add dash to keybindings
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
+            this.player.addOrReapplyEffect(new Dash(player));
+        }
 
         // --- MOVEMENT LOGIC ---
 

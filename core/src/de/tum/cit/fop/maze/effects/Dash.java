@@ -3,8 +3,8 @@ package de.tum.cit.fop.maze.effects;
 import de.tum.cit.fop.maze.Player;
 
 public class Dash extends Effect {
-    private static final float DURATION = 1f;
-    private static final float SPEED_BOOST = 20f;
+    private static final float DURATION = 0.1f;
+    private static final float SPEED_BOOST = 8f;
 
     private float timeLeft;
 
@@ -16,6 +16,7 @@ public class Dash extends Effect {
 
     @Override
     public void onStart() {
+        this.player.addOrReapplyEffect(new DashCooldown(this.player));
         this.player.getPlayerEntity().speed += SPEED_BOOST;
     }
 
