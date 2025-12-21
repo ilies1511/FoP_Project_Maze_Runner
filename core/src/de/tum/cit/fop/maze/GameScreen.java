@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.GameObject;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -60,7 +61,7 @@ public class GameScreen implements Screen {
 		this.player = new Player(); //create an instance of the player
 
 //        this.gameField = new GameField();
-		this.gameField = MazeParser.loadMap("level-2.properties");
+		this.gameField = MazeParser.loadMap("level-1.properties", this.game);
 		if (this.gameField == null) {
 			System.err.println("Map failed to load! Check file path.");
 			this.gameField = new GameField(5, 5);
@@ -139,6 +140,11 @@ public class GameScreen implements Screen {
 
 
 		drawGameField();
+
+		//TODO (Connect Parser to Game Assets): iziane
+		for (GameObject obj : gameField.getGameObjects()) {
+			obj.draw(game.getSpriteBatch());
+		}
 
 		game.getSpriteBatch().draw(
 				currentAnimation.getKeyFrame(animationTime, true),
