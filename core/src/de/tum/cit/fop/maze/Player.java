@@ -1,6 +1,8 @@
 package de.tum.cit.fop.maze;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
 
 import java.util.ArrayList;
@@ -44,6 +46,9 @@ public class Player {
     }
 
     public void addOrReapplyEffect(Effect effect) {
+        if (effect.getClass() == Dash.class && this.isDashInCooldown()) { // do not apply dash if it's in cooldown
+            return;
+        }
         this.removeEffect(effect.getClass());
         effect.onStart();
         this.effects.add(effect);
@@ -116,5 +121,14 @@ public class Player {
 
     public Entity getPlayerEntity() {
         return playerEntity;
+    }
+
+    private boolean isDashInCooldown() {
+        for (Effect effect : effects) {
+            if (effect.getClass() == DashCooldown.class) {
+                return true;
+            }
+        }
+        return false;
     }
 }
