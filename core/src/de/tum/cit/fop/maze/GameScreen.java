@@ -24,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.Poisoned;
 
 import java.util.Objects;
 
@@ -45,6 +47,8 @@ public class GameScreen implements Screen {
     private float animationTime = 0f;
     private float flickerTimer = 0f;
 
+    private GameField gameField;
+
     private Animation<TextureRegion> currentAnimation;
 
     private final Player player;
@@ -54,7 +58,6 @@ public class GameScreen implements Screen {
 
     private Entity playerEntity;
 
-    private GameField gameField;
     private ArrayList<Enemy> enemies;
 
     private final HUD hud;
@@ -79,13 +82,15 @@ public class GameScreen implements Screen {
         this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
 
 
-        this.player = new Player(); //create an instance of the player
+
 
         this.gameField = new GameField();
 
+        this.player = new Player(this); //create an instance of the player
 
-        // Use startpos from the GameField
-        this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f, 0f), 3f, new Vector2(0.4f, 0.4f));
+        this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f,0f), 3f, new Vector2(0.4f, 0.4f));
+
+        player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
         float viewportWidth = 25f;  // Visible world width
         float viewportHeight = 18.75f; // Visible world height
@@ -122,6 +127,11 @@ public class GameScreen implements Screen {
 
             // Input Handling New Class
             handleInput(delta);
+        // Tick all the effects
+        this.player.tickEffects(delta);
+
+        // Input Handling New Class
+        handleInput(delta);
 
             // Move all the entities
             updateEntitiesPositions(delta);
@@ -130,13 +140,13 @@ public class GameScreen implements Screen {
             moveCamera(delta);
             animationTime += delta;
             i++;
-            if(i == 1){
-                player.getPoisoned(5f);
-                player.getBuffed(2f);
-                hud.updatePlayerStatusEffects();
-                hud.updatePlayerHP(player.getDamage(1));
-
-            }
+//            if(i == 1){
+//                player.getPoisoned(5f);
+//                player.getBuffed(2f);
+//                hud.updatePlayerStatusEffects();
+//                hud.updatePlayerHP(player.getDamage(1));
+//
+//            }
             // Set up and begin drawing with the sprite batch
 
         }
@@ -167,8 +177,8 @@ public class GameScreen implements Screen {
         if (isVisible) {
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
-                playerEntity.position.x,
-                playerEntity.position.y,
+                player.getPlayerEntity().position.x,
+                player.getPlayerEntity().position.y,
                 0.4f,
                 0.8f
         );}
@@ -187,56 +197,72 @@ public class GameScreen implements Screen {
         stage.draw();
 
 // For Testing
-
-
-
-
+//        i++;
+//        if(i == 1){
+//           player.getPoisoned(5f);
+//           player.getBuffed(2f);
+//           hud.updatePlayerStatusEffects();
+//           hud.updatePlayerHP(player.getDamage(1));
+//
+//        }
     }
+
+    public GameField getGameField() {
+        return gameField;
+    }
+
     private void handleInput(float delta) {
         boolean isMoving = false;
 
-        // Speed boost // TODO: Add boost to keybindings, handle it via playerEntity
-//        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-//            currentSpeed *= 1.8f;
-//        }
+        // Dash // TODO: Add dash to keybindings
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+            this.player.addOrReapplyEffect(new Dash(player));
+        }
+
+        // Temporary: keybinding for poisoned // TODO: remove it
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            this.player.addOrReapplyEffect(new Poisoned(player));
+            hud.updatePlayerStatusEffects();
+        }
 
         // --- MOVEMENT LOGIC ---
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-              playerEntity.velocity.y = playerEntity.speed;
+              player.getPlayerEntity().velocity.y = player.getPlayerEntity().getSpeed();
 //            yPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterUpAnimation();
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-            playerEntity.velocity.y = -playerEntity.speed;
+            player.getPlayerEntity().velocity.y = -player.getPlayerEntity().getSpeed();
 //            yPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterDownAnimation();
             isMoving = true;
         }
 
-        //else {
-          //  playerEntity.velocity.y = 0f;
-        //}
+        else {
+            player.getPlayerEntity().velocity.y = 0f;
+        }
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-            playerEntity.velocity.x = -playerEntity.speed;
+        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
+            player.getPlayerEntity().velocity.x = -player.getPlayerEntity().getSpeed();
 //            xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-            playerEntity.velocity.x = playerEntity.speed;
+            player.getPlayerEntity().velocity.x = player.getPlayerEntity().getSpeed();
 //            xPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;
         }
 
         else {
+            player.getPlayerEntity().velocity.x = 0f;
             playerEntity.velocity.x = 0f;
             playerEntity.velocity.y = 0f;
         }
@@ -298,18 +324,18 @@ public class GameScreen implements Screen {
     private void updateEntitiesPositions(float delta) {
         // X and Y are calculated separately to avoid going through walls diagonally
 
-        float nextX = playerEntity.position.x + playerEntity.velocity.x * delta;
-        float currentY = playerEntity.position.y;
+        float nextX = player.getPlayerEntity().position.x + player.getPlayerEntity().velocity.x * delta;
+        float currentY = player.getPlayerEntity().position.y;
 
-        if (!this.gameField.isInsideWall(nextX, currentY, this.playerEntity.getSize())) {
-            this.playerEntity.position.x = nextX;
+        if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerEntity().getSize())) {
+            this.player.getPlayerEntity().position.x = nextX;
         }
 
-        float currentX = playerEntity.position.x;
-        float nextY = playerEntity.position.y + playerEntity.velocity.y * delta;
+        float currentX = player.getPlayerEntity().position.x;
+        float nextY = player.getPlayerEntity().position.y + player.getPlayerEntity().velocity.y * delta;
 
-        if (!this.gameField.isInsideWall(currentX, nextY, this.playerEntity.getSize())) {
-            playerEntity.position.y = nextY;
+        if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerEntity().getSize())) {
+            player.getPlayerEntity().position.y = nextY;
         }
 
         var iterator = enemies.iterator();
@@ -341,8 +367,8 @@ public class GameScreen implements Screen {
     }
 
     private void moveCamera(float delta) {
-        camera.position.x = playerEntity.position.x;
-        camera.position.y = playerEntity.position.y;
+        camera.position.x = player.getPlayerEntity().position.x;
+        camera.position.y = player.getPlayerEntity().position.y;
         camera.update();
     }
 
@@ -380,7 +406,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setCursorCatched(true);
+
     }
 
     @Override
