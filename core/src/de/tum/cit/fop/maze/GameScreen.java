@@ -216,6 +216,24 @@ public class GameScreen implements Screen {
             playerEntity.velocity.y = 0f;
 
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            System.out.println("Attacking!"); // Debug print
+
+            var iterator = enemies.iterator();
+            while (iterator.hasNext()) {
+                Enemy enemy = iterator.next();
+
+                // distance between Player and Enemy
+                float distance = playerEntity.position.dst(enemy.getEnemyEntity().position);
+
+                //if enemy within 1.5, kill
+                if (distance < 1.5f) {
+                    iterator.remove(); // remove enemy from the game
+                    System.out.println("Enemy Killed!");
+
+                }
+            }
+        }
 
         // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
 //        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
