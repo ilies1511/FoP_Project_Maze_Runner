@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
     private Animation<TextureRegion> currentAnimation;
 
     private final Player player;
-    private int playerHealth;
+
 
     private final Stage stage;
 
@@ -50,21 +50,10 @@ public class GameScreen implements Screen {
 
     private GameField gameField;
 
-    private Table table;
-    private Table uiContainer;
-    private Table heartTable;
-    private Table statusEffectsTable;
+    private final HUD hud;
 
-    private int timeForBuff = 0;
-    private int timeForPoison = 0;
-
-    private Stack bloodEffect;
-    private Stack poisonEffect;
-
-    private ShapeRenderer shapeRenderer;
-
+//  For testing
     int i = 0;
-    //For testing
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -76,6 +65,7 @@ public class GameScreen implements Screen {
         this.player = new Player(); //create an instance of the player
 
         this.gameField = new GameField();
+
 
         // Use startpos from the GameField
         this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f, 0f), 3f, new Vector2(0.4f, 0.4f));
@@ -97,9 +87,9 @@ public class GameScreen implements Screen {
         Viewport viewport = new ScreenViewport(); // TODO maybe add camera in the brackets
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
-        shapeRenderer = new ShapeRenderer();
+        this.hud = new HUD(player, stage, game);
+//        shapeRenderer = new ShapeRenderer();
 
-        renderHUD();
     }
 
 
@@ -151,8 +141,8 @@ public class GameScreen implements Screen {
 //        if(i == 1){
 //           player.getPoisoned(5f);
 //           player.getBuffed(2f);
-//           updatePlayerStatusEffects();
-//           updatePlayerHP(player.getDamage(1));
+//           hud.updatePlayerStatusEffects();
+//           hud.updatePlayerHP(player.getDamage(1));
 //
 //        }
 
@@ -315,179 +305,6 @@ public class GameScreen implements Screen {
     public void dispose() {
     }
 
-    private void renderHUD(){
-        table = new Table(); // Create a table for layout
-        table.setFillParent(true); // Make the table fill the stage
-        //table.debug();
-        stage.addActor(table);
-        table.bottom().left();
-        playerHealth = player.getHealth();
 
-        uiContainer = new Table();
-        //uiContainer.debug();
-        uiContainer.top();
-        TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
-        uiContainer.setBackground(signDrawable);
-
-        heartTable = new Table();
-       // heartTable.debug();
-
-        statusEffectsTable = new Table();
-       //statusEffectsTable.debug();
-        for(int i = 0;i<playerHealth; i++ ){
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            heartTable.add(heart).width(50).height(50);
-        }
-        table.add(uiContainer).width(500).height(200).padBottom(30);
-        uiContainer.add(heartTable).padTop(20);
-        uiContainer.row();
-        uiContainer.add(statusEffectsTable).bottom();
-
-
-    }
-
-    private void updatePlayerHP(int damage){
-        heartTable.clearChildren();
-        for(int i = 0;i<playerHealth - damage; i++ ){
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
-        }
-        if(damage>0){
-            for(int i =0; i < damage; i++){
-                Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
-                heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
-            }
-        }
-
-
-    }
-    private void updatePlayerStatusEffects(){
-       // statusEffectsTable.clearChildren();
-
-
-// 4. Tell the table to reorganize
-//        statusEffectsTable.invalidateHierarchy();
-        if(player.isBuffed()){
-            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
-//            Image blood = new Image(game.getBloodEffect());
-//            statusEffectsTable.add(blood).height(60).width(60).padTop(20);
-//            blood.addAction(Actions.sequence(
-//
-//                    Actions.delay(player.getBuffDuration()),
-//                    Actions.run(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            player.setBuffed(false);
-//                            updatePlayerStatusEffects();
-//                        }
-//                    })));
-
-        }
-        if(player.isPoisoned()){
-           drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
-
-//            poison.addAction(Actions.sequence(
-//
-//                    Actions.delay(player.getPoisonDuration()),
-//                    Actions.run(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            player.setPoisoned(false);
-//                            updatePlayerStatusEffects();
-//                        }
-//                    })));
-//            statusEffectsTable.add(poison).height(60).width(60).padTop(20);
-
-        }
-    }
-
-    private void drawRing(Image img, float maxT, String effect ){
-        Stack stack = new Stack();
-        Image newEffect = img;
-        stack.add(newEffect);
-
-        if(Objects.equals(effect, "Poisoned")){
-            poisonEffect = stack;
-        }
-        else if(Objects.equals(effect, "Buffed")){
-            bloodEffect = stack;
-        }
-        Actor cooldownOverlay = new Actor() {
-
-            float maxTime = maxT;
-            float timeLeft = maxTime;
-            @Override
-            public void act(float delta) {
-                super.act(delta);
-                timeLeft -= delta;
-                if (timeLeft < 0) timeLeft = 0;
-            }
-
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                batch.end(); // Pause sprite batch
-
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-
-                Gdx.gl.glLineWidth(4);
-
-                shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-                shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-                shapeRenderer.setColor(Color.GREEN);
-
-                float r = Math.min(getWidth(), getHeight())/1.8f;
-                float cx = getX() + getWidth() / 2f;
-                float cy = getY() + getHeight() / 2f;
-
-                float percentage = timeLeft / maxTime;
-
-                // 3. Manual Loop Calculation
-                // We want 30 segments for smoothness. Only draw if percentage > 0.
-                if (percentage > 0) {
-                    int segments = 30;
-                    float startAngle = 90 * com.badlogic.gdx.math.MathUtils.degreesToRadians;
-                    float totalSweep = -360 * percentage * com.badlogic.gdx.math.MathUtils.degreesToRadians;
-                    float step = totalSweep / segments;
-                    float lastX = cx + com.badlogic.gdx.math.MathUtils.cos(startAngle) * r;
-                    float lastY = cy + com.badlogic.gdx.math.MathUtils.sin(startAngle) * r;
-                    for (int i = 1; i <= segments; i++) {
-                        float currentAngle = startAngle + (step * i);
-                        float nextX = cx + com.badlogic.gdx.math.MathUtils.cos(currentAngle) * r;
-                        float nextY = cy + com.badlogic.gdx.math.MathUtils.sin(currentAngle) * r;
-                        shapeRenderer.line(lastX, lastY, nextX, nextY);
-
-                        lastX = nextX;
-                        lastY = nextY;
-                    }
-                }
-                shapeRenderer.end();
-                //  Gdx.gl.glLineWidth(1);
-                batch.begin();
-            }
-        };
-
-        stack.add(cooldownOverlay);
-
-        statusEffectsTable.add(stack).size(60, 60).pad(5);
-
-        stack.addAction(Actions.sequence(
-                Actions.delay(maxT),
-                Actions.run(() -> {
-                    if(Objects.equals(effect, "Poisoned")){
-                        player.setPoisoned(false);
-                        Cell cell = statusEffectsTable.getCell(poisonEffect);
-                        poisonEffect.remove();
-                        statusEffectsTable.getCells().removeValue(cell, true);
-                    }
-                   else if(Objects.equals(effect, "Buffed")) {
-                        player.setBuffed(false);
-                        Cell cell = statusEffectsTable.getCell(bloodEffect);
-                        bloodEffect.remove();
-                        statusEffectsTable.getCells().removeValue(cell, true);
-                    }
-                })
-        ));
-    }
     // Additional methods and logic can be added as needed for the game screen
 }
