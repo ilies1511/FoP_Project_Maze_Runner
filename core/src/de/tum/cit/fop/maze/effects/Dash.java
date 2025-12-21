@@ -4,6 +4,7 @@ import de.tum.cit.fop.maze.Player;
 
 public class Dash extends Effect {
     private static final float DURATION = 1f;
+    private static final float SPEED_BOOST = 20f;
 
     private float timeLeft;
 
@@ -15,7 +16,7 @@ public class Dash extends Effect {
 
     @Override
     public void onStart() {
-        System.out.println("Applied dash");
+        this.player.getPlayerEntity().speed += SPEED_BOOST;
     }
 
     @Override
@@ -26,6 +27,6 @@ public class Dash extends Effect {
 
     @Override
     public void onEnd() {
-        System.out.println("Finished dash");
+        this.player.getPlayerEntity().speed -= SPEED_BOOST;
     }
 }

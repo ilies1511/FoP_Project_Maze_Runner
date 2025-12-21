@@ -1,20 +1,25 @@
 package de.tum.cit.fop.maze;
 
+import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.effects.Effect;
 
 import java.util.ArrayList;
 
 public class Player {
+    private final static float DEFAULT_PLAYER_SPEED = 3f;
+
     private int health;
     private boolean isPoisoned;
     private boolean isBuffed;
     private float poisonDuration;
     private float buffDuration;
     private final ArrayList<Effect> effects;
+    private final Entity playerEntity;
 
-    public Player() {
+    public Player(GameScreen gameScreen) {
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
+        this.playerEntity = new Entity(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
     }
 
     public int getDamage(int damage){
@@ -107,5 +112,9 @@ public class Player {
 
     public void setBuffDuration(float buffDuration) {
         this.buffDuration = buffDuration;
+    }
+
+    public Entity getPlayerEntity() {
+        return playerEntity;
     }
 }
