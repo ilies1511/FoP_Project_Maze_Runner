@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
+import de.tum.cit.fop.maze.effects.Poisoned;
 
 import java.util.ArrayList;
 
@@ -11,10 +12,6 @@ public class Player {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
 
     private int health;
-    private boolean isPoisoned;
-    private boolean isBuffed;
-    private float poisonDuration;
-    private float buffDuration;
     private final ArrayList<Effect> effects;
     private final Entity playerEntity;
 
@@ -67,18 +64,6 @@ public class Player {
         }
     }
 
-    public float getBuffed(float buffDuration){
-        isBuffed = true;
-        this.buffDuration = buffDuration;
-        return buffDuration;
-    }
-
-    public float getPoisoned(float poisonDuration){
-        isPoisoned = true;
-        this.poisonDuration = poisonDuration;
-        return poisonDuration;
-    }
-
     public int getHealth() {
         return health;
     }
@@ -88,47 +73,37 @@ public class Player {
     }
 
     public boolean isPoisoned() {
-        return isPoisoned;
-    }
-
-    public void setPoisoned(boolean poisoned) {
-        isPoisoned = poisoned;
+        return effectInEffects(Poisoned.class);
     }
 
     public float getPoisonDuration() {
-        return poisonDuration;
+        for (Effect effect : effects) {
+            if (effect.getClass() == Poisoned.class) {
+                return ((Poisoned) effect).getTimeLeft();
+            }
+        }
+        return 0f;
     }
 
-    public void setPoisonDuration(float poisonDuration) {
-        this.poisonDuration = poisonDuration;
-    }
+//    public boolean isBuffed() {
+//        return isBuffed;
+//    }
 
-    public boolean isBuffed() {
-        return isBuffed;
-    }
-
-    public void setBuffed(boolean buffed) {
-        isBuffed = buffed;
-    }
-
-    public float getBuffDuration() {
-        return buffDuration;
-    }
-
-    public void setBuffDuration(float buffDuration) {
-        this.buffDuration = buffDuration;
-    }
 
     public Entity getPlayerEntity() {
         return playerEntity;
     }
 
-    private boolean isDashInCooldown() {
+    private boolean effectInEffects(Class<? extends Effect> effectType) {
         for (Effect effect : effects) {
-            if (effect.getClass() == DashCooldown.class) {
+            if (effect.getClass() == effectType) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean isDashInCooldown() {
+        return effectInEffects(DashCooldown.class);
     }
 }
