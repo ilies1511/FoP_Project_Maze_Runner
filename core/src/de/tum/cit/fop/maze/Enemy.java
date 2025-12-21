@@ -15,13 +15,13 @@ public class Enemy extends GameObject {
                 startPos,
                 new Vector2(0f, 0f),
                 2.0f,
-                new Vector2(1f, 1f)
+                new Vector2(0.8f, 0.8f)
         );
 
     }
 
-    public void updateBehavior(Vector2 playerPosition) {
-        float detectionRange = 1.5f; // if within 5 tiles
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField ) {
+        float detectionRange = 5.5f; // if within 1.5 tiles
         if (this.enemyEntity.position.dst(playerPosition) < detectionRange) {
             Vector2 direction = new Vector2(playerPosition).sub(this.enemyEntity.position); //chase character
             direction.nor(); // Normalize to length 1
