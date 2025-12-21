@@ -51,6 +51,10 @@ public class GameScreen implements Screen {
     private GameField gameField;
 
     private final HUD hud;
+    private final PausedOverlay pausedScreen;
+
+    private boolean isPaused = false;
+
 
 //  For testing
     int i = 0;
@@ -87,7 +91,8 @@ public class GameScreen implements Screen {
         Viewport viewport = new ScreenViewport(); // TODO maybe add camera in the brackets
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
-        this.hud = new HUD(player, stage, game);
+        this.hud = new HUD(player, stage, game, this);
+        pausedScreen = new PausedOverlay(stage, game,this);
 //        shapeRenderer = new ShapeRenderer();
 
     }
@@ -96,33 +101,47 @@ public class GameScreen implements Screen {
     // Screen interface methods with necessary functionality
     @Override
     public void render(float delta) {
-        // Check for escape key press to go back to the menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.goToMenu();
+        if(!isPaused){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                pausedScreen.showPausedMenu();
+            }
+            ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
+
+            // Input Handling New Class
+            handleInput(delta);
+
+            // Move all the entities
+            updateEntitiesPositions(delta);
+
+            // Update camera to move with the player
+            moveCamera(delta);
+            animationTime += delta;
+            i++;
+            if(i == 1){
+                player.getPoisoned(5f);
+                player.getBuffed(2f);
+                hud.updatePlayerStatusEffects();
+                hud.updatePlayerHP(player.getDamage(1));
+
+            }
+            // Set up and begin drawing with the sprite batch
+
         }
-        ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
+       else if(isPaused){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                pausedScreen.hidePausedMenu();
+            }
 
-        // Input Handling New Class
-        handleInput(delta);
+        }
 
-        // Move all the entities
-        updateEntitiesPositions(delta);
-
-        // Update camera to move with the player
-        moveCamera(delta);
-
-        // Set up and begin drawing with the sprite batch
         game.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
-        animationTime += delta;
 
-        // Render the text
-        //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
+
 
         drawGameField();
 
-        // Draw the character next to the text :) / We can reuse sinusInput here
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
                 playerEntity.position.x,
@@ -135,16 +154,8 @@ public class GameScreen implements Screen {
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-
 // For Testing
-//        i++;
-//        if(i == 1){
-//           player.getPoisoned(5f);
-//           player.getBuffed(2f);
-//           hud.updatePlayerStatusEffects();
-//           hud.updatePlayerHP(player.getDamage(1));
-//
-//        }
+
 
 
 
@@ -231,9 +242,6 @@ public class GameScreen implements Screen {
         }
 
         // Go to Menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.goToMenu();
-        }
     }
 
     private void updateEntitiesPositions(float delta) {
@@ -294,7 +302,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setCursorCatched(true);
     }
 
     @Override
@@ -305,6 +313,12 @@ public class GameScreen implements Screen {
     public void dispose() {
     }
 
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
 
+    public boolean isPaused() {
+        return isPaused;
+    }
     // Additional methods and logic can be added as needed for the game screen
 }
