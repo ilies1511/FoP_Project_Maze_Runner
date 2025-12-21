@@ -95,9 +95,9 @@ public class HUD {
     }
     public void updatePlayerStatusEffects(){
 
-        if(player.isBuffed()){
-            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
-        }
+//        if(player.isBuffed()){
+//            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
+//        }
         if(player.isPoisoned()){
             drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
         }
@@ -174,13 +174,11 @@ public class HUD {
                 Actions.delay(maxT),
                 Actions.run(() -> {
                     if(Objects.equals(effect, "Poisoned")){
-                        player.setPoisoned(false);
                         Cell cell = statusEffectsTable.getCell(poisonEffect);
                         poisonEffect.remove();
                         statusEffectsTable.getCells().removeValue(cell, true);
                     }
                     else if(Objects.equals(effect, "Buffed")) {
-                        player.setBuffed(false);
                         Cell cell = statusEffectsTable.getCell(bloodEffect);
                         bloodEffect.remove();
                         statusEffectsTable.getCells().removeValue(cell, true);

@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.Poisoned;
 
 import java.util.Objects;
 
@@ -155,22 +156,28 @@ public class GameScreen implements Screen {
         boolean isMoving = false;
 
         // Dash // TODO: Add dash to keybindings
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
             this.player.addOrReapplyEffect(new Dash(player));
+        }
+
+        // Temporary: keybinding for poisoned // TODO: remove it
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            this.player.addOrReapplyEffect(new Poisoned(player));
+            hud.updatePlayerStatusEffects();
         }
 
         // --- MOVEMENT LOGIC ---
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-              player.getPlayerEntity().velocity.y = player.getPlayerEntity().speed;
+              player.getPlayerEntity().velocity.y = player.getPlayerEntity().getSpeed();
 //            yPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterUpAnimation();
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-            player.getPlayerEntity().velocity.y = -player.getPlayerEntity().speed;
+            player.getPlayerEntity().velocity.y = -player.getPlayerEntity().getSpeed();
 //            yPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterDownAnimation();
             isMoving = true;
@@ -182,14 +189,14 @@ public class GameScreen implements Screen {
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-            player.getPlayerEntity().velocity.x = -player.getPlayerEntity().speed;
+            player.getPlayerEntity().velocity.x = -player.getPlayerEntity().getSpeed();
 //            xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-            player.getPlayerEntity().velocity.x = player.getPlayerEntity().speed;
+            player.getPlayerEntity().velocity.x = player.getPlayerEntity().getSpeed();
 //            xPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;

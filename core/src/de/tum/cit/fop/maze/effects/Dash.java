@@ -17,7 +17,7 @@ public class Dash extends Effect {
     @Override
     public void onStart() {
         this.player.addOrReapplyEffect(new DashCooldown(this.player));
-        this.player.getPlayerEntity().speed += SPEED_BOOST;
+        this.player.getPlayerEntity().increaseSpeed(SPEED_BOOST);
     }
 
     @Override
@@ -28,6 +28,6 @@ public class Dash extends Effect {
 
     @Override
     public void onEnd() {
-        this.player.getPlayerEntity().speed -= SPEED_BOOST;
+        this.player.getPlayerEntity().increaseSpeed(-SPEED_BOOST);
     }
 }
