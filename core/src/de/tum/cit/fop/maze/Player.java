@@ -11,17 +11,23 @@ import java.util.ArrayList;
 public class Player {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
 
+    private GameScreen gameScreen;
     private int health;
     private final ArrayList<Effect> effects;
     private final Entity playerEntity;
 
     public Player(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
         this.playerEntity = new Entity(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
     }
 
-    public int getDamage(int damage){
+    public GameScreen getGameScreen() {
+        return this.gameScreen;
+    }
+
+    public int getDamage(int damage) {
         if(health - damage < 0){
             health = 0;
             return health;

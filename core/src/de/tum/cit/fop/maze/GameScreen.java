@@ -152,6 +152,10 @@ public class GameScreen implements Screen {
         return gameField;
     }
 
+    public HUD getHUD() {
+        return hud;
+    }
+
     private void handleInput(float delta) {
         boolean isMoving = false;
 
@@ -163,7 +167,7 @@ public class GameScreen implements Screen {
         // Temporary: keybinding for poisoned // TODO: remove it
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             this.player.addOrReapplyEffect(new Poisoned(player));
-            hud.updatePlayerStatusEffects();
+            this.hud.updatePlayerStatusEffects();
         }
 
         // --- MOVEMENT LOGIC ---
@@ -313,7 +317,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
     }
-
 
     // Additional methods and logic can be added as needed for the game screen
 }
