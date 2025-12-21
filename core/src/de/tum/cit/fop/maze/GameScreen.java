@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.effects.Dash;
 
 import java.util.Objects;
 
@@ -64,6 +65,8 @@ public class GameScreen implements Screen {
 
         this.player = new Player(); //create an instance of the player
 
+        player.addOrReapplyEffect(new Dash(player)); // temp for debug
+
         this.gameField = new GameField();
 
 
@@ -101,6 +104,9 @@ public class GameScreen implements Screen {
             game.goToMenu();
         }
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
+
+        // Tick all the effects
+        this.player.tickEffects(delta);
 
         // Input Handling New Class
         handleInput(delta);
