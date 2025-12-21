@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
 
     private float sinusInput = 0f;
     private float animationTime = 0f;
+    private float flickerTimer = 0f;
 
     private Animation<TextureRegion> currentAnimation;
 
@@ -69,7 +70,10 @@ public class GameScreen implements Screen {
         this.game = game;
 
         this.enemies = new ArrayList<>();
-        this.enemies.add(new Enemy(new Vector2(10f, 3f)));
+        //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
+        this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
+        this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+
 
         this.player = new Player(); //create an instance of the player
 
@@ -126,6 +130,12 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
         animationTime += delta;
 
+        if (flickerTimer > 0f) {
+            flickerTimer -= delta;
+        }
+        //player visible if timer is 0 or if flickering
+        boolean isVisible = (flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f);
+
         // Render the text
         //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
 
@@ -133,13 +143,14 @@ public class GameScreen implements Screen {
 
 
         // Draw the character next to the text :) / We can reuse sinusInput here
+        if (isVisible) {
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
                 playerEntity.position.x,
                 playerEntity.position.y,
                 0.4f,
                 0.8f
-        );
+        );}
 
         for (Enemy enemy : enemies) {
             game.getSpriteBatch().draw(
@@ -214,7 +225,6 @@ public class GameScreen implements Screen {
         else {
             playerEntity.velocity.x = 0f;
             playerEntity.velocity.y = 0f;
-
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             System.out.println("Attacking!"); // Debug print
@@ -230,7 +240,6 @@ public class GameScreen implements Screen {
                 if (distance < 1.5f) {
                     iterator.remove(); // remove enemy from the game
                     System.out.println("Enemy Killed!");
-
                 }
             }
         }
@@ -296,19 +305,25 @@ public class GameScreen implements Screen {
             Enemy enemy = iterator.next();
             Entity enemyEntity = enemy.getEnemyEntity(); // Get Character
 
-            enemy.updateBehavior(playerEntity.position);
+            enemy.updateBehavior(delta, playerEntity.position, gameField);
             Vector2 nextPos = enemyEntity.nextPosition(delta);
 
-            if (gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY) {
+            //gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY to prev test
+            if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyEntity.getSize())) {
                 enemyEntity.move(delta);
             }
 
             // Check if they touch
             if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
-                // print to console. .
-                System.out.println("YOU DIED!");
+                if (flickerTimer <= 0){
+                    // print to console. .
+                    System.out.println("YOU DIED!");
+                    iterator.remove();
 //                pdatePlayerHealth(1);
-                hud.updatePlayerHP(1);
+                    hud.updatePlayerHP(1);
+                    flickerTimer = 3f;
+                }
+
             }
         }
     }
