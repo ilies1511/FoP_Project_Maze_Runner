@@ -285,6 +285,7 @@ public class GameScreen implements Screen {
             if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
                 // print to console. .
                 System.out.println("YOU DIED!");
+                updatePlayerHealth(1);
             }
         }
     }
