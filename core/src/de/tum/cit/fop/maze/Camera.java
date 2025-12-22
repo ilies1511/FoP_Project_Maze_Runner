@@ -31,8 +31,18 @@ public class Camera {
         float maxCameraY = this.gameScreen.getGameField().getHeight()  - VIEWPORT_HEIGHT * ZOOM_LEVEL / 2;
         float playerX = this.gameScreen.getPlayer().getPlayerEntity().position.x;
         float playerY = this.gameScreen.getPlayer().getPlayerEntity().position.y;
-        float target_x = MathUtils.clamp(playerX, minCameraX, maxCameraX);
-        float target_y = MathUtils.clamp(playerY, minCameraY, maxCameraY);
+        float target_x = 0f;
+        if (minCameraX < maxCameraX) {
+            target_x = MathUtils.clamp(playerX, minCameraX, maxCameraX);
+        } else {
+            target_x = minCameraX;
+        }
+        float target_y = 0f;
+        if (minCameraY < maxCameraY) {
+            target_y = MathUtils.clamp(playerY, minCameraY, maxCameraY);
+        } else {
+            target_y = minCameraY;
+        }
         this.camera.position.x = MathUtils.lerp(this.camera.position.x, target_x, delta * CAMERA_LERP_SPEED);
         this.camera.position.y = MathUtils.lerp(this.camera.position.y, target_y, delta * CAMERA_LERP_SPEED);
         this.camera.update();
