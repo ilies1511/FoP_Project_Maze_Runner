@@ -56,8 +56,6 @@ public class GameScreen implements Screen {
 
     private final Stage stage;
 
-    private Entity playerEntity;
-
     private ArrayList<Enemy> enemies;
 
     private final HUD hud;
@@ -87,10 +85,6 @@ public class GameScreen implements Screen {
         this.gameField = new GameField();
 
         this.player = new Player(this); //create an instance of the player
-
-        //TODO: Timo please check everything, because i had a lot of merge conflicts and i dont know yor and saad's codes
-        //TODO: ps: without next line nothing was running
-        this.playerEntity = new Entity(this.gameField.getPlayerStartPos(), new Vector2(0f,0f), 3f, new Vector2(0.4f, 0.4f));
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
@@ -265,8 +259,6 @@ public class GameScreen implements Screen {
 
         else {
             player.getPlayerEntity().velocity.x = 0f;
-            playerEntity.velocity.x = 0f;
-            playerEntity.velocity.y = 0f;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             System.out.println("Attacking!"); // Debug print
@@ -276,7 +268,7 @@ public class GameScreen implements Screen {
                 Enemy enemy = iterator.next();
 
                 // distance between Player and Enemy
-                float distance = playerEntity.position.dst(enemy.getEnemyEntity().position);
+                float distance = player.getPlayerEntity().position.dst(enemy.getEnemyEntity().position);
 
                 //if enemy within 1.5, kill
                 if (distance < 1.5f) {
@@ -345,7 +337,7 @@ public class GameScreen implements Screen {
             Enemy enemy = iterator.next();
             Entity enemyEntity = enemy.getEnemyEntity(); // Get Character
 
-            enemy.updateBehavior(delta, playerEntity.position, gameField);
+            enemy.updateBehavior(delta, player.getPlayerEntity().position, gameField);
             Vector2 nextPos = enemyEntity.nextPosition(delta);
 
             //gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY to prev test
@@ -354,7 +346,7 @@ public class GameScreen implements Screen {
             }
 
             // Check if they touch
-            if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
+            if (Entity.entitiesOverlap(player.getPlayerEntity(), enemyEntity)) {
                 if (flickerTimer <= 0){
                     // print to console. .
                     System.out.println("YOU DIED!");
