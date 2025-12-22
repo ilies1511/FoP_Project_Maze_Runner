@@ -11,6 +11,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.Parser.MazeParser;
+import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.Poisoned;
 
@@ -33,33 +37,33 @@ public class GameScreen implements Screen {
     private float sinusInput = 0f;
     private float animationTime = 0f;
     private float flickerTimer = 0f;
-
     private GameField gameField;
 
-    private Animation<TextureRegion> currentAnimation;
+	private Animation<TextureRegion> currentAnimation;
 
-    private final Player player;
+	private final Player player;
 
 
-    private final Stage stage;
+	private final Stage stage;
 
     private ArrayList<Enemy> enemies;
 
-    private final HUD hud;
-    private final PausedOverlay pausedScreen;
+	private final HUD hud;
+	private final PausedOverlay pausedScreen;
 
-    private boolean isPaused = false;
+	private boolean isPaused = false;
 
 
-//  For testing
-    int i = 0;
-    /**
-     * Constructor for GameScreen. Sets up the camera and font.
-     *
-     * @param game The main game class, used to access global resources and methods.
-     */
-    public GameScreen(MazeRunnerGame game) {
-        this.game = game;
+	//  For testing
+	int i = 0;
+
+	/**
+	 * Constructor for GameScreen. Sets up the camera and font.
+	 *
+	 * @param game The main game class, used to access global resources and methods.
+	 */
+	public GameScreen(MazeRunnerGame game) {
+		this.game = game;
 
         this.enemies = new ArrayList<>();
         //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
@@ -67,9 +71,15 @@ public class GameScreen implements Screen {
         this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
 
 
-
-
-        this.gameField = new GameField();
+		this.gameField = MazeParser.loadMap("level-1.properties", this.game);
+		if (this.gameField == null) {
+			System.err.println("Map failed to load! Check file path.");
+			this.gameField = new GameField(5, 5);
+		}
+		else {
+			System.out.println("Map loaded successfully!");
+			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+		}
 
         this.player = new Player(this); //create an instance of the player
 
@@ -78,66 +88,65 @@ public class GameScreen implements Screen {
         // Create and configure the camera for the game view
         this.camera = new Camera(this);
 
-        // Start by looking down
-        currentAnimation = game.getCharacterDownAnimation();
+		// Start by looking down
+		currentAnimation = game.getCharacterDownAnimation();
 
-        // Get the font from the game's skin
-        font = game.getSkin().getFont("vampire-font");
+		// Get the font from the game's skin
+		font = game.getSkin().getFont("vampire-font");
 
-        Viewport viewport = new ScreenViewport(); // TODO maybe add camera in the brackets
-        stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+		Viewport viewport = new ScreenViewport(); // TODO maybe add camera in the brackets
+		stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
-        this.hud = new HUD(player, stage, game, this);
-        pausedScreen = new PausedOverlay(stage, game,this);
+		this.hud = new HUD(player, stage, game, this);
+		pausedScreen = new PausedOverlay(stage, game, this);
 //        shapeRenderer = new ShapeRenderer();
+	}
 
-    }
 
+	// Screen interface methods with necessary functionality
+	@Override
+	public void render(float delta) {
+		if (!isPaused) {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				pausedScreen.showPausedMenu();
+			}
+			ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
-    // Screen interface methods with necessary functionality
-    @Override
-    public void render(float delta) {
-        if(!isPaused){
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                pausedScreen.showPausedMenu();
-            }
-            ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
-
+			// Input Handling New Class
+			handleInput(delta);
             // Input Handling New Class
-            handleInput(delta);
         // Tick all the effects
         this.player.tickEffects(delta);
 
         // Input Handling New Class
-        handleInput(delta);
 
-            // Move all the entities
-            updateEntitiesPositions(delta);
+			// Move all the entities
+			updateEntitiesPositions(delta);
 
-            // Update camera to move with the player
-            this.camera.update(delta);
-            animationTime += delta;
-            i++;
-//            if(i == 1){
-//                player.getPoisoned(5f);
-//                player.getBuffed(2f);
-//                hud.updatePlayerStatusEffects();
-//                hud.updatePlayerHP(player.getDamage(1));
+			// Update camera to move with the player
+			this.camera.update(delta);
+			animationTime += delta;
+//			i++;
+//			if (i == 1) {
+//				player.getPoisoned(5f);
+//				player.getBuffed(2f);
+//				hud.updatePlayerStatusEffects();
+//				hud.updatePlayerHP(player.getDamage(1));
 //
-//            }
-            // Set up and begin drawing with the sprite batch
+//			}
+			// Set up and begin drawing with the sprite batch
 
-        }
-       else if(isPaused){
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                pausedScreen.hidePausedMenu();
-            }
+		}
+		else if (isPaused) {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+				pausedScreen.hidePausedMenu();
+			}
 
-        }
+		}
 
         game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
 
-        game.getSpriteBatch().begin(); // Important to call this before drawing anything
+		game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
         if (flickerTimer > 0f) {
             flickerTimer -= delta;
@@ -145,12 +154,14 @@ public class GameScreen implements Screen {
         //player visible if timer is 0 or if flickering
         boolean isVisible = (flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f);
 
+		drawGameField();
         // Render the text
         //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
 
-        drawGameField();
-
-
+		//TODO (Connect Parser to Game Assets): iziane
+		for (GameObject obj : gameField.getGameObjects()) {
+			obj.draw(game.getSpriteBatch());
+		}
         // Draw the character next to the text :) / We can reuse sinusInput here
         if (isVisible) {
         game.getSpriteBatch().draw(
@@ -169,28 +180,18 @@ public class GameScreen implements Screen {
             );
         }
 
-        game.getSpriteBatch().end(); // Important to call this after drawing everything
+		game.getSpriteBatch().end(); // Important to call this after drawing everything
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
 // For Testing
-//        i++;
-//        if(i == 1){
-//           player.getPoisoned(5f);
-//           player.getBuffed(2f);
-//           hud.updatePlayerStatusEffects();
-//           hud.updatePlayerHP(player.getDamage(1));
-//
-//        }
-    }
 
-    public GameField getGameField() {
-        return gameField;
-    }
 
-    private void handleInput(float delta) {
-        boolean isMoving = false;
+	}
+
+	private void handleInput(float delta) {
+		boolean isMoving = false;
 
         // Dash // TODO: Add dash to keybindings
         if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
@@ -203,22 +204,22 @@ public class GameScreen implements Screen {
             hud.updatePlayerStatusEffects();
         }
 
-        // --- MOVEMENT LOGIC ---
+		// --- MOVEMENT LOGIC ---
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
               player.getPlayerEntity().velocity.y = player.getPlayerEntity().getSpeed();
 //            yPlayer += currentSpeed * delta;
-            currentAnimation = game.getCharacterUpAnimation();
-            isMoving = true;
-        }
+			currentAnimation = game.getCharacterUpAnimation();
+			isMoving = true;
+		}
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
             player.getPlayerEntity().velocity.y = -player.getPlayerEntity().getSpeed();
 //            yPlayer -= currentSpeed * delta;
-            currentAnimation = game.getCharacterDownAnimation();
-            isMoving = true;
-        }
+			currentAnimation = game.getCharacterDownAnimation();
+			isMoving = true;
+		}
 
         else {
             player.getPlayerEntity().velocity.y = 0f;
@@ -228,16 +229,16 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             player.getPlayerEntity().velocity.x = -player.getPlayerEntity().getSpeed();
 //            xPlayer -= currentSpeed * delta;
-            currentAnimation = game.getCharacterLeftAnimation();
-            isMoving = true;
-        }
+			currentAnimation = game.getCharacterLeftAnimation();
+			isMoving = true;
+		}
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
             player.getPlayerEntity().velocity.x = player.getPlayerEntity().getSpeed();
 //            xPlayer += currentSpeed * delta;
-            currentAnimation = game.getCharacterRightAnimation();
-            isMoving = true;
-        }
+			currentAnimation = game.getCharacterRightAnimation();
+			isMoving = true;
+		}
 
         else {
             player.getPlayerEntity().velocity.x = 0f;
@@ -260,7 +261,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
+		// Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
 //        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 //            // Check which direction we are currently facing/moving to pick the right jump
 //            if (currentAnimation == game.getCharacterUpAnimation() || currentAnimation == game.getCharacterUpJumpAnimation()) {
@@ -275,30 +276,31 @@ public class GameScreen implements Screen {
 //            isMoving = true; // Keep animating while jumping
 //        }
 
-        // Victory pose
-        if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            currentAnimation = game.getCharacterDownWin();
-            isMoving = true;
-        }
-        // Loser pose
-        if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-            currentAnimation = game.getCharacterDownSad();
-            isMoving = true;
-        }
+		// Victory pose
+		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+			currentAnimation = game.getCharacterDownWin();
+			isMoving = true;
+		}
+		// Loser pose
+		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+			currentAnimation = game.getCharacterDownSad();
+			isMoving = true;
+		}
 
-        // Animation Timer
-        if (isMoving) {
-            animationTime += delta;
-        } else {
-            animationTime = 0; // Reset to standing frame when not moving
-        }
+		// Animation Timer
+		if (isMoving) {
+			animationTime += delta;
+		}
+		else {
+			animationTime = 0; // Reset to standing frame when not moving
+		}
 
         // Go to Menu
 
     }
 
-    private void updateEntitiesPositions(float delta) {
-        // X and Y are calculated separately to avoid going through walls diagonally
+	private void updateEntitiesPositions(float delta) {
+		// X and Y are calculated separately to avoid going through walls diagonally
 
         float nextX = player.getPlayerEntity().position.x + player.getPlayerEntity().velocity.x * delta;
         float currentY = player.getPlayerEntity().position.y;
@@ -342,24 +344,25 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void drawGameField() {
-        for (int y = 0; y < gameField.getHeight(); y++) {
-            for (int x = 0; x < gameField.getWidth(); x++) {
-                TileType tileType = gameField.getTile(x, y);
-                if (tileType == TileType.WALL) {
-                    game.getSpriteBatch().draw(
-                            game.getWallTile(),
-                            x, y, 1, 1
-                    );
-                } else if (tileType == TileType.EMPTY) {
-                    game.getSpriteBatch().draw(
-                            game.getEmptyTile(),
-                            x, y, 1, 1
-                    );
-                }
-            }
-        }
-    }
+	private void drawGameField() {
+		for (int y = 0; y < gameField.getHeight(); y++) {
+			for (int x = 0; x < gameField.getWidth(); x++) {
+				TileType tileType = gameField.getTile(x, y);
+				if (tileType == TileType.WALL) {
+					game.getSpriteBatch().draw(
+							game.getWallTile(),
+							x, y, 1, 1
+					);
+				}
+				else if (tileType == TileType.EMPTY) {
+					game.getSpriteBatch().draw(
+							game.getEmptyTile(),
+							x, y, 1, 1
+					);
+				}
+			}
+		}
+	}
 
     public Player getPlayer() {
         return player;
@@ -383,20 +386,24 @@ public class GameScreen implements Screen {
 
     }
 
-    @Override
-    public void hide() {
-    }
+	@Override
+	public void hide() {
+	}
 
-    @Override
-    public void dispose() {
-    }
+	@Override
+	public void dispose() {
+	}
 
-    public void setPaused(boolean paused) {
-        isPaused = paused;
-    }
+	public void setPaused(boolean paused) {
+		isPaused = paused;
+	}
 
-    public boolean isPaused() {
-        return isPaused;
-    }
-    // Additional methods and logic can be added as needed for the game screen
+	public boolean isPaused() {
+		return isPaused;
+	}
+
+	public GameField getGameField() {
+		return this.gameField;
+	}
+	// Additional methods and logic can be added as needed for the game screen
 }
