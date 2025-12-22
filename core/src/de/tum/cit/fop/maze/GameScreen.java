@@ -3,24 +3,11 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -40,7 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 public class GameScreen implements Screen {
 
     private final MazeRunnerGame game;
-    private final OrthographicCamera camera;
+    private final Camera camera;
     private final BitmapFont font;
 
     private float sinusInput = 0f;
@@ -88,13 +75,8 @@ public class GameScreen implements Screen {
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
-        float viewportWidth = 25f;  // Visible world width
-        float viewportHeight = 18.75f; // Visible world height
-
         // Create and configure the camera for the game view
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, viewportWidth, viewportHeight);
-        camera.zoom = 0.75f;
+        this.camera = new Camera(this);
 
         // Start by looking down
         currentAnimation = game.getCharacterDownAnimation();
@@ -133,7 +115,7 @@ public class GameScreen implements Screen {
             updateEntitiesPositions(delta);
 
             // Update camera to move with the player
-            moveCamera(delta);
+            this.camera.update(delta);
             animationTime += delta;
             i++;
 //            if(i == 1){
@@ -153,7 +135,7 @@ public class GameScreen implements Screen {
 
         }
 
-        game.getSpriteBatch().setProjectionMatrix(camera.combined);
+        game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
@@ -360,12 +342,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void moveCamera(float delta) {
-        camera.position.x = player.getPlayerEntity().position.x;
-        camera.position.y = player.getPlayerEntity().position.y;
-        camera.update();
-    }
-
     private void drawGameField() {
         for (int y = 0; y < gameField.getHeight(); y++) {
             for (int x = 0; x < gameField.getWidth(); x++) {
@@ -383,6 +359,10 @@ public class GameScreen implements Screen {
                 }
             }
         }
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
