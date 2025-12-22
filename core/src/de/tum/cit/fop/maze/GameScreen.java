@@ -310,8 +310,22 @@ public class GameScreen implements Screen {
 
     private void updateEntitiesPositions(float delta) {
         // X and Y are calculated separately to avoid going through walls diagonally
+        float velocityX = player.getPlayerEntity().velocity.x;
+        float velocityY = player.getPlayerEntity().velocity.y;
+        float maxSpeed = player.getPlayerEntity().getSpeed();
 
-        float nextX = player.getPlayerEntity().position.x + player.getPlayerEntity().velocity.x * delta;
+        float diagonalMultiplier = 1.0f; // so that diagonal movement is not faster than normal one
+        float currentSpeedSqr = velocityX * velocityX + velocityY * velocityY;
+
+        if (currentSpeedSqr > (maxSpeed * maxSpeed) + 0.001f) {
+            float currentSpeed = (float) Math.sqrt(currentSpeedSqr);
+            diagonalMultiplier = maxSpeed / currentSpeed;
+        }
+
+        float moveAmountX = velocityX * diagonalMultiplier * delta;
+        float moveAmountY = velocityY * diagonalMultiplier * delta;
+
+        float nextX = player.getPlayerEntity().position.x + moveAmountX;
         float currentY = player.getPlayerEntity().position.y;
 
         if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerEntity().getSize())) {
@@ -319,7 +333,7 @@ public class GameScreen implements Screen {
         }
 
         float currentX = player.getPlayerEntity().position.x;
-        float nextY = player.getPlayerEntity().position.y + player.getPlayerEntity().velocity.y * delta;
+        float nextY = player.getPlayerEntity().position.y + moveAmountY;
 
         if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerEntity().getSize())) {
             player.getPlayerEntity().position.y = nextY;
