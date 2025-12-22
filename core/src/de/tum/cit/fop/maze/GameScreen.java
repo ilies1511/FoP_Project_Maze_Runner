@@ -13,6 +13,10 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.Parser.MazeParser;
+import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.Poisoned;
 
