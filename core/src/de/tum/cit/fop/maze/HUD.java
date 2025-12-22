@@ -54,9 +54,10 @@ public class HUD {
     public void renderHUD(){
         table = new Table(); // Create a table for layout
         table.setFillParent(true); // Make the table fill the stage
+        table.defaults().space(10).expandX();
         //table.debug();
         stage.addActor(table);
-        table.bottom().left();
+        table.bottom();
         playerHealth = player.getHealth();
 
         uiContainer = new Table();
@@ -74,10 +75,12 @@ public class HUD {
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             heartTable.add(heart).width(50).height(50);
         }
-        table.add(uiContainer).width(500).height(200).padBottom(30);
+        table.add(uiContainer).width(2200).height(150);
         uiContainer.add(heartTable).padTop(20);
         uiContainer.row();
         uiContainer.add(statusEffectsTable).bottom();
+
+
 
 
     }
