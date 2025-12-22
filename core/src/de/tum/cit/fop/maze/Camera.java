@@ -9,9 +9,10 @@ public class Camera {
     private static final float VIEWPORT_WIDTH = 25f;  // Visible world width
     private static final float VIEWPORT_HEIGHT = 18.75f; // Visible world height
     private static final float ZOOM_LEVEL = 0.75f;
+    private static final float CAMERA_LERP_SPEED = 3f;
 
-    private OrthographicCamera camera;
-    private GameScreen gameScreen;
+    private final OrthographicCamera camera;
+    private final GameScreen gameScreen;
 
     public Camera(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
@@ -25,14 +26,17 @@ public class Camera {
     }
 
     public void update(float delta) {
+        // Make sure camera stays inside maze always
         float minCameraX = VIEWPORT_WIDTH * ZOOM_LEVEL / 2;
         float minCameraY = VIEWPORT_HEIGHT * ZOOM_LEVEL / 2;
         float maxCameraX = this.gameScreen.getGameField().getWidth()  - VIEWPORT_WIDTH * ZOOM_LEVEL / 2;
         float maxCameraY = this.gameScreen.getGameField().getHeight()  - VIEWPORT_HEIGHT * ZOOM_LEVEL / 2;
         float playerX = this.gameScreen.getPlayer().getPlayerEntity().position.x;
         float playerY = this.gameScreen.getPlayer().getPlayerEntity().position.y;
-        this.camera.position.x = MathUtils.clamp(playerX, minCameraX, maxCameraX);
-        this.camera.position.y = MathUtils.clamp(playerY, minCameraY, maxCameraY);
+        float target_x = MathUtils.clamp(playerX, minCameraX, maxCameraX);
+        float target_y = MathUtils.clamp(playerY, minCameraY, maxCameraY);
+        this.camera.position.x = MathUtils.lerp(this.camera.position.x, target_x, delta * CAMERA_LERP_SPEED);
+        this.camera.position.y = MathUtils.lerp(this.camera.position.y, target_y, delta * CAMERA_LERP_SPEED);
         this.camera.update();
     }
 }
