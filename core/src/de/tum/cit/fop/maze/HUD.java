@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -33,11 +30,14 @@ public class HUD {
 
     private final Player player;
     private int playerHealth;
+    private int playerXP;
 
     private final MazeRunnerGame game;
     private final GameScreen gameScreen;
 
     private int emptyHearts;
+
+    Label xpLabel;
 
     private final Stage stage;
     public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen){
@@ -59,6 +59,7 @@ public class HUD {
         stage.addActor(table);
         table.bottom();
         playerHealth = player.getHealth();
+        playerXP = player.getXp();
 
         uiContainer = new Table();
         //uiContainer.debug();
@@ -75,8 +76,12 @@ public class HUD {
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             heartTable.add(heart).width(50).height(50);
         }
-        table.add(uiContainer).width(2200).height(150);
+        table.add(uiContainer).width(2200).height(200);
         uiContainer.add(heartTable).padTop(20);
+
+         xpLabel = new Label("XP:" + playerXP, game.getSkin(),"vampire-style");
+        uiContainer.row();
+        uiContainer.add(xpLabel);
         uiContainer.row();
         uiContainer.add(statusEffectsTable).bottom();
 
@@ -85,21 +90,26 @@ public class HUD {
 
     }
 
+    public void updatePlayerXP(int xp){
+        player.receiveXP(xp);
+        playerXP = player.getXp();
+
+        xpLabel.setText("XP:" + playerXP);
+
+    }
+
     public void updatePlayerHP(int damage){
         emptyHearts += damage;
         heartTable.clearChildren();
+        playerHealth = player.getHealth();
         for(int i = 0;i<playerHealth - emptyHearts; i++ ){
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
         }
-        if(damage>0){
             for(int i =0; i < emptyHearts; i++){
                 Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
                 heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
-            }
         }
-
-
     }
     public void updatePlayerStatusEffects(){
 
