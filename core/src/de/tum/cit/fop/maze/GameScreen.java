@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
@@ -26,6 +27,7 @@ public class GameScreen implements Screen {
 	private final MazeRunnerGame game;
 	private final OrthographicCamera camera;
 	private final BitmapFont font;
+	private final MapRenderer mapRenderer;
 
 	private float sinusInput = 0f;
 	private float animationTime = 0f;
@@ -57,7 +59,7 @@ public class GameScreen implements Screen {
 	 */
 	public GameScreen(MazeRunnerGame game) {
 		this.game = game;
-
+		this.mapRenderer = new MapRenderer(game);
 		this.player = new Player(); //create an instance of the player
 
 //        this.gameField = new GameField();
@@ -139,12 +141,14 @@ public class GameScreen implements Screen {
 		game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
 
-		drawGameField();
+//		drawGameField();
+//
+//		//TODO (Connect Parser to Game Assets): iziane
+//		for (GameObject obj : gameField.getGameObjects()) {
+//			obj.draw(game.getSpriteBatch());
+//		}
+		mapRenderer.render(gameField);
 
-		//TODO (Connect Parser to Game Assets): iziane
-		for (GameObject obj : gameField.getGameObjects()) {
-			obj.draw(game.getSpriteBatch());
-		}
 
 		game.getSpriteBatch().draw(
 				currentAnimation.getKeyFrame(animationTime, true),
