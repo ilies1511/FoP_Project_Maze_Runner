@@ -73,9 +73,15 @@ public class GameScreen implements Screen {
         this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
 
 
-
-
-        this.gameField = new GameField();
+	    this.gameField = MazeParser.loadMap("level-1.properties", this.game);
+	    if (this.gameField == null) {
+		    System.err.println("Map failed to load! Check file path.");
+		    this.gameField = new GameField(5, 5);
+	    }
+	    else {
+		    System.out.println("Map loaded successfully!");
+		    System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+	    }
 
         this.player = new Player(this); //create an instance of the player
 
