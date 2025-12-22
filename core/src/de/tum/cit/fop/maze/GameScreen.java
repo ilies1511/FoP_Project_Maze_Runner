@@ -162,6 +162,10 @@ public class GameScreen implements Screen {
 
         drawGameField();
 
+	    //TODO (Connect Parser to Game Assets): iziane
+	    for (GameObject obj : gameField.getGameObjects()) {
+		    obj.draw(game.getSpriteBatch());
+	    }
 
         // Draw the character next to the text :) / We can reuse sinusInput here
         if (isVisible) {
