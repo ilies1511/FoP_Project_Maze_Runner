@@ -26,7 +26,7 @@ public class Camera {
     public void update(float delta) {
         // Make sure camera stays inside maze always
         float minCameraX = VIEWPORT_WIDTH * ZOOM_LEVEL / 2;
-        float minCameraY = VIEWPORT_HEIGHT * ZOOM_LEVEL / 2;
+        float minCameraY = VIEWPORT_HEIGHT * ZOOM_LEVEL / 2-1.6f;
         float maxCameraX = this.gameScreen.getGameField().getWidth()  - VIEWPORT_WIDTH * ZOOM_LEVEL / 2;
         float maxCameraY = this.gameScreen.getGameField().getHeight()  - VIEWPORT_HEIGHT * ZOOM_LEVEL / 2;
         float playerX = this.gameScreen.getPlayer().getPlayerEntity().position.x;
