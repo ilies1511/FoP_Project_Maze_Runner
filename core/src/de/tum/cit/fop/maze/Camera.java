@@ -3,8 +3,6 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 
-import static java.lang.Math.max;
-
 public class Camera {
     private static final float VIEWPORT_WIDTH = 25f;  // Visible world width
     private static final float VIEWPORT_HEIGHT = 18.75f; // Visible world height
