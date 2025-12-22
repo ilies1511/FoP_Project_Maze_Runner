@@ -84,7 +84,8 @@ To avoid issues, use a temporary integration branch:
 7. `git push`
     - Optional: push the integration branch for backup
 8. `git checkout main`
-9. `git merge integration_<YourName>`
+9. `git pull origin main`
+10. `git merge integration_<YourName>`
     - Now merge the already tested branch into `main`.
-10. `git push`
+11. `git push`
     - Main is now safely updated.
