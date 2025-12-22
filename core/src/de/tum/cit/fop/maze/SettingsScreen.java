@@ -77,10 +77,26 @@ public class SettingsScreen implements Screen {
             }
         });
 
+        KeyBindingButton attackBinding = new KeyBindingButton("Attack", game.getGameInfo().getSettings().getAttackKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
+            @Override
+            public void handle(int keycode) {
+                game.getGameInfo().getSettings().setAttackKey(keycode);
+            }
+        });
+
+        KeyBindingButton dashBinding = new KeyBindingButton("Dash", game.getGameInfo().getSettings().getDashKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
+            @Override
+            public void handle(int keycode) {
+                game.getGameInfo().getSettings().setDashKey(keycode);
+            }
+        });
+
         table.add(leftBinding).width(300).row();
         table.add(rightBinding).width(300).row();
         table.add(upBinding).width(300).row();
         table.add(downBinding).width(300).row();
+        table.add(attackBinding).width(300).row();
+        table.add(dashBinding).width(300).row();
     }
 
     @Override
