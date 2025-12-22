@@ -12,13 +12,28 @@ public class Player {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
 
     private int health;
+    private int xp;
     private final ArrayList<Effect> effects;
     private final Entity playerEntity;
 
+    private boolean canDash;
+    private boolean canInvis;
+
+
+
+
     public Player(GameScreen gameScreen) {
+
+        canDash = false;
+        canInvis = false;
+        this.xp = 0;
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
         this.playerEntity = new Entity(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
+    }
+
+    public int receiveXP(int xpReceived){
+        return xp+=xpReceived;
     }
 
     public int getDamage(int damage){
@@ -106,4 +121,33 @@ public class Player {
     private boolean isDashInCooldown() {
         return effectInEffects(DashCooldown.class);
     }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public boolean isCanDash() {
+        return canDash;
+    }
+
+    public void setCanDash(boolean canDash) {
+        this.canDash = canDash;
+    }
+
+    public boolean isCanInvis() {
+        return canInvis;
+    }
+
+    public void setCanInvis(boolean canInvis) {
+        this.canInvis = canInvis;
+    }
+
+    public void multiplySpeed(float multiplier){
+        playerEntity.multiplySpeed(multiplier);
+    }
+
 }
