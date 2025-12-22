@@ -8,6 +8,8 @@ public class GameSettings {
     private int leftKey;
     private int downKey;
     private int rightKey;
+    private int attackKey;
+    private int dashKey;
 
     public GameSettings() {
         this.maxHealth = 10;
@@ -15,6 +17,8 @@ public class GameSettings {
         this.leftKey = Input.Keys.A;
         this.downKey = Input.Keys.S;
         this.rightKey = Input.Keys.D;
+        this.attackKey = Input.Keys.SPACE;
+        this.dashKey = Input.Keys.SHIFT_LEFT;
     }
 
     public int getMaxHealth() {
@@ -37,6 +41,14 @@ public class GameSettings {
         return this.rightKey;
     }
 
+    public int getDashKey() {
+        return this.dashKey;
+    }
+
+    public int getAttackKey() {
+        return this.attackKey;
+    }
+
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
@@ -55,5 +67,13 @@ public class GameSettings {
 
     public void setRightKey(int rightKey) {
         this.rightKey = rightKey;
+    }
+
+    public void setDashKey(int dashKey) {
+        this.dashKey = dashKey;
+    }
+
+    public void setAttackKey(int attackKey) {
+        this.attackKey = attackKey;
     }
 }

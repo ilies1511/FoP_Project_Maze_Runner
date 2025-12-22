@@ -204,8 +204,7 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
         boolean isMoving = false;
 
-        // Dash // TODO: Add dash to keybindings
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+        if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) {
             this.player.addOrReapplyEffect(new Dash(player));
         }
 
@@ -254,7 +253,7 @@ public class GameScreen implements Screen {
         else {
             player.getPlayerEntity().velocity.x = 0f;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             System.out.println("Attacking!"); // Debug print
 
             var iterator = enemies.iterator();
