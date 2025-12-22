@@ -53,8 +53,10 @@ public class GameScreen implements Screen {
 
     private final HUD hud;
     private final PausedOverlay pausedScreen;
+    private final ProgressionOverlay progressionOverlay;
 
     private boolean isPaused = false;
+    private boolean isInProgression = false;
 
 
 //  For testing
@@ -101,6 +103,7 @@ public class GameScreen implements Screen {
 
         this.hud = new HUD(player, stage, game, this);
         pausedScreen = new PausedOverlay(stage, game,this);
+        progressionOverlay = new ProgressionOverlay(stage,game,this,player, hud);
 //        shapeRenderer = new ShapeRenderer();
 
     }
@@ -112,6 +115,11 @@ public class GameScreen implements Screen {
         if(!isPaused){
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 pausedScreen.showPausedMenu();
+            }
+            else if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+                progressionOverlay.showProgressionMenu();
+                isPaused = true;
+                isInProgression = true;
             }
             ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
@@ -141,8 +149,12 @@ public class GameScreen implements Screen {
 
         }
        else if(isPaused){
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
                 pausedScreen.hidePausedMenu();
+            }
+            else if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isInProgression){
+                progressionOverlay.hideProgressionMenu();
+                isInProgression = false;
             }
 
         }
@@ -208,7 +220,9 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
         boolean isMoving = false;
 
-        if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) {
+        // Dash // TODO: Add dash to keybindings
+        if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey()))&& player.isCanDash())
+        {
             this.player.addOrReapplyEffect(new Dash(player));
         }
 
@@ -270,6 +284,7 @@ public class GameScreen implements Screen {
                 //if enemy within 1.5, kill
                 if (distance < 1.5f) {
                     iterator.remove(); // remove enemy from the game
+                    hud.updatePlayerXP(15);
                     System.out.println("Enemy Killed!");
                 }
             }
@@ -337,7 +352,7 @@ public class GameScreen implements Screen {
         }
 
         float currentX = player.getPlayerEntity().position.x;
-        float nextY = player.getPlayerEntity().position.y + moveAmountY;
+        float nextY = player.getPlayerEntity().position.y + player.getPlayerEntity().velocity.y * delta;
 
         if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerEntity().getSize())) {
             player.getPlayerEntity().position.y = nextY;
