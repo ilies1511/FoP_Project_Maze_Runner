@@ -237,10 +237,10 @@ public class GameScreen implements Screen {
         }
 
         // Temporary: keybinding for poisoned // TODO: remove it
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            this.player.addOrReapplyEffect(new Poisoned(player));
-            hud.updatePlayerStatusEffects();
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+//            this.player.addOrReapplyEffect(new Poisoned(player));
+//            hud.updatePlayerStatusEffects();
+//        }
 
         // --- MOVEMENT LOGIC ---
 
