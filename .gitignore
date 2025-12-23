@@ -201,3 +201,6 @@ $RECYCLE.BIN/
 !gradle/wrapper/gradle-wrapper.jar
 .idea/gradle.xml
 .idea/runConfigurations/Run_Game.xml
+
+### Data usefull only locally, no need to push to git
+data/
