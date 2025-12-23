@@ -46,6 +46,9 @@ public class MazeRunnerGame extends Game {
     // Happy/Win/PowerUp Animations
     private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
 
+    //Enemy(Tourist)
+    private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
+
     // Maze Textures
     private TextureRegion wallTile;
     private TextureRegion emptyTile;
@@ -91,6 +94,7 @@ public class MazeRunnerGame extends Game {
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         this.loadCharacterAnimation(); // Load character animation
+        this.loadTouristAnimation();
         this.loadMazeTiles();
 
         // Play some background music
@@ -145,11 +149,11 @@ public class MazeRunnerGame extends Game {
         int frameWidth = 16;
         int frameHeight = 32;
 
-        //split up character.png to frames and add what each of them does
-//
-        // Split the big image into a grid
-        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
+        charAnimation(tmp);
+    }
+    public void charAnimation(TextureRegion[][] tmp){
         // ROW 0: DOWN
         characterDownAnimation = new Animation<>(0.1f, getFrames(tmp[0], 0, 4)); // Walk 0-3
         characterDownJumpAnimation      = new Animation<>(0.1f, getFrames(tmp[0], 4, 3)); // Jump 4-6
@@ -174,17 +178,20 @@ public class MazeRunnerGame extends Game {
         characterLeftSad       = new Animation<>(0.2f, getFrames(tmp[3], 7, 3));
         characterLeftWin       = new Animation<>(0.1f, getFrames(tmp[3], 10, 1));
 
-       // int animationFrames = 4;
+    }
 
-        // libGDX internal Array instead of ArrayList because of performance
-        //Array<TextureRegion> walkFrames = new Array<>(TextureRegion.class);
+    private void loadTouristAnimation() {
+        Texture walkSheet = new Texture(Gdx.files.internal("tourist.png"));
+        int frameWidth = 16;
+        int frameHeight = 32;
 
-        // Add all frames to the animation
-       // for (int col = 0; col < animationFrames; col++) {
-      //      walkFrames.add(new TextureRegion(walkSheet, col * frameWidth, 0, frameWidth, frameHeight));
-     //   }
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-      //  characterDownAnimation = new Animation<>(0.1f, walkFrames);
+        // Row 0: Down, Row 1: Right, Row 2: Up, Row 3: Left
+        touristDown = new Animation<>(0.1f, getFrames(tmp[0], 0, 4));
+        touristRight = new Animation<>(0.1f, getFrames(tmp[1], 0, 4));
+        touristUp = new Animation<>(0.1f, getFrames(tmp[2], 0, 4));
+        touristLeft = new Animation<>(0.1f, getFrames(tmp[3], 0, 4));
     }
 
     private void loadMazeTiles() {
@@ -219,6 +226,12 @@ public class MazeRunnerGame extends Game {
     }
 
     // Getter methods
+    public Animation<TextureRegion> getTouristDown() { return touristDown; }
+    public Animation<TextureRegion> getTouristUp() { return touristUp; }
+    public Animation<TextureRegion> getTouristLeft() { return touristLeft; }
+    public Animation<TextureRegion> getTouristRight() { return touristRight; }
+
+
     public Skin getSkin() {
         return skin;
     }

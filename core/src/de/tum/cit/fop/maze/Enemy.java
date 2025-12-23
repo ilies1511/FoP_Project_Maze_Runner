@@ -17,7 +17,6 @@ public class Enemy extends GameObject {
                 2.0f,
                 new Vector2(0.8f, 0.8f)
         );
-
     }
 
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField ) {
