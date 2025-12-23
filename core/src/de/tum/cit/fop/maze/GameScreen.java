@@ -47,6 +47,8 @@ public class GameScreen implements Screen {
 
     private final Stage stage;
 
+    private Entity playerEntity;
+
     private ArrayList<Enemy> enemies;
 
     private final HUD hud;
@@ -64,15 +66,33 @@ public class GameScreen implements Screen {
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
-     * @param game The main game class, used to access global resources and methods.
      */
-    public GameScreen(MazeRunnerGame game) {
-        this.game = game;
 
+    public void allEnemies() {
         this.enemies = new ArrayList<>();
         //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
-        this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
-        this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+        //this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
+        //this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+        this.enemies.add(new fleeingEnemy(new Vector2(7f, 7f)));
+        //this.enemies.add(new Bouncer(new Vector2(7f, 7f)));
+    }
+
+    public boolean flicker(float delta) {
+        if (flickerTimer > 0f) {
+            flickerTimer -= delta;
+        }
+        //player visible if timer is 0 or if flickering
+        return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
+    }
+
+    public void testing(){
+    }
+
+
+    public GameScreen(MazeRunnerGame game) {
+        this.game = game;
+        allEnemies();
+
 
 
 	    this.gameField = MazeParser.loadMap("level-1.properties", this.game);
@@ -86,6 +106,7 @@ public class GameScreen implements Screen {
 	    }
 
         this.player = new Player(this); //create an instance of the player
+        this.playerEntity = this.player.getPlayerEntity();
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
@@ -173,11 +194,8 @@ public class GameScreen implements Screen {
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
-        if (flickerTimer > 0f) {
-            flickerTimer -= delta;
-        }
-        //player visible if timer is 0 or if flickering
-        boolean isVisible = (flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f);
+
+
 
         // Render the text
         //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
@@ -190,7 +208,7 @@ public class GameScreen implements Screen {
 	    }
 
         // Draw the character next to the text :) / We can reuse sinusInput here
-        if (isVisible) {
+        if (flicker(delta)) {
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
                 player.getPlayerEntity().position.x,
@@ -199,9 +217,11 @@ public class GameScreen implements Screen {
                 0.8f
         );}
 
+        testing();
+
         for (Enemy enemy : enemies) {
             game.getSpriteBatch().draw(
-                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // Static Victory for testing
+                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // testing
                     enemy.getEnemyEntity().position.x, enemy.getEnemyEntity().position.y,
                     0.5f,   0.8f
             );
@@ -242,7 +262,6 @@ public class GameScreen implements Screen {
 //            hud.updatePlayerStatusEffects();
 //        }
 
-        // --- MOVEMENT LOGIC ---
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
@@ -390,14 +409,31 @@ public class GameScreen implements Screen {
             }
 
             // Check if they touch
-            if (Entity.entitiesOverlap(player.getPlayerEntity(), enemyEntity)) {
-                if (flickerTimer <= 0){
-                    // print to console. .
-                    System.out.println("YOU DIED!");
-                    iterator.remove();
+            if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
+                if (enemy instanceof fleeingEnemy){
+                    //if a tourist(fleeing Enemy)
+                    Vector2 pushDir = new Vector2(playerEntity.position).sub(enemyEntity.position).nor();
+                    Vector2 pushAmount = new Vector2(pushDir).scl(0.2f); // push by 0.2
+
+                    float newX = playerEntity.position.x + pushAmount.x;
+                    float newY = playerEntity.position.y + pushAmount.y;
+
+                    //if player not near wall
+                    if (!gameField.isInsideWall(newX, newY, playerEntity.getSize())) {
+                        playerEntity.position.x = newX;
+                        playerEntity.position.y = newY;
+                    }
+                    //otherwise same
+                    playerEntity.position.sub(playerEntity.velocity.x * delta, playerEntity.velocity.y * delta);                }
+                else {
+                    if (flickerTimer <= 0){ //canInvis to be implimented here
+                        // print to console. .
+                        System.out.println("YOU DIED!");
+                        iterator.remove();
 //                pdatePlayerHealth(1);
-                    hud.updatePlayerHP(1);
-                    flickerTimer = 3f;
+                        hud.updatePlayerHP(1);
+                        flickerTimer = 3f;
+                    }
                 }
 
             }
