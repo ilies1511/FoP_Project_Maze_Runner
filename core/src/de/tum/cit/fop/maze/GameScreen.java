@@ -290,6 +290,14 @@ public class GameScreen implements Screen {
             }
         }
 
+        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomInKey())) {
+            this.camera.zoom_in();
+        }
+
+        if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomOutKey())) {
+            this.camera.zoom_out();
+        }
+
         // Jump (Fix proper logic when final image of dracula is confirmed) // TODO: handle via playerEntity, add to keybindings
 //        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 //            // Check which direction we are currently facing/moving to pick the right jump
