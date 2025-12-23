@@ -66,7 +66,7 @@ public class GameScreen implements Screen {
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
-     * @param game The main game class, used to access global resources and methods.
+     * @param The main game class, used to access global resources and methods.
      */
 
     public void allEnemies() {
