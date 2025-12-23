@@ -126,7 +126,7 @@ public class GameScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 pausedScreen.showPausedMenu();
             }
-            else if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            else if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isInDevConsole){
                 progressionOverlay.showProgressionMenu();
                 isPaused = true;
                 isInProgression = true;
