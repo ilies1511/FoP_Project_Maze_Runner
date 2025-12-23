@@ -1,6 +1,5 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.UI;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,8 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.Player;
 
 import java.util.Objects;
 
@@ -54,7 +54,7 @@ public class HUD {
     public void renderHUD(){
         table = new Table(); // Create a table for layout
         table.setFillParent(true); // Make the table fill the stage
-        table.defaults().space(10).expandX();
+     //   table.defaults().space(10).expandX();
         //table.debug();
         stage.addActor(table);
         table.bottom();
@@ -79,7 +79,7 @@ public class HUD {
         table.add(uiContainer).width(2200).height(200);
         uiContainer.add(heartTable).padTop(20);
 
-         xpLabel = new Label("XP:" + playerXP, game.getSkin(),"vampire-style");
+        xpLabel = new Label("XP:" + playerXP, game.getSkin(),"vampire-style");
         uiContainer.row();
         uiContainer.add(xpLabel);
         uiContainer.row();
@@ -99,17 +99,20 @@ public class HUD {
     }
 
     public void updatePlayerHP(int damage){
-        emptyHearts += damage;
-        heartTable.clearChildren();
-        playerHealth = player.getHealth();
-        for(int i = 0;i<playerHealth - emptyHearts; i++ ){
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
-        }
+        if(!player.isInGodMode()){
+            emptyHearts += damage;
+            heartTable.clearChildren();
+            playerHealth = player.getHealth();
+            for(int i = 0;i<playerHealth - emptyHearts; i++ ){
+                Image heart = new Image(game.getSkin().getDrawable("heart"));
+                heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
+            }
             for(int i =0; i < emptyHearts; i++){
                 Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
                 heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
+            }
         }
+
     }
     public void updatePlayerStatusEffects(){
 
