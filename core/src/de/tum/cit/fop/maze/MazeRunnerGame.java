@@ -10,18 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import de.tum.cit.fop.maze.UI.MenuScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.Arrays;
 import java.util.List;
-
-import java.awt.*;
-
-import static java.awt.Frame.getFrames;
-
-import java.awt.*;
-
-import static java.awt.Frame.getFrames;
 
 /**
  * The MazeRunnerGame class represents the core of the Maze Runner game.

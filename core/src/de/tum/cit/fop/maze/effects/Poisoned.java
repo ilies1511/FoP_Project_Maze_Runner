@@ -19,8 +19,11 @@ public class Poisoned extends Effect {
 
     @Override
     public void onStart() {
-        this.player.getPlayerEntity().multiplySpeed(SPEED_MULTIPLIER);
+        if(!player.isInGodMode()){
+            this.player.getPlayerEntity().multiplySpeed(SPEED_MULTIPLIER);
+        }
     }
+
 
     @Override
     public boolean onTick(float deltaTime) {

@@ -19,13 +19,14 @@ public class Player {
     private boolean canDash;
     private boolean canInvis;
 
-
+    private boolean isInGodMode;
 
 
     public Player(GameScreen gameScreen) {
 
         canDash = false;
         canInvis = false;
+        isInGodMode = false;
         this.xp = 0;
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
@@ -150,4 +151,11 @@ public class Player {
         playerEntity.multiplySpeed(multiplier);
     }
 
+    public boolean isInGodMode() {
+        return isInGodMode;
+    }
+
+    public void setInGodMode(boolean inGodMode) {
+        isInGodMode = inGodMode;
+    }
 }

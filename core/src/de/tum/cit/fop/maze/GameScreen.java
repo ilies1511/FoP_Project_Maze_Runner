@@ -9,22 +9,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.UI.DevConsole;
+import de.tum.cit.fop.maze.UI.HUD;
+import de.tum.cit.fop.maze.UI.PausedOverlay;
+import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.Poisoned;
 
-import java.util.Objects;
-
 import java.util.ArrayList;
-
-import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -54,9 +52,11 @@ public class GameScreen implements Screen {
     private final HUD hud;
     private final PausedOverlay pausedScreen;
     private final ProgressionOverlay progressionOverlay;
+    private final  DevConsole devConsole;
 
     private boolean isPaused = false;
     private boolean isInProgression = false;
+    private boolean isInDevConsole = false;
 
 
 //  For testing
@@ -104,6 +104,8 @@ public class GameScreen implements Screen {
         this.hud = new HUD(player, stage, game, this);
         pausedScreen = new PausedOverlay(stage, game,this);
         progressionOverlay = new ProgressionOverlay(stage,game,this,player, hud);
+        devConsole = new DevConsole(game, this, stage, player, hud);
+
 //        shapeRenderer = new ShapeRenderer();
 
     }
@@ -112,6 +114,14 @@ public class GameScreen implements Screen {
     // Screen interface methods with necessary functionality
     @Override
     public void render(float delta) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole){
+            devConsole.showConsole();
+            isInDevConsole = true;
+        }
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && isInDevConsole){
+            devConsole.hideConsole();
+            isInDevConsole = false;
+        }
         if(!isPaused){
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 pausedScreen.showPausedMenu();
@@ -424,7 +434,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setCursorCatched(true);
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.Player;
 
 public class ProgressionOverlay {
     private Stage stage;
@@ -111,6 +114,7 @@ public class ProgressionOverlay {
         invis.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                //TODO LOGIC
                 if(player.getXp() >= 15) {
                     dash.setDisabled(true);
                     player.setCanInvis(true);
