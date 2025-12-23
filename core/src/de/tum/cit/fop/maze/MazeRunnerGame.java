@@ -220,7 +220,7 @@ public class MazeRunnerGame extends Game {
     }
 
     private void loadTouristAnimation() {
-        Texture walkSheet = new Texture(Gdx.files.internal("tourist.png"));
+        Texture walkSheet = new Texture(Gdx.files.internal("character.png"));
         int frameWidth = 16;
         int frameHeight = 32;
 
