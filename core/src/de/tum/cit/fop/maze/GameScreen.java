@@ -66,7 +66,6 @@ public class GameScreen implements Screen {
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
-     * @param The main game class, used to access global resources and methods.
      */
 
     public void allEnemies() {
@@ -94,7 +93,6 @@ public class GameScreen implements Screen {
         this.game = game;
         allEnemies();
 
-        this.gameField = new GameField();
 
 
 	    this.gameField = MazeParser.loadMap("level-1.properties", this.game);
@@ -108,6 +106,7 @@ public class GameScreen implements Screen {
 	    }
 
         this.player = new Player(this); //create an instance of the player
+        this.playerEntity = this.player.getPlayerEntity();
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
