@@ -1,17 +1,21 @@
 package de.tum.cit.fop.maze;
 
-import de.tum.cit.fop.maze.Parser.GameField;
-
 public class GameInfo {
-    private final GameSettings settings;
+    private GameSettings settings;
 //    private final GameField gameField;
 
     public  GameInfo() {
-        this.settings = new GameSettings();
-//        this.gameField = new GameField();
+        this.settings = null; // Will be initialized in initializeSettings()
+    }
+
+    public void initializeSettings() {
+        this.settings = GameSettings.loadGameSettings();
     }
 
     public GameSettings getSettings() {
+        if (this.settings == null) {
+            throw new IllegalStateException("GameSettings is not initialized");
+        }
         return this.settings;
     }
 

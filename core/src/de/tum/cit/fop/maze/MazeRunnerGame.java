@@ -87,6 +87,9 @@ public class MazeRunnerGame extends Game {
 	 */
 	@Override
 	public void create() {
+		// Initialize settings AFTER creating game (so that loading works)
+		this.gameInfo.initializeSettings();
+
 		spriteBatch = new SpriteBatch(); // Create SpriteBatch
 
 		effectsSheet = new Texture(Gdx.files.internal("statusEffects.png"));
