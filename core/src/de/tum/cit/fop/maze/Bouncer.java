@@ -1,6 +1,7 @@
 package de.tum.cit.fop.maze;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Parser.GameField;
 
 public class Bouncer extends Enemy {
     private boolean isCharging = false;
