@@ -1,16 +1,17 @@
 package de.tum.cit.fop.maze;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.objects.GameObject;
 
 import java.util.Vector;
 
-public class Enemy extends GameObject {
+public class Enemy {
     boolean isDead;
     Entity enemyEntity;
 
     public Enemy(Vector2 startPos){
-        this.isDead = false;
+	    this.isDead = false;
         this.enemyEntity = new Entity(
                 startPos,
                 new Vector2(0f, 0f),

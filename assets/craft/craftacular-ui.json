@@ -86,6 +86,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: bold
 		fontColor: green
 	}
+  vampire-style: {
+    font: vampire-font
+    fontColor: white,
+  }
 }
 com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 	default-horizontal: {
