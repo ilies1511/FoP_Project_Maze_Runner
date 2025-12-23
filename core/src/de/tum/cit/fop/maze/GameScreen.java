@@ -68,27 +68,6 @@ public class GameScreen implements Screen {
      *
      */
 
-    public void allEnemies() {
-        this.enemies = new ArrayList<>();
-        //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
-        //this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
-        //this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
-        this.enemies.add(new fleeingEnemy(new Vector2(7f, 7f)));
-        //this.enemies.add(new Bouncer(new Vector2(7f, 7f)));
-    }
-
-    public boolean flicker(float delta) {
-        if (flickerTimer > 0f) {
-            flickerTimer -= delta;
-        }
-        //player visible if timer is 0 or if flickering
-        return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-    }
-
-    public void testing(){
-    }
-
-
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
         allEnemies();
@@ -457,6 +436,26 @@ public class GameScreen implements Screen {
                 }
             }
         }
+    }
+
+    public void allEnemies() {
+        this.enemies = new ArrayList<>();
+        //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
+        //this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
+        //this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+        this.enemies.add(new fleeingEnemy(new Vector2(7f, 7f)));
+        //this.enemies.add(new Bouncer(new Vector2(7f, 7f)));
+    }
+
+    public boolean flicker(float delta) {
+        if (flickerTimer > 0f) {
+            flickerTimer -= delta;
+        }
+        //player visible if timer is 0 or if flickering
+        return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
+    }
+
+    public void testing(){
     }
 
     public Player getPlayer() {
