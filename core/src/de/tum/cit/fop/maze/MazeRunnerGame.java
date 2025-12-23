@@ -41,9 +41,12 @@ public class MazeRunnerGame extends Game {
 	// Happy/Win/PowerUp Animations
 	private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
 
-	// Maze Textures
-	private TextureRegion wallTile;
-	private TextureRegion emptyTile;
+    //Enemy(Tourist)
+    private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
+
+    // Maze Textures
+    private TextureRegion wallTile;
+    private TextureRegion emptyTile;
 
 
 	//TODO (Connect Parser to Game Assets): - iziane Texture Regions for our Objects
@@ -92,9 +95,10 @@ public class MazeRunnerGame extends Game {
 		poisonEffect = new TextureRegion(effectsSheet, 0, 0, 32, 32);
 
 
-		skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
-		this.loadCharacterAnimation(); // Load character animation
-		this.loadMazeTiles();
+        skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
+        this.loadCharacterAnimation(); // Load character animation
+        this.loadTouristAnimation();
+        this.loadMazeTiles();
 
 		// Play some background music
 		// Background sound
@@ -184,47 +188,50 @@ public class MazeRunnerGame extends Game {
 		int frameWidth = 16;
 		int frameHeight = 32;
 
-		//split up character.png to frames and add what each of them does
-//
-		// Split the big image into a grid
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-		// ROW 0: DOWN
-		characterDownAnimation = new Animation<>(0.1f, getFrames(tmp[0], 0, 4)); // Walk 0-3
-		characterDownJumpAnimation = new Animation<>(0.1f, getFrames(tmp[0], 4, 3)); // Jump 4-6
-		characterDownSad = new Animation<>(0.2f, getFrames(tmp[0], 7, 3)); // Sad 7-9
-		characterDownWin = new Animation<>(0.1f, getFrames(tmp[0], 10, 1)); // Win 10
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
+        charAnimation(tmp);
+    }
+    public void charAnimation(TextureRegion[][] tmp){
+        // ROW 0: DOWN
+        characterDownAnimation = new Animation<>(0.1f, getFrames(tmp[0], 0, 4)); // Walk 0-3
+        characterDownJumpAnimation      = new Animation<>(0.1f, getFrames(tmp[0], 4, 3)); // Jump 4-6
+        characterDownSad       = new Animation<>(0.2f, getFrames(tmp[0], 7, 3)); // Sad 7-9
+        characterDownWin       = new Animation<>(0.1f, getFrames(tmp[0], 10, 1)); // Win 10
 
-		// ROW 1: RIGHT
-		characterRightAnimation = new Animation<>(0.1f, getFrames(tmp[1], 0, 4));
-		characterRightJumpAnimation = new Animation<>(0.1f, getFrames(tmp[1], 4, 3));
-		characterRightSad = new Animation<>(0.2f, getFrames(tmp[1], 7, 3));
-		characterRightWin = new Animation<>(0.1f, getFrames(tmp[1], 10, 1));
+        // ROW 1: RIGHT
+        characterRightAnimation = new Animation<>(0.1f, getFrames(tmp[1], 0, 4));
+        characterRightJumpAnimation      = new Animation<>(0.1f, getFrames(tmp[1], 4, 3));
+        characterRightSad       = new Animation<>(0.2f, getFrames(tmp[1], 7, 3));
+        characterRightWin       = new Animation<>(0.1f, getFrames(tmp[1], 10, 1));
 
-		// ROW 2: UP
-		characterUpAnimation = new Animation<>(0.1f, getFrames(tmp[2], 0, 4));
-		characterUpJumpAnimation = new Animation<>(0.1f, getFrames(tmp[2], 4, 3));
-		characterUpSad = new Animation<>(0.2f, getFrames(tmp[2], 7, 3));
-		characterUpWin = new Animation<>(0.1f, getFrames(tmp[2], 10, 1));
+        // ROW 2: UP
+        characterUpAnimation = new Animation<>(0.1f, getFrames(tmp[2], 0, 4));
+        characterUpJumpAnimation      = new Animation<>(0.1f, getFrames(tmp[2], 4, 3));
+        characterUpSad       = new Animation<>(0.2f, getFrames(tmp[2], 7, 3));
+        characterUpWin       = new Animation<>(0.1f, getFrames(tmp[2], 10, 1));
 
-		// ROW 3: LEFT
-		characterLeftAnimation = new Animation<>(0.1f, getFrames(tmp[3], 0, 4));
-		characterLeftJumpAnimation = new Animation<>(0.1f, getFrames(tmp[3], 4, 3));
-		characterLeftSad = new Animation<>(0.2f, getFrames(tmp[3], 7, 3));
-		characterLeftWin = new Animation<>(0.1f, getFrames(tmp[3], 10, 1));
+        // ROW 3: LEFT
+        characterLeftAnimation = new Animation<>(0.1f, getFrames(tmp[3], 0, 4));
+        characterLeftJumpAnimation      = new Animation<>(0.1f, getFrames(tmp[3], 4, 3));
+        characterLeftSad       = new Animation<>(0.2f, getFrames(tmp[3], 7, 3));
+        characterLeftWin       = new Animation<>(0.1f, getFrames(tmp[3], 10, 1));
 
-		// int animationFrames = 4;
+    }
 
-		// libGDX internal Array instead of ArrayList because of performance
-		//Array<TextureRegion> walkFrames = new Array<>(TextureRegion.class);
+    private void loadTouristAnimation() {
+        Texture walkSheet = new Texture(Gdx.files.internal("tourist.png"));
+        int frameWidth = 16;
+        int frameHeight = 32;
 
-		// Add all frames to the animation
-		// for (int col = 0; col < animationFrames; col++) {
-		//      walkFrames.add(new TextureRegion(walkSheet, col * frameWidth, 0, frameWidth, frameHeight));
-		//   }
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-		//  characterDownAnimation = new Animation<>(0.1f, walkFrames);
-	}
+        // Row 0: Down, Row 1: Right, Row 2: Up, Row 3: Left
+        touristDown = new Animation<>(0.1f, getFrames(tmp[0], 0, 4));
+        touristRight = new Animation<>(0.1f, getFrames(tmp[1], 0, 4));
+        touristUp = new Animation<>(0.1f, getFrames(tmp[2], 0, 4));
+        touristLeft = new Animation<>(0.1f, getFrames(tmp[3], 0, 4));
+    }
 
 	private void loadMazeTiles() {
 		try {
@@ -258,10 +265,16 @@ public class MazeRunnerGame extends Game {
 		skin.dispose(); // Dispose the skin
 	}
 
-	// Getter methods
-	public Skin getSkin() {
-		return skin;
-	}
+    // Getter methods
+    public Animation<TextureRegion> getTouristDown() { return touristDown; }
+    public Animation<TextureRegion> getTouristUp() { return touristUp; }
+    public Animation<TextureRegion> getTouristLeft() { return touristLeft; }
+    public Animation<TextureRegion> getTouristRight() { return touristRight; }
+
+
+    public Skin getSkin() {
+        return skin;
+    }
 
 	public SpriteBatch getSpriteBatch() {
 		return spriteBatch;
