@@ -73,16 +73,63 @@ public class GameScreen implements Screen {
      *
      * @param game The main game class, used to access global resources and methods.
      */
-    public GameScreen(MazeRunnerGame game) {
-        this.game = game;
 
+    public void allEnemies() {
         this.enemies = new ArrayList<>();
         //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
-        this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
-        this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+        //this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
+        //this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
+        this.enemies.add(new fleeingEnemy(new Vector2(7f, 7f)));
+        //this.enemies.add(new Bouncer(new Vector2(7f, 7f)));
+    }
+
+    public boolean flicker(float delta) {
+        if (flickerTimer > 0f) {
+            flickerTimer -= delta;
+        }
+        //player visible if timer is 0 or if flickering
+        return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
+    }
+
+    public void testing(){
+        //        for (Enemy enemy : enemies) {
+//            TextureRegion frameToDraw = game.getCharacterDownSad().getKeyFrame(animationTime, true);
+//
+//            // if tourist
+//            if (enemy instanceof fleeingEnemy) {
+//                float vx = enemy.getEnemyEntity().velocity.x;
+//                float vy = enemy.getEnemyEntity().velocity.y;
+//                Animation<TextureRegion> anim = game.getTouristDown();
+//
+//                if (Math.abs(vx) > Math.abs(vy)) {
+//                    if (vx > 0) anim = game.getTouristRight();
+//                    else if (vx < 0) anim = game.getTouristLeft();
+//                } else {
+//                    if (vy > 0) anim = game.getTouristUp();
+//                    else if (vy < 0) anim = game.getTouristDown();
+//                }
+//
+//                boolean isMoving = (vx != 0 || vy != 0);
+//                frameToDraw = anim.getKeyFrame(isMoving ? animationTime : 0, true);
+//            }
+//            //normal enemy
+//            else {
+//                frameToDraw = game.getCharacterDownSad().getKeyFrame(animationTime, true);
+//            }
+//
+//            game.getSpriteBatch().draw(
+//                    frameToDraw,
+//                    enemy.getEnemyEntity().position.x,
+//                    enemy.getEnemyEntity().position.y,
+//                    0.5f, 0.8f
+//            );
+//        }
+    }
 
 
-
+    public GameScreen(MazeRunnerGame game) {
+        this.game = game;
+        allEnemies();
 
         this.gameField = new GameField();
 
@@ -132,7 +179,7 @@ public class GameScreen implements Screen {
         // Tick all the effects
         this.player.tickEffects(delta);
 
-        // Input Handling New Class
+        // Input handling
         handleInput(delta);
 
             // Move all the entities
@@ -163,11 +210,8 @@ public class GameScreen implements Screen {
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
-        if (flickerTimer > 0f) {
-            flickerTimer -= delta;
-        }
-        //player visible if timer is 0 or if flickering
-        boolean isVisible = (flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f);
+
+
 
         // Render the text
         //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
@@ -176,7 +220,7 @@ public class GameScreen implements Screen {
 
 
         // Draw the character next to the text :) / We can reuse sinusInput here
-        if (isVisible) {
+        if (flicker(delta)) {
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
                 player.getPlayerEntity().position.x,
@@ -185,15 +229,17 @@ public class GameScreen implements Screen {
                 0.8f
         );}
 
+        testing();
+
         for (Enemy enemy : enemies) {
             game.getSpriteBatch().draw(
-                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // Static Victory for testing
+                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // testing
                     enemy.getEnemyEntity().position.x, enemy.getEnemyEntity().position.y,
                     0.5f,   0.8f
             );
         }
 
-        game.getSpriteBatch().end(); // Important to call this after drawing everything
+        game.getSpriteBatch().end();
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
@@ -227,7 +273,6 @@ public class GameScreen implements Screen {
             hud.updatePlayerStatusEffects();
         }
 
-        // --- MOVEMENT LOGIC ---
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
@@ -355,16 +400,36 @@ public class GameScreen implements Screen {
 
             // Check if they touch
             if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
-                if (flickerTimer <= 0){
-                    // print to console. .
-                    System.out.println("YOU DIED!");
-                    iterator.remove();
+                if (enemy instanceof fleeingEnemy){
+                    //if a tourist(fleeing Enemy)
+                    Vector2 pushDir = new Vector2(playerEntity.position).sub(enemyEntity.position).nor();
+                    Vector2 pushAmount = new Vector2(pushDir).scl(0.2f); // push by 0.2
+
+                    float newX = playerEntity.position.x + pushAmount.x;
+                    float newY = playerEntity.position.y + pushAmount.y;
+
+                    //if player not near wall
+                    if (!gameField.isInsideWall(newX, newY, playerEntity.getSize())) {
+                        playerEntity.position.x = newX;
+                        playerEntity.position.y = newY;
+                    }
+                    //otherwise same
+                    playerEntity.position.sub(playerEntity.velocity.x * delta, playerEntity.velocity.y * delta);                }
+                else {
+                    if (flickerTimer <= 0){ //canInvis to be implimented here
+                        // print to console. .
+                        System.out.println("YOU DIED!");
+                        iterator.remove();
 //                pdatePlayerHealth(1);
-                    hud.updatePlayerHP(1);
-                    flickerTimer = 3f;
+                        hud.updatePlayerHP(1);
+                        flickerTimer = 3f;
+                    }
                 }
 
+
+
             }
+
         }
     }
 
