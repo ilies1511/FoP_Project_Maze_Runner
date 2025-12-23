@@ -10,6 +10,8 @@ public class GameSettings {
     private int rightKey;
     private int attackKey;
     private int dashKey;
+    private int zoomInKey;
+    private int zoomOutKey;
 
     public GameSettings() {
         this.maxHealth = 10;
@@ -19,6 +21,8 @@ public class GameSettings {
         this.rightKey = Input.Keys.D;
         this.attackKey = Input.Keys.SPACE;
         this.dashKey = Input.Keys.SHIFT_LEFT;
+        this.zoomInKey = Input.Keys.EQUALS;
+        this.zoomOutKey = Input.Keys.MINUS;
     }
 
     public int getMaxHealth() {
@@ -49,6 +53,13 @@ public class GameSettings {
         return this.attackKey;
     }
 
+    public int getZoomInKey() {
+        return this.zoomInKey;
+    }
+    public int getZoomOutKey() {
+        return this.zoomOutKey;
+    }
+
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
@@ -75,5 +86,13 @@ public class GameSettings {
 
     public void setAttackKey(int attackKey) {
         this.attackKey = attackKey;
+    }
+
+    public void setZoomInKey(int zoomInKey) {
+        this.zoomInKey = zoomInKey;
+    }
+
+    public void setZoomOutKey(int zoomOutKey) {
+        this.zoomOutKey = zoomOutKey;
     }
 }
