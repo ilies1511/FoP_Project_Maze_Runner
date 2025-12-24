@@ -64,7 +64,7 @@ public abstract class GameObject {
     }
 
     // ANIMATIONS //
-    public void update(float delta) {
+    public void updateAnimation(float delta) {
         this.drawable.update(delta);
     }
 

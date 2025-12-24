@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Drawing.Drawable;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
@@ -38,20 +39,15 @@ public class GameScreen implements Screen {
     private final Camera camera;
     private final BitmapFont font;
 
-    private float sinusInput = 0f;
-    private float animationTime = 0f;
     private float flickerTimer = 0f;
 
     private GameField gameField;
 
-    private Animation<TextureRegion> currentAnimation;
-
     private final Player player;
-
 
     private final Stage stage;
 
-    private GameObject playerGameObject;
+    private final GameObject playerGameObject;
 
     private ArrayList<Enemy> enemies;
 
@@ -66,7 +62,6 @@ public class GameScreen implements Screen {
 
 
 //  For testing
-    int i = 0;
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -96,9 +91,6 @@ public class GameScreen implements Screen {
 
         // Create and configure the camera for the game view
         this.camera = new Camera(this);
-
-        // Start by looking down
-        currentAnimation = game.getCharacterDownAnimation();
 
         // Get the font from the game's skin
         font = game.getSkin().getFont("vampire-font");
@@ -151,17 +143,13 @@ public class GameScreen implements Screen {
 
             // Update camera to move with the player
             this.camera.update(delta);
-            animationTime += delta;
-            i++;
-//            if(i == 1){
-//                player.getPoisoned(5f);
-//                player.getBuffed(2f);
-//                hud.updatePlayerStatusEffects();
-//                hud.updatePlayerHP(player.getDamage(1));
-//
-//            }
-            // Set up and begin drawing with the sprite batch
 
+            // Update all the animations
+            this.player.updateAnimation(delta);
+
+            for (Enemy enemy: enemies) {
+                enemy.updateAnimation(delta);
+            }
         }
        else if(isPaused){
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
@@ -178,12 +166,6 @@ public class GameScreen implements Screen {
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
-
-
-
-        // Render the text
-        //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
-
         drawGameField();
 
 	    //TODO (Connect Parser to Game Assets): iziane
@@ -193,38 +175,17 @@ public class GameScreen implements Screen {
 
         // Draw the character next to the text :) / We can reuse sinusInput here
         if (flicker(delta)) {
-        game.getSpriteBatch().draw(
-                currentAnimation.getKeyFrame(animationTime, true),
-                player.getPlayerGameObject().position.x,
-                player.getPlayerGameObject().position.y,
-                0.4f,
-                0.8f
-        );}
-
-        testing();
+            player.animate(game.getSpriteBatch());
+        }
 
         for (Enemy enemy : enemies) {
-            game.getSpriteBatch().draw(
-                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // testing
-                    enemy.getEnemyEntity().position.x, enemy.getEnemyEntity().position.y,
-                    0.5f,   0.8f
-            );
+            enemy.animate(game.getSpriteBatch());
         }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-
-// For Testing
-//        i++;
-//        if(i == 1){
-//           player.getPoisoned(5f);
-//           player.getBuffed(2f);
-//           hud.updatePlayerStatusEffects();
-//           hud.updatePlayerHP(player.getDamage(1));
-//
-//        }
     }
 
     public GameField getGameField() {
@@ -234,31 +195,22 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
         boolean isMoving = false;
 
-        // Dash // TODO: Add dash to keybindings
+        // Dash
         if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey()))&& player.isCanDash())
         {
             this.player.addOrReapplyEffect(new Dash(player));
         }
 
-        // Temporary: keybinding for poisoned // TODO: remove it
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-//            this.player.addOrReapplyEffect(new Poisoned(player));
-//            hud.updatePlayerStatusEffects();
-//        }
-
-
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
               player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
-//            yPlayer += currentSpeed * delta;
-            currentAnimation = game.getCharacterUpAnimation();
+            this.player.changeAnimation(AnimationType.CHARACTER_UP);
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
             player.getPlayerGameObject().velocity.y = -player.getPlayerGameObject().getSpeed();
-//            yPlayer -= currentSpeed * delta;
-            currentAnimation = game.getCharacterDownAnimation();
+            this.player.changeAnimation(AnimationType.CHARACTER_DOWN);
             isMoving = true;
         }
 
@@ -269,15 +221,13 @@ public class GameScreen implements Screen {
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             player.getPlayerGameObject().velocity.x = -player.getPlayerGameObject().getSpeed();
-//            xPlayer -= currentSpeed * delta;
-            currentAnimation = game.getCharacterLeftAnimation();
+            this.player.changeAnimation(AnimationType.CHARACTER_LEFT);
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
             player.getPlayerGameObject().velocity.x = player.getPlayerGameObject().getSpeed();
-//            xPlayer += currentSpeed * delta;
-            currentAnimation = game.getCharacterRightAnimation();
+            this.player.changeAnimation(AnimationType.CHARACTER_RIGHT);
             isMoving = true;
         }
 
@@ -328,20 +278,21 @@ public class GameScreen implements Screen {
 
         // Victory pose
         if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            currentAnimation = game.getCharacterDownWin();
+            this.player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
             isMoving = true;
         }
+
         // Loser pose
         if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-            currentAnimation = game.getCharacterDownSad();
+            this.player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
             isMoving = true;
         }
 
         // Animation Timer
         if (isMoving) {
-            animationTime += delta;
+            this.player.updateAnimation(delta);
         } else {
-            animationTime = 0; // Reset to standing frame when not moving
+            this.player.setAnimationTime(0f);
         }
 
         // Go to Menu
@@ -458,9 +409,6 @@ public class GameScreen implements Screen {
         }
         //player visible if timer is 0 or if flickering
         return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-    }
-
-    public void testing(){
     }
 
     public Player getPlayer() {
