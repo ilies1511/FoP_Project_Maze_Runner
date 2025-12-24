@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Parser.GameField;
 
 public class PatrolEnemy extends Enemy {
-    private float moveTimer;
     private final float moveInterval = 2.0f; // Direction CHange
+    private float moveTimer;
 
     public PatrolEnemy(Vector2 startPos) {
         super(startPos);
@@ -18,10 +18,10 @@ public class PatrolEnemy extends Enemy {
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField) {
         moveTimer += deltaTime;
 
-        Vector2 nextPos = this.enemyEntity.nextPosition(deltaTime);
+        Vector2 nextPos = this.nextPosition(deltaTime);
 
         // Check if next position is inside a wall and do change dir if it is
-        boolean willHitWall = gameField.isInsideWall(nextPos.x, nextPos.y, this.enemyEntity.getSize());
+        boolean willHitWall = gameField.isInsideWall(nextPos.x, nextPos.y, this.getSize());
 
         // Change direction when timer is up or about ot hit wall
         if (moveTimer >= moveInterval || willHitWall) {
@@ -29,15 +29,16 @@ public class PatrolEnemy extends Enemy {
             moveTimer = 0;
         }
     }
+
     private void pickRandomDirection() {
         if (MathUtils.randomBoolean()) {
             // Left or Right
-            this.enemyEntity.velocity.set(MathUtils.randomSign(), 0);
+            this.velocity.set(MathUtils.randomSign(), 0);
         } else {
             // Up or Down
-            this.enemyEntity.velocity.set(0, MathUtils.randomSign());
+            this.velocity.set(0, MathUtils.randomSign());
         }
-        this.enemyEntity.velocity.scl(this.enemyEntity.getSpeed());
+        this.velocity.scl(this.getSpeed());
     }
 
 

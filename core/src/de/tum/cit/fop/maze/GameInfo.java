@@ -4,7 +4,7 @@ public class GameInfo {
     private GameSettings settings;
 //    private final GameField gameField;
 
-    public  GameInfo() {
+    public GameInfo() {
         this.settings = null; // Will be initialized in initializeSettings()
     }
 

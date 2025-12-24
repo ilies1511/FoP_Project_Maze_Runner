@@ -7,21 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class KeyBindingButton extends TextButton {
     private final String actionName;
-    private int keycode;
     private final KeyBindingCallback callback;
+    private int keycode;
     private boolean isListeningKeys;
-    
-    public interface KeyBindingCallback {
-        public void handle(int keycode);
-    }
-
-    private void updateBindingText() {
-        this.setText(this.actionName + " | " + Input.Keys.toString(this.keycode));
-    }
 
     public KeyBindingButton(String actionName, int keycode, Skin skin, KeyBindingCallback callback) {
         super("", skin);
@@ -52,6 +43,10 @@ public class KeyBindingButton extends TextButton {
         });
     }
 
+    private void updateBindingText() {
+        this.setText(this.actionName + " | " + Input.Keys.toString(this.keycode));
+    }
+
     private void startListening() {
         this.setText("Press any key");
         this.isListeningKeys = true;
@@ -62,5 +57,9 @@ public class KeyBindingButton extends TextButton {
         this.updateBindingText();
         this.isListeningKeys = false;
         this.getStage().setKeyboardFocus(null);
+    }
+
+    public interface KeyBindingCallback {
+        public void handle(int keycode);
     }
 }

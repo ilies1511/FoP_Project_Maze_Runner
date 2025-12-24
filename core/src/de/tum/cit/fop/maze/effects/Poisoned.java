@@ -1,6 +1,6 @@
 package de.tum.cit.fop.maze.effects;
 
-import de.tum.cit.fop.maze.Player;
+import de.tum.cit.fop.maze.objects.Player;
 
 public class Poisoned extends Effect {
     private static final float DURATION = 3;
@@ -19,8 +19,8 @@ public class Poisoned extends Effect {
 
     @Override
     public void onStart() {
-        if(!player.isInGodMode()){
-            this.player.getPlayerEntity().multiplySpeed(SPEED_MULTIPLIER);
+        if (!player.isInGodMode()) {
+            this.player.getPlayerGameObject().multiplySpeed(SPEED_MULTIPLIER);
         }
     }
 
@@ -33,6 +33,6 @@ public class Poisoned extends Effect {
 
     @Override
     public void onEnd() {
-        this.player.getPlayerEntity().multiplySpeed(1 / SPEED_MULTIPLIER);
+        this.player.getPlayerGameObject().multiplySpeed(1 / SPEED_MULTIPLIER);
     }
 }

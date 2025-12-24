@@ -1,6 +1,6 @@
 package de.tum.cit.fop.maze.effects;
 
-import de.tum.cit.fop.maze.Player;
+import de.tum.cit.fop.maze.objects.Player;
 
 public class DashCooldown extends Effect {
     private static final float DURATION = 0.3f;
