@@ -1,16 +1,16 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
-import de.tum.cit.fop.maze.Entity;
+import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.Parser.GameField;
 
 public class Enemy {
     boolean isDead;
-    Entity enemyEntity;
+    GameObject enemyGameObject;
 
     public Enemy(Vector2 startPos){
 	    this.isDead = false;
-        this.enemyEntity = new Entity(
+        this.enemyGameObject = new GameObject(
                 startPos,
                 new Vector2(0f, 0f),
                 2.0f,
@@ -20,13 +20,13 @@ public class Enemy {
 
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField ) {
         float detectionRange = 5.5f; // if within 1.5 tiles
-        if (this.enemyEntity.position.dst(playerPosition) < detectionRange) {
-            Vector2 direction = new Vector2(playerPosition).sub(this.enemyEntity.position); //chase character
+        if (this.enemyGameObject.position.dst(playerPosition) < detectionRange) {
+            Vector2 direction = new Vector2(playerPosition).sub(this.enemyGameObject.position); //chase character
             direction.nor(); // Normalize to length 1
-            this.enemyEntity.velocity = direction.scl(this.enemyEntity.getSpeed());
+            this.enemyGameObject.velocity = direction.scl(this.enemyGameObject.getSpeed());
         } else {
             // Stand still
-            this.enemyEntity.velocity.set(0, 0);
+            this.enemyGameObject.velocity.set(0, 0);
         }
     }
 
@@ -38,8 +38,8 @@ public class Enemy {
         isDead = dead;
     }
 
-    public Entity getEnemyEntity() {
-        return enemyEntity;
+    public GameObject getEnemyEntity() {
+        return enemyGameObject;
     }
 
 

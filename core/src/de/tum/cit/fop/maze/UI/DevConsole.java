@@ -1,21 +1,15 @@
 package de.tum.cit.fop.maze.UI;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.Player;
+import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.effects.Poisoned;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -88,7 +82,7 @@ public class DevConsole {
             hud.updatePlayerXP(0);
         });
         commandMap.put("setSpeedMultiplier", val->{
-            player.getPlayerEntity().multiplySpeed(Integer.parseInt(val));
+            player.getPlayerGameObject().multiplySpeed(Integer.parseInt(val));
         });
         commandMap.put("setGodMode", val->{
             if(Integer.parseInt(val) == 1){
