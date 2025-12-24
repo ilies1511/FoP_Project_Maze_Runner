@@ -30,7 +30,9 @@ public class Drawable {
                 AnimationType.CHARACTER_UP, game.getCharacterUpAnimation(),
                 AnimationType.CHARACTER_DOWN, game.getCharacterDownAnimation(),
                 AnimationType.CHARACTER_LEFT, game.getCharacterLeftAnimation(),
-                AnimationType.CHARACTER_RIGHT, game.getCharacterRightAnimation()
+                AnimationType.CHARACTER_RIGHT, game.getCharacterRightAnimation(),
+                AnimationType.CHARACTER_VICTORY_POSE, game.getCharacterDownWin(),
+                AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad()
         );
     }
 
@@ -53,6 +55,6 @@ public class Drawable {
     }
 
     public void animate(Batch batch, Vector2 position, Vector2 spriteSizes) {
-        batch.draw(this.currentAnimation.getKeyFrame(this.animationTime), position.x, position.y, spriteSizes.x, spriteSizes.y);
+        batch.draw(this.currentAnimation.getKeyFrame(this.animationTime, true), position.x, position.y, spriteSizes.x, spriteSizes.y);
     }
 }
