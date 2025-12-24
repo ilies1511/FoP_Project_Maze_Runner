@@ -141,9 +141,9 @@ public class Player extends GameObject {
         this.canInvis = canInvis;
     }
 
-    public void multiplySpeed(float multiplier) {
-        this.multiplySpeed(multiplier);
-    }
+//    public void multiplySpeed(float multiplier) {
+//        this.multiplySpeed(multiplier);
+//    }
 
     public boolean isInGodMode() {
         return isInGodMode;
