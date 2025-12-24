@@ -7,4 +7,5 @@ public enum AnimationType {
     CHARACTER_RIGHT,
     CHARACTER_VICTORY_POSE,
     CHARACTER_LOSER_POSE,
+    KEY_SHINE_ANIMATION,
 }
