@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.objects.GameObject;
 
 public class Enemy extends GameObject {
@@ -37,6 +38,8 @@ public class Enemy extends GameObject {
     }
 
     public void setDead(boolean dead) {
+        //TODO for Saad: implement enemyDie/Hit sounds
+    //    SoundController.playEnemyDieSound(1);
         isDead = dead;
     }
 

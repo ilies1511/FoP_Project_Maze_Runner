@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     private final PausedOverlay pausedScreen;
     private final ProgressionOverlay progressionOverlay;
     private final DevConsole devConsole;
+    private final SoundController soundController;
     private float flickerTimer = 0f;
     private GameField gameField;
     private ArrayList<Enemy> enemies;
@@ -81,8 +82,6 @@ public class GameScreen implements Screen {
         this.player = new Player(this); //create an instance of the player
         this.playerGameObject = this.player.getPlayerGameObject();
 
-        player.addOrReapplyEffect(new Dash(player)); // temp for debug
-
         // Create and configure the camera for the game view
         this.camera = new Camera(this);
 
@@ -96,7 +95,7 @@ public class GameScreen implements Screen {
         pausedScreen = new PausedOverlay(stage, game, this);
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
-
+        soundController = new SoundController();
 //        shapeRenderer = new ShapeRenderer();
 
     }
@@ -189,7 +188,7 @@ public class GameScreen implements Screen {
 
     private void handleInput(float delta) {
         boolean isMoving = false;
-
+        soundController.stopSteppingSound();
         // Dash
         if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) && player.isCanDash()) {
             this.player.addOrReapplyEffect(new Dash(player));
@@ -221,6 +220,7 @@ public class GameScreen implements Screen {
             player.getPlayerGameObject().velocity.x = 0f;
         }
         if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
+            SoundController.playPlayerHitSound(1);
             System.out.println("Attacking!"); // Debug print
 
             var iterator = enemies.iterator();
@@ -265,18 +265,22 @@ public class GameScreen implements Screen {
         // Victory pose
         if (Gdx.input.isKeyPressed(Input.Keys.K)) {
             this.player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
+            SoundController.playWinSound(1);
             isMoving = true;
         }
 
         // Loser pose
         if (Gdx.input.isKeyPressed(Input.Keys.L)) {
             this.player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
+            SoundController.playPlayerDieSound(1);
             isMoving = true;
         }
 
         // Animation Timer
         if (isMoving) {
             this.player.updateAnimation(delta);
+            soundController.playSteppingSound(1);
+
         } else {
             this.player.setAnimationTime(0f);
         }
