@@ -1,6 +1,8 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.objects;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
+import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
@@ -8,14 +10,11 @@ import de.tum.cit.fop.maze.effects.Poisoned;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
-
+    private final ArrayList<Effect> effects;
     private int health;
     private int xp;
-    private final ArrayList<Effect> effects;
-    private final Entity playerEntity;
-
     private boolean canDash;
     private boolean canInvis;
 
@@ -23,22 +22,22 @@ public class Player {
 
 
     public Player(GameScreen gameScreen) {
-
+        super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
+                0.8f), AnimationType.CHARACTER_DOWN);
         canDash = false;
         canInvis = false;
         isInGodMode = false;
         this.xp = 0;
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
-        this.playerEntity = new Entity(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
     }
 
-    public int receiveXP(int xpReceived){
-        return xp+=xpReceived;
+    public int receiveXP(int xpReceived) {
+        return xp += xpReceived;
     }
 
-    public int getDamage(int damage){
-        if(health - damage < 0){
+    public int getDamage(int damage) {
+        if (health - damage < 0) {
             health = 0;
             return health;
         }
@@ -49,7 +48,7 @@ public class Player {
     private void removeEffect(Class<? extends Effect> effectType) {
         // removes only one Effect (if exists)
         for (int i = 0; i < effects.size(); i++) {
-            Effect e =  effects.get(i);
+            Effect e = effects.get(i);
             if (e.getClass() == effectType) {
                 e.onEnd();
                 effects.remove(i);
@@ -101,13 +100,8 @@ public class Player {
         return 0f;
     }
 
-//    public boolean isBuffed() {
-//        return isBuffed;
-//    }
-
-
-    public Entity getPlayerEntity() {
-        return playerEntity;
+    public GameObject getPlayerGameObject() {
+        return (GameObject) this;
     }
 
     private boolean effectInEffects(Class<? extends Effect> effectType) {
@@ -147,8 +141,8 @@ public class Player {
         this.canInvis = canInvis;
     }
 
-    public void multiplySpeed(float multiplier){
-        playerEntity.multiplySpeed(multiplier);
+    public void multiplySpeed(float multiplier) {
+        this.multiplySpeed(multiplier);
     }
 
     public boolean isInGodMode() {

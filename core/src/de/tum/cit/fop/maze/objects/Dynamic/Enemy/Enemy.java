@@ -1,32 +1,34 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
-import de.tum.cit.fop.maze.Entity;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.objects.GameObject;
 
-public class Enemy {
+public class Enemy extends GameObject {
     boolean isDead;
-    Entity enemyEntity;
 
-    public Enemy(Vector2 startPos){
-	    this.isDead = false;
-        this.enemyEntity = new Entity(
+    public Enemy(Vector2 startPos) {
+        super(
                 startPos,
                 new Vector2(0f, 0f),
                 2.0f,
-                new Vector2(0.8f, 0.8f)
+                new Vector2(0.8f, 0.8f),
+                new Vector2(0.5f, 0.8f),
+                AnimationType.CHARACTER_DOWN // temporary, might move to each enemy separately
         );
+        this.isDead = false;
     }
 
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField ) {
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField) {
         float detectionRange = 5.5f; // if within 1.5 tiles
-        if (this.enemyEntity.position.dst(playerPosition) < detectionRange) {
-            Vector2 direction = new Vector2(playerPosition).sub(this.enemyEntity.position); //chase character
+        if (this.position.dst(playerPosition) < detectionRange) {
+            Vector2 direction = new Vector2(playerPosition).sub(this.position); //chase character
             direction.nor(); // Normalize to length 1
-            this.enemyEntity.velocity = direction.scl(this.enemyEntity.getSpeed());
+            this.velocity = direction.scl(this.getSpeed());
         } else {
             // Stand still
-            this.enemyEntity.velocity.set(0, 0);
+            this.velocity.set(0, 0);
         }
     }
 
@@ -38,8 +40,8 @@ public class Enemy {
         isDead = dead;
     }
 
-    public Entity getEnemyEntity() {
-        return enemyEntity;
+    public GameObject getEnemyEntity() {
+        return (GameObject) this;
     }
 
 

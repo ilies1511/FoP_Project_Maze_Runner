@@ -3,14 +3,14 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
+import de.tum.cit.fop.maze.Drawing.Drawable;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
@@ -18,10 +18,12 @@ import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
+import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
-import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.objects.GameObjectTemp;
+import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.ArrayList;
 
@@ -34,36 +36,23 @@ public class GameScreen implements Screen {
     private final MazeRunnerGame game;
     private final Camera camera;
     private final BitmapFont font;
-
-    private float sinusInput = 0f;
-    private float animationTime = 0f;
-    private float flickerTimer = 0f;
-
-    private GameField gameField;
-
-    private Animation<TextureRegion> currentAnimation;
-
     private final Player player;
-
-
     private final Stage stage;
-
-    private Entity playerEntity;
-
-    private ArrayList<Enemy> enemies;
-
+    private final GameObject playerGameObject;
     private final HUD hud;
     private final PausedOverlay pausedScreen;
     private final ProgressionOverlay progressionOverlay;
-    private final  DevConsole devConsole;
-
+    private final DevConsole devConsole;
+    private float flickerTimer = 0f;
+    private GameField gameField;
+    private ArrayList<Enemy> enemies;
     private boolean isPaused = false;
     private boolean isInProgression = false;
     private boolean isInDevConsole = false;
 
 
 //  For testing
-    int i = 0;
+
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -71,40 +60,37 @@ public class GameScreen implements Screen {
 
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
+
+        Drawable.initializeTextureMap(game);
+
         allEnemies();
 
-
-
-	    this.gameField = MazeParser.loadMap("level-1.properties", this.game);
-	    if (this.gameField == null) {
-		    System.err.println("Map failed to load! Check file path.");
-		    this.gameField = new GameField(5, 5);
-	    }
-	    else {
-		    System.out.println("Map loaded successfully!");
-		    System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
-	    }
+        this.gameField = MazeParser.loadMap("level-1.properties", this.game);
+        if (this.gameField == null) {
+            System.err.println("Map failed to load! Check file path.");
+            this.gameField = new GameField(5, 5);
+        } else {
+            System.out.println("Map loaded successfully!");
+            System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+        }
 
         this.player = new Player(this); //create an instance of the player
-        this.playerEntity = this.player.getPlayerEntity();
+        this.playerGameObject = this.player.getPlayerGameObject();
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
         // Create and configure the camera for the game view
         this.camera = new Camera(this);
 
-        // Start by looking down
-        currentAnimation = game.getCharacterDownAnimation();
-
         // Get the font from the game's skin
         font = game.getSkin().getFont("vampire-font");
 
-        Viewport viewport = new FitViewport(2000,1200); // TODO maybe add camera in the brackets
+        Viewport viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
         this.hud = new HUD(player, stage, game, this);
-        pausedScreen = new PausedOverlay(stage, game,this);
-        progressionOverlay = new ProgressionOverlay(stage,game,this,player, hud);
+        pausedScreen = new PausedOverlay(stage, game, this);
+        progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
 
 //        shapeRenderer = new ShapeRenderer();
@@ -115,19 +101,17 @@ public class GameScreen implements Screen {
     // Screen interface methods with necessary functionality
     @Override
     public void render(float delta) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole) {
             devConsole.showConsole();
             isInDevConsole = true;
-        }
-        else if(Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && isInDevConsole){
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && isInDevConsole) {
             devConsole.hideConsole();
             isInDevConsole = false;
         }
-        if(!isPaused){
+        if (!isPaused) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 pausedScreen.showPausedMenu();
-            }
-            else if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isInDevConsole){
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.I) && !isInDevConsole) {
                 progressionOverlay.showProgressionMenu();
                 isPaused = true;
                 isInProgression = true;
@@ -136,34 +120,28 @@ public class GameScreen implements Screen {
 
             // Input Handling New Class
             handleInput(delta);
-        // Tick all the effects
-        this.player.tickEffects(delta);
+            // Tick all the effects
+            this.player.tickEffects(delta);
 
-        // Input Handling New Class
-        handleInput(delta);
+            // Input Handling New Class
+            handleInput(delta);
 
             // Move all the entities
             updateEntitiesPositions(delta);
 
             // Update camera to move with the player
             this.camera.update(delta);
-            animationTime += delta;
-            i++;
-//            if(i == 1){
-//                player.getPoisoned(5f);
-//                player.getBuffed(2f);
-//                hud.updatePlayerStatusEffects();
-//                hud.updatePlayerHP(player.getDamage(1));
-//
-//            }
-            // Set up and begin drawing with the sprite batch
 
-        }
-       else if(isPaused){
+            // Update all the animations
+            this.player.updateAnimation(delta);
+
+            for (Enemy enemy : enemies) {
+                enemy.updateAnimation(delta);
+            }
+        } else if (isPaused) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
                 pausedScreen.hidePausedMenu();
-            }
-            else if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isInProgression){
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.I) && isInProgression) {
                 progressionOverlay.hideProgressionMenu();
                 isInProgression = false;
             }
@@ -174,53 +152,26 @@ public class GameScreen implements Screen {
 
         game.getSpriteBatch().begin(); // Important to call this before drawing anything
 
-
-
-
-        // Render the text
-        //font.draw(game.getSpriteBatch(), "Press ESC to go to menu", textX, textY);
-
         drawGameField();
 
-	    //TODO (Connect Parser to Game Assets): iziane
-	    for (GameObject obj : gameField.getGameObjects()) {
-		    obj.draw(game.getSpriteBatch());
-	    }
+        //TODO (Connect Parser to Game Assets): iziane
+        for (GameObjectTemp obj : gameField.getGameObjects()) {
+            obj.draw(game.getSpriteBatch());
+        }
 
         // Draw the character next to the text :) / We can reuse sinusInput here
         if (flicker(delta)) {
-        game.getSpriteBatch().draw(
-                currentAnimation.getKeyFrame(animationTime, true),
-                player.getPlayerEntity().position.x,
-                player.getPlayerEntity().position.y,
-                0.4f,
-                0.8f
-        );}
-
-        testing();
+            player.animate(game.getSpriteBatch());
+        }
 
         for (Enemy enemy : enemies) {
-            game.getSpriteBatch().draw(
-                    game.getCharacterDownSad().getKeyFrame(animationTime, true), // testing
-                    enemy.getEnemyEntity().position.x, enemy.getEnemyEntity().position.y,
-                    0.5f,   0.8f
-            );
+            enemy.animate(game.getSpriteBatch());
         }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-
-// For Testing
-//        i++;
-//        if(i == 1){
-//           player.getPoisoned(5f);
-//           player.getBuffed(2f);
-//           hud.updatePlayerStatusEffects();
-//           hud.updatePlayerHP(player.getDamage(1));
-//
-//        }
     }
 
     public GameField getGameField() {
@@ -230,55 +181,35 @@ public class GameScreen implements Screen {
     private void handleInput(float delta) {
         boolean isMoving = false;
 
-        // Dash // TODO: Add dash to keybindings
-        if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey()))&& player.isCanDash())
-        {
+        // Dash
+        if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) && player.isCanDash()) {
             this.player.addOrReapplyEffect(new Dash(player));
         }
 
-        // Temporary: keybinding for poisoned // TODO: remove it
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-//            this.player.addOrReapplyEffect(new Poisoned(player));
-//            hud.updatePlayerStatusEffects();
-//        }
-
-
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-              player.getPlayerEntity().velocity.y = player.getPlayerEntity().getSpeed();
-//            yPlayer += currentSpeed * delta;
-            currentAnimation = game.getCharacterUpAnimation();
+            player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
+            this.player.changeAnimation(AnimationType.CHARACTER_UP);
             isMoving = true;
-        }
-
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-            player.getPlayerEntity().velocity.y = -player.getPlayerEntity().getSpeed();
-//            yPlayer -= currentSpeed * delta;
-            currentAnimation = game.getCharacterDownAnimation();
+        } else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
+            player.getPlayerGameObject().velocity.y = -player.getPlayerGameObject().getSpeed();
+            this.player.changeAnimation(AnimationType.CHARACTER_DOWN);
             isMoving = true;
-        }
-
-        else {
-            player.getPlayerEntity().velocity.y = 0f;
+        } else {
+            player.getPlayerGameObject().velocity.y = 0f;
         }
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-            player.getPlayerEntity().velocity.x = -player.getPlayerEntity().getSpeed();
-//            xPlayer -= currentSpeed * delta;
-            currentAnimation = game.getCharacterLeftAnimation();
+            player.getPlayerGameObject().velocity.x = -player.getPlayerGameObject().getSpeed();
+            this.player.changeAnimation(AnimationType.CHARACTER_LEFT);
             isMoving = true;
-        }
-
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-            player.getPlayerEntity().velocity.x = player.getPlayerEntity().getSpeed();
-//            xPlayer += currentSpeed * delta;
-            currentAnimation = game.getCharacterRightAnimation();
+        } else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
+            player.getPlayerGameObject().velocity.x = player.getPlayerGameObject().getSpeed();
+            this.player.changeAnimation(AnimationType.CHARACTER_RIGHT);
             isMoving = true;
-        }
-
-        else {
-            player.getPlayerEntity().velocity.x = 0f;
+        } else {
+            player.getPlayerGameObject().velocity.x = 0f;
         }
         if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             System.out.println("Attacking!"); // Debug print
@@ -288,7 +219,7 @@ public class GameScreen implements Screen {
                 Enemy enemy = iterator.next();
 
                 // distance between Player and Enemy
-                float distance = player.getPlayerEntity().position.dst(enemy.getEnemyEntity().position);
+                float distance = player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position);
 
                 //if enemy within 1.5, kill
                 if (distance < 1.5f) {
@@ -324,20 +255,21 @@ public class GameScreen implements Screen {
 
         // Victory pose
         if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            currentAnimation = game.getCharacterDownWin();
+            this.player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
             isMoving = true;
         }
+
         // Loser pose
         if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-            currentAnimation = game.getCharacterDownSad();
+            this.player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
             isMoving = true;
         }
 
         // Animation Timer
         if (isMoving) {
-            animationTime += delta;
+            this.player.updateAnimation(delta);
         } else {
-            animationTime = 0; // Reset to standing frame when not moving
+            this.player.setAnimationTime(0f);
         }
 
         // Go to Menu
@@ -346,9 +278,9 @@ public class GameScreen implements Screen {
 
     private void updateEntitiesPositions(float delta) {
         // X and Y are calculated separately to avoid going through walls diagonally
-        float velocityX = player.getPlayerEntity().velocity.x;
-        float velocityY = player.getPlayerEntity().velocity.y;
-        float maxSpeed = player.getPlayerEntity().getSpeed();
+        float velocityX = player.getPlayerGameObject().velocity.x;
+        float velocityY = player.getPlayerGameObject().velocity.y;
+        float maxSpeed = player.getPlayerGameObject().getSpeed();
 
         float diagonalMultiplier = 1.0f; // so that diagonal movement is not faster than normal one
         float currentSpeedSqr = velocityX * velocityX + velocityY * velocityY;
@@ -361,52 +293,52 @@ public class GameScreen implements Screen {
         float moveAmountX = velocityX * diagonalMultiplier * delta;
         float moveAmountY = velocityY * diagonalMultiplier * delta;
 
-        float nextX = player.getPlayerEntity().position.x + moveAmountX;
-        float currentY = player.getPlayerEntity().position.y;
+        float nextX = player.getPlayerGameObject().position.x + moveAmountX;
+        float currentY = player.getPlayerGameObject().position.y;
 
-        if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerEntity().getSize())) {
-            this.player.getPlayerEntity().position.x = nextX;
+        if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerGameObject().getSize())) {
+            this.player.getPlayerGameObject().position.x = nextX;
         }
 
-        float currentX = player.getPlayerEntity().position.x;
-        float nextY = player.getPlayerEntity().position.y + player.getPlayerEntity().velocity.y * delta;
+        float currentX = player.getPlayerGameObject().position.x;
+        float nextY = player.getPlayerGameObject().position.y + player.getPlayerGameObject().velocity.y * delta;
 
-        if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerEntity().getSize())) {
-            player.getPlayerEntity().position.y = nextY;
+        if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerGameObject().getSize())) {
+            player.getPlayerGameObject().position.y = nextY;
         }
 
         var iterator = enemies.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
-            Entity enemyEntity = enemy.getEnemyEntity(); // Get Character
+            GameObject enemyGameObject = enemy.getEnemyEntity(); // Get Character
 
-            enemy.updateBehavior(delta, player.getPlayerEntity().position, gameField);
-            Vector2 nextPos = enemyEntity.nextPosition(delta);
+            enemy.updateBehavior(delta, player.getPlayerGameObject().position, gameField);
+            Vector2 nextPos = enemyGameObject.nextPosition(delta);
 
             //gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY to prev test
-            if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyEntity.getSize())) {
-                enemyEntity.move(delta);
+            if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGameObject.getSize())) {
+                enemyGameObject.move(delta);
             }
 
             // Check if they touch
-            if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
-                if (enemy instanceof FleeingEnemy){
+            if (GameObject.entitiesOverlap(playerGameObject, enemyGameObject)) {
+                if (enemy instanceof FleeingEnemy) {
                     //if a tourist(fleeing Enemy)
-                    Vector2 pushDir = new Vector2(playerEntity.position).sub(enemyEntity.position).nor();
+                    Vector2 pushDir = new Vector2(playerGameObject.position).sub(enemyGameObject.position).nor();
                     Vector2 pushAmount = new Vector2(pushDir).scl(0.2f); // push by 0.2
 
-                    float newX = playerEntity.position.x + pushAmount.x;
-                    float newY = playerEntity.position.y + pushAmount.y;
+                    float newX = playerGameObject.position.x + pushAmount.x;
+                    float newY = playerGameObject.position.y + pushAmount.y;
 
                     //if player not near wall
-                    if (!gameField.isInsideWall(newX, newY, playerEntity.getSize())) {
-                        playerEntity.position.x = newX;
-                        playerEntity.position.y = newY;
+                    if (!gameField.isInsideWall(newX, newY, playerGameObject.getSize())) {
+                        playerGameObject.position.x = newX;
+                        playerGameObject.position.y = newY;
                     }
                     //otherwise same
-                    playerEntity.position.sub(playerEntity.velocity.x * delta, playerEntity.velocity.y * delta);                }
-                else {
-                    if (flickerTimer <= 0 && !player.isCanInvis()){    //canInvis to be implimented here
+                    playerGameObject.position.sub(playerGameObject.velocity.x * delta, playerGameObject.velocity.y * delta);
+                } else {
+                    if (flickerTimer <= 0 && !player.isCanInvis()) {    //canInvis to be implimented here
                         // print to console. .
                         System.out.println("YOU DIED!");
                         iterator.remove();
@@ -456,9 +388,6 @@ public class GameScreen implements Screen {
         return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
     }
 
-    public void testing(){
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -490,12 +419,12 @@ public class GameScreen implements Screen {
     public void dispose() {
     }
 
-    public void setPaused(boolean paused) {
-        isPaused = paused;
-    }
-
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
     // Additional methods and logic can be added as needed for the game screen
 }
