@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Drawing.Drawable;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
@@ -73,9 +74,10 @@ public class GameScreen implements Screen {
 
     public GameScreen(MazeRunnerGame game) {
         this.game = game;
+
+        Drawable.initializeTextureMap(game);
+
         allEnemies();
-
-
 
 	    this.gameField = MazeParser.loadMap("level-1.properties", this.game);
 	    if (this.gameField == null) {

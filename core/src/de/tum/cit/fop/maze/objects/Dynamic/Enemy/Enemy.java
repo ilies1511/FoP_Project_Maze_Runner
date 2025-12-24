@@ -1,6 +1,7 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.Parser.GameField;
 
@@ -13,7 +14,8 @@ public class Enemy extends GameObject {
                 new Vector2(0f, 0f),
                 2.0f,
                 new Vector2(0.8f, 0.8f),
-                new Vector2(0.5f,   0.8f)
+                new Vector2(0.5f,   0.8f),
+                AnimationType.CHARACTER_DOWN // temporary, might move to each enemy separately
         );
 	    this.isDead = false;
     }

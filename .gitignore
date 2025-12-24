@@ -204,3 +204,7 @@ $RECYCLE.BIN/
 
 ### Data usefull only locally, no need to push to git
 data/
+
+### Other stuff
+.kotlin/
+.idea/

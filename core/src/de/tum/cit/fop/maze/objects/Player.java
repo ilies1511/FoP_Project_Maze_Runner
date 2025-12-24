@@ -1,6 +1,7 @@
 package de.tum.cit.fop.maze.objects;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
@@ -24,7 +25,7 @@ public class Player extends GameObject {
 
     public Player(GameScreen gameScreen) {
         super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
-                0.8f));
+                0.8f), AnimationType.CHARACTER_DOWN);
         canDash = false;
         canInvis = false;
         isInGodMode = false;
