@@ -12,7 +12,8 @@ public class Enemy extends GameObject {
                 startPos,
                 new Vector2(0f, 0f),
                 2.0f,
-                new Vector2(0.8f, 0.8f)
+                new Vector2(0.8f, 0.8f),
+                new Vector2(0.5f,   0.8f)
         );
 	    this.isDead = false;
     }
