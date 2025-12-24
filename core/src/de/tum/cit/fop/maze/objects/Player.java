@@ -23,7 +23,8 @@ public class Player extends GameObject {
 
 
     public Player(GameScreen gameScreen) {
-        super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
+        super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
+                0.8f));
         canDash = false;
         canInvis = false;
         isInGodMode = false;
