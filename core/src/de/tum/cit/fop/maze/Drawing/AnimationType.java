@@ -1,6 +1,6 @@
-package de.tum.cit.fop.maze.Drawing
+package de.tum.cit.fop.maze.Drawing;
 
-enum class AnimationType {
+public enum AnimationType {
     CHARACTER_UP,
     CHARACTER_DOWN,
     CHARACTER_LEFT,
