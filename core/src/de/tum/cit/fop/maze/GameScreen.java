@@ -18,9 +18,10 @@ import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.effects.Dash;
-import de.tum.cit.fop.maze.effects.Poisoned;
 
 import java.util.ArrayList;
 
@@ -389,7 +390,7 @@ public class GameScreen implements Screen {
 
             // Check if they touch
             if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
-                if (enemy instanceof fleeingEnemy){
+                if (enemy instanceof FleeingEnemy){
                     //if a tourist(fleeing Enemy)
                     Vector2 pushDir = new Vector2(playerEntity.position).sub(enemyEntity.position).nor();
                     Vector2 pushAmount = new Vector2(pushDir).scl(0.2f); // push by 0.2
@@ -405,7 +406,7 @@ public class GameScreen implements Screen {
                     //otherwise same
                     playerEntity.position.sub(playerEntity.velocity.x * delta, playerEntity.velocity.y * delta);                }
                 else {
-                    if (flickerTimer <= 0){ //canInvis to be implimented here
+                    if (flickerTimer <= 0 && !player.isCanInvis()){    //canInvis to be implimented here
                         // print to console. .
                         System.out.println("YOU DIED!");
                         iterator.remove();
@@ -441,9 +442,9 @@ public class GameScreen implements Screen {
     public void allEnemies() {
         this.enemies = new ArrayList<>();
         //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
-        //this.enemies.add(new patrolEnemy(new Vector2(5f, 5f)));
-        //this.enemies.add(new patrolEnemy(new Vector2(15f, 5f)));
-        this.enemies.add(new fleeingEnemy(new Vector2(7f, 7f)));
+        //this.enemies.add(new PatrolEnemy(new Vector2(5f, 5f)));
+        //this.enemies.add(new PatrolEnemy(new Vector2(15f, 5f)));
+        this.enemies.add(new FleeingEnemy(new Vector2(7f, 7f)));
         //this.enemies.add(new Bouncer(new Vector2(7f, 7f)));
     }
 
