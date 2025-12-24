@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
+import de.tum.cit.fop.maze.Drawing.Drawable;
 
 public abstract class GameObject {
     public Vector2 position;
@@ -13,14 +15,16 @@ public abstract class GameObject {
     private Vector2 sizes;
     private Vector2 spriteSizes;
     protected TextureRegion texture;
+    private Drawable drawable;
 
-    public GameObject(Vector2 position, Vector2 velocity, float speed, Vector2 sizes, Vector2 spriteSizes) {
+    public GameObject(Vector2 position, Vector2 velocity, float speed, Vector2 sizes, Vector2 spriteSizes, AnimationType initialAnimationType) {
         this.position = position;
         this.velocity = velocity;
         this.speed = speed;
         this.speedMultiplier = 1f;
         this.sizes = sizes;
         this.spriteSizes = spriteSizes;
+        this.drawable = new Drawable(initialAnimationType);
     }
 
     public Vector2 getSize() {
@@ -59,14 +63,20 @@ public abstract class GameObject {
         this.position =  this.nextPosition(deltaTime);
     }
 
-    public void draw(Batch batch) {
-        if (texture != null) {
-            batch.draw(texture, position.x, position.y, spriteSizes.x, spriteSizes.y);
-        }
-    }
-
+    // ANIMATIONS //
     public void update(float delta) {
-        //
+        this.drawable.update(delta);
     }
 
+    public void setAnimationTime(float animationTime) {
+        this.drawable.setAnimationTime(animationTime);
+    }
+
+    public void changeAnimation(AnimationType animationType) {
+        this.drawable.changeAnimation(animationType);
+    }
+
+    public void animate(Batch batch) {
+        this.drawable.animate(batch, this.position, this.spriteSizes);
+    }
 }
