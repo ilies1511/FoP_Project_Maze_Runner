@@ -47,12 +47,11 @@ public class Bouncer extends Enemy {
         // same row
         else if (diffY < 0.5f && diffX < range) {
             startCharge(new Vector2(Math.signum(playerPosition.x - this.position.x), 0));
-        }
-        else {
+        } else {
             // attentive when char far away
             if (Math.random() < 0.02) {
                 // Random nudges
-                this.velocity.set((float)Math.random()-0.5f, (float)Math.random()-0.5f).nor();
+                this.velocity.set((float) Math.random() - 0.5f, (float) Math.random() - 0.5f).nor();
             }
         }
     }

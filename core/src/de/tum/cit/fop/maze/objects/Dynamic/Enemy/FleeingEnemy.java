@@ -20,9 +20,9 @@ public class FleeingEnemy extends Enemy {
             float diffY = this.position.y - playerPosition.y;
 
             Vector2 runHoriz = new Vector2(Math.signum(diffX) * this.speed, 0);
-            Vector2 runVert  = new Vector2(0, Math.signum(diffY) * this.speed);
+            Vector2 runVert = new Vector2(0, Math.signum(diffY) * this.speed);
             boolean canGoHoriz = !willHitWall(runHoriz, deltaTime, gameField);
-            boolean canGoVert  = !willHitWall(runVert, deltaTime, gameField);
+            boolean canGoVert = !willHitWall(runVert, deltaTime, gameField);
 
             if (canGoHoriz && canGoVert) {
                 // both open

@@ -2,12 +2,15 @@ package de.tum.cit.fop.maze.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.effects.Poisoned;
+import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,17 +19,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DevConsole {
+    private final Map<String, Consumer<String>> commandMap = new HashMap<>();
+    Pattern pattern;
     private MazeRunnerGame game;
     private GameScreen gameScreen;
     private Stage stage;
     private Table table;
+    ;
     private String setCommands;
-    private String getCommands;;
+    private String getCommands;
     private Player player;
     private HUD hud;
-    Pattern pattern;
-    private final Map<String, Consumer<String>> commandMap = new HashMap<>();
-    public DevConsole(MazeRunnerGame game, GameScreen gameScreen, Stage stage, Player player, HUD hud){
+
+    public DevConsole(MazeRunnerGame game, GameScreen gameScreen, Stage stage, Player player, HUD hud) {
 
         setCommands = "XP|HP|SpeedMultiplier|Dash|Invis|GodMode";
         getCommands = "Buff|Debuff|Key|Help";
@@ -36,8 +41,6 @@ public class DevConsole {
                 setCommands,
                 getCommands
         );
-
-
 
 
         Pattern pattern = Pattern.compile(regex);
@@ -73,61 +76,57 @@ public class DevConsole {
 //        myConsoleStyle.vScrollKnob = blackDrawable;
 //        scrollPane.setStyle(myConsoleStyle);
 
-        commandMap.put("setHP", val ->{
+        commandMap.put("setHP", val -> {
             player.setHealth(Integer.parseInt(val));
             hud.updatePlayerHP(0);
         });
-        commandMap.put("setXP", val ->{
+        commandMap.put("setXP", val -> {
             player.setXp(Integer.parseInt(val));
             hud.updatePlayerXP(0);
         });
-        commandMap.put("setSpeedMultiplier", val->{
+        commandMap.put("setSpeedMultiplier", val -> {
             player.getPlayerGameObject().multiplySpeed(Integer.parseInt(val));
         });
-        commandMap.put("setGodMode", val->{
-            if(Integer.parseInt(val) == 1){
-                player.setInGodMode(true) ;
-            }
-            else if(Integer.parseInt(val) == 0){
+        commandMap.put("setGodMode", val -> {
+            if (Integer.parseInt(val) == 1) {
+                player.setInGodMode(true);
+            } else if (Integer.parseInt(val) == 0) {
                 player.setInGodMode(false);
-            }
-            else {
+            } else {
                 consoleLabel.setText(consoleLabel.getText() + "\n> " + "Please enter a value between 1 and 0");
             }
         });
-        commandMap.put("setDash", val ->{
-            if(Integer.parseInt(val) == 1){
-                player.setCanDash(true); ;
-            }
-            else if(Integer.parseInt(val) == 0){
+        commandMap.put("setDash", val -> {
+            if (Integer.parseInt(val) == 1) {
+                player.setCanDash(true);
+                ;
+            } else if (Integer.parseInt(val) == 0) {
                 player.setCanDash(false);
-            }
-            else {
+            } else {
                 consoleLabel.setText(consoleLabel.getText() + "\n> " + "Please enter a value between 1 and 0");
             }
         });
-        commandMap.put("setInvis", val ->{
-            if(Integer.parseInt(val) == 1){
-                player.setCanInvis(true); ;
-            }
-            else if(Integer.parseInt(val) == 0){
+        commandMap.put("setInvis", val -> {
+            if (Integer.parseInt(val) == 1) {
+                player.setCanInvis(true);
+                ;
+            } else if (Integer.parseInt(val) == 0) {
                 player.setCanInvis(false);
-            }
-            else {
+            } else {
                 consoleLabel.setText(consoleLabel.getText() + "\n> " + "Please enter a value between 1 and 0");
             }
         });
-        commandMap.put("getHelp", val ->{
-            consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: "+"\n> "+setCommands + "\n> " + "get[...]: "+"\n> " + getCommands);
+        commandMap.put("getHelp", val -> {
+            consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands);
         });
-        commandMap.put("getBuff", val ->{
-           //TODO when Buffs are done
+        commandMap.put("getBuff", val -> {
+            //TODO when Buffs are done
         });
-        commandMap.put("getDebuff", val ->{
+        commandMap.put("getDebuff", val -> {
             this.player.addOrReapplyEffect(new Poisoned(player));
             hud.updatePlayerStatusEffects();
         });
-        commandMap.put("getKey", val->{
+        commandMap.put("getKey", val -> {
             //TODO when keys are done
         });
         TextField inputField = new TextField("", game.getSkin(), "default");
@@ -146,11 +145,11 @@ public class DevConsole {
 
                     //TODO LOGIC
                     Matcher matcher = pattern.matcher(command);
-                    if(matcher.matches()){
+                    if (matcher.matches()) {
                         consoleLabel.setText(consoleLabel.getText() + "\n> " + command);
                         String stringCommand = matcher.group(1);
 
-                        if(matcher.group(2)!=null){
+                        if (matcher.group(2) != null) {
                             String intCommand = matcher.group(2);
                             Consumer<String> action = commandMap.get(stringCommand);
 
@@ -159,8 +158,7 @@ public class DevConsole {
                             } else {
                                 consoleLabel.setText(consoleLabel.getText() + "\n> " + "Unknown command logic: " + stringCommand);
                             }
-                        }
-                        else{
+                        } else {
                             Consumer<String> action = commandMap.get(stringCommand);
 
                             if (action != null) {
@@ -170,8 +168,7 @@ public class DevConsole {
                             }
                         }
 
-                    }
-                    else{
+                    } else {
                         consoleLabel.setText(consoleLabel.getText() + "\n> " + "Invalid command");
                     }
 
@@ -191,13 +188,13 @@ public class DevConsole {
         stage.addActor(table);
     }
 
-    public void hideConsole(){
+    public void hideConsole() {
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);
-        Gdx.input.setInputProcessor(null    );
+        Gdx.input.setInputProcessor(null);
     }
 
-    public void showConsole(){
+    public void showConsole() {
         table.setVisible(true);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);

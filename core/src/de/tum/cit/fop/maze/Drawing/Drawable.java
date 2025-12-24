@@ -25,6 +25,12 @@ public class Drawable {
     private float animationTime;
     private Animation<TextureRegion> currentAnimation;
 
+    public Drawable(AnimationType animationType) {
+        assert textureMap != null; // should initialize before creating any drawable
+        this.currentAnimation = textureMap.get(animationType);
+        this.animationTime = 0;
+    }
+
     public static void initializeTextureMap(MazeRunnerGame game) {
         textureMap = Map.of(
                 AnimationType.CHARACTER_UP, game.getCharacterUpAnimation(),
@@ -34,12 +40,6 @@ public class Drawable {
                 AnimationType.CHARACTER_VICTORY_POSE, game.getCharacterDownWin(),
                 AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad()
         );
-    }
-
-    public Drawable(AnimationType animationType) {
-        assert textureMap != null; // should initialize before creating any drawable
-        this.currentAnimation = textureMap.get(animationType);
-        this.animationTime = 0;
     }
 
     public void update(float delta) {

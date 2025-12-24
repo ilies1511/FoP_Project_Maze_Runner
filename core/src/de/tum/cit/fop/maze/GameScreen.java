@@ -3,11 +3,9 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,9 +18,9 @@ import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
+import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.Player;
@@ -38,30 +36,23 @@ public class GameScreen implements Screen {
     private final MazeRunnerGame game;
     private final Camera camera;
     private final BitmapFont font;
-
-    private float flickerTimer = 0f;
-
-    private GameField gameField;
-
     private final Player player;
-
     private final Stage stage;
-
     private final GameObject playerGameObject;
-
-    private ArrayList<Enemy> enemies;
-
     private final HUD hud;
     private final PausedOverlay pausedScreen;
     private final ProgressionOverlay progressionOverlay;
-    private final  DevConsole devConsole;
-
+    private final DevConsole devConsole;
+    private float flickerTimer = 0f;
+    private GameField gameField;
+    private ArrayList<Enemy> enemies;
     private boolean isPaused = false;
     private boolean isInProgression = false;
     private boolean isInDevConsole = false;
 
 
 //  For testing
+
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
@@ -74,15 +65,14 @@ public class GameScreen implements Screen {
 
         allEnemies();
 
-	    this.gameField = MazeParser.loadMap("level-1.properties", this.game);
-	    if (this.gameField == null) {
-		    System.err.println("Map failed to load! Check file path.");
-		    this.gameField = new GameField(5, 5);
-	    }
-	    else {
-		    System.out.println("Map loaded successfully!");
-		    System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
-	    }
+        this.gameField = MazeParser.loadMap("level-1.properties", this.game);
+        if (this.gameField == null) {
+            System.err.println("Map failed to load! Check file path.");
+            this.gameField = new GameField(5, 5);
+        } else {
+            System.out.println("Map loaded successfully!");
+            System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+        }
 
         this.player = new Player(this); //create an instance of the player
         this.playerGameObject = this.player.getPlayerGameObject();
@@ -95,12 +85,12 @@ public class GameScreen implements Screen {
         // Get the font from the game's skin
         font = game.getSkin().getFont("vampire-font");
 
-        Viewport viewport = new FitViewport(2000,1200); // TODO maybe add camera in the brackets
+        Viewport viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
         this.hud = new HUD(player, stage, game, this);
-        pausedScreen = new PausedOverlay(stage, game,this);
-        progressionOverlay = new ProgressionOverlay(stage,game,this,player, hud);
+        pausedScreen = new PausedOverlay(stage, game, this);
+        progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
 
 //        shapeRenderer = new ShapeRenderer();
@@ -111,19 +101,17 @@ public class GameScreen implements Screen {
     // Screen interface methods with necessary functionality
     @Override
     public void render(float delta) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole) {
             devConsole.showConsole();
             isInDevConsole = true;
-        }
-        else if(Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && isInDevConsole){
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && isInDevConsole) {
             devConsole.hideConsole();
             isInDevConsole = false;
         }
-        if(!isPaused){
+        if (!isPaused) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 pausedScreen.showPausedMenu();
-            }
-            else if(Gdx.input.isKeyJustPressed(Input.Keys.I) && !isInDevConsole){
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.I) && !isInDevConsole) {
                 progressionOverlay.showProgressionMenu();
                 isPaused = true;
                 isInProgression = true;
@@ -132,11 +120,11 @@ public class GameScreen implements Screen {
 
             // Input Handling New Class
             handleInput(delta);
-        // Tick all the effects
-        this.player.tickEffects(delta);
+            // Tick all the effects
+            this.player.tickEffects(delta);
 
-        // Input Handling New Class
-        handleInput(delta);
+            // Input Handling New Class
+            handleInput(delta);
 
             // Move all the entities
             updateEntitiesPositions(delta);
@@ -147,15 +135,13 @@ public class GameScreen implements Screen {
             // Update all the animations
             this.player.updateAnimation(delta);
 
-            for (Enemy enemy: enemies) {
+            for (Enemy enemy : enemies) {
                 enemy.updateAnimation(delta);
             }
-        }
-       else if(isPaused){
+        } else if (isPaused) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
                 pausedScreen.hidePausedMenu();
-            }
-            else if(Gdx.input.isKeyJustPressed(Input.Keys.I) && isInProgression){
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.I) && isInProgression) {
                 progressionOverlay.hideProgressionMenu();
                 isInProgression = false;
             }
@@ -168,10 +154,10 @@ public class GameScreen implements Screen {
 
         drawGameField();
 
-	    //TODO (Connect Parser to Game Assets): iziane
-	    for (GameObjectTemp obj : gameField.getGameObjects()) {
-		    obj.draw(game.getSpriteBatch());
-	    }
+        //TODO (Connect Parser to Game Assets): iziane
+        for (GameObjectTemp obj : gameField.getGameObjects()) {
+            obj.draw(game.getSpriteBatch());
+        }
 
         // Draw the character next to the text :) / We can reuse sinusInput here
         if (flicker(delta)) {
@@ -196,25 +182,20 @@ public class GameScreen implements Screen {
         boolean isMoving = false;
 
         // Dash
-        if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey()))&& player.isCanDash())
-        {
+        if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) && player.isCanDash()) {
             this.player.addOrReapplyEffect(new Dash(player));
         }
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-              player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
+            player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
             this.player.changeAnimation(AnimationType.CHARACTER_UP);
             isMoving = true;
-        }
-
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
+        } else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
             player.getPlayerGameObject().velocity.y = -player.getPlayerGameObject().getSpeed();
             this.player.changeAnimation(AnimationType.CHARACTER_DOWN);
             isMoving = true;
-        }
-
-        else {
+        } else {
             player.getPlayerGameObject().velocity.y = 0f;
         }
 
@@ -223,15 +204,11 @@ public class GameScreen implements Screen {
             player.getPlayerGameObject().velocity.x = -player.getPlayerGameObject().getSpeed();
             this.player.changeAnimation(AnimationType.CHARACTER_LEFT);
             isMoving = true;
-        }
-
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
+        } else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
             player.getPlayerGameObject().velocity.x = player.getPlayerGameObject().getSpeed();
             this.player.changeAnimation(AnimationType.CHARACTER_RIGHT);
             isMoving = true;
-        }
-
-        else {
+        } else {
             player.getPlayerGameObject().velocity.x = 0f;
         }
         if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
@@ -331,7 +308,7 @@ public class GameScreen implements Screen {
         }
 
         var iterator = enemies.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             GameObject enemyGameObject = enemy.getEnemyEntity(); // Get Character
 
@@ -345,7 +322,7 @@ public class GameScreen implements Screen {
 
             // Check if they touch
             if (GameObject.entitiesOverlap(playerGameObject, enemyGameObject)) {
-                if (enemy instanceof FleeingEnemy){
+                if (enemy instanceof FleeingEnemy) {
                     //if a tourist(fleeing Enemy)
                     Vector2 pushDir = new Vector2(playerGameObject.position).sub(enemyGameObject.position).nor();
                     Vector2 pushAmount = new Vector2(pushDir).scl(0.2f); // push by 0.2
@@ -359,9 +336,9 @@ public class GameScreen implements Screen {
                         playerGameObject.position.y = newY;
                     }
                     //otherwise same
-                    playerGameObject.position.sub(playerGameObject.velocity.x * delta, playerGameObject.velocity.y * delta);                }
-                else {
-                    if (flickerTimer <= 0 && !player.isCanInvis()){    //canInvis to be implimented here
+                    playerGameObject.position.sub(playerGameObject.velocity.x * delta, playerGameObject.velocity.y * delta);
+                } else {
+                    if (flickerTimer <= 0 && !player.isCanInvis()) {    //canInvis to be implimented here
                         // print to console. .
                         System.out.println("YOU DIED!");
                         iterator.remove();
@@ -442,12 +419,12 @@ public class GameScreen implements Screen {
     public void dispose() {
     }
 
-    public void setPaused(boolean paused) {
-        isPaused = paused;
-    }
-
     public boolean isPaused() {
         return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
     // Additional methods and logic can be added as needed for the game screen
 }
