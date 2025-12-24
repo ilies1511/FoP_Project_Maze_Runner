@@ -6,13 +6,17 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.SoundController;
 
 public class PausedOverlay {
 
@@ -53,10 +57,37 @@ public class PausedOverlay {
                 hidePausedMenu();
             }
         });
+        goToGameButton.getLabel().setTouchable(Touchable.disabled);
+        goToGameButton.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !goToGameButton.isDisabled()) {
+                    SoundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
+            }
+        });
+
         goToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.goToMenu();
+            }
+        });
+        goToMainMenu.getLabel().setTouchable(Touchable.disabled);
+        goToMainMenu.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !goToMainMenu.isDisabled()) {
+                    SoundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
             }
         });
 
