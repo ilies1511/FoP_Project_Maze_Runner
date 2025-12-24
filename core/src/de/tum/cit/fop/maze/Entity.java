@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Entity {
     public Vector2 position;
     public Vector2 velocity;
-    float speed;
+    public float speed;
     private float speedMultiplier;
     private Vector2 sizes;
 
