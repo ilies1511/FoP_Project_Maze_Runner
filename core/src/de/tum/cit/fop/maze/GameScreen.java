@@ -20,8 +20,10 @@ import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.GameObjectTemp;
+import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.ArrayList;
 
@@ -48,7 +50,7 @@ public class GameScreen implements Screen {
 
     private final Stage stage;
 
-    private Entity playerEntity;
+    private GameObject playerGameObject;
 
     private ArrayList<Enemy> enemies;
 
@@ -86,7 +88,7 @@ public class GameScreen implements Screen {
 	    }
 
         this.player = new Player(this); //create an instance of the player
-        this.playerEntity = this.player.getPlayerEntity();
+        this.playerGameObject = this.player.getPlayerGameObject();
 
         player.addOrReapplyEffect(new Dash(player)); // temp for debug
 
@@ -183,7 +185,7 @@ public class GameScreen implements Screen {
         drawGameField();
 
 	    //TODO (Connect Parser to Game Assets): iziane
-	    for (GameObject obj : gameField.getGameObjects()) {
+	    for (GameObjectTemp obj : gameField.getGameObjects()) {
 		    obj.draw(game.getSpriteBatch());
 	    }
 
@@ -191,8 +193,8 @@ public class GameScreen implements Screen {
         if (flicker(delta)) {
         game.getSpriteBatch().draw(
                 currentAnimation.getKeyFrame(animationTime, true),
-                player.getPlayerEntity().position.x,
-                player.getPlayerEntity().position.y,
+                player.getPlayerGameObject().position.x,
+                player.getPlayerGameObject().position.y,
                 0.4f,
                 0.8f
         );}
@@ -245,40 +247,40 @@ public class GameScreen implements Screen {
 
         // Y-Axis
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-              player.getPlayerEntity().velocity.y = player.getPlayerEntity().getSpeed();
+              player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
 //            yPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterUpAnimation();
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-            player.getPlayerEntity().velocity.y = -player.getPlayerEntity().getSpeed();
+            player.getPlayerGameObject().velocity.y = -player.getPlayerGameObject().getSpeed();
 //            yPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterDownAnimation();
             isMoving = true;
         }
 
         else {
-            player.getPlayerEntity().velocity.y = 0f;
+            player.getPlayerGameObject().velocity.y = 0f;
         }
 
         // X-Axis (Using 'else if' prevents diagonal animation glitches, though movement is still diagonal)
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-            player.getPlayerEntity().velocity.x = -player.getPlayerEntity().getSpeed();
+            player.getPlayerGameObject().velocity.x = -player.getPlayerGameObject().getSpeed();
 //            xPlayer -= currentSpeed * delta;
             currentAnimation = game.getCharacterLeftAnimation();
             isMoving = true;
         }
 
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-            player.getPlayerEntity().velocity.x = player.getPlayerEntity().getSpeed();
+            player.getPlayerGameObject().velocity.x = player.getPlayerGameObject().getSpeed();
 //            xPlayer += currentSpeed * delta;
             currentAnimation = game.getCharacterRightAnimation();
             isMoving = true;
         }
 
         else {
-            player.getPlayerEntity().velocity.x = 0f;
+            player.getPlayerGameObject().velocity.x = 0f;
         }
         if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             System.out.println("Attacking!"); // Debug print
@@ -288,7 +290,7 @@ public class GameScreen implements Screen {
                 Enemy enemy = iterator.next();
 
                 // distance between Player and Enemy
-                float distance = player.getPlayerEntity().position.dst(enemy.getEnemyEntity().position);
+                float distance = player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position);
 
                 //if enemy within 1.5, kill
                 if (distance < 1.5f) {
@@ -346,9 +348,9 @@ public class GameScreen implements Screen {
 
     private void updateEntitiesPositions(float delta) {
         // X and Y are calculated separately to avoid going through walls diagonally
-        float velocityX = player.getPlayerEntity().velocity.x;
-        float velocityY = player.getPlayerEntity().velocity.y;
-        float maxSpeed = player.getPlayerEntity().getSpeed();
+        float velocityX = player.getPlayerGameObject().velocity.x;
+        float velocityY = player.getPlayerGameObject().velocity.y;
+        float maxSpeed = player.getPlayerGameObject().getSpeed();
 
         float diagonalMultiplier = 1.0f; // so that diagonal movement is not faster than normal one
         float currentSpeedSqr = velocityX * velocityX + velocityY * velocityY;
@@ -361,50 +363,50 @@ public class GameScreen implements Screen {
         float moveAmountX = velocityX * diagonalMultiplier * delta;
         float moveAmountY = velocityY * diagonalMultiplier * delta;
 
-        float nextX = player.getPlayerEntity().position.x + moveAmountX;
-        float currentY = player.getPlayerEntity().position.y;
+        float nextX = player.getPlayerGameObject().position.x + moveAmountX;
+        float currentY = player.getPlayerGameObject().position.y;
 
-        if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerEntity().getSize())) {
-            this.player.getPlayerEntity().position.x = nextX;
+        if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerGameObject().getSize())) {
+            this.player.getPlayerGameObject().position.x = nextX;
         }
 
-        float currentX = player.getPlayerEntity().position.x;
-        float nextY = player.getPlayerEntity().position.y + player.getPlayerEntity().velocity.y * delta;
+        float currentX = player.getPlayerGameObject().position.x;
+        float nextY = player.getPlayerGameObject().position.y + player.getPlayerGameObject().velocity.y * delta;
 
-        if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerEntity().getSize())) {
-            player.getPlayerEntity().position.y = nextY;
+        if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerGameObject().getSize())) {
+            player.getPlayerGameObject().position.y = nextY;
         }
 
         var iterator = enemies.iterator();
         while(iterator.hasNext()){
             Enemy enemy = iterator.next();
-            Entity enemyEntity = enemy.getEnemyEntity(); // Get Character
+            GameObject enemyGameObject = enemy.getEnemyEntity(); // Get Character
 
-            enemy.updateBehavior(delta, player.getPlayerEntity().position, gameField);
-            Vector2 nextPos = enemyEntity.nextPosition(delta);
+            enemy.updateBehavior(delta, player.getPlayerGameObject().position, gameField);
+            Vector2 nextPos = enemyGameObject.nextPosition(delta);
 
             //gameField.getTile((int) nextPos.x, (int) nextPos.y) == TileType.EMPTY to prev test
-            if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyEntity.getSize())) {
-                enemyEntity.move(delta);
+            if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGameObject.getSize())) {
+                enemyGameObject.move(delta);
             }
 
             // Check if they touch
-            if (Entity.entitiesOverlap(playerEntity, enemyEntity)) {
+            if (GameObject.entitiesOverlap(playerGameObject, enemyGameObject)) {
                 if (enemy instanceof FleeingEnemy){
                     //if a tourist(fleeing Enemy)
-                    Vector2 pushDir = new Vector2(playerEntity.position).sub(enemyEntity.position).nor();
+                    Vector2 pushDir = new Vector2(playerGameObject.position).sub(enemyGameObject.position).nor();
                     Vector2 pushAmount = new Vector2(pushDir).scl(0.2f); // push by 0.2
 
-                    float newX = playerEntity.position.x + pushAmount.x;
-                    float newY = playerEntity.position.y + pushAmount.y;
+                    float newX = playerGameObject.position.x + pushAmount.x;
+                    float newY = playerGameObject.position.y + pushAmount.y;
 
                     //if player not near wall
-                    if (!gameField.isInsideWall(newX, newY, playerEntity.getSize())) {
-                        playerEntity.position.x = newX;
-                        playerEntity.position.y = newY;
+                    if (!gameField.isInsideWall(newX, newY, playerGameObject.getSize())) {
+                        playerGameObject.position.x = newX;
+                        playerGameObject.position.y = newY;
                     }
                     //otherwise same
-                    playerEntity.position.sub(playerEntity.velocity.x * delta, playerEntity.velocity.y * delta);                }
+                    playerGameObject.position.sub(playerGameObject.velocity.x * delta, playerGameObject.velocity.y * delta);                }
                 else {
                     if (flickerTimer <= 0 && !player.isCanInvis()){    //canInvis to be implimented here
                         // print to console. .

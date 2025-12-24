@@ -1,6 +1,6 @@
 package de.tum.cit.fop.maze.effects;
 
-import de.tum.cit.fop.maze.Player;
+import de.tum.cit.fop.maze.objects.Player;
 
 public abstract class Effect {
     protected Player player;

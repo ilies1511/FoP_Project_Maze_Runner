@@ -99,8 +99,7 @@
 
 package de.tum.cit.fop.maze.Parser;
 import com.badlogic.gdx.math.Vector2;
-import de.tum.cit.fop.maze.Parser.TileType;
-import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.GameObjectTemp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +111,7 @@ public class GameField {
 	private final int width;
 	private final int height;
 	private final TileType[] grid;
-	private final List<GameObject> gameObjects;
+	private final List<GameObjectTemp> gameObjectTemps;
 	private Vector2 playerStartPos;
 	// END -- Attributes
 
@@ -121,7 +120,7 @@ public class GameField {
 		this.width = width;
 		this.height = height;
 		this.grid = new TileType[width * height];
-		this.gameObjects = new ArrayList<>();
+		this.gameObjectTemps = new ArrayList<>();
 		this.playerStartPos = new Vector2(1, 1);
 	}
 	// END -- Constructor
@@ -135,8 +134,8 @@ public class GameField {
 		return (t == null) ? TileType.EMPTY : t;
 	}
 
-	public List<GameObject> getGameObjects() {
-		return gameObjects;
+	public List<GameObjectTemp> getGameObjects() {
+		return gameObjectTemps;
 	}
 
 	public Vector2 getPlayerStartPos() {
@@ -166,8 +165,8 @@ public class GameField {
 
 	// BEGIN -- Methods
 	// TODO: 22.12.25 iziane
-	public void addGameObject(GameObject obj) {
-		this.gameObjects.add(obj);
+	public void addGameObject(GameObjectTemp obj) {
+		this.gameObjectTemps.add(obj);
 	}
 
 	private boolean isValid(int x, int y) {

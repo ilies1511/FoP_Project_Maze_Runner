@@ -1,6 +1,7 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.objects;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
@@ -8,13 +9,12 @@ import de.tum.cit.fop.maze.effects.Poisoned;
 
 import java.util.ArrayList;
 
-public class Player {
+public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
 
     private int health;
     private int xp;
     private final ArrayList<Effect> effects;
-    private final Entity playerEntity;
 
     private boolean canDash;
     private boolean canInvis;
@@ -23,14 +23,13 @@ public class Player {
 
 
     public Player(GameScreen gameScreen) {
-
+        super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
         canDash = false;
         canInvis = false;
         isInGodMode = false;
         this.xp = 0;
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
-        this.playerEntity = new Entity(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f));
     }
 
     public int receiveXP(int xpReceived){
@@ -101,13 +100,8 @@ public class Player {
         return 0f;
     }
 
-//    public boolean isBuffed() {
-//        return isBuffed;
-//    }
-
-
-    public Entity getPlayerEntity() {
-        return playerEntity;
+    public GameObject getPlayerGameObject() {
+        return (GameObject) this;
     }
 
     private boolean effectInEffects(Class<? extends Effect> effectType) {
@@ -148,7 +142,7 @@ public class Player {
     }
 
     public void multiplySpeed(float multiplier){
-        playerEntity.multiplySpeed(multiplier);
+        this.multiplySpeed(multiplier);
     }
 
     public boolean isInGodMode() {
