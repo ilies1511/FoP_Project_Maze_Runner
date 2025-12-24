@@ -53,6 +53,8 @@ public class MazeRunnerGame extends Game {
     private TextureRegion woodenSign;
     private TextureRegion bloodEffect;
     private TextureRegion poisonEffect;
+    // Collectables
+    private Animation<TextureRegion> keyShineAnimation;
 
     /**
      * Constructor for MazeRunnerGame.
@@ -89,6 +91,7 @@ public class MazeRunnerGame extends Game {
         this.loadCharacterAnimation(); // Load character animation
         this.loadTouristAnimation();
         this.loadMazeTiles();
+        this.loadKeyShineAnimation();
 
         // Play some background music
         // Background sound
@@ -182,7 +185,7 @@ public class MazeRunnerGame extends Game {
         charAnimation(tmp);
     }
 
-    public void charAnimation(TextureRegion[][] tmp) {
+    private void charAnimation(TextureRegion[][] tmp) {
         // ROW 0: DOWN
         characterDownAnimation = new Animation<>(0.1f, getFrames(tmp[0], 0, 4)); // Walk 0-3
         characterDownJumpAnimation = new Animation<>(0.1f, getFrames(tmp[0], 4, 3)); // Jump 4-6
@@ -207,6 +210,26 @@ public class MazeRunnerGame extends Game {
         characterLeftSad = new Animation<>(0.2f, getFrames(tmp[3], 7, 3));
         characterLeftWin = new Animation<>(0.1f, getFrames(tmp[3], 10, 1));
 
+    }
+
+    private void loadKeyShineAnimation() {
+        Texture cardSheet = new Texture(Gdx.files.internal("key.png"));
+
+        int FRAME_COLS = 9;
+        int FRAME_ROWS = 1;
+
+        int frameWidth = cardSheet.getWidth() / FRAME_COLS;
+        int frameHeight = cardSheet.getHeight() / FRAME_ROWS;
+
+        TextureRegion[][] tmp = TextureRegion.split(cardSheet, frameWidth, frameHeight);
+
+        Array<TextureRegion> frames = new Array<>();
+
+        for (int j = 0; j < FRAME_COLS; j++) {
+            frames.add(tmp[0][j]);
+        }
+
+        this.keyShineAnimation = new Animation<>(0.12f, frames, Animation.PlayMode.LOOP);
     }
 
     private void loadTouristAnimation() {
@@ -343,6 +366,11 @@ public class MazeRunnerGame extends Game {
 
     public Animation<TextureRegion> getCharacterRightWin() {
         return characterRightWin;
+    }
+
+    // Collectable animation Getters
+    public Animation<TextureRegion> getKeyShineAnimation() {
+        return this.keyShineAnimation;
     }
 
     // Maze Tile Getters
