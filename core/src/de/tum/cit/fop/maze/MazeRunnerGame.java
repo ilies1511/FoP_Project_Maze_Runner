@@ -3,7 +3,6 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import de.tum.cit.fop.maze.UI.MenuScreen;
+import de.tum.cit.fop.maze.UI.SettingsScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.Arrays;
@@ -56,6 +56,8 @@ public class MazeRunnerGame extends Game {
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
 
+
+
     /**
      * Constructor for MazeRunnerGame.
      *
@@ -95,10 +97,9 @@ public class MazeRunnerGame extends Game {
 
         // Play some background music
         // Background sound
-        Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
-        backgroundMusic.setLooping(true);
-        backgroundMusic.play();
 
+        SoundController soundController = new SoundController();
+        soundController.playBackgroundMusic(0.5f);
 
         // TODO: iziane
         this.loadObjectTextures();

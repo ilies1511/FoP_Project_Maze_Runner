@@ -6,13 +6,17 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.objects.Player;
 
 public class ProgressionOverlay {
@@ -86,6 +90,19 @@ public class ProgressionOverlay {
 
             }
         });
+        maxHealth.getLabel().setTouchable(Touchable.disabled);
+        maxHealth.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !maxHealth.isDisabled()) {
+                    SoundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
+            }
+        });
         dash.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -99,6 +116,19 @@ public class ProgressionOverlay {
 
             }
         });
+        dash.getLabel().setTouchable(Touchable.disabled);
+        dash.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !dash.isDisabled()) {
+                    SoundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
+            }
+        });
         maxSpeed.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -108,6 +138,19 @@ public class ProgressionOverlay {
                     invis.setDisabled(false);
                 }
 
+            }
+        });
+        maxSpeed.getLabel().setTouchable(Touchable.disabled);
+        maxSpeed.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !maxSpeed.isDisabled()) {
+                    SoundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
             }
         });
         invis.addListener(new ChangeListener() {
@@ -121,10 +164,39 @@ public class ProgressionOverlay {
                 }
             }
         });
+        invis.getLabel().setTouchable(Touchable.disabled);
+        invis.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if(!invis.isDisabled()){
+                    if (pointer == -1) {
+                        SoundController.playUI_hoverOverSound(1);
+                    }
+                }
+
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
+            }
+        });
         hide.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideProgressionMenu();
+            }
+        });
+        hide.getLabel().setTouchable(Touchable.disabled);
+        hide.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1&&!hide.isDisabled()) {
+                    SoundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SoundController.playUI_buttonClickSound(1);
             }
         });
 
