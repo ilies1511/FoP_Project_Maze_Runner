@@ -24,6 +24,8 @@ import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.Player;
+import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.Key;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,7 @@ public class GameScreen implements Screen {
     private float flickerTimer = 0f;
     private GameField gameField;
     private ArrayList<Enemy> enemies;
+    private ArrayList<Collectable> collectables;
     private boolean isPaused = false;
     private boolean isInProgression = false;
     private boolean isInDevConsole = false;
@@ -64,6 +67,7 @@ public class GameScreen implements Screen {
         Drawable.initializeTextureMap(game);
 
         allEnemies();
+        allCollectables();
 
         this.gameField = MazeParser.loadMap("level-1.properties", this.game);
         if (this.gameField == null) {
@@ -118,8 +122,6 @@ public class GameScreen implements Screen {
             }
             ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
-            // Input Handling New Class
-            handleInput(delta);
             // Tick all the effects
             this.player.tickEffects(delta);
 
@@ -134,10 +136,13 @@ public class GameScreen implements Screen {
 
             // Update all the animations
             this.player.updateAnimation(delta);
-
             for (Enemy enemy : enemies) {
                 enemy.updateAnimation(delta);
             }
+            for (Collectable collectable : collectables) {
+                collectable.updateAnimation(delta);
+            }
+
         } else if (isPaused) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
                 pausedScreen.hidePausedMenu();
@@ -166,6 +171,10 @@ public class GameScreen implements Screen {
 
         for (Enemy enemy : enemies) {
             enemy.animate(game.getSpriteBatch());
+        }
+
+        for (Collectable collectable : collectables) {
+            collectable.animate(game.getSpriteBatch());
         }
 
         game.getSpriteBatch().end(); // Important to call this after drawing everything
@@ -371,13 +380,18 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void allEnemies() {
+    private void allEnemies() {
         this.enemies = new ArrayList<>();
         //this.enemies.add(new Enemy(new Vector2(10f, 3f)));
         //this.enemies.add(new PatrolEnemy(new Vector2(5f, 5f)));
         //this.enemies.add(new PatrolEnemy(new Vector2(15f, 5f)));
         this.enemies.add(new FleeingEnemy(new Vector2(7f, 7f)));
         //this.enemies.add(new Bouncer(new Vector2(7f, 7f)));
+    }
+
+    private void allCollectables() {
+        this.collectables = new ArrayList<>();
+        this.collectables.add(new Key(new Vector2(5.5f - 0.5f, 5.5f - 0.71f))); // substract half of sizes
     }
 
     public boolean flicker(float delta) {
