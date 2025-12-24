@@ -16,11 +16,10 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.objects.Player;
 
 public class ProgressionOverlay {
-    private Stage stage;
-    private MazeRunnerGame game;
     private final GameScreen gameScreen;
     private final HUD hud;
-
+    private Stage stage;
+    private MazeRunnerGame game;
     private Table table;
 
     private Player player;
@@ -53,34 +52,34 @@ public class ProgressionOverlay {
 
         table.row();
 
-        TextButton dash= new TextButton("Upgrade dash", game.getSkin(),"vampire-style");
+        TextButton dash = new TextButton("Upgrade dash", game.getSkin(), "vampire-style");
         table.add(dash).width(300).left().padLeft(50).padBottom(50);
         dash.setDisabled(true);
 
         table.row();
 
-        TextButton maxSpeed = new TextButton("Upgrade max speed", game.getSkin(),"vampire-style");
+        TextButton maxSpeed = new TextButton("Upgrade max speed", game.getSkin(), "vampire-style");
         table.add(maxSpeed).width(300).left().padLeft(50).padBottom(50);
         maxSpeed.setDisabled(true);
 
         table.row();
 
-        TextButton invis = new TextButton("Upgrade invisibility", game.getSkin(),"vampire-style");
+        TextButton invis = new TextButton("Upgrade invisibility", game.getSkin(), "vampire-style");
         table.add(invis).width(300).left().padLeft(50).padBottom(50);
         invis.setDisabled(true);
 
         table.row();
 
-        TextButton hide = new TextButton("Done", game.getSkin(),"vampire-style");
+        TextButton hide = new TextButton("Done", game.getSkin(), "vampire-style");
         table.add(hide).width(300).left().padLeft(50).padBottom(50);
 
         maxHealth.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(player.getXp() >= 15){
+                if (player.getXp() >= 15) {
 
                     hud.updatePlayerXP(-15);
-                    player.setHealth(player.getHealth()+1);
+                    player.setHealth(player.getHealth() + 1);
                     hud.updatePlayerHP(0);
                     dash.setDisabled(false);
                 }
@@ -90,7 +89,7 @@ public class ProgressionOverlay {
         dash.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(player.getXp() >= 15){
+                if (player.getXp() >= 15) {
                     dash.setDisabled(true);
                     player.setCanDash(true);
                     hud.updatePlayerXP(-15);
@@ -103,8 +102,9 @@ public class ProgressionOverlay {
         maxSpeed.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(player.getXp() >= 15){
-                    hud.updatePlayerXP(-15);;
+                if (player.getXp() >= 15) {
+                    hud.updatePlayerXP(-15);
+                    ;
                     player.multiplySpeed(1.15f);
                     invis.setDisabled(false);
                 }
@@ -115,10 +115,11 @@ public class ProgressionOverlay {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //TODO LOGIC
-                if(player.getXp() >= 15) {
+                if (player.getXp() >= 15) {
                     dash.setDisabled(true);
                     player.setCanInvis(true);
-                    hud.updatePlayerXP(-15);;
+                    hud.updatePlayerXP(-15);
+                    ;
                 }
             }
         });
@@ -130,17 +131,16 @@ public class ProgressionOverlay {
         });
 
 
-
     }
 
-    public void showProgressionMenu(){
+    public void showProgressionMenu() {
         table.setVisible(true);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         gameScreen.setPaused(true);
     }
 
-    public void hideProgressionMenu(){
+    public void hideProgressionMenu() {
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);

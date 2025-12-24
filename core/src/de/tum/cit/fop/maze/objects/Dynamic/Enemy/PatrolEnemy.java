@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Parser.GameField;
 
 public class PatrolEnemy extends Enemy {
-    private float moveTimer;
     private final float moveInterval = 2.0f; // Direction CHange
+    private float moveTimer;
 
     public PatrolEnemy(Vector2 startPos) {
         super(startPos);
@@ -29,6 +29,7 @@ public class PatrolEnemy extends Enemy {
             moveTimer = 0;
         }
     }
+
     private void pickRandomDirection() {
         if (MathUtils.randomBoolean()) {
             // Left or Right

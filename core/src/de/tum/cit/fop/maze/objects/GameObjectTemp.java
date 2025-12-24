@@ -17,27 +17,27 @@ Value | Type
 */
 
 public abstract class GameObjectTemp {
-	protected Vector2 position;
-	protected TextureRegion texture;
-	protected Rectangle bounds;
+    protected Vector2 position;
+    protected TextureRegion texture;
+    protected Rectangle bounds;
 
-	public GameObjectTemp(float x, float y, TextureRegion texture) {
-		this.position = new Vector2(x, y);
-		this.texture = texture;
-		this.bounds = new Rectangle(x, y, 1.0f, 1.0f);
-	}
+    public GameObjectTemp(float x, float y, TextureRegion texture) {
+        this.position = new Vector2(x, y);
+        this.texture = texture;
+        this.bounds = new Rectangle(x, y, 1.0f, 1.0f);
+    }
 
-	public void draw(Batch batch) {
-		if (texture != null) {
-			batch.draw(texture, position.x, position.y, 1.0f, 1.0f);
-		}
-	}
+    public void draw(Batch batch) {
+        if (texture != null) {
+            batch.draw(texture, position.x, position.y, 1.0f, 1.0f);
+        }
+    }
 
-	public void update(float delta) {
-		//
-	}
+    public void update(float delta) {
+        //
+    }
 
-	public Rectangle getBounds() {
-		return bounds;
-	}
+    public Rectangle getBounds() {
+        return bounds;
+    }
 }

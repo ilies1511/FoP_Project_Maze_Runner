@@ -11,10 +11,10 @@ public abstract class GameObject {
     public Vector2 position;
     public Vector2 velocity;
     public float speed;
+    protected TextureRegion texture;
     private float speedMultiplier;
     private Vector2 sizes;
     private Vector2 spriteSizes;
-    protected TextureRegion texture;
     private Drawable drawable;
 
     public GameObject(Vector2 position, Vector2 velocity, float speed, Vector2 sizes, Vector2 spriteSizes, AnimationType initialAnimationType) {
@@ -25,6 +25,10 @@ public abstract class GameObject {
         this.sizes = sizes;
         this.spriteSizes = spriteSizes;
         this.drawable = new Drawable(initialAnimationType);
+    }
+
+    public static Boolean entitiesOverlap(GameObject gameObject1, GameObject gameObject2) {
+        return gameObject1.getBoundingBox().overlaps(gameObject2.getBoundingBox());
     }
 
     public Vector2 getSize() {
@@ -51,16 +55,12 @@ public abstract class GameObject {
         return new Rectangle(this.position.x, this.position.y, this.sizes.x, this.sizes.y);
     }
 
-    public static Boolean entitiesOverlap(GameObject gameObject1, GameObject gameObject2) {
-        return gameObject1.getBoundingBox().overlaps(gameObject2.getBoundingBox());
-    }
-
     public Vector2 nextPosition(float deltaTime) {
         return new Vector2(this.position.x + deltaTime * this.velocity.x, this.position.y + deltaTime * this.velocity.y);
     }
 
     public void move(float deltaTime) {
-        this.position =  this.nextPosition(deltaTime);
+        this.position = this.nextPosition(deltaTime);
     }
 
     // ANIMATIONS //

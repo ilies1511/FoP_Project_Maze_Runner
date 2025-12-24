@@ -31,7 +31,7 @@ public class MenuScreen implements Screen {
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
 
-        Viewport viewport = new FitViewport(2000,1200); // Create a viewport with the camera
+        Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
         Table table = new Table(); // Create a table for layout
@@ -50,22 +50,22 @@ public class MenuScreen implements Screen {
 
         table.row();
 
-        TextButton goToEndlessButton = new TextButton("Endless mode", game.getSkin(),"vampire-style");
+        TextButton goToEndlessButton = new TextButton("Endless mode", game.getSkin(), "vampire-style");
         table.add(goToEndlessButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToSettingsButton = new TextButton("Settings", game.getSkin(),"vampire-style");
+        TextButton goToSettingsButton = new TextButton("Settings", game.getSkin(), "vampire-style");
         table.add(goToSettingsButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(),"vampire-style");
+        TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(), "vampire-style");
         table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
 
         table.row();
 
-        TextButton goToExitButton = new TextButton("Exit", game.getSkin(),"vampire-style");
+        TextButton goToExitButton = new TextButton("Exit", game.getSkin(), "vampire-style");
         table.add(goToExitButton).width(300).left().padLeft(50).padBottom(50);
 
 

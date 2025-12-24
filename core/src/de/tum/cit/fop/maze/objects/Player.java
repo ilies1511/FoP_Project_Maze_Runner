@@ -12,11 +12,9 @@ import java.util.ArrayList;
 
 public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
-
+    private final ArrayList<Effect> effects;
     private int health;
     private int xp;
-    private final ArrayList<Effect> effects;
-
     private boolean canDash;
     private boolean canInvis;
 
@@ -34,12 +32,12 @@ public class Player extends GameObject {
         this.effects = new ArrayList<>();
     }
 
-    public int receiveXP(int xpReceived){
-        return xp+=xpReceived;
+    public int receiveXP(int xpReceived) {
+        return xp += xpReceived;
     }
 
-    public int getDamage(int damage){
-        if(health - damage < 0){
+    public int getDamage(int damage) {
+        if (health - damage < 0) {
             health = 0;
             return health;
         }
@@ -50,7 +48,7 @@ public class Player extends GameObject {
     private void removeEffect(Class<? extends Effect> effectType) {
         // removes only one Effect (if exists)
         for (int i = 0; i < effects.size(); i++) {
-            Effect e =  effects.get(i);
+            Effect e = effects.get(i);
             if (e.getClass() == effectType) {
                 e.onEnd();
                 effects.remove(i);
@@ -143,7 +141,7 @@ public class Player extends GameObject {
         this.canInvis = canInvis;
     }
 
-    public void multiplySpeed(float multiplier){
+    public void multiplySpeed(float multiplier) {
         this.multiplySpeed(multiplier);
     }
 

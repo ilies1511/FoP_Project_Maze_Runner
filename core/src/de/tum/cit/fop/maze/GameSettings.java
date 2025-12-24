@@ -18,97 +18,6 @@ public class GameSettings {
     public int zoomInKey;
     public int zoomOutKey;
 
-    static public GameSettings loadGameSettings() {
-        FileHandle settings_file = Gdx.files.local(JSON_PATH);
-
-        if (!settings_file.exists()) {
-            System.err.println("Could not find settings file!");
-            return createDefaultSettings();
-        }
-
-        Json json = new Json();
-        return json.fromJson(GameSettings.class, settings_file);
-    }
-
-    public int getMaxHealth() {
-        return this.maxHealth;
-    }
-
-    public int getUpKey() {
-        return this.upKey;
-    }
-
-    public int getLeftKey() {
-        return this.leftKey;
-    }
-
-    public int getDownKey() {
-        return this.downKey;
-    }
-
-    public int getRightKey() {
-        return this.rightKey;
-    }
-
-    public int getDashKey() {
-        return this.dashKey;
-    }
-
-    public int getAttackKey() {
-        return this.attackKey;
-    }
-
-    public int getZoomInKey() {
-        return this.zoomInKey;
-    }
-    public int getZoomOutKey() {
-        return this.zoomOutKey;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-        saveToJson();
-    }
-
-    public void setUpKey(int upKey) {
-        this.upKey = upKey;
-        saveToJson();
-    }
-
-    public void setLeftKey(int leftKey) {
-        this.leftKey = leftKey;
-        saveToJson();
-    }
-
-    public void setDownKey(int downKey) {
-        this.downKey = downKey;
-        saveToJson();
-    }
-
-    public void setRightKey(int rightKey) {
-        this.rightKey = rightKey;
-        saveToJson();
-    }
-
-    public void setDashKey(int dashKey) {
-        this.dashKey = dashKey;
-        saveToJson();
-    }
-
-    public void setAttackKey(int attackKey) {
-        this.attackKey = attackKey;
-        saveToJson();
-    }
-
-    public void setZoomInKey(int zoomInKey) {
-        this.zoomInKey = zoomInKey;
-        saveToJson();
-    }
-
-    public void setZoomOutKey(int zoomOutKey) {
-        this.zoomOutKey = zoomOutKey;
-    }
-
     public GameSettings() {
         this.maxHealth = 10;
         this.upKey = Input.Keys.W;
@@ -121,11 +30,16 @@ public class GameSettings {
         this.zoomOutKey = Input.Keys.MINUS;
     }
 
-    private void saveToJson() {
+    static public GameSettings loadGameSettings() {
         FileHandle settings_file = Gdx.files.local(JSON_PATH);
 
+        if (!settings_file.exists()) {
+            System.err.println("Could not find settings file!");
+            return createDefaultSettings();
+        }
+
         Json json = new Json();
-        settings_file.writeString(json.toJson(this), false);
+        return json.fromJson(GameSettings.class, settings_file);
     }
 
     private static GameSettings createDefaultSettings() {
@@ -136,5 +50,92 @@ public class GameSettings {
         Json json = new Json();
         settings_file.writeString(json.toJson(gameSettings), false);
         return gameSettings;
+    }
+
+    public int getMaxHealth() {
+        return this.maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+        saveToJson();
+    }
+
+    public int getUpKey() {
+        return this.upKey;
+    }
+
+    public void setUpKey(int upKey) {
+        this.upKey = upKey;
+        saveToJson();
+    }
+
+    public int getLeftKey() {
+        return this.leftKey;
+    }
+
+    public void setLeftKey(int leftKey) {
+        this.leftKey = leftKey;
+        saveToJson();
+    }
+
+    public int getDownKey() {
+        return this.downKey;
+    }
+
+    public void setDownKey(int downKey) {
+        this.downKey = downKey;
+        saveToJson();
+    }
+
+    public int getRightKey() {
+        return this.rightKey;
+    }
+
+    public void setRightKey(int rightKey) {
+        this.rightKey = rightKey;
+        saveToJson();
+    }
+
+    public int getDashKey() {
+        return this.dashKey;
+    }
+
+    public void setDashKey(int dashKey) {
+        this.dashKey = dashKey;
+        saveToJson();
+    }
+
+    public int getAttackKey() {
+        return this.attackKey;
+    }
+
+    public void setAttackKey(int attackKey) {
+        this.attackKey = attackKey;
+        saveToJson();
+    }
+
+    public int getZoomInKey() {
+        return this.zoomInKey;
+    }
+
+    public void setZoomInKey(int zoomInKey) {
+        this.zoomInKey = zoomInKey;
+        saveToJson();
+    }
+
+    public int getZoomOutKey() {
+        return this.zoomOutKey;
+    }
+
+    public void setZoomOutKey(int zoomOutKey) {
+        this.zoomOutKey = zoomOutKey;
+    }
+
+    private void saveToJson() {
+        FileHandle settings_file = Gdx.files.local(JSON_PATH);
+
+        Json json = new Json();
+        settings_file.writeString(json.toJson(this), false);
     }
 }

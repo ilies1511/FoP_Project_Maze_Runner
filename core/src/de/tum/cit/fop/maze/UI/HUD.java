@@ -18,43 +18,37 @@ import java.util.Objects;
 
 public class HUD {
 
+    private final Player player;
+    private final MazeRunnerGame game;
+    private final GameScreen gameScreen;
+    private final Stage stage;
+    Label xpLabel;
     private Table table;
     private Table uiContainer;
     private Table heartTable;
     private Table statusEffectsTable;
-
     private Stack bloodEffect;
     private Stack poisonEffect;
-
     private ShapeRenderer shapeRenderer;
-
-    private final Player player;
     private int playerHealth;
     private int playerXP;
-
-    private final MazeRunnerGame game;
-    private final GameScreen gameScreen;
-
     private int emptyHearts;
 
-    Label xpLabel;
-
-    private final Stage stage;
-    public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen){
+    public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         shapeRenderer = new ShapeRenderer();
 
-     this.player = player;
-     this.stage = stage;
-     this.game = game;
-     this.gameScreen = gameScreen;
+        this.player = player;
+        this.stage = stage;
+        this.game = game;
+        this.gameScreen = gameScreen;
         renderHUD();
     }
 
 
-    public void renderHUD(){
+    public void renderHUD() {
         table = new Table(); // Create a table for layout
         table.setFillParent(true); // Make the table fill the stage
-     //   table.defaults().space(10).expandX();
+        //   table.defaults().space(10).expandX();
         //table.debug();
         stage.addActor(table);
         table.bottom();
@@ -72,25 +66,23 @@ public class HUD {
 
         statusEffectsTable = new Table();
         //statusEffectsTable.debug();
-        for(int i = 0;i<playerHealth; i++ ){
+        for (int i = 0; i < playerHealth; i++) {
             Image heart = new Image(game.getSkin().getDrawable("heart"));
             heartTable.add(heart).width(50).height(50);
         }
         table.add(uiContainer).width(2200).height(200);
         uiContainer.add(heartTable).padTop(20);
 
-        xpLabel = new Label("XP:" + playerXP, game.getSkin(),"vampire-style");
+        xpLabel = new Label("XP:" + playerXP, game.getSkin(), "vampire-style");
         uiContainer.row();
         uiContainer.add(xpLabel);
         uiContainer.row();
         uiContainer.add(statusEffectsTable).bottom();
 
 
-
-
     }
 
-    public void updatePlayerXP(int xp){
+    public void updatePlayerXP(int xp) {
         player.receiveXP(xp);
         playerXP = player.getXp();
 
@@ -98,34 +90,35 @@ public class HUD {
 
     }
 
-    public void updatePlayerHP(int damage){
-        if(!player.isInGodMode()){
+    public void updatePlayerHP(int damage) {
+        if (!player.isInGodMode()) {
             emptyHearts += damage;
             heartTable.clearChildren();
             playerHealth = player.getHealth();
-            for(int i = 0;i<playerHealth - emptyHearts; i++ ){
+            for (int i = 0; i < playerHealth - emptyHearts; i++) {
                 Image heart = new Image(game.getSkin().getDrawable("heart"));
                 heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
             }
-            for(int i =0; i < emptyHearts; i++){
+            for (int i = 0; i < emptyHearts; i++) {
                 Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
                 heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
             }
         }
 
     }
-    public void updatePlayerStatusEffects(){
+
+    public void updatePlayerStatusEffects() {
 
 //        if(player.isBuffed()){
 //            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
 //        }
-        if(player.isPoisoned()){
+        if (player.isPoisoned()) {
             drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
         }
     }
 
-    private void drawRing(Image img, float maxT, String effect ){
-        Stack stack = new Stack(){
+    private void drawRing(Image img, float maxT, String effect) {
+        Stack stack = new Stack() {
             @Override
             public void act(float delta) {
                 // Only update this stack (and its children/actions) if the game is running
@@ -142,6 +135,7 @@ public class HUD {
 
             float maxTime = maxT;
             float timeLeft = maxTime;
+
             @Override
             public void act(float delta) {
                 super.act(delta);
@@ -162,7 +156,7 @@ public class HUD {
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(Color.GREEN);
 
-                float r = Math.min(getWidth(), getHeight())/1.8f;
+                float r = Math.min(getWidth(), getHeight()) / 1.8f;
                 float cx = getX() + getWidth() / 2f;
                 float cy = getY() + getHeight() / 2f;
 
@@ -197,7 +191,7 @@ public class HUD {
         else if (Objects.equals(effect, "Buffed")) previousStack = bloodEffect;
         boolean replace = false;
 
-        if(previousStack != null){
+        if (previousStack != null) {
             Cell cell = statusEffectsTable.getCell(previousStack);
             if (cell != null) {
                 cell.setActor(stack);
@@ -209,13 +203,13 @@ public class HUD {
             statusEffectsTable.add(stack).size(60, 60).pad(5);
         }
 
-       // statusEffectsTable.add(stack).size(60, 60).pad(5);
+        // statusEffectsTable.add(stack).size(60, 60).pad(5);
         statusEffectsTable.pack();
 
 
         Stack finalStack = stack;
 
-        if (Objects.equals(effect, "Poisoned")) poisonEffect =stack;
+        if (Objects.equals(effect, "Poisoned")) poisonEffect = stack;
         else if (Objects.equals(effect, "Buffed")) bloodEffect = stack;
 
 
@@ -223,7 +217,7 @@ public class HUD {
                 Actions.delay(maxT),
                 Actions.run(() -> {
 
-                    if(Objects.equals(effect, "Poisoned") && poisonEffect == finalStack || Objects.equals(effect, "Buffed") && bloodEffect == finalStack ){
+                    if (Objects.equals(effect, "Poisoned") && poisonEffect == finalStack || Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
                         Cell cell = statusEffectsTable.getCell(finalStack);
                         finalStack.remove();
                         if (cell != null) {
@@ -232,10 +226,9 @@ public class HUD {
                         }
                         statusEffectsTable.invalidateHierarchy();
                     }
-                    if(Objects.equals(effect, "Poisoned") && poisonEffect == finalStack){
+                    if (Objects.equals(effect, "Poisoned") && poisonEffect == finalStack) {
                         poisonEffect = null;
-                    }
-                    else if(Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
+                    } else if (Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
                         bloodEffect = null;
                     }
                 })

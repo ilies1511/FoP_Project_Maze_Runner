@@ -16,10 +16,9 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 
 public class PausedOverlay {
 
+    private final GameScreen gameScreen;
     private Stage stage;
     private MazeRunnerGame game;
-    private final GameScreen gameScreen;
-
     private Table table;
 
     public PausedOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
@@ -45,13 +44,13 @@ public class PausedOverlay {
 
         table.row();
 
-        TextButton goToMainMenu = new TextButton("Main menu", game.getSkin(),"vampire-style");
+        TextButton goToMainMenu = new TextButton("Main menu", game.getSkin(), "vampire-style");
         table.add(goToMainMenu).width(300).left().padLeft(50).padBottom(50);
 
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-               hidePausedMenu();
+                hidePausedMenu();
             }
         });
         goToMainMenu.addListener(new ChangeListener() {
@@ -64,14 +63,14 @@ public class PausedOverlay {
 
     }
 
-    public void showPausedMenu(){
+    public void showPausedMenu() {
         table.setVisible(true);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         gameScreen.setPaused(true);
     }
 
-    public void hidePausedMenu(){
+    public void hidePausedMenu() {
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
