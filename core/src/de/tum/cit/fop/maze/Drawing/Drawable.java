@@ -38,7 +38,8 @@ public class Drawable {
                 AnimationType.CHARACTER_LEFT, game.getCharacterLeftAnimation(),
                 AnimationType.CHARACTER_RIGHT, game.getCharacterRightAnimation(),
                 AnimationType.CHARACTER_VICTORY_POSE, game.getCharacterDownWin(),
-                AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad()
+                AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad(),
+                AnimationType.KEY_SHINE_ANIMATION, game.getKeyShineAnimation()
         );
     }
 
