@@ -1,10 +1,8 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Entity;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.objects.GameObject;
-
-import java.util.Vector;
 
 public class Enemy {
     boolean isDead;

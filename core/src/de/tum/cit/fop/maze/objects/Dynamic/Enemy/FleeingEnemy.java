@@ -1,11 +1,11 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Parser.GameField;
 
-public class fleeingEnemy extends Enemy {
+public class FleeingEnemy extends Enemy {
 
-    public fleeingEnemy(Vector2 startPos) {
+    public FleeingEnemy(Vector2 startPos) {
         super(startPos);
         this.enemyEntity.speed = 2.5f; // Slightly faster than normal enemies
     }

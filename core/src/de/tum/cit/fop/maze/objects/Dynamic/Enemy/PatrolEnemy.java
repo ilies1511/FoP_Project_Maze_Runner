@@ -1,14 +1,14 @@
-package de.tum.cit.fop.maze;
+package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Parser.GameField;
 
-public class patrolEnemy extends Enemy {
+public class PatrolEnemy extends Enemy {
     private float moveTimer;
     private final float moveInterval = 2.0f; // Direction CHange
 
-    public patrolEnemy(Vector2 startPos) {
+    public PatrolEnemy(Vector2 startPos) {
         super(startPos);
         this.moveTimer = 0;
         pickRandomDirection();
