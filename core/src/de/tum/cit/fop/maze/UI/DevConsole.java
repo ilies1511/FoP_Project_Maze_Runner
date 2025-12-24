@@ -85,7 +85,7 @@ public class DevConsole {
             hud.updatePlayerXP(0);
         });
         commandMap.put("setSpeedMultiplier", val -> {
-            player.getPlayerGameObject().multiplySpeed(Integer.parseInt(val));
+            player.multiplySpeed(Float.parseFloat(val));
         });
         commandMap.put("setGodMode", val -> {
             if (Integer.parseInt(val) == 1) {

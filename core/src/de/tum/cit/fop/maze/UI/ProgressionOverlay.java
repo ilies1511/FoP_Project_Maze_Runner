@@ -104,7 +104,6 @@ public class ProgressionOverlay {
             public void changed(ChangeEvent event, Actor actor) {
                 if (player.getXp() >= 15) {
                     hud.updatePlayerXP(-15);
-                    ;
                     player.multiplySpeed(1.15f);
                     invis.setDisabled(false);
                 }
@@ -119,7 +118,6 @@ public class ProgressionOverlay {
                     dash.setDisabled(true);
                     player.setCanInvis(true);
                     hud.updatePlayerXP(-15);
-                    ;
                 }
             }
         });
