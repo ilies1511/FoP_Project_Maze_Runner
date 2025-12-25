@@ -398,7 +398,7 @@ public class GameScreen implements Screen {
 
     private void allCollectables() {
         this.collectables = new ArrayList<>();
-        this.collectables.add(new Key(new Vector2(5.5f - 0.5f, 5.5f - 0.71f))); // substract half of sizes
+        this.collectables.add(new Key(new Vector2(5f, 5f)));
     }
 
     public boolean flicker(float delta) {

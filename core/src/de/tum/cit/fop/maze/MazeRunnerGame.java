@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
@@ -207,23 +208,9 @@ public class MazeRunnerGame extends Game {
     }
 
     private void loadKeyShineAnimation() {
-        Texture cardSheet = new Texture(Gdx.files.internal("key.png"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("key_shine.atlas"));
 
-        int FRAME_COLS = 9;
-        int FRAME_ROWS = 1;
-
-        int frameWidth = cardSheet.getWidth() / FRAME_COLS;
-        int frameHeight = cardSheet.getHeight() / FRAME_ROWS;
-
-        TextureRegion[][] tmp = TextureRegion.split(cardSheet, frameWidth, frameHeight);
-
-        Array<TextureRegion> frames = new Array<>();
-
-        for (int j = 0; j < FRAME_COLS; j++) {
-            frames.add(tmp[0][j]);
-        }
-
-        this.keyShineAnimation = new Animation<>(0.12f, frames, Animation.PlayMode.LOOP);
+        this.keyShineAnimation = new Animation<>(0.08f, atlas.findRegions("key"), Animation.PlayMode.LOOP);
     }
 
     private void loadTouristAnimation() {
