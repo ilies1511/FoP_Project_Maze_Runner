@@ -7,11 +7,16 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundController {
     private Music backgroundMusic;
     private Music stepping;
+    private Music mainMenu;
+    private Music backgroundStory;
 //TODO Enemy, key, playerDie, playerHeal, win, touristRun  sounds
 
         public SoundController(){
             backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/PressFuse-FrenchFuse.mp3"));
              stepping= Gdx.audio.newMusic(Gdx.files.internal("Sounds/stepping.mp3"));
+             mainMenu = Gdx.audio.newMusic(Gdx.files.internal("Sounds/mainMenuBackground.mp3"));
+            backgroundStory = Gdx.audio.newMusic(Gdx.files.internal("Sounds/backgroundStory.mp3"));
+
         }
 
         public void playBackgroundMusic(float volume){
@@ -20,7 +25,26 @@ public class SoundController {
             backgroundMusic.play();
         }
         public void stopBackgroundMusic(){
-            backgroundMusic.pause();
+            backgroundMusic.stop();
+        }
+
+    public void playBackgrounStorydMusic(float volume){
+        backgroundStory.setLooping(true);
+        backgroundStory.setVolume(volume);
+        backgroundStory.play();
+    }
+    public void stopBackgroundStoryMusic(){
+        backgroundStory.stop();
+    }
+
+
+        public void playMainMenuMusic(float volume){
+            mainMenu.setLooping(true);
+            mainMenu.setVolume(volume);
+            mainMenu.play();
+        }
+        public void stopMainMenuMusic(){
+            mainMenu.stop();
         }
 
         public static void playEnemyDieSound(float volume){

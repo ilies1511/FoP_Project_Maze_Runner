@@ -96,11 +96,6 @@ public class MazeRunnerGame extends Game {
         this.loadMazeTiles();
         this.loadKeyShineAnimation();
 
-        // Play some background music
-        // Background sound
-
-        SoundController soundController = new SoundController();
-        soundController.playBackgroundMusic(0.5f);
 
         // TODO: iziane
         this.loadObjectTextures();

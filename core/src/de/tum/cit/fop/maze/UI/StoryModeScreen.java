@@ -14,7 +14,6 @@ import de.tum.cit.fop.maze.SoundController;
 
 public class StoryModeScreen {
     private Table storyTable;
-    private BackgroundStoryScreen backgroundStoryScreen;
     public StoryModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         storyTable = new Table();
         storyTable.setVisible(false);
@@ -70,6 +69,7 @@ public class StoryModeScreen {
         newGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                menuScreen.getSoundController().stopMainMenuMusic();
                 game.goToBackgroundStory();
             }
         });

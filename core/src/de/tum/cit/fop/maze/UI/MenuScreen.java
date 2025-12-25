@@ -26,8 +26,9 @@ public class MenuScreen implements Screen {
 
     private final Stage stage;
     private Table table;
-    private StoryModeScreen storyModeScreen;
-    private SettingsScreen settingsScreen;
+    private final StoryModeScreen storyModeScreen;
+    private final SettingsScreen settingsScreen;
+    private final SoundController soundController;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -35,6 +36,8 @@ public class MenuScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(MazeRunnerGame game) {
+        soundController = new SoundController();
+        soundController.playMainMenuMusic(0.5f);
 
 
         Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
@@ -220,4 +223,7 @@ public class MenuScreen implements Screen {
         settingsScreen.getTable().setVisible(true);
     }
 
+    public SoundController getSoundController() {
+        return soundController;
+    }
 }

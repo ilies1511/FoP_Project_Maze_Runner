@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.objects.Key;
 
 public class BackgroundStoryScreen implements Screen {
@@ -26,9 +27,12 @@ public class BackgroundStoryScreen implements Screen {
     private float timeSeconds = 0f;
     private Stage stage;
     private boolean isTextSkipped = false;
-    private MazeRunnerGame game;
+    private final MazeRunnerGame game;
+    private final SoundController soundController;
 
     public BackgroundStoryScreen( MazeRunnerGame game) {
+        soundController = new SoundController();
+        soundController.playBackgrounStorydMusic(0.5f);
         this.game = game;
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
@@ -64,6 +68,7 @@ public class BackgroundStoryScreen implements Screen {
             isTextSkipped = true;
         }
         else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && isTextSkipped){
+            soundController.stopBackgroundStoryMusic();
           game.goToGame();
         }
 
