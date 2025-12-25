@@ -19,6 +19,7 @@ public class Player extends GameObject {
     private boolean canInvis;
 
     private boolean isInGodMode;
+	private boolean hasKey = false;
 
 
     public Player(GameScreen gameScreen) {
@@ -30,6 +31,7 @@ public class Player extends GameObject {
         this.xp = 0;
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
+		this.hasKey = false;
     }
 
     public int receiveXP(int xpReceived) {
@@ -112,6 +114,15 @@ public class Player extends GameObject {
         }
         return false;
     }
+
+	public void collectKey() {
+		this.hasKey = true;
+		System.out.println("Key collected!");
+	}
+
+	public boolean hasKey() {
+		return hasKey;
+	}
 
     private boolean isDashInCooldown() {
         return effectInEffects(DashCooldown.class);

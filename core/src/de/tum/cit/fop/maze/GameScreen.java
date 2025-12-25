@@ -21,6 +21,7 @@ import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
+import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.Player;
@@ -28,6 +29,7 @@ import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -130,7 +132,9 @@ public class GameScreen implements Screen {
             // Move all the entities
             updateEntitiesPositions(delta);
 
-            // Update camera to move with the player
+	        handleExitLogic();
+
+	        // Update camera to move with the player
             this.camera.update(delta);
 
             // Update all the animations
@@ -159,8 +163,8 @@ public class GameScreen implements Screen {
         drawGameField();
 
         //TODO (Connect Parser to Game Assets): iziane
-        for (GameObjectTemp obj : gameField.getGameObjects()) {
-            obj.draw(game.getSpriteBatch());
+        for (GameObject obj : gameField.getGameObjects()) {
+            obj.animate(game.getSpriteBatch());
         }
 
         // Draw the character next to the text :) / We can reuse sinusInput here
@@ -369,14 +373,13 @@ public class GameScreen implements Screen {
         for (int y = 0; y < gameField.getHeight(); y++) {
             for (int x = 0; x < gameField.getWidth(); x++) {
                 TileType tileType = gameField.getTile(x, y);
+	            game.getSpriteBatch().draw(
+			            game.getEmptyTile(),
+			            x, y, 1, 1
+	            );
                 if (tileType == TileType.WALL) {
                     game.getSpriteBatch().draw(
                             game.getWallTile(),
-                            x, y, 1, 1
-                    );
-                } else if (tileType == TileType.EMPTY) {
-                    game.getSpriteBatch().draw(
-                            game.getEmptyTile(),
                             x, y, 1, 1
                     );
                 }
@@ -445,4 +448,50 @@ public class GameScreen implements Screen {
         isPaused = paused;
     }
     // Additional methods and logic can be added as needed for the game screen
+
+	private void handleExitLogic() {
+		Iterator<GameObject> iter = gameField.getGameObjects().iterator();
+
+		while (iter.hasNext()) {
+			GameObject obj = iter.next();
+
+			if (obj instanceof Key) {
+				if (player.getBounds().overlaps(obj.getBounds())) {
+					player.collectKey();
+//					// Update HUD (TODO: Nikita)
+//					hud.setHasKey(true);
+					iter.remove();
+				}
+			}
+			else if (obj instanceof Exit) {
+				Exit exit = (Exit) obj;
+
+//				if (player.getBounds().overlaps(exit.getBounds())) {
+				if (player.position.dst(exit.position) < 1.5f) {
+					if (exit.isLocked()) {
+						if (player.hasKey()) {
+							if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+								exit.open();
+								gameField.setTile((int)exit.position.x, (int)exit.position.y, TileType.EMPTY);
+								System.out.println("Door opened!");
+							}
+							else {
+								 System.out.println("Press O to open");
+							}
+						}
+						else {
+							 System.out.println("Locked. Find the key first.");
+						}
+					}
+					else {
+						if (player.getBounds().overlaps(exit.getBounds())) {
+							System.out.println("You escaped! Level Finished.");
+							// game.goToMenu(); // or levelComplete();
+						}
+					}
+				}
+			}
+		}
+	}
 }
+

@@ -1,8 +1,9 @@
-package de.tum.cit.fop.maze.objects;
+package de.tum.cit.fop.maze.objects.Static;
 
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.objects.GameObject;
 
 public class Exit extends GameObject {
 	private boolean isLocked = true;

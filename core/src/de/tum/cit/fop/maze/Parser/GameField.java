@@ -100,7 +100,9 @@
 package de.tum.cit.fop.maze.Parser;
 
 import com.badlogic.gdx.math.Vector2;
-import de.tum.cit.fop.maze.objects.GameObjectTemp;
+//import de.tum.cit.fop.maze.objects.GameObjectTemp;
+import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +114,7 @@ public class GameField {
     private final int width;
     private final int height;
     private final TileType[] grid;
-    private final List<GameObjectTemp> gameObjectTemps;
+    private final List<GameObject> gameObjectTemps;
     private Vector2 playerStartPos;
     // END -- Attributes
 
@@ -135,7 +137,7 @@ public class GameField {
         return (t == null) ? TileType.EMPTY : t;
     }
 
-    public List<GameObjectTemp> getGameObjects() {
+    public List<GameObject> getGameObjects() {
         return gameObjectTemps;
     }
 
@@ -166,7 +168,7 @@ public class GameField {
 
     // BEGIN -- Methods
     // TODO: 22.12.25 iziane
-    public void addGameObject(GameObjectTemp obj) {
+    public void addGameObject(GameObject obj) {
         this.gameObjectTemps.add(obj);
     }
 
@@ -182,7 +184,8 @@ public class GameField {
 
         for (int row = minY; row <= maxY; row++) {
             for (int col = minX; col <= maxX; col++) {
-                if (this.getTile(col, row) == TileType.WALL) {
+				TileType tile = this.getTile(col, row);
+	            if (tile == TileType.WALL || tile == TileType.EXIT) {
                     return true;
                 }
             }
