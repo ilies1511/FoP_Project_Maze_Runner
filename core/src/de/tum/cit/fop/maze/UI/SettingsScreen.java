@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.KeyBindingButton;
@@ -30,17 +31,19 @@ public class SettingsScreen implements Screen {
      */
     public SettingsScreen(MazeRunnerGame game) {
         var camera = new OrthographicCamera();
-        camera.zoom = 1.5f; // Set camera zoom for a closer view
+        camera.zoom = 1f; // Set camera zoom for a closer view
 
-        Viewport viewport = new ScreenViewport(camera); // Create a viewport with the camera
-        stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+        Viewport viewport = new FitViewport(2000, 1200);
+        stage = new Stage(viewport, game.getSpriteBatch());
 
-        Table table = new Table(); // Create a table for layout
-        table.setFillParent(true); // Make the table fill the stage
-        stage.addActor(table); // Add the table to the stage
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+        table.top();
 
-        // Add a label as a title
-        table.add(new Label("Hello World from the Menu!", game.getSkin(), "title")).padBottom(80).row();
+        Label label = new Label("Settings", game.getSkin(), "vampire-style");
+        label.setFontScale(3.0f);
+        table.add(label).expandX().center().padTop(50).padBottom(80).row();
 
         // Back to menu button
         TextButton goToMenuButton = new TextButton("Back to menu", game.getSkin(),  "vampire-style");
