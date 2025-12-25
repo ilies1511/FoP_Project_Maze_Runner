@@ -103,6 +103,7 @@ import com.badlogic.gdx.math.Vector2;
 //import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.collectables.Key;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,87 +111,97 @@ import java.util.List;
 
 public class GameField {
 
-    // BEGIN -- Attributes
-    private final int width;
-    private final int height;
-    private final TileType[] grid;
-    private final List<GameObject> gameObjectTemps;
-    private Vector2 playerStartPos;
-    // END -- Attributes
+	// BEGIN -- Attributes
+	private final int width;
+	private final int height;
+	private final TileType[] grid;
+	private final List<GameObject> gameObjects;
+	private Vector2 playerStartPos;
+	// END -- Attributes
 
-    // BEGIN -- Constructor
-    public GameField(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.grid = new TileType[width * height];
-        this.gameObjectTemps = new ArrayList<>();
-        this.playerStartPos = new Vector2(1, 1);
-    }
-    // END -- Constructor
+	// BEGIN -- Constructor
+	public GameField(int width, int height) {
+		this.width = width;
+		this.height = height;
+		this.grid = new TileType[width * height];
+		this.gameObjects = new ArrayList<>();
+		this.playerStartPos = new Vector2(1, 1);
+	}
+	// END -- Constructor
 
-    // BEGIN -- Getters
-    public TileType getTile(int x, int y) {
-        if (!isValid(x, y)) {
-            return TileType.WALL;
-        }
-        TileType t = grid[y * width + x];
-        return (t == null) ? TileType.EMPTY : t;
-    }
+	// BEGIN -- Getters
+	public TileType getTile(int x, int y) {
+		if (!isValid(x, y)) {
+			return TileType.WALL;
+		}
+		TileType t = grid[y * width + x];
+		return (t == null) ? TileType.EMPTY : t;
+	}
 
-    public List<GameObject> getGameObjects() {
-        return gameObjectTemps;
-    }
+	public List<GameObject> getGameObjects() {
+		return gameObjects;
+	}
 
-    public Vector2 getPlayerStartPos() {
-        return playerStartPos;
-    }
+	public Vector2 getPlayerStartPos() {
+		return playerStartPos;
+	}
 
-    public void setPlayerStartPos(Vector2 pos) {
-        this.playerStartPos = pos;
-    }
+	public void setPlayerStartPos(Vector2 pos) {
+		this.playerStartPos = pos;
+	}
 
-    public int getWidth() {
-        return width;
-    }
-    // END -- Getters
+	public int getWidth() {
+		return width;
+	}
+	// END -- Getters
 
-    public int getHeight() {
-        return height;
-    }
+	public int getHeight() {
+		return height;
+	}
 
-    // BEGIN -- Setters
-    public void setTile(int x, int y, TileType tile) {
-        if (isValid(x, y)) {
-            grid[y * width + x] = tile;
-        }
-    }
-    // END -- Setters
+	// BEGIN -- Setters
+	public void setTile(int x, int y, TileType tile) {
+		if (isValid(x, y)) {
+			grid[y * width + x] = tile;
+		}
+	}
+	// END -- Setters
 
-    // BEGIN -- Methods
-    // TODO: 22.12.25 iziane
-    public void addGameObject(GameObject obj) {
-        this.gameObjectTemps.add(obj);
-    }
+	// BEGIN -- Methods
+	// TODO: 22.12.25 iziane
+	public void addGameObject(GameObject obj) {
+		this.gameObjects.add(obj);
+	}
 
-    private boolean isValid(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
-    }
+	private boolean isValid(int x, int y) {
+		return x >= 0 && x < width && y >= 0 && y < height;
+	}
 
-    public boolean isInsideWall(float x, float y, Vector2 size) {
-        int minX = (int) x;
-        int maxX = (int) (x + size.x - 0.001f);
-        int minY = (int) y;
-        int maxY = (int) (y + size.y - 0.001f);
+	public boolean isInsideWall(float x, float y, Vector2 size) {
+		int minX = (int) x;
+		int maxX = (int) (x + size.x - 0.001f);
+		int minY = (int) y;
+		int maxY = (int) (y + size.y - 0.001f);
 
-        for (int row = minY; row <= maxY; row++) {
-            for (int col = minX; col <= maxX; col++) {
+		for (int row = minY; row <= maxY; row++) {
+			for (int col = minX; col <= maxX; col++) {
 				TileType tile = this.getTile(col, row);
-	            if (tile == TileType.WALL || tile == TileType.EXIT) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    // END -- Methods
+				if (tile == TileType.WALL || tile == TileType.EXIT) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public <T extends GameObject> List<T> getObjectsByType(Class<T> type) {
+		List<T> result = new ArrayList<>();
+		for (GameObject obj : gameObjects) {
+			if (type.isInstance(obj)) {
+				result.add(type.cast(obj));
+			}
+		}
+		return result;
+	}
+	// END -- Methods
 }
