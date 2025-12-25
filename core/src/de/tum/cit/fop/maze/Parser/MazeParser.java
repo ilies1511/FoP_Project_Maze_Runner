@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.objects.Key;
-import de.tum.cit.fop.maze.objects.Trap;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
+import de.tum.cit.fop.maze.objects.Static.Exit;
+import de.tum.cit.fop.maze.objects.collectables.Key;
+//import de.tum.cit.fop.maze.objects.Key;
+//import de.tum.cit.fop.maze.objects.Trap;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -41,6 +44,18 @@ import java.util.Properties;
 //	// END -- Methods
 //}
 
+
+/*
+	Value | Type
+	-------------------
+	0     | Wall
+	1     | Entry point
+	2     | Exit
+	3     | Trap (static obstacle)
+	4     | Enemy (dynamic obstacle)
+	5     | Key
+*/
+
 //TODO (Connect Parser to Game Assets) - iziane
 public class MazeParser {
     // BEGIN -- Methods
@@ -50,22 +65,27 @@ public class MazeParser {
                 field.setTile(x, y, TileType.WALL);
                 break;
             case 1:
-                field.setTile(x, y, TileType.ENTRY_POINT);
+//                field.setTile(x, y, TileType.ENTRY_POINT);
+	            field.setTile(x, y, TileType.EMPTY);
                 field.setPlayerStartPos(new Vector2(x, y));
                 break;
             case 2:
-                field.setTile(x, y, TileType.EXIT); // TODO: iziane - Use Object later
+	            field.setTile(x, y, TileType.EXIT);
+//                field.setTile(x, y, TileType.EXIT); // TODO: iziane - Use Object later
+	            field.addGameObject(new Exit(x, y, game));
                 break;
             case 3:
-                field.addGameObject(new Trap(x, y, game.getTrapTexture()));  // TODO: iziane - Later, after GameObject is done
+//                field.addGameObject(new Trap(x, y, game));  // TODO: iziane - Later, after GameObject is done
                 field.setTile(x, y, TileType.EMPTY);
                 break;
             case 4:
 //				 field.addGameObject(new Enemy(x, y)); // TODO: iziane - TBD with Saad
+	            field.addGameObject(new Enemy(new Vector2(x, y)));
                 field.setTile(x, y, TileType.EMPTY);
                 break;
             case 5:
-                field.addGameObject(new Key(x, y, game.getKeyTexture()));
+				field.addGameObject(new Key(new Vector2(x,y)));
+//                field.addGameObject(new Key(x, y, game.getKeyTexture()));
                 field.setTile(x, y, TileType.EMPTY);
                 break;
             default:

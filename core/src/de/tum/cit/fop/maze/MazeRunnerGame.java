@@ -55,6 +55,10 @@ public class MazeRunnerGame extends Game {
     private TextureRegion poisonEffect;
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
+	// BEGIN -- Exit
+	private TextureRegion exitClosedTexture;
+	private TextureRegion exitOpenTexture;
+	// END -- Exit
 
 
 
@@ -118,6 +122,20 @@ public class MazeRunnerGame extends Game {
             this.keyTexture = tmp[0][0];
             this.trapTexture = tmp[0][1];
 //			this.enemyTexture = tmp[0][2]; // TODO: iziane - TBD with Saad
+
+			if (tmp[0].length > 2) {
+				this.exitClosedTexture = tmp[0][2];
+			}
+			else {
+				this.exitClosedTexture = tmp[0][0]; // Fallback to Key if missing
+			}
+			if (tmp[0].length > 3) {
+				this.exitOpenTexture = tmp[0][3];
+			}
+			else {
+				this.exitOpenTexture = tmp[0][1]; // Fallback to Trap if missing
+			}
+
         } else {
             Gdx.app.error("Assets", "objects.png not found! Using character texture as fallback.");
             this.keyTexture = characterDownAnimation.getKeyFrame(0);
@@ -398,4 +416,12 @@ public class MazeRunnerGame extends Game {
     public TextureRegion getBloodEffect() {
         return bloodEffect;
     }
+
+	public TextureRegion getExitClosedTexture() {
+		return exitClosedTexture;
+	}
+
+	public TextureRegion getExitOpenTexture() {
+		return exitOpenTexture;
+	}
 }
