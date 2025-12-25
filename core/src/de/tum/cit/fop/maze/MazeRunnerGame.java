@@ -27,7 +27,7 @@ public class MazeRunnerGame extends Game {
     // Screens IMPORTANT: add screens to disposeAllScreens when creating a new one
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
-    private SettingsScreen settingsScreen;
+    private BackgroundStoryScreen backgroundStoryScreen;
     // Sprite Batch for rendering
     private SpriteBatch spriteBatch;
     // UI Skin
@@ -140,7 +140,7 @@ public class MazeRunnerGame extends Game {
 //	}
 
     public void disposeAllScreens() {
-        List<Screen> allScreens = Arrays.asList(this.gameScreen, this.settingsScreen, this.menuScreen);
+        List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen);
         for (Screen screen : allScreens) {
             if (screen != null) {
                 screen.dispose();
@@ -165,13 +165,6 @@ public class MazeRunnerGame extends Game {
         this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
     }
 
-    /**
-     * Switches to the settings screen.
-     */
-    public void goToSettings() {
-        disposeAllScreens();
-        this.setScreen(new SettingsScreen(this)); // Set the current screen to GameScreen
-    }
 
     public void goToBackgroundStory(){
         disposeAllScreens();

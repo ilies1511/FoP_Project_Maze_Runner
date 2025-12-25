@@ -27,6 +27,7 @@ public class MenuScreen implements Screen {
     private final Stage stage;
     private Table table;
     private StoryModeScreen storyModeScreen;
+    private SettingsScreen settingsScreen;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -159,12 +160,12 @@ public class MenuScreen implements Screen {
         goToSettingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.goToSettings(); // Change to the game screen when button is pressed
+                goToSettings();
             }
         });
 
         storyModeScreen = new StoryModeScreen(stage, game, this);
-
+        settingsScreen = new SettingsScreen(stage,game,this);
         // TODO add listeners to Statistics, EndlessMode
     }
 
@@ -212,5 +213,11 @@ public class MenuScreen implements Screen {
     public void goBackToMenu(){
         table.setVisible(true);
         storyModeScreen.getStoryTable().setVisible(false);
+        settingsScreen.getTable().setVisible(false);
     }
+    public void goToSettings(){
+        table.setVisible(false);
+        settingsScreen.getTable().setVisible(true);
+    }
+
 }
