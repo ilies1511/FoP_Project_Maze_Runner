@@ -12,10 +12,10 @@ public abstract class GameObject {
     public Vector2 velocity;
     public float speed;
     protected TextureRegion texture;
-    private float speedMultiplier;
-    private Vector2 sizes;
-    private Vector2 spriteSizes;
-    private Drawable drawable;
+    protected float speedMultiplier;
+    protected Vector2 sizes;
+    protected Vector2 spriteSizes;
+    protected Drawable drawable;
 
     public GameObject(Vector2 position, Vector2 velocity, float speed, Vector2 sizes, Vector2 spriteSizes, AnimationType initialAnimationType) {
         this.position = position;
