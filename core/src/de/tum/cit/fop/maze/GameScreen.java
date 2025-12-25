@@ -63,6 +63,8 @@ public class GameScreen implements Screen {
      */
 
     public GameScreen(MazeRunnerGame game) {
+
+
         this.game = game;
 
         Drawable.initializeTextureMap(game);
@@ -96,6 +98,7 @@ public class GameScreen implements Screen {
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
         soundController = new SoundController();
+        soundController.playBackgroundMusic(0.5f);
 //        shapeRenderer = new ShapeRenderer();
 
     }
