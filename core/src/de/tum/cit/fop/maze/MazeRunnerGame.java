@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import de.tum.cit.fop.maze.UI.BackgroundStoryScreen;
 import de.tum.cit.fop.maze.UI.MenuScreen;
 import de.tum.cit.fop.maze.UI.SettingsScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
@@ -172,6 +173,10 @@ public class MazeRunnerGame extends Game {
         this.setScreen(new SettingsScreen(this)); // Set the current screen to GameScreen
     }
 
+    public void goToBackgroundStory(){
+        disposeAllScreens();
+        this.setScreen(new BackgroundStoryScreen(this)); // Set the current screen to GameScreen
+    }
     /**
      * Loads the character animation from the character.png file.
      */

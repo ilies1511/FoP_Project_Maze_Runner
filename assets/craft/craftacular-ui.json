@@ -32,6 +32,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 1
 		a: 1
 	}
+    black: {
+      r: 0
+      g: 0
+      b: 0
+      a: 1
+    }
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	gray: {
@@ -146,7 +152,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
   vampire-style: {
     font: vampire-font
     up: button
-    fontColor: white,
+    fontColor: black,
     over: button-hover
     disabled: button-disabled
   }

@@ -25,6 +25,8 @@ import de.tum.cit.fop.maze.SoundController;
 public class MenuScreen implements Screen {
 
     private final Stage stage;
+    private Table table;
+    private StoryModeScreen storyModeScreen;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -32,30 +34,31 @@ public class MenuScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(MazeRunnerGame game) {
-        var camera = new OrthographicCamera();
-        camera.zoom = 1f; // Set camera zoom for a closer view
+
 
         Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
-        Table table = new Table(); // Create a table for layout
+        table = new Table(); // Create a table for layout
         table.setFillParent(true); // Make the table fill the stage
         stage.addActor(table); // Add the table to the stage
 
         table.top();
 
-        // Add a label as a title
-        table.add(new Label("Main Menu", game.getSkin(), "title")).expandX().center().padTop(50).padBottom(80).row();// Some space between title and button.row();
+        Label label = new Label("Main Menu", game.getSkin(), "vampire-style");
+        label.setFontScale(3.0f);
+        table.add(label).expandX().center().padTop(50).padBottom(80).row();
+
 
 
         // Create and add a button to go to the game screen
-        TextButton goToGameButton = new TextButton("Story mode", game.getSkin(), "vampire-style");
-        table.add(goToGameButton).width(300).left().padLeft(50).padBottom(50);
-        goToGameButton.getLabel().setTouchable(Touchable.disabled);
-        goToGameButton.addListener(new ClickListener(){
+        TextButton goToStoryMode = new TextButton("Story Mode", game.getSkin(), "vampire-style");
+        table.add(goToStoryMode).width(300).left().padLeft(50).padBottom(50);
+        goToStoryMode.getLabel().setTouchable(Touchable.disabled);
+        goToStoryMode.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !goToGameButton.isDisabled()) {
+                if (pointer == -1 && !goToStoryMode.isDisabled()) {
                     SoundController.playUI_hoverOverSound(1);
                 }
             }
@@ -68,7 +71,7 @@ public class MenuScreen implements Screen {
 
         table.row();
 
-        TextButton goToEndlessButton = new TextButton("Endless mode", game.getSkin(), "vampire-style");
+        TextButton goToEndlessButton = new TextButton("Endless Mode", game.getSkin(), "vampire-style");
         table.add(goToEndlessButton).width(300).left().padLeft(50).padBottom(50);
         goToEndlessButton.getLabel().setTouchable(Touchable.disabled);
         goToEndlessButton.addListener(new ClickListener(){
@@ -139,10 +142,10 @@ public class MenuScreen implements Screen {
         });
 
 
-        goToGameButton.addListener(new ChangeListener() {
+        goToStoryMode.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.goToGame(); // Change to the game screen when button is pressed
+              goToStory();
             }
         });
 
@@ -159,6 +162,8 @@ public class MenuScreen implements Screen {
                 game.goToSettings(); // Change to the game screen when button is pressed
             }
         });
+
+        storyModeScreen = new StoryModeScreen(stage, game, this);
 
         // TODO add listeners to Statistics, EndlessMode
     }
@@ -198,5 +203,14 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
+    }
+
+    public void goToStory(){
+        table.setVisible(false);
+        storyModeScreen.getStoryTable().setVisible(true);
+    }
+    public void goBackToMenu(){
+        table.setVisible(true);
+        storyModeScreen.getStoryTable().setVisible(false);
     }
 }
