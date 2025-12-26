@@ -174,10 +174,6 @@ public class GameScreen implements Screen {
 		gameField.addGameObject(new FleeingEnemy(new Vector2(7f, 7f)));
 		gameField.addGameObject(new Key(new Vector2(5f, 5f)));
         gameField.addGameObject(new Heart(new Vector2(7f, 7f)));
-        gameField.addGameObject(TrapFactory.createRandomTrap(new Vector2(2f, 3f)));
-        gameField.addGameObject(TrapFactory.createRandomTrap(new Vector2(3f, 3f)));
-        gameField.addGameObject(TrapFactory.createRandomTrap(new Vector2(4f, 3f)));
-        gameField.addGameObject(TrapFactory.createRandomTrap(new Vector2(5f, 3f)));
 	}
 
 	public Player getPlayer() {

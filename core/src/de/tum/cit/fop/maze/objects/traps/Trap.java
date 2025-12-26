@@ -15,7 +15,7 @@ public abstract class Trap extends GameObject {
                 startPos,
                 new Vector2(0f, 0f),
                 0f,
-                new Vector2(1f, 1f),
+                new Vector2(0.6f, 0.6f),
                 spriteSizes,
                 animationType
         );
