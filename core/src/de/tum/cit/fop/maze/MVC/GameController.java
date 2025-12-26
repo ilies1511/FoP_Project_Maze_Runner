@@ -182,7 +182,7 @@ public class GameController {
 		if (player.getPlayerGameObject().position.dst(exit.position) < 1.5f) {
 			if (exit.isLocked()) {
 				if (player.hasKey()) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+					if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
 						exit.open();
 						gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);
 						System.out.println("Door opened!");
