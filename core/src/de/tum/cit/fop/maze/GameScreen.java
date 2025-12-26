@@ -94,11 +94,12 @@ public class GameScreen implements Screen {
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
         this.hud = new HUD(player, stage, game, this);
+        soundController = new SoundController();
+        soundController.playBackgroundMusic(0.5f);
         pausedScreen = new PausedOverlay(stage, game, this);
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
-        soundController = new SoundController();
-        soundController.playBackgroundMusic(0.5f);
+
 //        shapeRenderer = new ShapeRenderer();
 
     }
@@ -446,6 +447,10 @@ public class GameScreen implements Screen {
 
     public void setPaused(boolean paused) {
         isPaused = paused;
+    }
+
+    public SoundController getSoundController() {
+        return soundController;
     }
     // Additional methods and logic can be added as needed for the game screen
 }
