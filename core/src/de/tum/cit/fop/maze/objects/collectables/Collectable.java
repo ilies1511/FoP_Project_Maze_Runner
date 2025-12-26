@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze.objects.collectables;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
+import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
@@ -26,11 +27,11 @@ public abstract class Collectable extends GameObject {
         this.drawable.animate(batch, this.position.cpy().add(this.spriteShift), this.spriteSizes);
     }
 
-    abstract protected void onPickUp(Player player);
+    abstract protected void onPickUp(Player player, HUD hud);
 
-    public boolean checkPlayerCollision(Player player) {
+    public boolean checkPlayerCollision(Player player, HUD hud) {
         if (GameObject.entitiesOverlap(player, this)) {
-            this.onPickUp(player);
+            this.onPickUp(player, hud);
             return true;
         }
         return false;

@@ -57,6 +57,7 @@ public class MazeRunnerGame extends Game {
     private TextureRegion poisonEffect;
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
+    private Animation<TextureRegion> vampiricHeartAnimation;
 	// BEGIN -- Exit
 	private TextureRegion exitClosedTexture;
 	private TextureRegion exitOpenTexture;
@@ -100,6 +101,7 @@ public class MazeRunnerGame extends Game {
         this.loadTouristAnimation();
         this.loadMazeTiles();
         this.loadKeyShineAnimation();
+        this.loadVampiricHeartAnimation();
 
 
         // TODO: iziane
@@ -229,6 +231,12 @@ public class MazeRunnerGame extends Game {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("key_shine.atlas"));
 
         this.keyShineAnimation = new Animation<>(0.08f, atlas.findRegions("key"), Animation.PlayMode.LOOP);
+    }
+
+    private void loadVampiricHeartAnimation() {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("vampiric_heart.atlas"));
+
+        this.vampiricHeartAnimation = new Animation<>(0.15f, atlas.findRegions("vampiric_heart"), Animation.PlayMode.LOOP);
     }
 
     private void loadTouristAnimation() {
@@ -370,6 +378,10 @@ public class MazeRunnerGame extends Game {
     // Collectable animation Getters
     public Animation<TextureRegion> getKeyShineAnimation() {
         return this.keyShineAnimation;
+    }
+
+    public Animation<TextureRegion> getVampiricHeartAnimation() {
+        return this.vampiricHeartAnimation;
     }
 
     // Maze Tile Getters

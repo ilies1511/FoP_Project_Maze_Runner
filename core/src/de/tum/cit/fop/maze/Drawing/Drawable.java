@@ -42,7 +42,8 @@ public class Drawable {
 				AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad(),
 				AnimationType.KEY_SHINE_ANIMATION, game.getKeyShineAnimation(),
 				AnimationType.EXIT_CLOSED, createSingleFrameAnim(game.getExitClosedTexture()),
-				AnimationType.EXIT_OPEN, createSingleFrameAnim(game.getExitOpenTexture())
+				AnimationType.EXIT_OPEN, createSingleFrameAnim(game.getExitOpenTexture()),
+                AnimationType.VAMPIRIC_HEART, game.getVampiricHeartAnimation()
 		);
 	}
 

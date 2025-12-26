@@ -1,0 +1,16 @@
+vampiric_heart.png
+size:4096,4096
+repeat:none
+vampiric_heart
+index:0
+bounds:2,2,2048,2048
+vampiric_heart
+index:1
+bounds:2,2,2048,2048
+
+vampiric_heart2.png
+size:4096,4096
+repeat:none
+vampiric_heart
+index:2
+bounds:2,2,2048,2048
