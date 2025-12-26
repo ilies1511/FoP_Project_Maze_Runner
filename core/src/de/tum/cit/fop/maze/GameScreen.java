@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Drawing.Drawable;
+import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
@@ -55,6 +56,7 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
+//	private final MapRenderer mapRenderer; // NEW: MapRenderer Instance
 
 
 //  For testing
@@ -98,11 +100,34 @@ public class GameScreen implements Screen {
 		progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
 		devConsole = new DevConsole(game, this, stage, player, hud);
 		soundController = new SoundController();
-
 //        shapeRenderer = new ShapeRenderer();
-
+//		this.mapRenderer = new MapRenderer(game);
 	}
 
+
+	private void updateGameObjects(float delta) {
+		Iterator<GameObject> iter = gameField.getGameObjects().iterator();
+		while (iter.hasNext()) {
+			GameObject obj = iter.next();
+
+			obj.updateAnimation(delta);
+
+			if (obj instanceof Enemy) {
+				handleEnemyLogic((Enemy) obj, delta, iter);
+			}
+			else if (obj instanceof Key) {
+				if (GameObject.entitiesOverlap(playerGameObject, obj)) {
+					player.collectKey();
+					// hud.setHasKey(true); // TODO: Uncomment when HUD ready
+					SoundController.playKeyPickupSound(1);
+					iter.remove();
+				}
+			}
+			else if (obj instanceof Exit) {
+				handleExitLogic((Exit) obj);
+			}
+		}
+	}
 
 	// Screen interface methods with necessary functionality
 	@Override
@@ -129,30 +154,7 @@ public class GameScreen implements Screen {
 			// Tick all the effects
 			this.player.tickEffects(delta);
 			handleInput(delta);
-
-			Iterator<GameObject> iter = gameField.getGameObjects().iterator();
-			while (iter.hasNext()) {
-				GameObject obj = iter.next();
-
-				obj.updateAnimation(delta);
-
-				if (obj instanceof Enemy) {
-					handleEnemyLogic((Enemy) obj, delta, iter);
-				}
-				else if (obj instanceof Key) {
-					if (GameObject.entitiesOverlap(playerGameObject, obj)) {
-						player.collectKey();
-						// hud.setHasKey(true); // TODO: Uncomment when HUD ready
-						SoundController.playKeyPickupSound(1);
-						iter.remove();
-					}
-				}
-				else if (obj instanceof Exit) {
-					handleExitLogic((Exit) obj);
-				}
-			}
-
-//			updateEntitiesPositions(delta);
+			updateGameObjects(delta);
 			updatePlayerPosition(delta);
 
 			this.camera.update(delta);
@@ -448,6 +450,5 @@ public class GameScreen implements Screen {
 			player.getPlayerGameObject().position.y = nextY;
 		}
 	}
-
 }
 
