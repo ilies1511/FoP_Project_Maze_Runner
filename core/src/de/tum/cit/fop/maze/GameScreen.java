@@ -28,6 +28,7 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.Heart;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 
 import java.util.ArrayList;
@@ -167,6 +168,7 @@ public class GameScreen implements Screen {
 	private void addTestObjects() {
 		gameField.addGameObject(new FleeingEnemy(new Vector2(7f, 7f)));
 		gameField.addGameObject(new Key(new Vector2(5f, 5f)));
+        gameField.addGameObject(new Heart(new Vector2(7f, 7f)));
 	}
 
 	public Player getPlayer() {

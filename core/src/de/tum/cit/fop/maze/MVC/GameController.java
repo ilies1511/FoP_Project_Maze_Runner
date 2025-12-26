@@ -135,7 +135,7 @@ public class GameController {
 				handleEnemyLogic((Enemy) obj, delta, iter);
 			}
             else if (obj instanceof Collectable) {
-                if (((Collectable) obj).checkPlayerCollision(this.player)) {
+                if (((Collectable) obj).checkPlayerCollision(this.player, this.hud)) {
                     iter.remove();
                 }
             }

@@ -9,5 +9,6 @@ public enum AnimationType {
     CHARACTER_LOSER_POSE,
     KEY_SHINE_ANIMATION,
 	EXIT_CLOSED,
-	EXIT_OPEN
+	EXIT_OPEN,
+    VAMPIRIC_HEART,
 }
