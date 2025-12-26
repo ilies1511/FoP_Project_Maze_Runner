@@ -28,7 +28,6 @@ public class PausedOverlay {
     public PausedOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
-
         table = new Table();
         table.setFillParent(true);
         table.setVisible(false);
@@ -54,6 +53,7 @@ public class PausedOverlay {
         goToGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 hidePausedMenu();
             }
         });
@@ -74,6 +74,7 @@ public class PausedOverlay {
         goToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.getSoundController().stopMainMenuMusic();
                 game.goToMenu();
             }
         });
@@ -95,6 +96,8 @@ public class PausedOverlay {
     }
 
     public void showPausedMenu() {
+        gameScreen.getSoundController().stopBackgroundMusic();
+        gameScreen.getSoundController().playMainMenuMusic(0.5f);
         table.setVisible(true);
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
@@ -102,6 +105,8 @@ public class PausedOverlay {
     }
 
     public void hidePausedMenu() {
+        gameScreen.getSoundController().stopMainMenuMusic();
+        gameScreen.getSoundController().playBackgroundMusic(0.5f);
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
