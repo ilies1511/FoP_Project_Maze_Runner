@@ -85,6 +85,7 @@ private SoundController soundController;
                 if (player.getXp() >= 15) {
 
                     hud.updatePlayerXP(-15);
+                    player.setMaxHealth(player.getMaxHealth()+1);
                     player.getDamageOrHeal(-1);
                     hud.renderPlayerHP();
                     dash.setDisabled(false);
