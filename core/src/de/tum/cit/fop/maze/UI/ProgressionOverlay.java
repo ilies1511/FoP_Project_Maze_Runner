@@ -83,8 +83,8 @@ public class ProgressionOverlay {
                 if (player.getXp() >= 15) {
 
                     hud.updatePlayerXP(-15);
-                    player.setHealth(player.getHealth() + 1);
-                    hud.updatePlayerHP(0);
+                    player.getDamageOrHeal(-1);
+                    hud.renderPlayerHP();
                     dash.setDisabled(false);
                 }
 

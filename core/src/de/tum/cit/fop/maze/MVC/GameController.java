@@ -168,7 +168,8 @@ public class GameController {
 			else {
 				if (flickerTimer <= 0 && !player.isCanInvis()) {
 					System.out.println("YOU DIED!");
-					hud.updatePlayerHP(1);
+                    player.getDamageOrHeal(1);
+					hud.renderPlayerHP();
 					flickerTimer = 3f;
 					SoundController.playPlayerHitSound(1);
 				}
