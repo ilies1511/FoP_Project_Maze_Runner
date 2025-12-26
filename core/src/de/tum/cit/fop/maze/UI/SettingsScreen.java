@@ -23,6 +23,7 @@ import de.tum.cit.fop.maze.SoundController;
 public class SettingsScreen  {
    private Table table;
 
+   private SoundController soundController;
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
      *
@@ -31,6 +32,8 @@ public class SettingsScreen  {
     public SettingsScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
+
+        soundController = menuScreen.getSoundController();
 
         table = new Table();
         table.setVisible(false);
@@ -50,12 +53,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToMenuButton.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -79,12 +82,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !leftBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -100,12 +103,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !rightBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -121,12 +124,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !upBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -142,12 +145,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !downBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -163,12 +166,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !attackBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -184,12 +187,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !dashBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -205,12 +208,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !zoomInBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -226,12 +229,12 @@ public class SettingsScreen  {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !zoomOutBinding.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 

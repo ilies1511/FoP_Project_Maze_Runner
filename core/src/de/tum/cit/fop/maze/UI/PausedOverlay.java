@@ -24,10 +24,12 @@ public class PausedOverlay {
     private Stage stage;
     private MazeRunnerGame game;
     private Table table;
+    private SoundController soundController;
 
     public PausedOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
+        soundController = gameScreen.getSoundController();
         table = new Table();
         table.setFillParent(true);
         table.setVisible(false);
@@ -62,19 +64,19 @@ public class PausedOverlay {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToGameButton.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
         goToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                gameScreen.getSoundController().stopMainMenuMusic();
+                soundController.dispose();
                 game.goToMenu();
             }
         });
@@ -83,12 +85,12 @@ public class PausedOverlay {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToMainMenu.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 

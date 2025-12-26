@@ -86,7 +86,7 @@ public class GameController {
 
 		// Attack Logic
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
-			SoundController.playPlayerHitSound(1);
+            soundController.playPlayerHitSound(1);
 			System.out.println("Attacking!");
 
 			Iterator<GameObject> iter = gameField.getGameObjects().iterator();
@@ -106,12 +106,12 @@ public class GameController {
 		// Emotes
 		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
 			player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
-			SoundController.playWinSound(1);
+            soundController.playWinSound(1);
 			isMoving = true;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
 			player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
-			SoundController.playPlayerDieSound(1);
+            soundController.playPlayerDieSound(1);
 			isMoving = true;
 		}
 
@@ -170,7 +170,7 @@ public class GameController {
 					System.out.println("YOU DIED!");
 					hud.updatePlayerHP(1);
 					flickerTimer = 3f;
-					SoundController.playPlayerHitSound(1);
+                    soundController.playPlayerHitSound(1);
 				}
 			}
 		}
@@ -196,7 +196,7 @@ public class GameController {
 			else {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
 					System.out.println("You escaped! Level Finished.");
-					SoundController.playWinSound(1);
+                    soundController.playWinSound(1);
 					// game.goToMenu();
 				}
 			}
@@ -239,7 +239,11 @@ public class GameController {
 		}
 		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
 	}
-//	public boolean flicker(float delta) {
+
+    public SoundController getSoundController() {
+        return soundController;
+    }
+    //	public boolean flicker(float delta) {
 //		if (flickerTimer > 0f) {
 //			flickerTimer -= delta;
 //		}
