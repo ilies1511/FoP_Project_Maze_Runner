@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
-//	private final MapRenderer mapRenderer; // NEW: MapRenderer Instance
+	private final MapRenderer mapRenderer;
 
 
 //  For testing
@@ -101,7 +101,7 @@ public class GameScreen implements Screen {
 		devConsole = new DevConsole(game, this, stage, player, hud);
 		soundController = new SoundController();
 //        shapeRenderer = new ShapeRenderer();
-//		this.mapRenderer = new MapRenderer(game);
+		this.mapRenderer = new MapRenderer(game);
 	}
 
 
@@ -129,9 +129,7 @@ public class GameScreen implements Screen {
 		}
 	}
 
-	// Screen interface methods with necessary functionality
-	@Override
-	public void render(float delta) {
+	private void handleGlobalInput() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole) {
 			devConsole.showConsole();
 			isInDevConsole = true;
@@ -140,6 +138,13 @@ public class GameScreen implements Screen {
 			devConsole.hideConsole();
 			isInDevConsole = false;
 		}
+	}
+
+	// Screen interface methods with necessary functionality
+	@Override
+	public void render(float delta) {
+		handleGlobalInput();
+
 		if (!isPaused) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 				pausedScreen.showPausedMenu();
@@ -156,10 +161,9 @@ public class GameScreen implements Screen {
 			handleInput(delta);
 			updateGameObjects(delta);
 			updatePlayerPosition(delta);
-
 			this.camera.update(delta);
-
 		}
+
 		else if (isPaused) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
 				pausedScreen.hidePausedMenu();
@@ -169,25 +173,9 @@ public class GameScreen implements Screen {
 				isInProgression = false;
 			}
 		}
-
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
-		game.getSpriteBatch().begin(); // Important to call this before drawing anything
-
-		drawGameField();
-
-		gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
-
-		//TODO (Connect Parser to Game Assets): iziane
-		for (GameObject obj : gameField.getGameObjects()) {
-			obj.animate(game.getSpriteBatch());
-		}
-
-		// Draw the character next to the text :) / We can reuse sinusInput here
-		if (flicker(delta)) {
-			player.animate(game.getSpriteBatch());
-		}
-		game.getSpriteBatch().end(); // Important to call this after drawing everything
-
+		boolean playerHidden = !flicker(delta);
+		mapRenderer.render(gameField, player, delta, playerHidden);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 	}
@@ -287,24 +275,6 @@ public class GameScreen implements Screen {
 		}
 		else {
 			this.player.setAnimationTime(0f);
-		}
-	}
-
-	private void drawGameField() {
-		for (int y = 0; y < gameField.getHeight(); y++) {
-			for (int x = 0; x < gameField.getWidth(); x++) {
-				TileType tileType = gameField.getTile(x, y);
-				game.getSpriteBatch().draw(
-						game.getEmptyTile(),
-						x, y, 1, 1
-				);
-				if (tileType == TileType.WALL) {
-					game.getSpriteBatch().draw(
-							game.getWallTile(),
-							x, y, 1, 1
-					);
-				}
-			}
 		}
 	}
 
