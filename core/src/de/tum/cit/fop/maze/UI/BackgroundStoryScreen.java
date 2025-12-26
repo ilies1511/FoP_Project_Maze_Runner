@@ -68,7 +68,7 @@ public class BackgroundStoryScreen implements Screen {
         }
         else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && isTextSkipped){
             soundController.stopBackgroundStoryMusic();
-          game.goToGame();
+            game.goToGame();
         }
 
         if (storyLabel.getText().length < fullText.length()) {

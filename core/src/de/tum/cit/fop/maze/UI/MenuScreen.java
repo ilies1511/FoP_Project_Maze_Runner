@@ -226,4 +226,5 @@ public class MenuScreen implements Screen {
     public SoundController getSoundController() {
         return soundController;
     }
+
 }
