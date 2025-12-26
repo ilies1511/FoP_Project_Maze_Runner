@@ -18,6 +18,7 @@ import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
 
@@ -145,6 +146,9 @@ public class GameController {
                     iter.remove();
                 }
             }
+            else if (obj instanceof Trap) {
+                ((Trap) obj).checkPlayerCollision(this.player, this.hud);
+            }
 			else if (obj instanceof Exit) {
 				handleExitLogic((Exit) obj);
 			}
@@ -175,7 +179,6 @@ public class GameController {
 				if (flickerTimer <= 0 && !player.isCanInvis()) {
 					System.out.println("YOU WERE DAMAGED!");
                     player.getDamageOrHeal(1);
-					hud.renderPlayerHP();
 					flickerTimer = 3f;
                     soundController.playPlayerHitSound(1);
 				}

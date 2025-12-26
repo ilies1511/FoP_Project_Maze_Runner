@@ -60,6 +60,9 @@ public class MazeRunnerGame extends Game {
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
     private Animation<TextureRegion> vampiricHeartAnimation;
+    // Traps
+    private Animation<TextureRegion> garlicTrapAnimation;
+    private Animation<TextureRegion> freezeTrapAnimation;
 	// BEGIN -- Exit
 	private TextureRegion exitClosedTexture;
 	private TextureRegion exitOpenTexture;
@@ -103,6 +106,8 @@ public class MazeRunnerGame extends Game {
         this.loadTouristAnimation();
         this.loadMazeTiles();
         this.loadKeyShineAnimation();
+        this.loadGarlicTrapAnimation();
+        this.loadFreezeTrapAnimation();
         this.loadVampiricHeartAnimation();
 
 
@@ -249,6 +254,20 @@ public class MazeRunnerGame extends Game {
         this.vampiricHeartAnimation = new Animation<>(0.15f, atlas.findRegions("vampiric_heart"), Animation.PlayMode.LOOP);
     }
 
+    private void loadGarlicTrapAnimation() {
+        Texture garlicTrapTexture = new Texture(Gdx.files.internal("garlic_trap.png"));
+
+        TextureRegion garlicTrapTextureRegion = new TextureRegion(garlicTrapTexture);
+        this.garlicTrapAnimation = new Animation<>(1f, garlicTrapTextureRegion);
+    }
+
+    private void loadFreezeTrapAnimation() {
+        Texture freezeTrapAnimation = new Texture(Gdx.files.internal("freeze_trap.png"));
+
+        TextureRegion freezeTrapTextureRegion = new TextureRegion(freezeTrapAnimation);
+        this.freezeTrapAnimation = new Animation<>(1f, freezeTrapTextureRegion);
+    }
+
     private void loadTouristAnimation() {
         Texture walkSheet = new Texture(Gdx.files.internal("character.png"));
         int frameWidth = 16;
@@ -392,6 +411,15 @@ public class MazeRunnerGame extends Game {
 
     public Animation<TextureRegion> getVampiricHeartAnimation() {
         return this.vampiricHeartAnimation;
+    }
+
+    // Traps animation Getters
+    public Animation<TextureRegion> getGarlicTrapAnimation() {
+        return this.garlicTrapAnimation;
+    }
+
+    public Animation<TextureRegion> getFreezeTrapAnimation() {
+        return this.freezeTrapAnimation;
     }
 
     // Maze Tile Getters
