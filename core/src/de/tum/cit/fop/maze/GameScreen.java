@@ -206,7 +206,12 @@ public class GameScreen implements Screen {
 		return isPaused;
 	}
 
-	public void setPaused(boolean paused) {
-		isPaused = paused;
-	}
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public SoundController getSoundController() {
+        return soundController;
+    }
+    // Additional methods and logic can be added as needed for the game screen
 }
