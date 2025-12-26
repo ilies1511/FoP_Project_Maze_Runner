@@ -30,6 +30,9 @@ import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.Heart;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+import de.tum.cit.fop.maze.objects.traps.FreezeTrap;
+import de.tum.cit.fop.maze.objects.traps.GarlicTrap;
+import de.tum.cit.fop.maze.objects.traps.TrapFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -125,10 +128,7 @@ public class GameScreen implements Screen {
 	// Screen interface methods with necessary functionality
 	@Override
 	public void render(float delta) {
-
 		handleGlobalInput();
-
-
 
 		if (!isPaused) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -217,6 +217,10 @@ public class GameScreen implements Screen {
 
     public SoundController getSoundController() {
         return soundController;
+    }
+
+    public HUD getHUD() {
+        return hud;
     }
     // Additional methods and logic can be added as needed for the game screen
 }
