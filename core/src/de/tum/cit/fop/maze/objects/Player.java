@@ -145,7 +145,6 @@ public class Player extends GameObject {
 
 	public void collectKey() {
 		this.hasKey = true;
-        soundController.playKeyPickupSound(1f);
 		System.out.println("Key collected!");
 	}
 
