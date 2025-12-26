@@ -27,7 +27,7 @@ public class ProgressionOverlay {
     private Table table;
 
     private Player player;
-
+private SoundController soundController;
 
     public ProgressionOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen, Player player, HUD hud) {
 
@@ -36,6 +36,8 @@ public class ProgressionOverlay {
         this.gameScreen = gameScreen;
         this.player = player;
         this.hud = hud;
+
+        soundController = gameScreen.getSoundController();
 
         table = new Table();
         table.setFillParent(true);
@@ -83,8 +85,8 @@ public class ProgressionOverlay {
                 if (player.getXp() >= 15) {
 
                     hud.updatePlayerXP(-15);
-                    player.setHealth(player.getHealth() + 1);
-                    hud.updatePlayerHP(0);
+                    player.setMaxHealth(player.getMaxHealth()+1);
+                    player.getDamageOrHeal(-1);
                     dash.setDisabled(false);
                 }
 
@@ -95,12 +97,12 @@ public class ProgressionOverlay {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !maxHealth.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         dash.addListener(new ChangeListener() {
@@ -121,12 +123,12 @@ public class ProgressionOverlay {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !dash.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         maxSpeed.addListener(new ChangeListener() {
@@ -145,12 +147,12 @@ public class ProgressionOverlay {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !maxSpeed.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         invis.addListener(new ChangeListener() {
@@ -170,14 +172,14 @@ public class ProgressionOverlay {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if(!invis.isDisabled()){
                     if (pointer == -1) {
-                        SoundController.playUI_hoverOverSound(1);
+                        soundController.playUI_hoverOverSound(1);
                     }
                 }
 
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         hide.addListener(new ChangeListener() {
@@ -191,12 +193,12 @@ public class ProgressionOverlay {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1&&!hide.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 /*
 Animations:
@@ -33,17 +34,20 @@ public class Drawable {
 	}
 
 	public static void initializeTextureMap(MazeRunnerGame game) {
-		textureMap = Map.of(
-				AnimationType.CHARACTER_UP, game.getCharacterUpAnimation(),
-				AnimationType.CHARACTER_DOWN, game.getCharacterDownAnimation(),
-				AnimationType.CHARACTER_LEFT, game.getCharacterLeftAnimation(),
-				AnimationType.CHARACTER_RIGHT, game.getCharacterRightAnimation(),
-				AnimationType.CHARACTER_VICTORY_POSE, game.getCharacterDownWin(),
-				AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad(),
-				AnimationType.KEY_SHINE_ANIMATION, game.getKeyShineAnimation(),
-				AnimationType.EXIT_CLOSED, createSingleFrameAnim(game.getExitClosedTexture()),
-				AnimationType.EXIT_OPEN, createSingleFrameAnim(game.getExitOpenTexture())
-		);
+		Map<AnimationType, Animation<TextureRegion>> tempMap = new LinkedHashMap<>();
+		tempMap.put(AnimationType.CHARACTER_UP, game.getCharacterUpAnimation());
+		tempMap.put(AnimationType.CHARACTER_DOWN, game.getCharacterDownAnimation());
+		tempMap.put(AnimationType.CHARACTER_LEFT, game.getCharacterLeftAnimation());
+		tempMap.put(AnimationType.CHARACTER_RIGHT, game.getCharacterRightAnimation());
+		tempMap.put(AnimationType.CHARACTER_VICTORY_POSE, game.getCharacterDownWin());
+		tempMap.put(AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad());
+		tempMap.put(AnimationType.KEY_SHINE_ANIMATION, game.getKeyShineAnimation());
+		tempMap.put(AnimationType.EXIT_CLOSED, createSingleFrameAnim(game.getExitClosedTexture()));
+		tempMap.put(AnimationType.EXIT_OPEN, createSingleFrameAnim(game.getExitOpenTexture()));
+		tempMap.put(AnimationType.VAMPIRIC_HEART, game.getVampiricHeartAnimation());
+		tempMap.put(AnimationType.GARLIC_TRAP, game.getGarlicTrapAnimation());
+		tempMap.put(AnimationType.FREEZE_TRAP, game.getFreezeTrapAnimation());
+		textureMap = Map.copyOf(tempMap);
 	}
 
 	private static Animation<TextureRegion> createSingleFrameAnim(TextureRegion region) {

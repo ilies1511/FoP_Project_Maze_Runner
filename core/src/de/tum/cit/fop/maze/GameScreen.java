@@ -28,7 +28,11 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.Heart;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+import de.tum.cit.fop.maze.objects.traps.FreezeTrap;
+import de.tum.cit.fop.maze.objects.traps.GarlicTrap;
+import de.tum.cit.fop.maze.objects.traps.TrapFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +73,8 @@ public class GameScreen implements Screen {
      */
 
 	public GameScreen(MazeRunnerGame game) {
+        soundController = new SoundController();
+        soundController.playBackgroundMusic(0.5f);
 		this.game = game;
 
 		Drawable.initializeTextureMap(game);
@@ -98,14 +104,14 @@ public class GameScreen implements Screen {
 		stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
         this.hud = new HUD(player, stage, game, this);
-        pausedScreen = new PausedOverlay(stage, game, this);
+
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
-        soundController = new SoundController();
-        soundController.playBackgroundMusic(0.5f);
+
+        pausedScreen = new PausedOverlay(stage, game, this);
 //        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
-		this.gameController = new GameController(game, player, hud, gameField);
+		this.gameController = new GameController(game, player, hud, gameField, this);
 	}
 
 	private void handleGlobalInput() {
@@ -167,6 +173,7 @@ public class GameScreen implements Screen {
 	private void addTestObjects() {
 		gameField.addGameObject(new FleeingEnemy(new Vector2(7f, 7f)));
 		gameField.addGameObject(new Key(new Vector2(5f, 5f)));
+        gameField.addGameObject(new Heart(new Vector2(7f, 7f)));
 	}
 
 	public Player getPlayer() {
@@ -204,7 +211,16 @@ public class GameScreen implements Screen {
 		return isPaused;
 	}
 
-	public void setPaused(boolean paused) {
-		isPaused = paused;
-	}
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public SoundController getSoundController() {
+        return soundController;
+    }
+
+    public HUD getHUD() {
+        return hud;
+    }
+    // Additional methods and logic can be added as needed for the game screen
 }

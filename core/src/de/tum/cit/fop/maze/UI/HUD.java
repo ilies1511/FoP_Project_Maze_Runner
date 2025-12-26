@@ -30,9 +30,7 @@ public class HUD {
     private Stack bloodEffect;
     private Stack poisonEffect;
     private ShapeRenderer shapeRenderer;
-    private int playerHealth;
     private int playerXP;
-    private int emptyHearts;
 
     public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         shapeRenderer = new ShapeRenderer();
@@ -52,7 +50,6 @@ public class HUD {
         //table.debug();
         stage.addActor(table);
         table.bottom();
-        playerHealth = player.getHealth();
         playerXP = player.getXp();
 
         uiContainer = new Table();
@@ -66,10 +63,7 @@ public class HUD {
 
         statusEffectsTable = new Table();
         //statusEffectsTable.debug();
-        for (int i = 0; i < playerHealth; i++) {
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            heartTable.add(heart).width(50).height(50);
-        }
+        renderPlayerHP();
         table.add(uiContainer).width(2200).height(200);
         uiContainer.add(heartTable).padTop(20);
 
@@ -78,8 +72,6 @@ public class HUD {
         uiContainer.add(xpLabel);
         uiContainer.row();
         uiContainer.add(statusEffectsTable).bottom();
-
-
     }
 
     public void updatePlayerXP(int xp) {
@@ -90,21 +82,19 @@ public class HUD {
 
     }
 
-    public void updatePlayerHP(int damage) {
-        if (!player.isInGodMode()) {
-            emptyHearts += damage;
-            heartTable.clearChildren();
-            playerHealth = player.getHealth();
-            for (int i = 0; i < playerHealth - emptyHearts; i++) {
-                Image heart = new Image(game.getSkin().getDrawable("heart"));
-                heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
-            }
-            for (int i = 0; i < emptyHearts; i++) {
-                Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
-                heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
-            }
+    public void renderPlayerHP() {
+        int redHearts = player.getCurrentHealth();
+        int emptyHearts = player.getMaxHealth() - player.getCurrentHealth();
+        // call every time after updating player health
+        heartTable.clearChildren();
+        for (int i = 0; i < redHearts; i++) {
+            Image heart = new Image(game.getSkin().getDrawable("heart"));
+            heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
         }
-
+        for (int i = 0; i < emptyHearts; i++) {
+            Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
+            heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
+        }
     }
 
     public void updatePlayerStatusEffects() {

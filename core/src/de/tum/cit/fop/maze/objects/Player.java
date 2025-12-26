@@ -3,6 +3,8 @@ package de.tum.cit.fop.maze.objects;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.SoundController;
+import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
@@ -12,15 +14,21 @@ import java.util.ArrayList;
 
 public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
+    private final static int STARTING_PLAYER_HEALTH = 3;
+
     private final ArrayList<Effect> effects;
-    private int health;
+    private int currentHealth;
+    private int maxHealth;
     private int xp;
     private boolean canDash;
     private boolean canInvis;
+   // private boolean isDead;
 
     private boolean isInGodMode;
 	private boolean hasKey = false;
 
+    private final GameScreen gameScreen;
+    private final SoundController soundController;
 
     public Player(GameScreen gameScreen) {
         super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
@@ -29,22 +37,43 @@ public class Player extends GameObject {
         canInvis = false;
         isInGodMode = false;
         this.xp = 0;
-        this.health = 3; //player has x hps
+        this.currentHealth = STARTING_PLAYER_HEALTH;
+        this.maxHealth = STARTING_PLAYER_HEALTH;
         this.effects = new ArrayList<>();
 		this.hasKey = false;
+
+        this.gameScreen = gameScreen;
+        this.soundController = gameScreen.getSoundController();
     }
 
     public int receiveXP(int xpReceived) {
         return xp += xpReceived;
     }
 
-    public int getDamage(int damage) {
-        if (health - damage < 0) {
-            health = 0;
-            return health;
+    public int getDamageOrHeal(int damage) {
+        // negative damage for heal
+        if (currentHealth - damage < 0) {
+            currentHealth = 0;
         }
-        health -= damage;
-        return damage;
+        else if (currentHealth - damage > maxHealth) {
+            currentHealth = maxHealth;
+        }
+        else {
+            currentHealth -= damage;
+        }
+        if (this.gameScreen.getHUD() != null) {
+            this.gameScreen.getHUD().renderPlayerHP();
+        }
+        return currentHealth;
+    }
+
+    public int increaseMaxHealth(int extraHealth) {
+        this.maxHealth += extraHealth;
+        this.currentHealth += extraHealth;
+        if (this.gameScreen.getHUD() != null) {
+            this.gameScreen.getHUD().renderPlayerHP();
+        }
+        return this.maxHealth;
     }
 
     private void removeEffect(Class<? extends Effect> effectType) {
@@ -81,12 +110,20 @@ public class Player extends GameObject {
         }
     }
 
-    public int getHealth() {
-        return health;
+    public int getCurrentHealth() {
+        return currentHealth;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     public boolean isPoisoned() {
@@ -119,6 +156,10 @@ public class Player extends GameObject {
 		this.hasKey = true;
 		System.out.println("Key collected!");
 	}
+
+    public void die(){
+        soundController.playPlayerDieSound(1f);
+    }
 
 	public boolean hasKey() {
 		return hasKey;
@@ -162,5 +203,9 @@ public class Player extends GameObject {
 
     public void setInGodMode(boolean inGodMode) {
         isInGodMode = inGodMode;
+    }
+
+    public SoundController getSoundController() {
+        return soundController;
     }
 }

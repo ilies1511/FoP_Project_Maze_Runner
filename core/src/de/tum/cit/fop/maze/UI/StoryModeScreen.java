@@ -14,12 +14,15 @@ import de.tum.cit.fop.maze.SoundController;
 
 public class StoryModeScreen {
     private Table storyTable;
+    private SoundController soundController;
     public StoryModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         storyTable = new Table();
         storyTable.setVisible(false);
         storyTable.setFillParent(true);
         stage.addActor(storyTable);
         storyTable.top();
+
+        soundController = menuScreen.getSoundController();
 
         Label label = new Label("Story Mode", game.getSkin(), "vampire-style");
         label.setFontScale(3.0f);
@@ -33,12 +36,12 @@ public class StoryModeScreen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !continueGame.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         //TODO Finish continue button after the save/load system is ready
@@ -58,18 +61,18 @@ public class StoryModeScreen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !newGame.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         newGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                menuScreen.getSoundController().stopMainMenuMusic();
+                soundController.dispose();
                 game.goToBackgroundStory();
             }
         });
@@ -83,12 +86,12 @@ public class StoryModeScreen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !toMainMenu.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
         toMainMenu.addListener(new ChangeListener() {

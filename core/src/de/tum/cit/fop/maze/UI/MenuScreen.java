@@ -63,12 +63,12 @@ public class MenuScreen implements Screen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToStoryMode.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -82,12 +82,12 @@ public class MenuScreen implements Screen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToEndlessButton.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -100,12 +100,12 @@ public class MenuScreen implements Screen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToSettingsButton.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -118,12 +118,12 @@ public class MenuScreen implements Screen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToStatisticsButton.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -136,12 +136,12 @@ public class MenuScreen implements Screen {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToExitButton.isDisabled()) {
-                    SoundController.playUI_hoverOverSound(1);
+                    soundController.playUI_hoverOverSound(1);
                 }
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SoundController.playUI_buttonClickSound(1);
+                soundController.playUI_buttonClickSound(1);
             }
         });
 
@@ -164,6 +164,13 @@ public class MenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 goToSettings();
+            }
+        });
+
+        goToEndlessButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //TODO Iziane add logic
             }
         });
 
