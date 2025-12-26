@@ -25,7 +25,7 @@ public class SoundController {
             backgroundMusic.play();
         }
         public void stopBackgroundMusic(){
-            backgroundMusic.stop();
+            backgroundMusic.pause();
         }
 
     public void playBackgrounStorydMusic(float volume){
@@ -34,7 +34,7 @@ public class SoundController {
         backgroundStory.play();
     }
     public void stopBackgroundStoryMusic(){
-        backgroundStory.stop();
+        backgroundStory.pause();
     }
 
 
@@ -44,7 +44,7 @@ public class SoundController {
             mainMenu.play();
         }
         public void stopMainMenuMusic(){
-            mainMenu.stop();
+            mainMenu.pause();
         }
 
         public static void playEnemyDieSound(float volume){
