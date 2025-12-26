@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
+import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
@@ -26,18 +27,23 @@ public class GameController {
 	private final HUD hud;
 	private final GameField gameField;
 	private final SoundController soundController;
+    private GameScreen gameScreen;
 
 	private float flickerTimer = 0f;
 
-	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField) {
+	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, GameScreen gameScreen) {
 		this.game = game;
 		this.player = player;
 		this.hud = hud;
 		this.gameField = gameField;
+        this.gameScreen = gameScreen;
 		this.soundController = new SoundController();
 	}
 
 	public void update(float delta) {
+        if(player.getCurrentHealth() <= 0) {
+            playerDie();
+        }
 		player.tickEffects(delta);
 		handleInput(delta);
 		updateGameObjects(delta);
@@ -167,7 +173,7 @@ public class GameController {
 			}
 			else {
 				if (flickerTimer <= 0 && !player.isCanInvis()) {
-					System.out.println("YOU DIED!");
+					System.out.println("YOU WERE DAMAGED!");
                     player.getDamageOrHeal(1);
 					hud.renderPlayerHP();
 					flickerTimer = 3f;
@@ -243,6 +249,13 @@ public class GameController {
 
     public SoundController getSoundController() {
         return soundController;
+    }
+    private void playerDie(){
+            player.die();
+            soundController.dispose();
+            gameScreen.getSoundController().dispose();
+            game.goToGameLostScreen();
+
     }
     //	public boolean flicker(float delta) {
 //		if (flickerTimer > 0f) {

@@ -32,6 +32,8 @@ public class BackgroundStoryScreen implements Screen {
     public BackgroundStoryScreen( MazeRunnerGame game) {
         soundController = new SoundController();
         soundController.playBackgrounStorydMusic(0.5f);
+        Gdx.input.setCursorCatched(true);
+        Gdx.input.setInputProcessor(null);
         this.game = game;
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
