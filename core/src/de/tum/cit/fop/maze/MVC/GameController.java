@@ -15,6 +15,7 @@ import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
+import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 
 import java.util.Iterator;
@@ -133,14 +134,11 @@ public class GameController {
 			if (obj instanceof Enemy) {
 				handleEnemyLogic((Enemy) obj, delta, iter);
 			}
-			else if (obj instanceof Key) {
-				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), obj)) {
-					player.collectKey();
-					// hud.setHasKey(true); // TODO: Uncomment when HUD ready --> Nikita
-					SoundController.playKeyPickupSound(1);
-					iter.remove();
-				}
-			}
+            else if (obj instanceof Collectable) {
+                if (((Collectable) obj).checkPlayerCollision(this.player)) {
+                    iter.remove();
+                }
+            }
 			else if (obj instanceof Exit) {
 				handleExitLogic((Exit) obj);
 			}
