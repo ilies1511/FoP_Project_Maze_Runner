@@ -30,6 +30,8 @@ import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.Heart;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+import de.tum.cit.fop.maze.objects.traps.FreezeTrap;
+import de.tum.cit.fop.maze.objects.traps.GarlicTrap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -171,6 +173,8 @@ public class GameScreen implements Screen {
 		gameField.addGameObject(new FleeingEnemy(new Vector2(7f, 7f)));
 		gameField.addGameObject(new Key(new Vector2(5f, 5f)));
         gameField.addGameObject(new Heart(new Vector2(7f, 7f)));
+        gameField.addGameObject(new FreezeTrap(new Vector2(2f, 3f)));
+        gameField.addGameObject(new GarlicTrap(new Vector2(3f, 3f)));
 	}
 
 	public Player getPlayer() {
@@ -214,6 +218,10 @@ public class GameScreen implements Screen {
 
     public SoundController getSoundController() {
         return soundController;
+    }
+
+    public HUD getHUD() {
+        return hud;
     }
     // Additional methods and logic can be added as needed for the game screen
 }

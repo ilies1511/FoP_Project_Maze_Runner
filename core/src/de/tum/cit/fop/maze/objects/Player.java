@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.SoundController;
+import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
@@ -25,8 +26,8 @@ public class Player extends GameObject {
     private boolean isInGodMode;
 	private boolean hasKey = false;
 
+    private final GameScreen gameScreen;
     private final SoundController soundController;
-
 
     public Player(GameScreen gameScreen) {
         super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
@@ -40,7 +41,8 @@ public class Player extends GameObject {
         this.effects = new ArrayList<>();
 		this.hasKey = false;
 
-        soundController = gameScreen.getSoundController();
+        this.gameScreen = gameScreen;
+        this.soundController = gameScreen.getSoundController();
     }
 
     public int receiveXP(int xpReceived) {
@@ -51,19 +53,25 @@ public class Player extends GameObject {
         // negative damage for heal
         if (currentHealth - damage < 0) {
             currentHealth = 0;
-            return currentHealth;
         }
-        if (currentHealth - damage > maxHealth) {
+        else if (currentHealth - damage > maxHealth) {
             currentHealth = maxHealth;
-            return currentHealth;
         }
-        currentHealth -= damage;
+        else {
+            currentHealth -= damage;
+        }
+        if (this.gameScreen.getHUD() != null) {
+            this.gameScreen.getHUD().renderPlayerHP();
+        }
         return currentHealth;
     }
 
     public int increaseMaxHealth(int extraHealth) {
         this.maxHealth += extraHealth;
         this.currentHealth += extraHealth;
+        if (this.gameScreen.getHUD() != null) {
+            this.gameScreen.getHUD().renderPlayerHP();
+        }
         return this.maxHealth;
     }
 
