@@ -77,8 +77,9 @@ public class DevConsole {
 //        scrollPane.setStyle(myConsoleStyle);
 
         commandMap.put("setHP", val -> {
-            player.setHealth(Integer.parseInt(val));
-            hud.updatePlayerHP(0);
+            player.setCurrentHealth(Integer.parseInt(val));
+            player.setMaxHealth(Integer.parseInt(val));
+            hud.renderPlayerHP();
         });
         commandMap.put("setXP", val -> {
             player.setXp(Integer.parseInt(val));

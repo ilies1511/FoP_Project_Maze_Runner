@@ -15,7 +15,7 @@ public class Heart extends Collectable {
 
     @Override
     protected void onPickUp(Player player, HUD hud) {
-        player.getDamage(-1);
-        hud.updatePlayerHP(0);
+        player.getDamageOrHeal(-1);
+        hud.renderPlayerHP();
     }
 }
