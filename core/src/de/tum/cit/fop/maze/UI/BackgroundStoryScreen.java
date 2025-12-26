@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
-import de.tum.cit.fop.maze.objects.Key;
 
 public class BackgroundStoryScreen implements Screen {
     private Label storyLabel;
