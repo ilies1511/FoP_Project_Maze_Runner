@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Drawing.Drawable;
+import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
@@ -51,12 +52,13 @@ public class GameScreen implements Screen {
 	private final SoundController soundController;
 	private float flickerTimer = 0f;
 	private GameField gameField;
-//	private ArrayList<Enemy> enemies;
+	//	private ArrayList<Enemy> enemies;
 	//	private ArrayList<Collectable> collectables;
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
 	private final MapRenderer mapRenderer;
+	private final GameController gameController;
 
 
 //  For testing
@@ -102,32 +104,33 @@ public class GameScreen implements Screen {
 		soundController = new SoundController();
 //        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
+		this.gameController = new GameController(game, player, hud, gameField);
 	}
 
 
-	private void updateGameObjects(float delta) {
-		Iterator<GameObject> iter = gameField.getGameObjects().iterator();
-		while (iter.hasNext()) {
-			GameObject obj = iter.next();
-
-			obj.updateAnimation(delta);
-
-			if (obj instanceof Enemy) {
-				handleEnemyLogic((Enemy) obj, delta, iter);
-			}
-			else if (obj instanceof Key) {
-				if (GameObject.entitiesOverlap(playerGameObject, obj)) {
-					player.collectKey();
-					// hud.setHasKey(true); // TODO: Uncomment when HUD ready
-					SoundController.playKeyPickupSound(1);
-					iter.remove();
-				}
-			}
-			else if (obj instanceof Exit) {
-				handleExitLogic((Exit) obj);
-			}
-		}
-	}
+//	private void updateGameObjects(float delta) {
+//		Iterator<GameObject> iter = gameField.getGameObjects().iterator();
+//		while (iter.hasNext()) {
+//			GameObject obj = iter.next();
+//
+//			obj.updateAnimation(delta);
+//
+//			if (obj instanceof Enemy) {
+//				handleEnemyLogic((Enemy) obj, delta, iter);
+//			}
+//			else if (obj instanceof Key) {
+//				if (GameObject.entitiesOverlap(playerGameObject, obj)) {
+//					player.collectKey();
+//					// hud.setHasKey(true); // TODO: Uncomment when HUD ready
+//					SoundController.playKeyPickupSound(1);
+//					iter.remove();
+//				}
+//			}
+//			else if (obj instanceof Exit) {
+//				handleExitLogic((Exit) obj);
+//			}
+//		}
+//	}
 
 	private void handleGlobalInput() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole) {
@@ -156,11 +159,16 @@ public class GameScreen implements Screen {
 			}
 			ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
-			// Tick all the effects
-			this.player.tickEffects(delta);
-			handleInput(delta);
-			updateGameObjects(delta);
-			updatePlayerPosition(delta);
+			gameController.update(delta);
+////			// Tick all the effects
+//			this.player.tickEffects(delta);
+//			handleInput(delta);
+//			updateGameObjects(delta);
+//			updatePlayerPosition(delta);
+			if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomInKey()))
+				camera.zoom_in();
+			if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomOutKey()))
+				camera.zoom_out();
 			this.camera.update(delta);
 		}
 
@@ -174,7 +182,7 @@ public class GameScreen implements Screen {
 			}
 		}
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
-		boolean playerHidden = !flicker(delta);
+		boolean playerHidden = !gameController.isPlayerVisible(delta);
 		mapRenderer.render(gameField, player, delta, playerHidden);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
@@ -184,99 +192,99 @@ public class GameScreen implements Screen {
 		return gameField;
 	}
 
-	private void handleInput(float delta) {
-		boolean isMoving = false;
-		soundController.stopSteppingSound();
-
-		// Dash
-		if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) && player.isCanDash()) {
-			this.player.addOrReapplyEffect(new Dash(player));
-		}
-
-		// Y-Axis
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-			player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
-			this.player.changeAnimation(AnimationType.CHARACTER_UP);
-			isMoving = true;
-		}
-		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-			player.getPlayerGameObject().velocity.y = -player.getPlayerGameObject().getSpeed();
-			this.player.changeAnimation(AnimationType.CHARACTER_DOWN);
-			isMoving = true;
-		}
-		else {
-			player.getPlayerGameObject().velocity.y = 0f;
-		}
-
-		// X-Axis
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-			player.getPlayerGameObject().velocity.x = -player.getPlayerGameObject().getSpeed();
-			this.player.changeAnimation(AnimationType.CHARACTER_LEFT);
-			isMoving = true;
-		}
-		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-			player.getPlayerGameObject().velocity.x = player.getPlayerGameObject().getSpeed();
-			this.player.changeAnimation(AnimationType.CHARACTER_RIGHT);
-			isMoving = true;
-		}
-		else {
-			player.getPlayerGameObject().velocity.x = 0f;
-		}
-
-		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
-			SoundController.playPlayerHitSound(1);
-			System.out.println("Attacking!");
-
-			Iterator<GameObject> iter = gameField.getGameObjects().iterator();
-			while (iter.hasNext()) {
-				GameObject obj = iter.next();
-
-				if (obj instanceof Enemy) {
-					Enemy enemy = (Enemy) obj;
-
-					float distance = player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position);
-
-					if (distance < 1.5f) {
-						iter.remove();
-						hud.updatePlayerXP(15);
-						System.out.println("Enemy Killed!");
-					}
-				}
-			}
-		}
-
-		// Zoom Controls
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomInKey())) {
-			this.camera.zoom_in();
-		}
-
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomOutKey())) {
-			this.camera.zoom_out();
-		}
-
-		// Victory pose (Testing)
-		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-			this.player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
-			SoundController.playWinSound(1);
-			isMoving = true;
-		}
-
-		// Loser pose (Testing)
-		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-			this.player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
-			SoundController.playPlayerDieSound(1);
-			isMoving = true;
-		}
-
-		// Animation Timer Update
-		if (isMoving) {
-			this.player.updateAnimation(delta);
-			soundController.playSteppingSound(1);
-		}
-		else {
-			this.player.setAnimationTime(0f);
-		}
-	}
+//	private void handleInput(float delta) {
+//		boolean isMoving = false;
+//		soundController.stopSteppingSound();
+//
+//		// Dash
+//		if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) && player.isCanDash()) {
+//			this.player.addOrReapplyEffect(new Dash(player));
+//		}
+//
+//		// Y-Axis
+//		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
+//			player.getPlayerGameObject().velocity.y = player.getPlayerGameObject().getSpeed();
+//			this.player.changeAnimation(AnimationType.CHARACTER_UP);
+//			isMoving = true;
+//		}
+//		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
+//			player.getPlayerGameObject().velocity.y = -player.getPlayerGameObject().getSpeed();
+//			this.player.changeAnimation(AnimationType.CHARACTER_DOWN);
+//			isMoving = true;
+//		}
+//		else {
+//			player.getPlayerGameObject().velocity.y = 0f;
+//		}
+//
+//		// X-Axis
+//		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
+//			player.getPlayerGameObject().velocity.x = -player.getPlayerGameObject().getSpeed();
+//			this.player.changeAnimation(AnimationType.CHARACTER_LEFT);
+//			isMoving = true;
+//		}
+//		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
+//			player.getPlayerGameObject().velocity.x = player.getPlayerGameObject().getSpeed();
+//			this.player.changeAnimation(AnimationType.CHARACTER_RIGHT);
+//			isMoving = true;
+//		}
+//		else {
+//			player.getPlayerGameObject().velocity.x = 0f;
+//		}
+//
+//		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
+//			SoundController.playPlayerHitSound(1);
+//			System.out.println("Attacking!");
+//
+//			Iterator<GameObject> iter = gameField.getGameObjects().iterator();
+//			while (iter.hasNext()) {
+//				GameObject obj = iter.next();
+//
+//				if (obj instanceof Enemy) {
+//					Enemy enemy = (Enemy) obj;
+//
+//					float distance = player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position);
+//
+//					if (distance < 1.5f) {
+//						iter.remove();
+//						hud.updatePlayerXP(15);
+//						System.out.println("Enemy Killed!");
+//					}
+//				}
+//			}
+//		}
+//
+//		// Zoom Controls
+//		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomInKey())) {
+//			this.camera.zoom_in();
+//		}
+//
+//		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomOutKey())) {
+//			this.camera.zoom_out();
+//		}
+//
+//		// Victory pose (Testing)
+//		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
+//			this.player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
+//			SoundController.playWinSound(1);
+//			isMoving = true;
+//		}
+//
+//		// Loser pose (Testing)
+//		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
+//			this.player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
+//			SoundController.playPlayerDieSound(1);
+//			isMoving = true;
+//		}
+//
+//		// Animation Timer Update
+//		if (isMoving) {
+//			this.player.updateAnimation(delta);
+//			soundController.playSteppingSound(1);
+//		}
+//		else {
+//			this.player.setAnimationTime(0f);
+//		}
+//	}
 
 	private void addTestObjects() {
 		gameField.addGameObject(new FleeingEnemy(new Vector2(7f, 7f)));
@@ -330,95 +338,95 @@ public class GameScreen implements Screen {
 		isPaused = paused;
 	}
 
-	private void handleExitLogic(Exit exit) {
-		if (player.getPlayerGameObject().position.dst(exit.position) < 1.5f) {
+//	private void handleExitLogic(Exit exit) {
+//		if (player.getPlayerGameObject().position.dst(exit.position) < 1.5f) {
+//
+//			if (exit.isLocked()) {
+//				if (player.hasKey()) {
+//					if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+//						exit.open();
+//						gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);
+//						System.out.println("Door opened!");
+//					}
+//					else {
+//						// System.out.println("Press O to open"); // Optional hint
+//					}
+//				}
+//				else {
+//					// System.out.println("Locked. Find the key first.");
+//				}
+//			}
+//			else {
+//				if (GameObject.entitiesOverlap(playerGameObject, exit)) {
+//					System.out.println("You escaped! Level Finished.");
+//					SoundController.playWinSound(1);
+//					// game.goToMenu();
+//				}
+//			}
+//		}
+//	}
 
-			if (exit.isLocked()) {
-				if (player.hasKey()) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-						exit.open();
-						gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);
-						System.out.println("Door opened!");
-					}
-					else {
-						// System.out.println("Press O to open"); // Optional hint
-					}
-				}
-				else {
-					// System.out.println("Locked. Find the key first.");
-				}
-			}
-			else {
-				if (GameObject.entitiesOverlap(playerGameObject, exit)) {
-					System.out.println("You escaped! Level Finished.");
-					SoundController.playWinSound(1);
-					// game.goToMenu();
-				}
-			}
-		}
-	}
+//	private void handleEnemyLogic(Enemy enemy, float delta, Iterator<GameObject> iter) {
+//		GameObject enemyGo = enemy.getEnemyEntity();
+//
+//		enemy.updateBehavior(delta, playerGameObject.position, gameField);
+//
+//		Vector2 nextPos = enemyGo.nextPosition(delta);
+//		if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGo.getSize())) {
+//			enemyGo.move(delta);
+//		}
+//
+//		if (GameObject.entitiesOverlap(playerGameObject, enemyGo)) {
+//			if (enemy instanceof FleeingEnemy) {
+//				Vector2 pushDir = new Vector2(playerGameObject.position).sub(enemyGo.position).nor();
+//				Vector2 pushAmount = pushDir.scl(0.2f);
+//
+//				float newX = playerGameObject.position.x + pushAmount.x;
+//				float newY = playerGameObject.position.y + pushAmount.y;
+//
+//				if (!gameField.isInsideWall(newX, newY, playerGameObject.getSize())) {
+//					playerGameObject.position.set(newX, newY);
+//				}
+//			}
+//			else {
+//				if (flickerTimer <= 0 && !player.isCanInvis()) {
+//					System.out.println("YOU DIED!");
+//					hud.updatePlayerHP(1);
+//					flickerTimer = 3f;
+//					SoundController.playPlayerHitSound(1);
+//				}
+//			}
+//		}
+//	}
 
-	private void handleEnemyLogic(Enemy enemy, float delta, Iterator<GameObject> iter) {
-		GameObject enemyGo = enemy.getEnemyEntity();
-
-		enemy.updateBehavior(delta, playerGameObject.position, gameField);
-
-		Vector2 nextPos = enemyGo.nextPosition(delta);
-		if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGo.getSize())) {
-			enemyGo.move(delta);
-		}
-
-		if (GameObject.entitiesOverlap(playerGameObject, enemyGo)) {
-			if (enemy instanceof FleeingEnemy) {
-				Vector2 pushDir = new Vector2(playerGameObject.position).sub(enemyGo.position).nor();
-				Vector2 pushAmount = pushDir.scl(0.2f);
-
-				float newX = playerGameObject.position.x + pushAmount.x;
-				float newY = playerGameObject.position.y + pushAmount.y;
-
-				if (!gameField.isInsideWall(newX, newY, playerGameObject.getSize())) {
-					playerGameObject.position.set(newX, newY);
-				}
-			}
-			else {
-				if (flickerTimer <= 0 && !player.isCanInvis()) {
-					System.out.println("YOU DIED!");
-					hud.updatePlayerHP(1);
-					flickerTimer = 3f;
-					SoundController.playPlayerHitSound(1);
-				}
-			}
-		}
-	}
-
-	private void updatePlayerPosition(float delta) {
-		float velocityX = player.getPlayerGameObject().velocity.x;
-		float velocityY = player.getPlayerGameObject().velocity.y;
-		float maxSpeed = player.getPlayerGameObject().getSpeed();
-
-		float diagonalMultiplier = 1.0f;
-		float currentSpeedSqr = velocityX * velocityX + velocityY * velocityY;
-
-		if (currentSpeedSqr > (maxSpeed * maxSpeed) + 0.001f) {
-			float currentSpeed = (float) Math.sqrt(currentSpeedSqr);
-			diagonalMultiplier = maxSpeed / currentSpeed;
-		}
-
-		float moveAmountX = velocityX * diagonalMultiplier * delta;
-		float nextX = player.getPlayerGameObject().position.x + moveAmountX;
-		float currentY = player.getPlayerGameObject().position.y;
-
-		if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerGameObject().getSize())) {
-			this.player.getPlayerGameObject().position.x = nextX;
-		}
-
-		float currentX = player.getPlayerGameObject().position.x;
-		float moveAmountY = velocityY * diagonalMultiplier * delta;
-		float nextY = player.getPlayerGameObject().position.y + moveAmountY;
-
-		if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerGameObject().getSize())) {
-			player.getPlayerGameObject().position.y = nextY;
-		}
-	}
+//	private void updatePlayerPosition(float delta) {
+//		float velocityX = player.getPlayerGameObject().velocity.x;
+//		float velocityY = player.getPlayerGameObject().velocity.y;
+//		float maxSpeed = player.getPlayerGameObject().getSpeed();
+//
+//		float diagonalMultiplier = 1.0f;
+//		float currentSpeedSqr = velocityX * velocityX + velocityY * velocityY;
+//
+//		if (currentSpeedSqr > (maxSpeed * maxSpeed) + 0.001f) {
+//			float currentSpeed = (float) Math.sqrt(currentSpeedSqr);
+//			diagonalMultiplier = maxSpeed / currentSpeed;
+//		}
+//
+//		float moveAmountX = velocityX * diagonalMultiplier * delta;
+//		float nextX = player.getPlayerGameObject().position.x + moveAmountX;
+//		float currentY = player.getPlayerGameObject().position.y;
+//
+//		if (!this.gameField.isInsideWall(nextX, currentY, this.player.getPlayerGameObject().getSize())) {
+//			this.player.getPlayerGameObject().position.x = nextX;
+//		}
+//
+//		float currentX = player.getPlayerGameObject().position.x;
+//		float moveAmountY = velocityY * diagonalMultiplier * delta;
+//		float nextY = player.getPlayerGameObject().position.y + moveAmountY;
+//
+//		if (!this.gameField.isInsideWall(currentX, nextY, this.player.getPlayerGameObject().getSize())) {
+//			player.getPlayerGameObject().position.y = nextY;
+//		}
+//	}
 }
 
