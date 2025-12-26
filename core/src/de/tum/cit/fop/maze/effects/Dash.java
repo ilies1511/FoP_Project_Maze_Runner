@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.effects;
 
+import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.objects.Player;
 
@@ -9,18 +10,21 @@ public class Dash extends Effect {
 
     private float timeLeft;
 
+    private final SoundController soundController;
 
     public Dash(Player player) {
         this.player = player;
         this.timeLeft = DURATION;
+        soundController = player.getSoundController();
     }
 
     @Override
     public void onStart() {
 //        if( player.isCanDash()){
-            SoundController.playPlayerDashSound(1);
+
             this.player.addOrReapplyEffect(new DashCooldown(this.player));
             this.player.getPlayerGameObject().increaseSpeed(SPEED_BOOST);
+            soundController.playPlayerDashSound(1f);
 //        }
 
     }

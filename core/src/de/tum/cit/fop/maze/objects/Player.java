@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze.objects;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.DashCooldown;
 import de.tum.cit.fop.maze.effects.Effect;
@@ -21,6 +22,8 @@ public class Player extends GameObject {
     private boolean isInGodMode;
 	private boolean hasKey = false;
 
+    private final SoundController soundController;
+
 
     public Player(GameScreen gameScreen) {
         super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
@@ -32,6 +35,8 @@ public class Player extends GameObject {
         this.health = 3; //player has x hps
         this.effects = new ArrayList<>();
 		this.hasKey = false;
+
+        soundController = gameScreen.getSoundController();
     }
 
     public int receiveXP(int xpReceived) {
@@ -117,6 +122,7 @@ public class Player extends GameObject {
 
 	public void collectKey() {
 		this.hasKey = true;
+        soundController.playKeyPickupSound(1f);
 		System.out.println("Key collected!");
 	}
 
@@ -162,5 +168,9 @@ public class Player extends GameObject {
 
     public void setInGodMode(boolean inGodMode) {
         isInGodMode = inGodMode;
+    }
+
+    public SoundController getSoundController() {
+        return soundController;
     }
 }
