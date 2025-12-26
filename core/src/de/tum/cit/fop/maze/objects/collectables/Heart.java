@@ -17,6 +17,5 @@ public class Heart extends Collectable {
     protected void onPickUp(Player player, HUD hud) {
         player.getSoundController().playPlayerHealSound(1f);
         player.getDamageOrHeal(-1);
-        hud.renderPlayerHP();
     }
 }
