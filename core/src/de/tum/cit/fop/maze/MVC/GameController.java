@@ -241,4 +241,11 @@ public class GameController {
 		}
 		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
 	}
+//	public boolean flicker(float delta) {
+//		if (flickerTimer > 0f) {
+//			flickerTimer -= delta;
+//		}
+//		//player visible if timer is 0 or if flickering
+//		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
+//	}
 }
