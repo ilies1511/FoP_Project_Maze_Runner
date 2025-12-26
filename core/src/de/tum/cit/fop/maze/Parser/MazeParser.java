@@ -7,8 +7,7 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Key;
-//import de.tum.cit.fop.maze.objects.Key;
-//import de.tum.cit.fop.maze.objects.Trap;
+import de.tum.cit.fop.maze.objects.traps.TrapFactory;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -75,7 +74,7 @@ public class MazeParser {
 	            field.addGameObject(new Exit(x, y, game));
                 break;
             case 3:
-//                field.addGameObject(new Trap(x, y, game));  // TODO: iziane - Later, after GameObject is done
+                field.addGameObject(TrapFactory.createRandomTrap(new Vector2(x, y)));
                 field.setTile(x, y, TileType.EMPTY);
                 break;
             case 4:
