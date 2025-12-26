@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
         pausedScreen = new PausedOverlay(stage, game, this);
 //        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
-		this.gameController = new GameController(game, player, hud, gameField);
+		this.gameController = new GameController(game, player, hud, gameField, this);
 	}
 
 	private void handleGlobalInput() {
@@ -125,7 +125,10 @@ public class GameScreen implements Screen {
 	// Screen interface methods with necessary functionality
 	@Override
 	public void render(float delta) {
+
 		handleGlobalInput();
+
+
 
 		if (!isPaused) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {

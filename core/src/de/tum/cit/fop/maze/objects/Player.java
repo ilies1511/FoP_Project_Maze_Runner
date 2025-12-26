@@ -21,6 +21,7 @@ public class Player extends GameObject {
     private int xp;
     private boolean canDash;
     private boolean canInvis;
+   // private boolean isDead;
 
     private boolean isInGodMode;
 	private boolean hasKey = false;
@@ -147,6 +148,10 @@ public class Player extends GameObject {
 		this.hasKey = true;
 		System.out.println("Key collected!");
 	}
+
+    public void die(){
+        soundController.playPlayerDieSound(1f);
+    }
 
 	public boolean hasKey() {
 		return hasKey;

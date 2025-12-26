@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import de.tum.cit.fop.maze.UI.BackgroundStoryScreen;
+import de.tum.cit.fop.maze.UI.GameLostScreen;
 import de.tum.cit.fop.maze.UI.MenuScreen;
 import de.tum.cit.fop.maze.UI.SettingsScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
@@ -29,6 +30,7 @@ public class MazeRunnerGame extends Game {
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
     private BackgroundStoryScreen backgroundStoryScreen;
+    private GameLostScreen gameLostScreen;
     // Sprite Batch for rendering
     private SpriteBatch spriteBatch;
     // UI Skin
@@ -156,7 +158,7 @@ public class MazeRunnerGame extends Game {
 //	}
 
     public void disposeAllScreens() {
-        List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen);
+        List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen, this.gameLostScreen);
         for (Screen screen : allScreens) {
             if (screen != null) {
                 screen.dispose();
@@ -186,6 +188,14 @@ public class MazeRunnerGame extends Game {
         disposeAllScreens();
         this.setScreen(new BackgroundStoryScreen(this)); // Set the current screen to GameScreen
     }
+
+    public void goToGameLostScreen(){
+        disposeAllScreens();
+        this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
+    }
+
+
+
     /**
      * Loads the character animation from the character.png file.
      */

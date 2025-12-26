@@ -167,6 +167,13 @@ public class MenuScreen implements Screen {
             }
         });
 
+        goToEndlessButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //TODO Iziane add logic
+            }
+        });
+
         storyModeScreen = new StoryModeScreen(stage, game, this);
         settingsScreen = new SettingsScreen(stage,game,this);
         // TODO add listeners to Statistics, EndlessMode
