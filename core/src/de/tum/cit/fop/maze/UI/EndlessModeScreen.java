@@ -24,8 +24,6 @@ public class EndlessModeScreen {
         stage.addActor(table);
         table.top();
 
-        soundController = menuScreen.getSoundController();
-
         Label label = new Label("Survival Mode", game.getSkin(), "vampire-style");
         label.setFontScale(3.0f);
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
@@ -59,7 +57,6 @@ public class EndlessModeScreen {
         TextButton newGame = new TextButton("New Game", game.getSkin(), "vampire-style");
         table.add(newGame).width(300).left().padLeft(50).padBottom(50);
         newGame.getLabel().setTouchable(Touchable.disabled);
-//        newGame.setDisabled(true);
         newGame.setDisabled(false);
         newGame.addListener(new ClickListener(){
             @Override
