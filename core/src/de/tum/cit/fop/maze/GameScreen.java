@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Drawing.Drawable;
+import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -59,7 +60,7 @@ public class GameScreen implements Screen {
      *
      */
 
-	public GameScreen(MazeRunnerGame game) {
+	public GameScreen(MazeRunnerGame game, boolean isSurvivalMode) {
         soundController = new SoundController();
         soundController.playBackgroundMusic(0.5f);
 		this.game = game;
@@ -76,7 +77,9 @@ public class GameScreen implements Screen {
 			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
 		}
 
-		addTestObjects();
+		if (!isSurvivalMode) {
+			addTestObjects();
+		}
 
 		this.player = new Player(this); //create an instance of the player
 		this.playerGameObject = this.player.getPlayerGameObject();
@@ -99,6 +102,11 @@ public class GameScreen implements Screen {
 //        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
 		this.gameController = new GameController(game, player, hud, gameField, this);
+
+		if (isSurvivalMode) {
+			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
+			this.gameController.setWaveManager(waveManager);
+		}
 	}
 
 	private void handleGlobalInput() {

@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import de.tum.cit.fop.maze.UI.BackgroundStoryScreen;
-import de.tum.cit.fop.maze.UI.GameLostScreen;
-import de.tum.cit.fop.maze.UI.MenuScreen;
-import de.tum.cit.fop.maze.UI.SettingsScreen;
+import de.tum.cit.fop.maze.UI.*;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.Arrays;
@@ -187,8 +184,9 @@ public class MazeRunnerGame extends Game {
      */
     public void goToGame() {
         disposeAllScreens();
-        this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
+        this.setScreen(new GameScreen(this, false)); // Set the current screen to GameScreen
     }
+
 
 
     public void goToBackgroundStory(){
@@ -201,7 +199,10 @@ public class MazeRunnerGame extends Game {
         this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
     }
 
-
+	public void goToLeaderboard() {
+		disposeAllScreens();
+		this.setScreen(new LeaderboardScreen(this));
+	}
 
     /**
      * Loads the character animation from the dracula.png file.
