@@ -7,6 +7,8 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.Thirst;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
+import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.CollectableFactory;
 
 public class Enemy extends GameObject {
     boolean isDead;
@@ -36,8 +38,10 @@ public class Enemy extends GameObject {
         }
     }
 
-    public void onDeath(Player player) {
+    public Collectable onDeath(Player player) {
         player.addOrReapplyEffect(new Thirst(player));
+        Collectable drop = CollectableFactory.createRandomCollectable(this.position);
+        return drop;
     }
 
     public boolean isDead() {
