@@ -8,6 +8,7 @@ import de.tum.cit.fop.maze.objects.GameObject;
 
 public class Enemy extends GameObject {
     boolean isDead;
+    protected int xpReward;
 
     public Enemy(Vector2 startPos) {
         super(
@@ -35,6 +36,10 @@ public class Enemy extends GameObject {
 
     public boolean isDead() {
         return isDead;
+    }
+
+    public int getXpReward() {
+        return this.xpReward;
     }
 
     public void setDead(boolean dead) {

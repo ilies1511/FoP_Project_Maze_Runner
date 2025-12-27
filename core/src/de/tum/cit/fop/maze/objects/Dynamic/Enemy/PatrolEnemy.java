@@ -11,6 +11,7 @@ public class PatrolEnemy extends Enemy {
     public PatrolEnemy(Vector2 startPos) {
         super(startPos);
         this.moveTimer = 0;
+        this.xpReward = 10;
         pickRandomDirection();
     }
 

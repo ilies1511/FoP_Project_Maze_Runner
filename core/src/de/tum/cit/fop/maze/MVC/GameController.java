@@ -103,7 +103,7 @@ public class GameController {
 					Enemy enemy = (Enemy) obj;
 					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
 						iter.remove();
-						hud.updatePlayerXP(15);
+						hud.updatePlayerXP(enemy.getXpReward());
 						System.out.println("Enemy Killed!");
 					}
 				}
