@@ -210,6 +210,11 @@ public class MazeRunnerGame extends Game {
 		this.setScreen(new LeaderboardScreen(this));
 	}
 
+	public void goToGameWonScreen() {
+		disposeAllScreens();
+		this.setScreen(new GameWonScreen(this));
+	}
+
     /**
      * Loads the character animation from the dracula.png file.
      */
