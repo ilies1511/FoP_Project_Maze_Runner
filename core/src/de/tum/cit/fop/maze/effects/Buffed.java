@@ -6,15 +6,9 @@ public class Buffed extends Effect {
     private static final float DURATION = 1f;
     private static final float SPEED_MULTIPLIER = 1.6f;
 
-    private float timeLeft;
-
     public Buffed(Player player) {
         this.player = player;
         this.timeLeft = DURATION;
-    }
-
-    public float getTimeLeft() {
-        return this.timeLeft;
     }
 
     @Override

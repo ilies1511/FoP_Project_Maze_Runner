@@ -4,6 +4,11 @@ import de.tum.cit.fop.maze.objects.Player;
 
 public abstract class Effect {
     protected Player player;
+    protected float timeLeft;
+
+    public float getTimeLeft() {
+        return this.timeLeft;
+    }
 
     public abstract void onStart();
 

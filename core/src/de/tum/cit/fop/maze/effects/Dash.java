@@ -7,8 +7,6 @@ public class Dash extends Effect {
     private static final float DURATION = 0.1f;
     private static final float SPEED_BOOST = 8f;
 
-    private float timeLeft;
-
     private final SoundController soundController;
 
     public Dash(Player player) {

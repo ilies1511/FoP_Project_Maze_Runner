@@ -132,6 +132,10 @@ public class Player extends GameObject {
         return effectInEffects(Buffed.class);
     }
 
+    public boolean isFrozen() {
+        return effectInEffects(Frozen.class);
+    }
+
     public float getPoisonDuration() {
         for (Effect effect : effects) {
             if (effect.getClass() == Poisoned.class) {
@@ -145,6 +149,15 @@ public class Player extends GameObject {
         for (Effect effect : effects) {
             if (effect.getClass() == Buffed.class) {
                 return ((Buffed) effect).getTimeLeft();
+            }
+        }
+        return 0f;
+    }
+
+    public float getFreezeDuration() {
+        for (Effect effect : effects) {
+            if (effect.getClass() == Frozen.class) {
+                return ((Frozen) effect).getTimeLeft();
             }
         }
         return 0f;
