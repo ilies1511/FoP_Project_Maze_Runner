@@ -29,6 +29,7 @@ public class MenuScreen implements Screen {
     private final StoryModeScreen storyModeScreen;
     private final SettingsScreen settingsScreen;
     private final SoundController soundController;
+    private final EndlessModeScreen endlessModeScreen;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -93,6 +94,30 @@ public class MenuScreen implements Screen {
 
         table.row();
 
+        TextButton goToParserMode = new TextButton("Parser Mode", game.getSkin(), "vampire-style");
+        table.add(goToParserMode).width(300).left().padLeft(50).padBottom(50);
+        goToParserMode.getLabel().setTouchable(Touchable.disabled);
+        goToParserMode.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !goToParserMode.isDisabled()) {
+                    soundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                soundController.playUI_buttonClickSound(1);
+            }
+        });
+        goToParserMode.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //TODO add logic
+            }
+        });
+
+        table.row();
+
         TextButton goToSettingsButton = new TextButton("Settings", game.getSkin(), "vampire-style");
         table.add(goToSettingsButton).width(300).left().padLeft(50).padBottom(50);
         goToSettingsButton.getLabel().setTouchable(Touchable.disabled);
@@ -111,23 +136,7 @@ public class MenuScreen implements Screen {
 
         table.row();
 
-        TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(), "vampire-style");
-        table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
-        goToStatisticsButton.getLabel().setTouchable(Touchable.disabled);
-        goToStatisticsButton.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !goToStatisticsButton.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
 
-        table.row();
 
         TextButton goToExitButton = new TextButton("Exit", game.getSkin(), "vampire-style");
         table.add(goToExitButton).width(300).left().padLeft(50).padBottom(50);
@@ -170,11 +179,12 @@ public class MenuScreen implements Screen {
         goToEndlessButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO Iziane add logic
+                goToEndless();
             }
         });
 
         storyModeScreen = new StoryModeScreen(stage, game, this);
+        endlessModeScreen = new EndlessModeScreen(stage, game, this);
         settingsScreen = new SettingsScreen(stage,game,this);
         // TODO add listeners to Statistics, EndlessMode
     }
@@ -224,10 +234,16 @@ public class MenuScreen implements Screen {
         table.setVisible(true);
         storyModeScreen.getStoryTable().setVisible(false);
         settingsScreen.getTable().setVisible(false);
+        endlessModeScreen.getEndlessTable().setVisible(false);
     }
     public void goToSettings(){
         table.setVisible(false);
         settingsScreen.getTable().setVisible(true);
+    }
+
+    public void goToEndless(){
+        table.setVisible(false);
+        endlessModeScreen.getEndlessTable().setVisible(true);
     }
 
     public SoundController getSoundController() {
