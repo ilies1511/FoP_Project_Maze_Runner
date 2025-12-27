@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
     private final static int STARTING_PLAYER_HEALTH = 3;
-    private int requiredKeys = 3;
+    private int requiredKeys;
 
     private final ArrayList<Effect> effects;
     private int currentHealth;
@@ -42,6 +42,7 @@ public class Player extends GameObject {
 		this.hasKeys = false;
 
         this.gameScreen = gameScreen;
+		this.requiredKeys = gameScreen.getGameField().getRequiredKeys();
         this.soundController = gameScreen.getSoundController();
     }
 

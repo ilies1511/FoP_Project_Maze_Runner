@@ -165,6 +165,16 @@ public class GameField {
 			grid[y * width + x] = tile;
 		}
 	}
+
+	public int getRequiredKeys() {
+		List<Key> keysInMap = getObjectsByType(Key.class);
+
+		int keys = keysInMap.size();
+		if (keys <= 0) {
+			return 1;
+		}
+		return keysInMap.size();
+	}
 	// END -- Setters
 
 	// BEGIN -- Methods
