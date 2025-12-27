@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.objects.Player;
@@ -27,11 +28,15 @@ public class HUD {
     private Table uiContainer;
     private Table heartTable;
     private Table statusEffectsTable;
+    private Table keyOutlineTable;
     private Stack bloodEffect;
     private Stack poisonEffect;
     private Stack freezeEffect;
     private ShapeRenderer shapeRenderer;
     private int playerXP;
+    private int playerKeys;
+    private int requiredKeys;
+    private Stack[] keyStack;
 
     public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         shapeRenderer = new ShapeRenderer();
@@ -47,9 +52,12 @@ public class HUD {
     public void renderHUD() {
         table = new Table(); // Create a table for layout
         table.setFillParent(true); // Make the table fill the stage
+        keyOutlineTable = new Table();
+        keyOutlineTable.setFillParent(true);
         //   table.defaults().space(10).expandX();
         //table.debug();
         stage.addActor(table);
+        stage.addActor(keyOutlineTable);
         table.bottom();
         playerXP = player.getXp();
 
@@ -66,6 +74,23 @@ public class HUD {
         //statusEffectsTable.debug();
         renderPlayerHP();
         table.add(uiContainer).width(2200).height(200);
+
+        requiredKeys = player.getRequiredKeys();
+         keyStack = new Stack[requiredKeys];
+
+        keyOutlineTable.top().right().padRight(40);
+       Label keyLabel = new Label("Keys", game.getSkin(), "vampire-style");
+       keyLabel.setFontScale(2);
+        keyOutlineTable.add(keyLabel);
+        keyOutlineTable.row();
+        for(int i = 0; i < requiredKeys; i++){
+            keyStack[i] = new Stack();
+            Image keyOutline =new Image(game.getKeyOutline());
+//            keyOutlineTable.add(key).width(170).height(100).padRight(10).padTop(10);
+            keyStack[i].add(keyOutline);
+            keyOutlineTable.add(keyStack[i]).size(170,100);
+        }
+
         uiContainer.add(heartTable).padTop(20);
 
         xpLabel = new Label("XP:" + playerXP, game.getSkin(), "vampire-style");
@@ -73,6 +98,19 @@ public class HUD {
         uiContainer.add(xpLabel);
         uiContainer.row();
         uiContainer.add(statusEffectsTable).bottom();
+
+    }
+
+    public void updatePlayerKeys(){
+        playerKeys = player.getCurrentKeys();
+        for(int i = 0; i < playerKeys; i++){
+            Image key =new Image(game.getKey());
+            keyStack[i].add(key);
+
+//            keyOutlineTable.add(keyStack[i]).size(160,90);
+
+        }
+
     }
 
     public void updatePlayerXP() {

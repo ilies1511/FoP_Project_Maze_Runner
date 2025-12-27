@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -91,9 +92,11 @@ public class GameScreen implements Screen {
 		font = game.getSkin().getFont("vampire-font");
 
 		Viewport viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
-		stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+		stage = new Stage(viewport); // Create a stage for UI elements
 
         this.hud = new HUD(player, stage, game, this);
+
+
 
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
