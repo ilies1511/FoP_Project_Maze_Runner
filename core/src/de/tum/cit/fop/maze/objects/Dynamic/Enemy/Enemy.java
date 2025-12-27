@@ -11,7 +11,6 @@ import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 
 public class Enemy extends GameObject {
     boolean isDead;
-    protected int xpReward;
 
     public Enemy(Vector2 startPos) {
         super(
@@ -38,6 +37,7 @@ public class Enemy extends GameObject {
     }
 
     public Collectable onDeath(Player player) {
+        player.receiveXP(1);
         player.addOrReapplyEffect(new Buffed(player));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
         return drop;
@@ -45,10 +45,6 @@ public class Enemy extends GameObject {
 
     public boolean isDead() {
         return isDead;
-    }
-
-    public int getXpReward() {
-        return this.xpReward;
     }
 
     public void setDead(boolean dead) {
