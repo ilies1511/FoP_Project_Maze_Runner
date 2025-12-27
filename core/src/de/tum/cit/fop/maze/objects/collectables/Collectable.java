@@ -10,12 +10,12 @@ import de.tum.cit.fop.maze.objects.Player;
 public abstract class Collectable extends GameObject {
     private final Vector2 spriteShift;
 
-    public Collectable(Vector2 startPos, Vector2 spriteSizes, Vector2 spriteShift, AnimationType animationType) {
+    public Collectable(Vector2 startPos, Vector2 sizes, Vector2 spriteSizes, Vector2 spriteShift, AnimationType animationType) {
         super(
                 startPos,
                 new Vector2(0f, 0f),
                 0f,
-                new Vector2(1f, 1f),
+                sizes,
                 spriteSizes,
                 animationType
         );

@@ -6,8 +6,6 @@ public class Frozen extends Effect {
     private static final float DURATION = 3f;
     private static final float SPEED_MULTIPLIER = 0.3f;
 
-    private float timeLeft;
-
     public Frozen(Player player) {
         this.player = player;
         this.timeLeft = DURATION;

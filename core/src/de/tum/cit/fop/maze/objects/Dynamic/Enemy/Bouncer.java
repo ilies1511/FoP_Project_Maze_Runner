@@ -9,6 +9,7 @@ public class Bouncer extends Enemy {
 
     public Bouncer(Vector2 startPos) {
         super(startPos);
+        this.xpReward = 15;
         this.speed = 1.0f; // slow
     }
 

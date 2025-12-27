@@ -8,6 +8,7 @@ public class FleeingEnemy extends Enemy {
     public FleeingEnemy(Vector2 startPos) {
         super(startPos);
         this.speed = 2.5f; // Slightly faster than normal enemies
+        this.xpReward = 1;
     }
 
     @Override

@@ -21,6 +21,7 @@ import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 
 public class GameController {
 	private final MazeRunnerGame game;
@@ -96,14 +97,16 @@ public class GameController {
             soundController.playPlayerHitSound(1);
 			System.out.println("Attacking!");
 
-			Iterator<GameObject> iter = gameField.getGameObjects().iterator();
+			ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
 			while (iter.hasNext()) {
 				GameObject obj = iter.next();
 				if (obj instanceof Enemy) {
 					Enemy enemy = (Enemy) obj;
 					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
 						iter.remove();
-						hud.updatePlayerXP(15);
+						hud.updatePlayerXP(enemy.getXpReward());
+                        Collectable drop = enemy.onDeath(player);
+                        iter.add(drop);
 						System.out.println("Enemy Killed!");
 					}
 				}

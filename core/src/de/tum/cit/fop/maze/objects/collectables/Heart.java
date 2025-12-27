@@ -8,7 +8,8 @@ import de.tum.cit.fop.maze.objects.Player;
 public class Heart extends Collectable {
     public Heart(Vector2 startpos) {
         super(startpos,
-                new Vector2(1.0f, 1.2f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.65f, 0.8f),
                 new Vector2(0.0f, 0.0f),
                 AnimationType.VAMPIRIC_HEART);
     }

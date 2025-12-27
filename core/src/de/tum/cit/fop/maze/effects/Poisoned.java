@@ -7,17 +7,12 @@ public class Poisoned extends Effect {
     private static final float SPEED_MULTIPLIER = 0.7f;
     private static final int TOTAL_DAMAGE_TICKS = 2;
 
-    private float timeLeft;
     private int currentTick;
 
     public Poisoned(Player player) {
         this.player = player;
         this.timeLeft = DURATION;
         this.currentTick = 0;
-    }
-
-    public float getTimeLeft() {
-        return this.timeLeft;
     }
 
     @Override

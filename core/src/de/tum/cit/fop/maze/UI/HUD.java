@@ -29,6 +29,7 @@ public class HUD {
     private Table statusEffectsTable;
     private Stack bloodEffect;
     private Stack poisonEffect;
+    private Stack freezeEffect;
     private ShapeRenderer shapeRenderer;
     private int playerXP;
 
@@ -99,11 +100,14 @@ public class HUD {
 
     public void updatePlayerStatusEffects() {
 
-//        if(player.isBuffed()){
-//            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
-//        }
+        if(player.isBuffed()){
+            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
+        }
         if (player.isPoisoned()) {
             drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
+        }
+        if (player.isFrozen()) {
+            drawRing(new Image(game.getFreezeEffect()), player.getFreezeDuration(), "Frozen");
         }
     }
 
@@ -179,6 +183,7 @@ public class HUD {
         Stack previousStack = null;
         if (Objects.equals(effect, "Poisoned")) previousStack = poisonEffect;
         else if (Objects.equals(effect, "Buffed")) previousStack = bloodEffect;
+        else if (Objects.equals(effect, "Frozen")) previousStack = freezeEffect;
         boolean replace = false;
 
         if (previousStack != null) {
@@ -201,13 +206,14 @@ public class HUD {
 
         if (Objects.equals(effect, "Poisoned")) poisonEffect = stack;
         else if (Objects.equals(effect, "Buffed")) bloodEffect = stack;
+        else if (Objects.equals(effect, "Frozen")) freezeEffect = stack;
 
 
         stack.addAction(Actions.sequence(
                 Actions.delay(maxT),
                 Actions.run(() -> {
 
-                    if (Objects.equals(effect, "Poisoned") && poisonEffect == finalStack || Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
+                    if (Objects.equals(effect, "Poisoned") && poisonEffect == finalStack || Objects.equals(effect, "Buffed") && bloodEffect == finalStack || Objects.equals(effect, "Frozen") && freezeEffect == finalStack) {
                         Cell cell = statusEffectsTable.getCell(finalStack);
                         finalStack.remove();
                         if (cell != null) {
@@ -220,6 +226,8 @@ public class HUD {
                         poisonEffect = null;
                     } else if (Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
                         bloodEffect = null;
+                    } else if  (Objects.equals(effect, "Frozen") && freezeEffect == finalStack) {
+                        freezeEffect = null;
                     }
                 })
         ));

@@ -9,33 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Drawing.Drawable;
 import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
-import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
-import de.tum.cit.fop.maze.effects.Dash;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.GameObject;
-import de.tum.cit.fop.maze.objects.GameObjectTemp;
 import de.tum.cit.fop.maze.objects.Player;
-import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.Heart;
 import de.tum.cit.fop.maze.objects.collectables.Key;
-import de.tum.cit.fop.maze.objects.traps.FreezeTrap;
-import de.tum.cit.fop.maze.objects.traps.GarlicTrap;
-import de.tum.cit.fop.maze.objects.traps.TrapFactory;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.

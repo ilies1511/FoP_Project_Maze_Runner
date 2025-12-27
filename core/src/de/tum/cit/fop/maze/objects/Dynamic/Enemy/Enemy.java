@@ -3,11 +3,15 @@ package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.SoundController;
+import de.tum.cit.fop.maze.effects.Buffed;
 import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.Player;
+import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 
 public class Enemy extends GameObject {
     boolean isDead;
+    protected int xpReward;
 
     public Enemy(Vector2 startPos) {
         super(
@@ -33,8 +37,18 @@ public class Enemy extends GameObject {
         }
     }
 
+    public Collectable onDeath(Player player) {
+        player.addOrReapplyEffect(new Buffed(player));
+        Collectable drop = CollectableCreator.createRandomCollectable(this.position);
+        return drop;
+    }
+
     public boolean isDead() {
         return isDead;
+    }
+
+    public int getXpReward() {
+        return this.xpReward;
     }
 
     public void setDead(boolean dead) {

@@ -4,11 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.SoundController;
-import de.tum.cit.fop.maze.UI.HUD;
-import de.tum.cit.fop.maze.effects.Dash;
-import de.tum.cit.fop.maze.effects.DashCooldown;
-import de.tum.cit.fop.maze.effects.Effect;
-import de.tum.cit.fop.maze.effects.Poisoned;
+import de.tum.cit.fop.maze.effects.*;
 
 import java.util.ArrayList;
 
@@ -86,6 +82,7 @@ public class Player extends GameObject {
                 break;
             }
         }
+        this.gameScreen.getHUD().updatePlayerStatusEffects();
     }
 
     public void addOrReapplyEffect(Effect effect) {
@@ -95,6 +92,7 @@ public class Player extends GameObject {
         this.removeEffect(effect.getClass());
         effect.onStart();
         this.effects.add(effect);
+        this.gameScreen.getHUD().updatePlayerStatusEffects();
     }
 
     public void tickEffects(float deltaTime) {
@@ -130,10 +128,36 @@ public class Player extends GameObject {
         return effectInEffects(Poisoned.class);
     }
 
+    public boolean isBuffed() {
+        return effectInEffects(Buffed.class);
+    }
+
+    public boolean isFrozen() {
+        return effectInEffects(Frozen.class);
+    }
+
     public float getPoisonDuration() {
         for (Effect effect : effects) {
             if (effect.getClass() == Poisoned.class) {
                 return ((Poisoned) effect).getTimeLeft();
+            }
+        }
+        return 0f;
+    }
+
+    public float getBuffDuration() {
+        for (Effect effect : effects) {
+            if (effect.getClass() == Buffed.class) {
+                return ((Buffed) effect).getTimeLeft();
+            }
+        }
+        return 0f;
+    }
+
+    public float getFreezeDuration() {
+        for (Effect effect : effects) {
+            if (effect.getClass() == Frozen.class) {
+                return ((Frozen) effect).getTimeLeft();
             }
         }
         return 0f;

@@ -5,8 +5,6 @@ import de.tum.cit.fop.maze.objects.Player;
 public class DashCooldown extends Effect {
     private static final float DURATION = 0.3f;
 
-    private float timeLeft;
-
     public DashCooldown(Player player) {
         this.player = player;
         this.timeLeft = DURATION;
