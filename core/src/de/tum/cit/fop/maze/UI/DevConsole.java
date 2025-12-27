@@ -83,7 +83,7 @@ public class DevConsole {
         });
         commandMap.put("setXP", val -> {
             player.setXp(Integer.parseInt(val));
-            hud.updatePlayerXP(0);
+            hud.updatePlayerXP();
         });
         commandMap.put("setSpeedMultiplier", val -> {
             player.multiplySpeed(Float.parseFloat(val));

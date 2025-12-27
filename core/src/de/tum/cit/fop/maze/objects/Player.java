@@ -43,7 +43,9 @@ public class Player extends GameObject {
     }
 
     public int receiveXP(int xpReceived) {
-        return xp += xpReceived;
+        xp += xpReceived;
+        gameScreen.getHUD().updatePlayerXP();
+        return xp;
     }
 
     public int getDamageOrHeal(int damage) {

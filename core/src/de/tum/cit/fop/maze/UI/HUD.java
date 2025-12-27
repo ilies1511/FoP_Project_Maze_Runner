@@ -75,12 +75,10 @@ public class HUD {
         uiContainer.add(statusEffectsTable).bottom();
     }
 
-    public void updatePlayerXP(int xp) {
-        player.receiveXP(xp);
+    public void updatePlayerXP() {
         playerXP = player.getXp();
 
         xpLabel.setText("XP:" + playerXP);
-
     }
 
     public void renderPlayerHP() {

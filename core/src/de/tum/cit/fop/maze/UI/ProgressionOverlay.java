@@ -84,7 +84,7 @@ private SoundController soundController;
             public void changed(ChangeEvent event, Actor actor) {
                 if (player.getXp() >= 15) {
 
-                    hud.updatePlayerXP(-15);
+                    player.receiveXP(-15);
                     player.setMaxHealth(player.getMaxHealth()+1);
                     player.getDamageOrHeal(-1);
                     dash.setDisabled(false);
@@ -111,7 +111,7 @@ private SoundController soundController;
                 if (player.getXp() >= 15) {
                     dash.setDisabled(true);
                     player.setCanDash(true);
-                    hud.updatePlayerXP(-15);
+                    player.receiveXP(-15);
                     maxSpeed.setDisabled(false);
 
                 }
@@ -135,7 +135,7 @@ private SoundController soundController;
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (player.getXp() >= 15) {
-                    hud.updatePlayerXP(-15);
+                    player.receiveXP(-15);
                     player.multiplySpeed(1.15f);
                     invis.setDisabled(false);
                 }
@@ -162,7 +162,7 @@ private SoundController soundController;
                 if (player.getXp() >= 15) {
                     dash.setDisabled(true);
                     player.setCanInvis(true);
-                    hud.updatePlayerXP(-15);
+                    player.receiveXP(-15);
                 }
             }
         });

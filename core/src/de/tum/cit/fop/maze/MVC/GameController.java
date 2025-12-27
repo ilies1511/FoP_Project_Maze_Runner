@@ -104,7 +104,6 @@ public class GameController {
 					Enemy enemy = (Enemy) obj;
 					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
 						iter.remove();
-						hud.updatePlayerXP(enemy.getXpReward());
                         Collectable drop = enemy.onDeath(player);
                         iter.add(drop);
 						System.out.println("Enemy Killed!");
