@@ -204,11 +204,10 @@ public class MazeRunnerGame extends Game {
 
 
     /**
-     * Loads the character animation from the character.png file.
+     * Loads the character animation from the dracula.png file.
      */
     private void loadCharacterAnimation() {
-        Texture walkSheet = new Texture(Gdx.files.internal("character.png"));
-
+        Texture walkSheet = new Texture(Gdx.files.internal("dracula.png"));
         int frameWidth = 16;
         int frameHeight = 32;
 
