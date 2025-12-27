@@ -34,7 +34,7 @@ public class DevConsole {
     public DevConsole(MazeRunnerGame game, GameScreen gameScreen, Stage stage, Player player, HUD hud) {
 
         setCommands = "XP|HP|SpeedMultiplier|Dash|Invis|GodMode";
-        getCommands = "Buff|Debuff|Key|Help";
+        getCommands = "Buff|Debuff|Keys|Help";
 
         String regex = String.format(
                 "^(?=(?:set(?:%s):\\d+|get(?:%s))$)([a-zA-Z]+)(?::(\\d+))?$",
@@ -62,7 +62,7 @@ public class DevConsole {
         table.top().left();
         //  table.debug();
 
-        Label consoleLabel = new Label("Developer console", game.getSkin(), "title");
+        Label consoleLabel = new Label("Developer console \ntype \"getHelp\" for the list of commands", game.getSkin(), "title");
         consoleLabel.setFontScale(0.4f);
         consoleLabel.setWrap(true); // Important: Allows text to wrap to next line
         consoleLabel.setAlignment(Align.topLeft);
@@ -77,8 +77,7 @@ public class DevConsole {
 //        scrollPane.setStyle(myConsoleStyle);
 
         commandMap.put("setHP", val -> {
-            player.setCurrentHealth(Integer.parseInt(val));
-            player.setMaxHealth(Integer.parseInt(val));
+           player.increaseMaxHealth(Integer.parseInt(val) + player.getCurrentHealth());
             hud.renderPlayerHP();
         });
         commandMap.put("setXP", val -> {
@@ -118,7 +117,7 @@ public class DevConsole {
             }
         });
         commandMap.put("getHelp", val -> {
-            consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands);
+            consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands +"\n> E.g.: setXP:50, getDebuff" );
         });
         commandMap.put("getBuff", val -> {
             //TODO TIMO when Buffs are done
@@ -127,8 +126,8 @@ public class DevConsole {
             this.player.addOrReapplyEffect(new Poisoned(player));
             hud.updatePlayerStatusEffects();
         });
-        commandMap.put("getKey", val -> {
-            player.setHasKey(true);
+        commandMap.put("getKeys", val -> {
+            player.setHasKeys(true);
         });
         TextField inputField = new TextField("", game.getSkin(), "default");
         TextField.TextFieldStyle style = inputField.getStyle();

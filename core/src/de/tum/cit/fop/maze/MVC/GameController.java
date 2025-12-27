@@ -192,7 +192,7 @@ public class GameController {
 	private void handleExitLogic(Exit exit) {
 		if (player.getPlayerGameObject().position.dst(exit.position) < 1.5f) {
 			if (exit.isLocked()) {
-				if (player.hasKey()) {
+				if (player.hasKeys()) {
 					if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
 						exit.open();
 						gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);

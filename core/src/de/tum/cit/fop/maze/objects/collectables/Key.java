@@ -21,6 +21,7 @@ public class Key extends Collectable {
     protected void onPickUp(Player player, HUD hud) {
         player.getSoundController().playKeyPickupSound(1f);
         player.collectKey();
+        hud.updatePlayerKeys();
         // hud.setHasKey(true); // TODO: Uncomment when HUD ready --> Nikita
 
     }

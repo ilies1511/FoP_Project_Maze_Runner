@@ -54,10 +54,13 @@ public class MazeRunnerGame extends Game {
     //UI
     private Texture spriteSheet;
     private Texture effectsSheet;
+    private Texture assetsSheet;
     private TextureRegion woodenSign;
     private TextureRegion bloodEffect;
     private TextureRegion poisonEffect;
     private TextureRegion freezeEffect;
+    private TextureRegion key;
+    private TextureRegion keyOutline;
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
     private Animation<TextureRegion> vampiricHeartAnimation;
@@ -97,10 +100,13 @@ public class MazeRunnerGame extends Game {
 
         effectsSheet = new Texture(Gdx.files.internal("statusEffects.png"));
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
+        assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
         woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
         bloodEffect = new TextureRegion(effectsSheet, 128, 0, 32, 32);
         poisonEffect = new TextureRegion(effectsSheet, 0, 0, 32, 32);
         freezeEffect = new TextureRegion(effectsSheet, 160, 0, 32, 32);
+        keyOutline = new TextureRegion(assetsSheet, 800,50,168,96);
+        key = new TextureRegion(assetsSheet, 800,139,168,90);
 
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
@@ -459,4 +465,12 @@ public class MazeRunnerGame extends Game {
 	public TextureRegion getExitOpenTexture() {
 		return exitOpenTexture;
 	}
+
+    public TextureRegion getKey() {
+        return key;
+    }
+
+    public TextureRegion getKeyOutline() {
+        return keyOutline;
+    }
 }

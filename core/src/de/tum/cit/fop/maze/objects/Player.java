@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
     private final static int STARTING_PLAYER_HEALTH = 3;
+    private int requiredKeys = 3;
 
     private final ArrayList<Effect> effects;
     private int currentHealth;
@@ -21,7 +22,9 @@ public class Player extends GameObject {
    // private boolean isDead;
 
     private boolean isInGodMode;
-	private boolean hasKey = false;
+	private boolean hasKeys = false;
+    private int currentKeys = 0;
+
 
     private final GameScreen gameScreen;
     private final SoundController soundController;
@@ -36,7 +39,7 @@ public class Player extends GameObject {
         this.currentHealth = STARTING_PLAYER_HEALTH;
         this.maxHealth = STARTING_PLAYER_HEALTH;
         this.effects = new ArrayList<>();
-		this.hasKey = false;
+		this.hasKeys = false;
 
         this.gameScreen = gameScreen;
         this.soundController = gameScreen.getSoundController();
@@ -179,7 +182,14 @@ public class Player extends GameObject {
     }
 
 	public void collectKey() {
-		this.hasKey = true;
+        this.currentKeys ++;
+        if(currentKeys == requiredKeys){
+            this.hasKeys = true;
+        }
+        else if(currentKeys > requiredKeys){
+            this.currentKeys = requiredKeys;
+        }
+
 		System.out.println("Key collected!");
 	}
 
@@ -187,8 +197,8 @@ public class Player extends GameObject {
         soundController.playPlayerDieSound(1f);
     }
 
-	public boolean hasKey() {
-		return hasKey;
+	public boolean hasKeys() {
+		return hasKeys;
 	}
 
     private boolean isDashInCooldown() {
@@ -235,7 +245,15 @@ public class Player extends GameObject {
         return soundController;
     }
 
-    public void setHasKey(boolean hasKey) {
-        this.hasKey = hasKey;
+    public void setHasKeys(boolean hasKey) {
+        this.hasKeys = hasKey;
+    }
+
+    public int getCurrentKeys() {
+        return currentKeys;
+    }
+
+    public int getRequiredKeys() {
+        return requiredKeys;
     }
 }
