@@ -38,7 +38,7 @@ public class Enemy extends GameObject {
 
     public Collectable onDeath(Player player) {
         player.receiveXP(1);
-        player.addOrReapplyEffect(new Buffed(player));
+        player.addOrReapplyEffect(new Buffed(player, 2f));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
         return drop;
     }

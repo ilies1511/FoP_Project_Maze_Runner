@@ -3,12 +3,11 @@ package de.tum.cit.fop.maze.effects;
 import de.tum.cit.fop.maze.objects.Player;
 
 public class Buffed extends Effect {
-    private static final float DURATION = 1f;
     private static final float SPEED_MULTIPLIER = 1.6f;
 
-    public Buffed(Player player) {
+    public Buffed(Player player, float duration) {
         this.player = player;
-        this.timeLeft = DURATION;
+        this.timeLeft = duration;
     }
 
     @Override
