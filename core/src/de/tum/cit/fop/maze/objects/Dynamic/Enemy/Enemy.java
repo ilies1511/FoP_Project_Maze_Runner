@@ -3,12 +3,11 @@ package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.Thirst;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
-import de.tum.cit.fop.maze.objects.collectables.CollectableFactory;
+import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 
 public class Enemy extends GameObject {
     boolean isDead;
@@ -40,7 +39,7 @@ public class Enemy extends GameObject {
 
     public Collectable onDeath(Player player) {
         player.addOrReapplyEffect(new Thirst(player));
-        Collectable drop = CollectableFactory.createRandomCollectable(this.position);
+        Collectable drop = CollectableCreator.createRandomCollectable(this.position);
         return drop;
     }
 
