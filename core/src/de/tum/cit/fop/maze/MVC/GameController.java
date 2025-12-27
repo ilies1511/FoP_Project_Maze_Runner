@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.UI.HUD;
+import de.tum.cit.fop.maze.Utils.ScoreManager;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
@@ -29,7 +31,8 @@ public class GameController {
 	private final HUD hud;
 	private final GameField gameField;
 	private final SoundController soundController;
-    private GameScreen gameScreen;
+	private GameScreen gameScreen;
+	private WaveManager waveManager;
 
 	private float flickerTimer = 0f;
 
@@ -38,14 +41,21 @@ public class GameController {
 		this.player = player;
 		this.hud = hud;
 		this.gameField = gameField;
-        this.gameScreen = gameScreen;
+		this.gameScreen = gameScreen;
 		this.soundController = new SoundController();
 	}
 
 	public void update(float delta) {
-        if(player.getCurrentHealth() <= 0) {
-            playerDie();
-        }
+		if (player.getCurrentHealth() <= 0) {
+			if (waveManager != null) {
+				ScoreManager.getInstance().addScore(waveManager.getScore());
+			}
+			playerDie();
+			return;
+		}
+		if (waveManager != null) {
+			waveManager.update(delta);
+		}
 		player.tickEffects(delta);
 		handleInput(delta);
 		updateGameObjects(delta);
@@ -94,7 +104,7 @@ public class GameController {
 
 		// Attack Logic
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
-            soundController.playPlayerHitSound(1);
+			soundController.playPlayerHitSound(1);
 			System.out.println("Attacking!");
 
 			ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
@@ -104,8 +114,8 @@ public class GameController {
 					Enemy enemy = (Enemy) obj;
 					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
 						iter.remove();
-                        Collectable drop = enemy.onDeath(player);
-                        iter.add(drop);
+						Collectable drop = enemy.onDeath(player);
+						iter.add(drop);
 						System.out.println("Enemy Killed!");
 					}
 				}
@@ -115,12 +125,12 @@ public class GameController {
 		// Emotes
 		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
 			player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
-            soundController.playWinSound(1);
+			soundController.playWinSound(1);
 			isMoving = true;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
 			player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
-            soundController.playPlayerDieSound(1);
+			soundController.playPlayerDieSound(1);
 			isMoving = true;
 		}
 
@@ -143,15 +153,15 @@ public class GameController {
 			if (obj instanceof Enemy) {
 				handleEnemyLogic((Enemy) obj, delta, iter);
 			}
-            else if (obj instanceof Collectable) {
-                if (((Collectable) obj).checkPlayerCollision(this.player, this.hud)) {
-                    iter.remove();
-	                // hud.setHasKey(true); // TODO: Uncomment when HUD ready --> Nikita
-                }
-            }
-            else if (obj instanceof Trap) {
-                ((Trap) obj).checkPlayerCollision(this.player, this.hud);
-            }
+			else if (obj instanceof Collectable) {
+				if (((Collectable) obj).checkPlayerCollision(this.player, this.hud)) {
+					iter.remove();
+					// hud.setHasKey(true); // TODO: Uncomment when HUD ready --> Nikita
+				}
+			}
+			else if (obj instanceof Trap) {
+				((Trap) obj).checkPlayerCollision(this.player, this.hud);
+			}
 			else if (obj instanceof Exit) {
 				handleExitLogic((Exit) obj);
 			}
@@ -181,9 +191,9 @@ public class GameController {
 			else {
 				if (flickerTimer <= 0 && !player.isCanInvis() && !player.isInGodMode()) {
 					System.out.println("YOU WERE DAMAGED!");
-                    player.getDamageOrHeal(1);
+					player.getDamageOrHeal(1);
 					flickerTimer = 3f;
-                    soundController.playPlayerHitSound(1);
+					soundController.playPlayerHitSound(1);
 				}
 			}
 		}
@@ -209,7 +219,7 @@ public class GameController {
 			else {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
 					System.out.println("You escaped! Level Finished.");
-                    soundController.playWinSound(1);
+					soundController.playWinSound(1);
 					// game.goToMenu();
 				}
 			}
@@ -253,17 +263,23 @@ public class GameController {
 		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
 	}
 
-    public SoundController getSoundController() {
-        return soundController;
-    }
-    private void playerDie(){
-            player.die();
-            soundController.dispose();
-            gameScreen.getSoundController().dispose();
-            game.goToGameLostScreen();
+	public SoundController getSoundController() {
+		return soundController;
+	}
 
-    }
-    //	public boolean flicker(float delta) {
+	private void playerDie() {
+		player.die();
+		soundController.dispose();
+		gameScreen.getSoundController().dispose();
+		game.goToGameLostScreen();
+
+	}
+
+	public void setWaveManager(WaveManager waveManager) {
+		this.waveManager = waveManager;
+	}
+
+	//	public boolean flicker(float delta) {
 //		if (flickerTimer > 0f) {
 //			flickerTimer -= delta;
 //		}
