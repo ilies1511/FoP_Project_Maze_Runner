@@ -2,6 +2,7 @@ package de.tum.cit.fop.maze;
 
 public class GameInfo {
     private GameSettings settings;
+    private String selectedLevel = "level-1.properties";
 //    private final GameField gameField;
 
     public GameInfo() {
@@ -21,6 +22,14 @@ public class GameInfo {
 
     public void restoreDefaultSettings() {
         this.settings = GameSettings.createDefaultSettings();
+    }
+
+    public String getSelectedLevel() {
+        return selectedLevel;
+    }
+
+    public void setSelectedLevel(String selectedLevel) {
+        this.selectedLevel = selectedLevel;
     }
 
 //    public GameField getGameField() {

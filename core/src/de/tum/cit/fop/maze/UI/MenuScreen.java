@@ -234,6 +234,7 @@ public class MenuScreen implements Screen {
     public void goBackToMenu(){
         table.setVisible(true);
         storyModeScreen.getStoryTable().setVisible(false);
+        storyModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
         settingsScreen.getTable().setVisible(false);
         endlessModeScreen.getEndlessTable().setVisible(false);
     }
