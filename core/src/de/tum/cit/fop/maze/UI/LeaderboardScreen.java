@@ -31,22 +31,22 @@ public class LeaderboardScreen implements Screen {
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		Label title = new Label("High Scores", game.getSkin(), "title");
+		Label title = new Label("High Scores", game.getSkin(), "vampire-style");
 		title.setFontScale(1.5f);
 		table.add(title).padBottom(30).row();
 
 		ArrayList<Long> scores = ScoreManager.getInstance().getScores();
 		if (scores.isEmpty()) {
-			table.add(new Label("No scores yet!", game.getSkin())).padBottom(10).row();
+			table.add(new Label("No scores yet!", game.getSkin(), "vampire-style")).padBottom(10).row();
 		}
 		else {
 			for (int i = 0; i < scores.size(); i++) {
 				String entry = (i + 1) + ". " + scores.get(i) + " Points";
-				table.add(new Label(entry, game.getSkin())).padBottom(10).row();
+				table.add(new Label(entry, game.getSkin(), "vampire-style")).padBottom(10).row();
 			}
 		}
 
-		TextButton backButton = new TextButton("Back", game.getSkin());
+		TextButton backButton = new TextButton("Back", game.getSkin(), "vampire-style");
 		backButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
