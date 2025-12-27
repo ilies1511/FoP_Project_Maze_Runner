@@ -15,6 +15,8 @@ import de.tum.cit.fop.maze.SoundController;
 public class StoryModeScreen {
     private Table storyTable;
     private SoundController soundController;
+    private LevelSelectionScreen levelSelectionScreen;
+    
     public StoryModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         storyTable = new Table();
         storyTable.setVisible(false);
@@ -72,8 +74,7 @@ public class StoryModeScreen {
         newGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                soundController.dispose();
-                game.goToBackgroundStory();
+                goToLevelSelection();
             }
         });
 
@@ -100,10 +101,20 @@ public class StoryModeScreen {
                 menuScreen.goBackToMenu();
             }
         });
+        levelSelectionScreen = new LevelSelectionScreen(stage, game, this, menuScreen);
+    }
+
+    private void goToLevelSelection() {
+        storyTable.setVisible(false);
+        levelSelectionScreen.getLevelSelectionTable().setVisible(true);
     }
 
     public Table getStoryTable() {
         return storyTable;
+    }
+
+    public LevelSelectionScreen getLevelSelectionScreen() {
+        return levelSelectionScreen;
     }
 
 }
