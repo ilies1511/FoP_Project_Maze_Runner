@@ -4,7 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.SoundController;
+import de.tum.cit.fop.maze.effects.Thirst;
 import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.Player;
 
 public class Enemy extends GameObject {
     boolean isDead;
@@ -32,6 +34,10 @@ public class Enemy extends GameObject {
             // Stand still
             this.velocity.set(0, 0);
         }
+    }
+
+    public void onDeath(Player player) {
+        player.addOrReapplyEffect(new Thirst(player));
     }
 
     public boolean isDead() {

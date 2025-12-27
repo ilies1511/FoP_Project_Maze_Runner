@@ -3,8 +3,8 @@ package de.tum.cit.fop.maze.effects;
 import de.tum.cit.fop.maze.objects.Player;
 
 public class Thirst extends Effect {
-    private static final float DURATION = 0.5f;
-    private static final float SPEED_MULTIPLIER = 3f;
+    private static final float DURATION = 1f;
+    private static final float SPEED_MULTIPLIER = 1.6f;
 
     private float timeLeft;
 
