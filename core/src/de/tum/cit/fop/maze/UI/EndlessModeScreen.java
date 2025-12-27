@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
@@ -25,7 +26,7 @@ public class EndlessModeScreen {
 
         soundController = menuScreen.getSoundController();
 
-        Label label = new Label("Story Mode", game.getSkin(), "vampire-style");
+        Label label = new Label("Survival Mode", game.getSkin(), "vampire-style");
         label.setFontScale(3.0f);
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
 
@@ -58,7 +59,8 @@ public class EndlessModeScreen {
         TextButton newGame = new TextButton("New Game", game.getSkin(), "vampire-style");
         table.add(newGame).width(300).left().padLeft(50).padBottom(50);
         newGame.getLabel().setTouchable(Touchable.disabled);
-        newGame.setDisabled(true);
+//        newGame.setDisabled(true);
+        newGame.setDisabled(false);
         newGame.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -72,11 +74,17 @@ public class EndlessModeScreen {
             }
         });
         newGame.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                soundController.dispose();
-                // TODO add logic
-            }
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                soundController.dispose();
+//                // TODO add logic
+//            }
+	        @Override
+	        public void changed(ChangeEvent event, Actor actor) {
+		        soundController.dispose();
+		        game.disposeAllScreens();
+		        game.setScreen(new GameScreen(game, true));
+	        }
         });
 
         table.row();
@@ -84,7 +92,14 @@ public class EndlessModeScreen {
         TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(), "vampire-style");
         table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
         goToStatisticsButton.getLabel().setTouchable(Touchable.disabled);
-        goToStatisticsButton.setDisabled(true);
+//        goToStatisticsButton.setDisabled(true);
+        goToStatisticsButton.setDisabled(false);
+		goToStatisticsButton.addListener(new ChangeListener() {
+		    @Override
+		    public void changed(ChangeEvent event, Actor actor) {
+			    game.goToLeaderboard();
+		    }
+		});
         goToStatisticsButton.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -97,14 +112,6 @@ public class EndlessModeScreen {
                 soundController.playUI_buttonClickSound(1);
             }
         });
-        goToStatisticsButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-             //TODO add logic
-            }
-
-    });
-
         table.row();
 
         TextButton toMainMenu = new TextButton("Main Menu", game.getSkin(), "vampire-style");
