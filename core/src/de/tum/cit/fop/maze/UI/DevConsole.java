@@ -121,14 +121,14 @@ public class DevConsole {
             consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands);
         });
         commandMap.put("getBuff", val -> {
-            //TODO when Buffs are done
+            //TODO TIMO when Buffs are done
         });
         commandMap.put("getDebuff", val -> {
             this.player.addOrReapplyEffect(new Poisoned(player));
             hud.updatePlayerStatusEffects();
         });
         commandMap.put("getKey", val -> {
-            //TODO when keys are done
+            player.setHasKey(true);
         });
         TextField inputField = new TextField("", game.getSkin(), "default");
         TextField.TextFieldStyle style = inputField.getStyle();

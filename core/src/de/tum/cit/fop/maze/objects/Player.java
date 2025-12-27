@@ -234,4 +234,8 @@ public class Player extends GameObject {
     public SoundController getSoundController() {
         return soundController;
     }
+
+    public void setHasKey(boolean hasKey) {
+        this.hasKey = hasKey;
+    }
 }

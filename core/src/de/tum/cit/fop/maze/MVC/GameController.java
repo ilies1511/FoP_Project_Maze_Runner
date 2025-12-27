@@ -179,7 +179,7 @@ public class GameController {
 				}
 			}
 			else {
-				if (flickerTimer <= 0 && !player.isCanInvis()) {
+				if (flickerTimer <= 0 && !player.isCanInvis() && !player.isInGodMode()) {
 					System.out.println("YOU WERE DAMAGED!");
                     player.getDamageOrHeal(1);
 					flickerTimer = 3f;
