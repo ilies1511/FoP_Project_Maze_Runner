@@ -5,9 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,6 +32,7 @@ public class BackgroundStoryScreen implements Screen {
     private boolean isTextSkipped = false;
     private final MazeRunnerGame game;
     private final SoundController soundController;
+    private Texture backgroundTexture;
 
     public BackgroundStoryScreen( MazeRunnerGame game) {
         soundController = new SoundController();
@@ -48,6 +53,13 @@ public class BackgroundStoryScreen implements Screen {
         storyLabel.setAlignment(Align.topLeft);
         table.setFillParent(true);
         table.center();
+
+        backgroundTexture = new Texture(Gdx.files.internal("backgroundStory.png"));
+        backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+
+        table.setBackground(backgroundDrawable);
         table.add(storyLabel).width(1500f);
         stage.addActor(table);
 
@@ -112,6 +124,7 @@ public class BackgroundStoryScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        backgroundTexture.dispose();
     }
 }
