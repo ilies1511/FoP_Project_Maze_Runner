@@ -99,9 +99,9 @@ public class HUD {
 
     public void updatePlayerStatusEffects() {
 
-//        if(player.isBuffed()){
-//            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
-//        }
+        if(player.isBuffed()){
+            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
+        }
         if (player.isPoisoned()) {
             drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
         }
