@@ -42,7 +42,8 @@ public class GameSettings {
         return json.fromJson(GameSettings.class, settings_file);
     }
 
-    private static GameSettings createDefaultSettings() {
+    public static GameSettings createDefaultSettings() {
+        // can be used to restore default settings
         FileHandle settings_file = Gdx.files.local(JSON_PATH);
 
         GameSettings gameSettings = new GameSettings();
@@ -52,6 +53,7 @@ public class GameSettings {
         return gameSettings;
     }
 
+    // Key getters/setters
     public int getMaxHealth() {
         return this.maxHealth;
     }

@@ -8,17 +8,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.util.function.IntSupplier;
+
 public class KeyBindingButton extends TextButton {
     private final String actionName;
     private final KeyBindingCallback callback;
     private int keycode;
     private boolean isListeningKeys;
 
-    public KeyBindingButton(String actionName, int keycode, Skin skin, KeyBindingCallback callback) {
+    private final IntSupplier keyGetter;
+
+    public KeyBindingButton(String actionName, int keycode, Skin skin, KeyBindingCallback callback, IntSupplier keyGetter) {
         super("", skin);
         this.keycode = keycode;
         this.actionName = actionName;
         this.callback = callback;
+        this.keyGetter = keyGetter;
         this.isListeningKeys = false;
         this.updateBindingText();
 
@@ -43,7 +48,8 @@ public class KeyBindingButton extends TextButton {
         });
     }
 
-    private void updateBindingText() {
+    public void updateBindingText() {
+        this.keycode = this.keyGetter.getAsInt();
         this.setText(this.actionName + " | " + Input.Keys.toString(this.keycode));
     }
 

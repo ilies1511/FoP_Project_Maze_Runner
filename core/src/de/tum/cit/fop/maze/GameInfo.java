@@ -19,6 +19,10 @@ public class GameInfo {
         return this.settings;
     }
 
+    public void restoreDefaultSettings() {
+        this.settings = GameSettings.createDefaultSettings();
+    }
+
 //    public GameField getGameField() {
 //        return this.gameField;
 //    }

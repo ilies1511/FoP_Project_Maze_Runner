@@ -1,29 +1,32 @@
 package de.tum.cit.fop.maze.UI;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.GameSettings;
 import de.tum.cit.fop.maze.KeyBindingButton;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
-public class SettingsScreen  {
-   private Table table;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 
-   private SoundController soundController;
+public class SettingsScreen {
+    private Table table;
+    private Skin skin;
+    private SoundController soundController;
+    private List<KeyBindingButton> bindingButtons = new ArrayList<KeyBindingButton>();
+
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
      *
@@ -33,29 +36,32 @@ public class SettingsScreen  {
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
 
-        soundController = menuScreen.getSoundController();
+        this.soundController = menuScreen.getSoundController();
 
-        table = new Table();
+        this.table = new Table();
         table.setVisible(false);
         table.setFillParent(true);
         stage.addActor(table);
         table.top();
+
+        this.skin = game.getSkin();
 
         Label label = new Label("Settings", game.getSkin(), "vampire-style");
         label.setFontScale(3.0f);
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
 
         // Back to menu button
-        TextButton goToMenuButton = new TextButton("Back to menu", game.getSkin(),  "vampire-style");
+        TextButton goToMenuButton = new TextButton("Back to menu", game.getSkin(), "vampire-style");
         table.add(goToMenuButton).width(300).row();
         goToMenuButton.getLabel().setTouchable(Touchable.disabled);
-        goToMenuButton.addListener(new ClickListener(){
+        goToMenuButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToMenuButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -65,187 +71,103 @@ public class SettingsScreen  {
         goToMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-             menuScreen.goBackToMenu(); // Change to the game screen when button is pressed
+                menuScreen.goBackToMenu(); // Change to the game screen when button is pressed
             }
         });
 
-        // Binding buttons
-        KeyBindingButton leftBinding = new KeyBindingButton("Move left", game.getGameInfo().getSettings().getLeftKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setLeftKey(keycode);
-            }
-        });
-        leftBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        leftBinding.getLabel().setTouchable(Touchable.disabled);
-        leftBinding.addListener(new ClickListener(){
+        // Key Binding buttons
+        GameSettings settings = game.getGameInfo().getSettings();
+
+        addKeyBindingButton("Move left",
+                () -> game.getGameInfo().getSettings().getLeftKey(),
+                (code) -> game.getGameInfo().getSettings().setLeftKey(code));
+
+        addKeyBindingButton("Move right",
+                () -> game.getGameInfo().getSettings().getRightKey(),
+                (code) -> game.getGameInfo().getSettings().setRightKey(code));
+
+        addKeyBindingButton("Move up",
+                () -> game.getGameInfo().getSettings().getUpKey(),
+                (code) -> game.getGameInfo().getSettings().setUpKey(code));
+
+        addKeyBindingButton("Move down",
+                () -> game.getGameInfo().getSettings().getDownKey(),
+                (code) -> game.getGameInfo().getSettings().setDownKey(code));
+
+        addKeyBindingButton("Attack",
+                () -> game.getGameInfo().getSettings().getAttackKey(),
+                (code) -> game.getGameInfo().getSettings().setAttackKey(code));
+
+        addKeyBindingButton("Dash",
+                () -> game.getGameInfo().getSettings().getDashKey(),
+                (code) -> game.getGameInfo().getSettings().setDashKey(code));
+
+        addKeyBindingButton("Zoom in",
+                () -> game.getGameInfo().getSettings().getZoomInKey(),
+                (code) -> game.getGameInfo().getSettings().setZoomInKey(code));
+
+        addKeyBindingButton("Zoom out",
+                () -> game.getGameInfo().getSettings().getZoomOutKey(),
+                (code) -> game.getGameInfo().getSettings().setZoomOutKey(code));
+
+        TextButton restoreDefaultSettingsButton = new TextButton("Restore default settings", game.getSkin(), "vampire-style");
+        table.add(restoreDefaultSettingsButton).width(300).row();
+        restoreDefaultSettingsButton.getLabel().setTouchable(Touchable.disabled);
+        restoreDefaultSettingsButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !leftBinding.isDisabled()) {
+                if (pointer == -1 && !restoreDefaultSettingsButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
             }
         });
 
-        KeyBindingButton rightBinding = new KeyBindingButton("Move right", game.getGameInfo().getSettings().getRightKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
+        restoreDefaultSettingsButton.addListener(new ChangeListener() {
             @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setRightKey(keycode);
+            public void changed(ChangeEvent event, Actor actor) {
+                game.getGameInfo().restoreDefaultSettings(); // Restore default settings when pressed
+                updateKeyBindingButtons();
             }
         });
-        rightBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        rightBinding.getLabel().setTouchable(Touchable.disabled);
-        rightBinding.addListener(new ClickListener(){
+    }
+
+    private void addKeyBindingButton(String buttonName, IntSupplier keyGetter, IntConsumer keySetter) {
+        KeyBindingButton binding = new KeyBindingButton(buttonName, keyGetter.getAsInt(), this.skin, new KeyBindingButton.KeyBindingCallback() {
+            @Override
+            public void handle(int keycode) {
+                keySetter.accept(keycode);
+            }
+        }, keyGetter);
+        binding.setStyle(skin.get("vampire-style", TextButton.TextButtonStyle.class));
+        binding.getLabel().setTouchable(Touchable.disabled);
+        binding.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !rightBinding.isDisabled()) {
+                if (pointer == -1 && !binding.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
             }
         });
 
-        KeyBindingButton upBinding = new KeyBindingButton("Move up", game.getGameInfo().getSettings().getUpKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setUpKey(keycode);
-            }
-        });
-        upBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        upBinding.getLabel().setTouchable(Touchable.disabled);
-        upBinding.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !upBinding.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
+        this.table.add(binding).width(300).row();
 
-        KeyBindingButton downBinding = new KeyBindingButton("Move down", game.getGameInfo().getSettings().getDownKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setDownKey(keycode);
-            }
-        });
-        downBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        downBinding.getLabel().setTouchable(Touchable.disabled);
-        downBinding.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !downBinding.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
+        this.bindingButtons.add(binding);
+    }
 
-        KeyBindingButton attackBinding = new KeyBindingButton("Attack", game.getGameInfo().getSettings().getAttackKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setAttackKey(keycode);
-            }
-        });
-        attackBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        attackBinding.getLabel().setTouchable(Touchable.disabled);
-        attackBinding.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !attackBinding.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
-
-        KeyBindingButton dashBinding = new KeyBindingButton("Dash", game.getGameInfo().getSettings().getDashKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setDashKey(keycode);
-            }
-        });
-        dashBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        dashBinding.getLabel().setTouchable(Touchable.disabled);
-        dashBinding.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !dashBinding.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
-
-        KeyBindingButton zoomInBinding = new KeyBindingButton("Dash", game.getGameInfo().getSettings().getZoomInKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setZoomInKey(keycode);
-            }
-        });
-        zoomInBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        zoomInBinding.getLabel().setTouchable(Touchable.disabled);
-        zoomInBinding.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !zoomInBinding.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
-
-        KeyBindingButton zoomOutBinding = new KeyBindingButton("Dash", game.getGameInfo().getSettings().getZoomOutKey(), game.getSkin(), new KeyBindingButton.KeyBindingCallback() {
-            @Override
-            public void handle(int keycode) {
-                game.getGameInfo().getSettings().setZoomOutKey(keycode);
-            }
-        });
-        zoomOutBinding.setStyle(game.getSkin().get("vampire-style", TextButton.TextButtonStyle.class));
-        zoomOutBinding.getLabel().setTouchable(Touchable.disabled);
-        zoomOutBinding.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !zoomOutBinding.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
-
-        table.add(leftBinding).width(300).row();
-        table.add(rightBinding).width(300).row();
-        table.add(upBinding).width(300).row();
-        table.add(downBinding).width(300).row();
-        table.add(attackBinding).width(300).row();
-        table.add(dashBinding).width(300).row();
-        table.add(zoomInBinding).width(300).row();
-        table.add(zoomOutBinding).width(300).row();
+    private void updateKeyBindingButtons() {
+        for (KeyBindingButton binding : bindingButtons) {
+            binding.updateBindingText();
+        }
     }
 
     public Table getTable() {
