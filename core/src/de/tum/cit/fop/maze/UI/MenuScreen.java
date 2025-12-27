@@ -94,31 +94,6 @@ public class MenuScreen implements Screen {
 
         table.row();
 
-        TextButton goToParserMode = new TextButton("Parser Mode", game.getSkin(), "vampire-style");
-        table.add(goToParserMode).width(300).left().padLeft(50).padBottom(50);
-        goToParserMode.getLabel().setTouchable(Touchable.disabled);
-        goToParserMode.setDisabled(true);
-        goToParserMode.addListener(new ClickListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !goToParserMode.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
-        goToParserMode.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                //TODO add logic
-            }
-        });
-
-        table.row();
-
         TextButton goToSettingsButton = new TextButton("Settings", game.getSkin(), "vampire-style");
         table.add(goToSettingsButton).width(300).left().padLeft(50).padBottom(50);
         goToSettingsButton.getLabel().setTouchable(Touchable.disabled);
