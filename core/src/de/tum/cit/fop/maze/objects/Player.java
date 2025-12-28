@@ -130,35 +130,13 @@ public class Player extends GameObject {
         this.maxHealth = maxHealth;
     }
 
-    public float getPoisonDuration() {
+    public float getEffectDuration(Class<? extends Effect> effectType) {
         for (Effect effect : effects) {
-            if (effect.getClass() == Poisoned.class) {
-                return ((Poisoned) effect).getTimeLeft();
+            if (effect.getClass() == effectType) {
+                return effect.getTimeLeft();
             }
         }
         return 0f;
-    }
-
-    public float getBuffDuration() {
-        for (Effect effect : effects) {
-            if (effect.getClass() == Buffed.class) {
-                return ((Buffed) effect).getTimeLeft();
-            }
-        }
-        return 0f;
-    }
-
-    public float getFreezeDuration() {
-        for (Effect effect : effects) {
-            if (effect.getClass() == Frozen.class) {
-                return ((Frozen) effect).getTimeLeft();
-            }
-        }
-        return 0f;
-    }
-
-    public GameObject getPlayerGameObject() {
-        return (GameObject) this;
     }
 
     public boolean hasEffect(Class<? extends Effect> effectType) {
@@ -168,6 +146,10 @@ public class Player extends GameObject {
             }
         }
         return false;
+    }
+
+    public GameObject getPlayerGameObject() {
+        return (GameObject) this;
     }
 
 	public void collectKey() {

@@ -140,13 +140,13 @@ public class HUD {
     public void updatePlayerStatusEffects() {
 
         if(player.hasEffect(Buffed.class)){
-            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
+            drawRing(new Image(game.getBloodEffect()), player.getEffectDuration(Buffed.class), "Buffed");
         }
         if (player.hasEffect(Poisoned.class)) {
-            drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
+            drawRing(new Image(game.getPoisonEffect()), player.getEffectDuration(Poisoned.class), "Poisoned");
         }
         if (player.hasEffect(Frozen.class)) {
-            drawRing(new Image(game.getFreezeEffect()), player.getFreezeDuration(), "Frozen");
+            drawRing(new Image(game.getFreezeEffect()), player.getEffectDuration(Frozen.class), "Frozen");
         }
     }
 
