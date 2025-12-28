@@ -130,56 +130,26 @@ public class Player extends GameObject {
         this.maxHealth = maxHealth;
     }
 
-    public boolean isPoisoned() {
-        return effectInEffects(Poisoned.class);
-    }
-
-    public boolean isBuffed() {
-        return effectInEffects(Buffed.class);
-    }
-
-    public boolean isFrozen() {
-        return effectInEffects(Frozen.class);
-    }
-
-    public float getPoisonDuration() {
+    public float getEffectDuration(Class<? extends Effect> effectType) {
         for (Effect effect : effects) {
-            if (effect.getClass() == Poisoned.class) {
-                return ((Poisoned) effect).getTimeLeft();
+            if (effect.getClass() == effectType) {
+                return effect.getTimeLeft();
             }
         }
         return 0f;
     }
 
-    public float getBuffDuration() {
-        for (Effect effect : effects) {
-            if (effect.getClass() == Buffed.class) {
-                return ((Buffed) effect).getTimeLeft();
-            }
-        }
-        return 0f;
-    }
-
-    public float getFreezeDuration() {
-        for (Effect effect : effects) {
-            if (effect.getClass() == Frozen.class) {
-                return ((Frozen) effect).getTimeLeft();
-            }
-        }
-        return 0f;
-    }
-
-    public GameObject getPlayerGameObject() {
-        return (GameObject) this;
-    }
-
-    private boolean effectInEffects(Class<? extends Effect> effectType) {
+    public boolean hasEffect(Class<? extends Effect> effectType) {
         for (Effect effect : effects) {
             if (effect.getClass() == effectType) {
                 return true;
             }
         }
         return false;
+    }
+
+    public GameObject getPlayerGameObject() {
+        return (GameObject) this;
     }
 
 	public void collectKey() {
@@ -203,7 +173,7 @@ public class Player extends GameObject {
 	}
 
     private boolean isDashInCooldown() {
-        return effectInEffects(DashCooldown.class);
+        return hasEffect(DashCooldown.class);
     }
 
     public int getXp() {

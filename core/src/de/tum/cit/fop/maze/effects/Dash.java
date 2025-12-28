@@ -26,12 +26,6 @@ public class Dash extends Effect {
     }
 
     @Override
-    public boolean onTick(float deltaTime) {
-        this.timeLeft -= deltaTime;
-        return this.timeLeft <= 0; // finish effect at the end of duration
-    }
-
-    @Override
     public void onEnd() {
         this.player.getPlayerGameObject().increaseSpeed(-SPEED_BOOST);
     }

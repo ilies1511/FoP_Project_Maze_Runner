@@ -2,11 +2,11 @@ package de.tum.cit.fop.maze.effects;
 
 import de.tum.cit.fop.maze.objects.Player;
 
-public class Frozen extends Effect {
+public class Freeze extends Effect {
     private static final float DURATION = 3f;
     private static final float SPEED_MULTIPLIER = 0.3f;
 
-    public Frozen(Player player) {
+    public Freeze(Player player) {
         this.player = player;
         this.timeLeft = DURATION;
     }
@@ -16,12 +16,6 @@ public class Frozen extends Effect {
         if (!player.isInGodMode()) {
             this.player.getPlayerGameObject().multiplySpeed(SPEED_MULTIPLIER);
         }
-    }
-
-    @Override
-    public boolean onTick(float deltaTime) {
-        this.timeLeft -= deltaTime;
-        return this.timeLeft <= 0; // finish effect at the end of duration
     }
 
     @Override

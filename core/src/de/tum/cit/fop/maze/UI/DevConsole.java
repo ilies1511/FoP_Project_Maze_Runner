@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.effects.Buffed;
-import de.tum.cit.fop.maze.effects.Poisoned;
+import de.tum.cit.fop.maze.effects.Buff;
+import de.tum.cit.fop.maze.effects.Poison;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.HashMap;
@@ -121,11 +121,11 @@ public class DevConsole {
             consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands +"\n> E.g.: setXP:50, getDebuff" );
         });
         commandMap.put("getBuff", val -> {
-            this.player.addOrReapplyEffect(new Buffed(player, 10.0f));
+            this.player.addOrReapplyEffect(new Buff(player, 10.0f));
             hud.updatePlayerStatusEffects();
         });
         commandMap.put("getDebuff", val -> {
-            this.player.addOrReapplyEffect(new Poisoned(player));
+            this.player.addOrReapplyEffect(new Poison(player));
             hud.updatePlayerStatusEffects();
         });
         commandMap.put("getKeys", val -> {

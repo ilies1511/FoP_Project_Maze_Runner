@@ -10,9 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.effects.Buff;
+import de.tum.cit.fop.maze.effects.Freeze;
+import de.tum.cit.fop.maze.effects.Poison;
+import de.tum.cit.fop.maze.effects.Sunscreen;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.Objects;
@@ -32,6 +35,7 @@ public class HUD {
     private Stack bloodEffect;
     private Stack poisonEffect;
     private Stack freezeEffect;
+    private Stack sunscreenEffect;
     private ShapeRenderer shapeRenderer;
     private int playerXP;
     private int playerKeys;
@@ -136,14 +140,17 @@ public class HUD {
 
     public void updatePlayerStatusEffects() {
 
-        if(player.isBuffed()){
-            drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
+        if(player.hasEffect(Buff.class)){
+            drawRing(new Image(game.getBloodEffect()), player.getEffectDuration(Buff.class), "Buff");
         }
-        if (player.isPoisoned()) {
-            drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
+        if (player.hasEffect(Poison.class)) {
+            drawRing(new Image(game.getPoisonEffect()), player.getEffectDuration(Poison.class), "Poison");
         }
-        if (player.isFrozen()) {
-            drawRing(new Image(game.getFreezeEffect()), player.getFreezeDuration(), "Frozen");
+        if (player.hasEffect(Freeze.class)) {
+            drawRing(new Image(game.getFreezeEffect()), player.getEffectDuration(Freeze.class), "Freeze");
+        }
+        if (player.hasEffect(Sunscreen.class)) {
+            drawRing(new Image(game.getSunscreenEffect()), player.getEffectDuration(Sunscreen.class), "Sunscreen");
         }
     }
 
@@ -217,9 +224,10 @@ public class HUD {
         stack.add(cooldownOverlay);
 
         Stack previousStack = null;
-        if (Objects.equals(effect, "Poisoned")) previousStack = poisonEffect;
-        else if (Objects.equals(effect, "Buffed")) previousStack = bloodEffect;
-        else if (Objects.equals(effect, "Frozen")) previousStack = freezeEffect;
+        if (Objects.equals(effect, "Poison")) previousStack = poisonEffect;
+        else if (Objects.equals(effect, "Buff")) previousStack = bloodEffect;
+        else if (Objects.equals(effect, "Freeze")) previousStack = freezeEffect;
+        else if (Objects.equals(effect, "Sunscreen")) previousStack = sunscreenEffect;
         boolean replace = false;
 
         if (previousStack != null) {
@@ -240,16 +248,17 @@ public class HUD {
 
         Stack finalStack = stack;
 
-        if (Objects.equals(effect, "Poisoned")) poisonEffect = stack;
-        else if (Objects.equals(effect, "Buffed")) bloodEffect = stack;
-        else if (Objects.equals(effect, "Frozen")) freezeEffect = stack;
+        if (Objects.equals(effect, "Poison")) poisonEffect = stack;
+        else if (Objects.equals(effect, "Buff")) bloodEffect = stack;
+        else if (Objects.equals(effect, "Freeze")) freezeEffect = stack;
+        else if (Objects.equals(effect, "Sunscreen")) sunscreenEffect = stack;
 
 
         stack.addAction(Actions.sequence(
                 Actions.delay(maxT),
                 Actions.run(() -> {
 
-                    if (Objects.equals(effect, "Poisoned") && poisonEffect == finalStack || Objects.equals(effect, "Buffed") && bloodEffect == finalStack || Objects.equals(effect, "Frozen") && freezeEffect == finalStack) {
+                    if (Objects.equals(effect, "Poison") && poisonEffect == finalStack || Objects.equals(effect, "Buff") && bloodEffect == finalStack || Objects.equals(effect, "Freeze") && freezeEffect == finalStack || Objects.equals(effect, "Sunscreen") && sunscreenEffect == finalStack) {
                         Cell cell = statusEffectsTable.getCell(finalStack);
                         finalStack.remove();
                         if (cell != null) {
@@ -258,12 +267,14 @@ public class HUD {
                         }
                         statusEffectsTable.invalidateHierarchy();
                     }
-                    if (Objects.equals(effect, "Poisoned") && poisonEffect == finalStack) {
+                    if (Objects.equals(effect, "Poison") && poisonEffect == finalStack) {
                         poisonEffect = null;
-                    } else if (Objects.equals(effect, "Buffed") && bloodEffect == finalStack) {
+                    } else if (Objects.equals(effect, "Buff") && bloodEffect == finalStack) {
                         bloodEffect = null;
-                    } else if  (Objects.equals(effect, "Frozen") && freezeEffect == finalStack) {
+                    } else if  (Objects.equals(effect, "Freeze") && freezeEffect == finalStack) {
                         freezeEffect = null;
+                    } else if  (Objects.equals(effect, "Sunscreen") && sunscreenEffect == finalStack) {
+                        sunscreenEffect = null;
                     }
                 })
         ));

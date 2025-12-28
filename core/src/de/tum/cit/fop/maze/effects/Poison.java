@@ -2,14 +2,14 @@ package de.tum.cit.fop.maze.effects;
 
 import de.tum.cit.fop.maze.objects.Player;
 
-public class Poisoned extends Effect {
+public class Poison extends Effect {
     private static final float DURATION = 3;
     private static final float SPEED_MULTIPLIER = 0.7f;
     private static final int TOTAL_DAMAGE_TICKS = 2;
 
     private int currentTick;
 
-    public Poisoned(Player player) {
+    public Poison(Player player) {
         this.player = player;
         this.timeLeft = DURATION;
         this.currentTick = 0;

@@ -15,12 +15,6 @@ public class DashCooldown extends Effect {
     }
 
     @Override
-    public boolean onTick(float deltaTime) {
-        this.timeLeft -= deltaTime;
-        return this.timeLeft <= 0;
-    }
-
-    @Override
     public void onEnd() {
     }
 }
