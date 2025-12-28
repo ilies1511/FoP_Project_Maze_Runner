@@ -488,6 +488,10 @@ public class MazeRunnerGame extends Game {
         return freezeEffect;
     }
 
+    public TextureRegion getSunscreenEffect() {
+        return freezeEffect; // temporary effect since we do not have proper textures yet
+    }
+
 	public TextureRegion getExitClosedTexture() {
 		return exitClosedTexture;
 	}
