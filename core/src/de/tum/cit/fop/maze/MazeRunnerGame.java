@@ -68,6 +68,9 @@ public class MazeRunnerGame extends Game {
 	private TextureRegion exitClosedTexture;
 	private TextureRegion exitOpenTexture;
 	// END -- Exit
+    // Dawn Animations
+    private Animation<TextureRegion> dawnThinAnimation;
+    private Animation<TextureRegion> dawnWideAnimation;
 
 
 
@@ -114,6 +117,8 @@ public class MazeRunnerGame extends Game {
         this.loadGarlicTrapAnimation();
         this.loadFreezeTrapAnimation();
         this.loadVampiricHeartAnimation();
+        this.loadDawnThinAnimation();
+        this.loadDawnWideAnimation();
 
 
         // TODO: iziane
@@ -267,10 +272,24 @@ public class MazeRunnerGame extends Game {
     }
 
     private void loadFreezeTrapAnimation() {
-        Texture freezeTrapAnimation = new Texture(Gdx.files.internal("freeze_trap.png"));
+        Texture freezeTrapTexture = new Texture(Gdx.files.internal("freeze_trap.png"));
 
-        TextureRegion freezeTrapTextureRegion = new TextureRegion(freezeTrapAnimation);
+        TextureRegion freezeTrapTextureRegion = new TextureRegion(freezeTrapTexture);
         this.freezeTrapAnimation = new Animation<>(1f, freezeTrapTextureRegion);
+    }
+
+    private void loadDawnThinAnimation() {
+        Texture dawnThinTexture = new Texture(Gdx.files.internal("dawn_thin.png"));
+
+        TextureRegion dawnThinTextureRegion = new TextureRegion(dawnThinTexture);
+        this.dawnThinAnimation = new Animation<>(1f,  dawnThinTextureRegion);
+    }
+
+    private void loadDawnWideAnimation() {
+        Texture dawnWideTexture = new Texture(Gdx.files.internal("dawn_wide.png"));
+
+        TextureRegion dawnWideTextureRegion = new TextureRegion(dawnWideTexture);
+        this.dawnWideAnimation = new Animation<>(1f,  dawnWideTextureRegion);
     }
 
     private void loadTouristAnimation() {
@@ -424,6 +443,15 @@ public class MazeRunnerGame extends Game {
 
     public Animation<TextureRegion> getFreezeTrapAnimation() {
         return this.freezeTrapAnimation;
+    }
+
+    // Dawn animation Getters
+    public Animation<TextureRegion> getDawnThinAnimation() {
+        return this.dawnThinAnimation;
+    }
+
+    public Animation<TextureRegion> getDawnWideAnimation() {
+        return this.dawnWideAnimation;
     }
 
     // Maze Tile Getters

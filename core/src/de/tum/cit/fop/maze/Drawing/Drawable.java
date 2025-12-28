@@ -51,6 +51,8 @@ public class Drawable {
 		tempMap.put(AnimationType.VAMPIRIC_HEART, game.getVampiricHeartAnimation());
 		tempMap.put(AnimationType.GARLIC_TRAP, game.getGarlicTrapAnimation());
 		tempMap.put(AnimationType.FREEZE_TRAP, game.getFreezeTrapAnimation());
+		tempMap.put(AnimationType.DAWN_THIN_ANIMATION, game.getDawnThinAnimation());
+		tempMap.put(AnimationType.DAWN_WIDE_ANIMATION, game.getDawnWideAnimation());
 		textureMap = Map.copyOf(tempMap);
 	}
 

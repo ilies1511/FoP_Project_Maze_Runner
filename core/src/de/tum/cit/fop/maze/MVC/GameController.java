@@ -13,13 +13,13 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
 import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
-import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
@@ -145,7 +145,11 @@ public class GameController {
 	}
 
 	private void updateGameObjects(float delta) {
-		Iterator<GameObject> iter = gameField.getGameObjects().iterator();
+        // spawn new Dawn if enough time left
+        Dawn.spawnNewDawn(delta, this.gameField, this.player.position, this.gameField.getGameObjects());
+
+        // update game objects
+        ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.next();
 			obj.updateAnimation(delta);
@@ -161,7 +165,15 @@ public class GameController {
 			}
 			else if (obj instanceof Trap) {
 				((Trap) obj).checkPlayerCollision(this.player, this.hud);
-			}
+			} else if (obj instanceof Dawn) {
+                if (((Dawn) obj).updateDawn(delta)) {
+                    iter.remove();
+                } else {
+                    if (this.flickerTimer <= 0.0f && ((Dawn) obj).checkPlayerCollision(this.player)) {
+                        this.flickerTimer = 3f;
+                    }
+                }
+            }
 			else if (obj instanceof Exit) {
 				handleExitLogic((Exit) obj);
 			}
