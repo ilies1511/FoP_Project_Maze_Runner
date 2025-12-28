@@ -16,7 +16,9 @@ import de.tum.cit.fop.maze.SoundController;
 public class EndlessModeScreen {
     private Table table;
     private SoundController soundController;
+    private MenuScreen menuScreen;
     public EndlessModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
+        this.menuScreen = menuScreen;
         soundController = menuScreen.getSoundController();
         table = new Table();
         table.setVisible(false);
@@ -94,7 +96,7 @@ public class EndlessModeScreen {
 		goToStatisticsButton.addListener(new ChangeListener() {
 		    @Override
 		    public void changed(ChangeEvent event, Actor actor) {
-			    game.goToLeaderboard();
+			    menuScreen.goToLeaderboard();
 		    }
 		});
         goToStatisticsButton.addListener(new ClickListener(){

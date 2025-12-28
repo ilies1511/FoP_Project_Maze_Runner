@@ -205,10 +205,6 @@ public class MazeRunnerGame extends Game {
         this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
     }
 
-	public void goToLeaderboard() {
-		disposeAllScreens();
-		this.setScreen(new LeaderboardScreen(this));
-	}
 
     /**
      * Loads the character animation from the dracula.png file.

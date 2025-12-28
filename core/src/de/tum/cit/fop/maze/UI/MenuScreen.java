@@ -3,7 +3,6 @@ package de.tum.cit.fop.maze.UI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,6 +29,7 @@ public class MenuScreen implements Screen {
     private final SettingsScreen settingsScreen;
     private final SoundController soundController;
     private final EndlessModeScreen endlessModeScreen;
+    private final LeaderboardScreen leaderboardScreen;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -163,6 +163,7 @@ public class MenuScreen implements Screen {
         endlessModeScreen = new EndlessModeScreen(stage, game, this);
         settingsScreen = new SettingsScreen(stage,game,this);
         // TODO add listeners to Statistics, EndlessMode
+        leaderboardScreen = new LeaderboardScreen(stage, game, this);
     }
 
     @Override
@@ -212,6 +213,7 @@ public class MenuScreen implements Screen {
         storyModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
         settingsScreen.getTable().setVisible(false);
         endlessModeScreen.getEndlessTable().setVisible(false);
+        leaderboardScreen.getLeaderboardTable().setVisible(false);
     }
     public void goToSettings(){
         table.setVisible(false);
@@ -221,6 +223,12 @@ public class MenuScreen implements Screen {
     public void goToEndless(){
         table.setVisible(false);
         endlessModeScreen.getEndlessTable().setVisible(true);
+    }
+
+    public void goToLeaderboard(){
+        table.setVisible(false);
+        endlessModeScreen.getEndlessTable().setVisible(false);
+        leaderboardScreen.getLeaderboardTable().setVisible(true);
     }
 
     public SoundController getSoundController() {

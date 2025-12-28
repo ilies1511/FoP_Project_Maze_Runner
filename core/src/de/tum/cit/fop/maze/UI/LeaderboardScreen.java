@@ -1,102 +1,84 @@
 package de.tum.cit.fop.maze.UI;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
 
 import java.util.ArrayList;
 
-public class LeaderboardScreen implements Screen {
-	// BEGIN -- Attributes
-	private final MazeRunnerGame game;
-	private final Stage stage;
-	// END -- Attributes
+public class LeaderboardScreen {
+    private Table table;
+    private SoundController soundController;
+    private MenuScreen menuScreen;
 
-	// BEGIN -- Constructor
-	public LeaderboardScreen(MazeRunnerGame game) {
-		this.game = game;
-		this.stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
+    public LeaderboardScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
+        this.menuScreen = menuScreen;
+        this.soundController = menuScreen.getSoundController();
+        
+        table = new Table();
+        table.setVisible(false);
+        table.setFillParent(true);
+        stage.addActor(table);
+        table.top();
 
-		Table table = new Table();
-		table.setFillParent(true);
-		stage.addActor(table);
+        Label title = new Label("High Scores", game.getSkin(), "vampire-style");
+        title.setFontScale(3.0f);
+        table.add(title).expandX().center().padTop(50).padBottom(80).row();
 
-		Label title = new Label("High Scores", game.getSkin(), "title");
-		title.setFontScale(1.5f);
-		table.add(title).padBottom(30).row();
+        ArrayList<Long> scores = ScoreManager.getInstance().getScores();
+        if (scores.isEmpty()) {
+            Label noScoresLabel = new Label("No scores yet!", game.getSkin(), "vampire-style");
+            noScoresLabel.setFontScale(1.2f);
+            table.add(noScoresLabel).padBottom(30).row();
+        } else {
+            for (int i = 0; i < scores.size(); i++) {
+                String entry = (i + 1) + ". " + scores.get(i) + " Points";
+                Label scoreLabel = new Label(entry, game.getSkin(), "vampire-style");
+                scoreLabel.setFontScale(1.0f);
+                table.add(scoreLabel).padBottom(10).row();
+            }
+        }
 
-		ArrayList<Long> scores = ScoreManager.getInstance().getScores();
-		if (scores.isEmpty()) {
-			table.add(new Label("No scores yet!", game.getSkin())).padBottom(10).row();
-		}
-		else {
-			for (int i = 0; i < scores.size(); i++) {
-				String entry = (i + 1) + ". " + scores.get(i) + " Points";
-				table.add(new Label(entry, game.getSkin())).padBottom(10).row();
-			}
-		}
+        TextButton backButton = new TextButton("Back", game.getSkin(), "vampire-style");
+        table.add(backButton).width(300).center().padTop(30);
+        backButton.getLabel().setTouchable(Touchable.disabled);
+        
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !backButton.isDisabled()) {
+                    soundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                soundController.playUI_buttonClickSound(1);
+            }
+        });
+        
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                goBackToEndlessMode();
+            }
+        });
+    }
 
-		TextButton backButton = new TextButton("Back", game.getSkin());
-		backButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				game.goToMenu();
-			}
-		});
-		table.add(backButton).padTop(30);
-	}
-	// END -- Constructor
+    private void goBackToEndlessMode() {
+        table.setVisible(false);
+        menuScreen.goToEndless();
+    }
 
-	// BEGIN -- Getters
-	// END -- Getters
-
-	// BEGIN -- Setters
-	// END -- Setters
-
-	// BEGIN -- Methods
-	// END -- Methods
-
-	@Override
-	public void render(float delta) {
-		ScreenUtils.clear(0, 0, 0, 1);
-		stage.act(delta);
-		stage.draw();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
-	}
-
-	@Override
-	public void dispose() {
-		stage.dispose();
-	}
-
-	// Unused methods
-	@Override
-	public void show() {
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
-
-	@Override
-	public void hide() {
-	}
+    public Table getLeaderboardTable() {
+        return table;
+    }
 }
