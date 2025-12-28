@@ -203,31 +203,39 @@ public class MenuScreen implements Screen {
     public void hide() {
     }
 
-    public void goToStory(){
+    private void hideAllTables() {
         table.setVisible(false);
-        storyModeScreen.getStoryTable().setVisible(true);
-    }
-    public void goBackToMenu(){
-        table.setVisible(true);
         storyModeScreen.getStoryTable().setVisible(false);
-        storyModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
+        if(storyModeScreen.getLevelSelectionScreen() != null) {
+            storyModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
+        }
         settingsScreen.getTable().setVisible(false);
         endlessModeScreen.getEndlessTable().setVisible(false);
         leaderboardScreen.getLeaderboardTable().setVisible(false);
     }
+
+    public void goToStory(){
+        hideAllTables();
+        storyModeScreen.getStoryTable().setVisible(true);
+    }
+
+    public void goBackToMenu(){
+        hideAllTables();
+        table.setVisible(true);
+    }
+
     public void goToSettings(){
-        table.setVisible(false);
+        hideAllTables();
         settingsScreen.getTable().setVisible(true);
     }
 
     public void goToEndless(){
-        table.setVisible(false);
+        hideAllTables();
         endlessModeScreen.getEndlessTable().setVisible(true);
     }
 
     public void goToLeaderboard(){
-        table.setVisible(false);
-        endlessModeScreen.getEndlessTable().setVisible(false);
+        hideAllTables();
         leaderboardScreen.getLeaderboardTable().setVisible(true);
     }
 
