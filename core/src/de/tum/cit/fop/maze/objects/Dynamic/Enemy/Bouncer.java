@@ -1,6 +1,7 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 
 public class Bouncer extends Enemy {
@@ -8,7 +9,7 @@ public class Bouncer extends Enemy {
     private float cooldown = 0f; // rest
 
     public Bouncer(Vector2 startPos) {
-        super(startPos);
+        super(startPos, AnimationType.TOURIST_DOWN);
         this.speed = 1.0f; // slow
     }
 

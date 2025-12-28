@@ -1,12 +1,13 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 
 public class FleeingEnemy extends Enemy {
 
     public FleeingEnemy(Vector2 startPos) {
-        super(startPos);
+        super(startPos, new Vector2(0.7f, 0.7f), AnimationType.TOURIST_DOWN);
         this.speed = 2.5f; // Slightly faster than normal enemies
     }
 
@@ -40,6 +41,26 @@ public class FleeingEnemy extends Enemy {
             }
         } else {
             this.velocity.set(0, 0); // stay idle
+        }
+        updateAnimationDirection();
+    }
+
+    private void updateAnimationDirection() {
+        if (velocity.len2() < 0.1f) {
+            return;
+        }
+        if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
+            if (velocity.x > 0) {
+                changeAnimation(AnimationType.TOURIST_RIGHT);
+            } else {
+                changeAnimation(AnimationType.TOURIST_LEFT);
+            }
+        } else {
+            if (velocity.y > 0) {
+                changeAnimation(AnimationType.TOURIST_UP);
+            } else {
+                changeAnimation(AnimationType.TOURIST_DOWN);
+            }
         }
     }
 

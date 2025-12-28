@@ -12,6 +12,30 @@ import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 public class Enemy extends GameObject {
     boolean isDead;
 
+    public Enemy(Vector2 startPos, Vector2 size, AnimationType animationType) {
+        super(
+                startPos,
+                new Vector2(0f, 0f),
+                2.0f,
+                new Vector2(0.8f, 0.8f),
+                size,
+                animationType // temporary, might move to each enemy separately
+        );
+        this.isDead = false;
+    }
+
+    public Enemy(Vector2 startPos, AnimationType animationType) {
+        super(
+                startPos,
+                new Vector2(0f, 0f),
+                2.0f,
+                new Vector2(0.8f, 0.8f),
+                new Vector2(0.5f, 0.8f),
+                animationType // temporary, might move to each enemy separately
+        );
+        this.isDead = false;
+    }
+
     public Enemy(Vector2 startPos) {
         super(
                 startPos,
@@ -19,7 +43,7 @@ public class Enemy extends GameObject {
                 2.0f,
                 new Vector2(0.8f, 0.8f),
                 new Vector2(0.5f, 0.8f),
-                AnimationType.CHARACTER_DOWN // temporary, might move to each enemy separately
+                AnimationType.TOURIST_DOWN // temporary, might move to each enemy separately
         );
         this.isDead = false;
     }

@@ -2,6 +2,7 @@ package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 
 public class PatrolEnemy extends Enemy {
@@ -9,7 +10,7 @@ public class PatrolEnemy extends Enemy {
     private float moveTimer;
 
     public PatrolEnemy(Vector2 startPos) {
-        super(startPos);
+        super(startPos, AnimationType.TOURIST_DOWN);
         this.moveTimer = 0;
         pickRandomDirection();
     }

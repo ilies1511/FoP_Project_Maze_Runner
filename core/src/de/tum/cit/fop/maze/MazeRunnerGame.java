@@ -214,14 +214,15 @@ public class MazeRunnerGame extends Game {
      * Loads the character animation from the dracula.png file.
      */
     private void loadCharacterAnimation() {
-        Texture walkSheet = new Texture(Gdx.files.internal("dracula.png"));
+        Texture walkSheet = new Texture(Gdx.files.internal("character.png"));
         int frameWidth = 16;
         int frameHeight = 32;
 
-
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
+
+        // Call your helper to set up the animations
         charAnimation(tmp);
-    }
+        }
 
     private void charAnimation(TextureRegion[][] tmp) {
         // ROW 0: DOWN
@@ -277,17 +278,17 @@ public class MazeRunnerGame extends Game {
     }
 
     private void loadTouristAnimation() {
-        Texture walkSheet = new Texture(Gdx.files.internal("character.png"));
-        int frameWidth = 16;
-        int frameHeight = 32;
+        Texture walkSheet = new Texture(Gdx.files.internal("tourist_walk.png"));
+        int frameWidth = 64;
+        int frameHeight = 64;
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        // Row 0: Down, Row 1: Right, Row 2: Up, Row 3: Left
-        touristDown = new Animation<>(0.1f, getFrames(tmp[0], 0, 4));
-        touristRight = new Animation<>(0.1f, getFrames(tmp[1], 0, 4));
-        touristUp = new Animation<>(0.1f, getFrames(tmp[2], 0, 4));
-        touristLeft = new Animation<>(0.1f, getFrames(tmp[3], 0, 4));
+        // Map the rows (The "Walk Only" sheet usually has 4 rows: 0=Up, 1=Left, 2=Down, 3=Right)
+        touristUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
+        touristLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
+        touristDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
+        touristRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
     }
 
     private void loadMazeTiles() {
