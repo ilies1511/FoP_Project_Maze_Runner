@@ -23,7 +23,7 @@ public class LeaderboardScreen {
     public LeaderboardScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         this.menuScreen = menuScreen;
         this.soundController = menuScreen.getSoundController();
-        
+
         table = new Table();
         table.setVisible(false);
         table.setFillParent(true);
@@ -51,7 +51,7 @@ public class LeaderboardScreen {
         TextButton backButton = new TextButton("Back", game.getSkin(), "vampire-style");
         table.add(backButton).width(300).center().padTop(30);
         backButton.getLabel().setTouchable(Touchable.disabled);
-        
+
         backButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -64,7 +64,7 @@ public class LeaderboardScreen {
                 soundController.playUI_buttonClickSound(1);
             }
         });
-        
+
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

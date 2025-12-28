@@ -199,10 +199,23 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void hide() {
+//		if (soundController != null) {
+//			soundController.dispose();
+//		}
+////		if (gameController != null && gameController.getSoundController() != null) {
+////			gameController.getSoundController().dispose();
+////		}
 	}
 
 	@Override
 	public void dispose() {
+//		stage.dispose();
+//		if (soundController != null) {
+//			soundController.dispose();
+//		}
+//		if (gameController != null && gameController.getSoundController() != null) {
+//			gameController.getSoundController().dispose();
+//		}
 	}
 
 	public boolean isPaused() {
