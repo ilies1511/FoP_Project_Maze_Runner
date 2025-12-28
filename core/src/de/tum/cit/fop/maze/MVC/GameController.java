@@ -219,6 +219,8 @@ public class GameController {
 			else {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
 					System.out.println("You escaped! Level Finished.");
+                    soundController.dispose();
+                    gameScreen.getSoundController().dispose();
 					game.goToGameWonScreen();
 //					soundController.playWinSound(1);
 				}
