@@ -19,12 +19,6 @@ public class Frozen extends Effect {
     }
 
     @Override
-    public boolean onTick(float deltaTime) {
-        this.timeLeft -= deltaTime;
-        return this.timeLeft <= 0; // finish effect at the end of duration
-    }
-
-    @Override
     public void onEnd() {
         this.player.getPlayerGameObject().multiplySpeed(1 / SPEED_MULTIPLIER);
     }

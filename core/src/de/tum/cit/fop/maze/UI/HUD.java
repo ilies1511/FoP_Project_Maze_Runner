@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.effects.Buffed;
+import de.tum.cit.fop.maze.effects.Frozen;
+import de.tum.cit.fop.maze.effects.Poisoned;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.Objects;
@@ -136,13 +139,13 @@ public class HUD {
 
     public void updatePlayerStatusEffects() {
 
-        if(player.isBuffed()){
+        if(player.hasEffect(Buffed.class)){
             drawRing(new Image(game.getBloodEffect()), player.getBuffDuration(), "Buffed");
         }
-        if (player.isPoisoned()) {
+        if (player.hasEffect(Poisoned.class)) {
             drawRing(new Image(game.getPoisonEffect()), player.getPoisonDuration(), "Poisoned");
         }
-        if (player.isFrozen()) {
+        if (player.hasEffect(Frozen.class)) {
             drawRing(new Image(game.getFreezeEffect()), player.getFreezeDuration(), "Frozen");
         }
     }

@@ -12,7 +12,10 @@ public abstract class Effect {
 
     public abstract void onStart();
 
-    public abstract boolean onTick(float deltaTime); // returns True when effect should be finished
+    public boolean onTick(float deltaTime) {
+        this.timeLeft -= deltaTime;
+        return this.timeLeft <= 0; // finish effect at the end of duration
+    } // returns True when effect should be finished
 
     public abstract void onEnd();
 }

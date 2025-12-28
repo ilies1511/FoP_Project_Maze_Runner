@@ -130,18 +130,6 @@ public class Player extends GameObject {
         this.maxHealth = maxHealth;
     }
 
-    public boolean isPoisoned() {
-        return effectInEffects(Poisoned.class);
-    }
-
-    public boolean isBuffed() {
-        return effectInEffects(Buffed.class);
-    }
-
-    public boolean isFrozen() {
-        return effectInEffects(Frozen.class);
-    }
-
     public float getPoisonDuration() {
         for (Effect effect : effects) {
             if (effect.getClass() == Poisoned.class) {
@@ -173,7 +161,7 @@ public class Player extends GameObject {
         return (GameObject) this;
     }
 
-    private boolean effectInEffects(Class<? extends Effect> effectType) {
+    public boolean hasEffect(Class<? extends Effect> effectType) {
         for (Effect effect : effects) {
             if (effect.getClass() == effectType) {
                 return true;
@@ -203,7 +191,7 @@ public class Player extends GameObject {
 	}
 
     private boolean isDashInCooldown() {
-        return effectInEffects(DashCooldown.class);
+        return hasEffect(DashCooldown.class);
     }
 
     public int getXp() {
