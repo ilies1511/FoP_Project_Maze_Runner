@@ -3,7 +3,7 @@ package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.effects.Buffed;
+import de.tum.cit.fop.maze.effects.Buff;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
@@ -62,7 +62,7 @@ public class Enemy extends GameObject {
 
     public Collectable onDeath(Player player) {
         player.receiveXP(15);
-        player.addOrReapplyEffect(new Buffed(player, 2f));
+        player.addOrReapplyEffect(new Buff(player, 2f));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
         return drop;
     }

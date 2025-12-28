@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
-import de.tum.cit.fop.maze.effects.Sunscreened;
+import de.tum.cit.fop.maze.effects.Sunscreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class Dawn extends GameObject {
     }
 
     public boolean checkPlayerCollision(Player player) {
-        if (this.isActive && !player.hasEffect(Sunscreened.class) && GameObject.entitiesOverlap(player, this)) {
+        if (this.isActive && !player.hasEffect(Sunscreen.class) && GameObject.entitiesOverlap(player, this)) {
             player.getDamageOrHeal(1);
             return true;
         }

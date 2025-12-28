@@ -3,7 +3,7 @@ package de.tum.cit.fop.maze.objects.traps;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.UI.HUD;
-import de.tum.cit.fop.maze.effects.Poisoned;
+import de.tum.cit.fop.maze.effects.Poison;
 import de.tum.cit.fop.maze.objects.Player;
 
 public class GarlicTrap extends Trap {
@@ -16,6 +16,6 @@ public class GarlicTrap extends Trap {
 
     @Override
     protected void onEnter(Player player, HUD hud) {
-        player.addOrReapplyEffect(new Poisoned(player));
+        player.addOrReapplyEffect(new Poison(player));
     }
 }

@@ -2,13 +2,12 @@ package de.tum.cit.fop.maze.effects;
 
 import de.tum.cit.fop.maze.objects.Player;
 
-public class Frozen extends Effect {
-    private static final float DURATION = 3f;
-    private static final float SPEED_MULTIPLIER = 0.3f;
+public class Buff extends Effect {
+    private static final float SPEED_MULTIPLIER = 1.6f;
 
-    public Frozen(Player player) {
+    public Buff(Player player, float duration) {
         this.player = player;
-        this.timeLeft = DURATION;
+        this.timeLeft = duration;
     }
 
     @Override
