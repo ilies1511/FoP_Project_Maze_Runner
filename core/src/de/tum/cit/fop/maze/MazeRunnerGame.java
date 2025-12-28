@@ -50,12 +50,13 @@ public class MazeRunnerGame extends Game {
     private TextureRegion trapTexture;
     //UI
     private Texture spriteSheet;
-    private Texture effectsSheet;
-    private Texture assetsSheet;
     private TextureRegion woodenSign;
+    // Status effects
     private TextureRegion bloodEffect;
     private TextureRegion poisonEffect;
     private TextureRegion freezeEffect;
+    private TextureRegion sunscreenEffect;
+    // Key
     private TextureRegion key;
     private TextureRegion keyOutline;
     // Collectables
@@ -98,13 +99,9 @@ public class MazeRunnerGame extends Game {
 
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
 
-        effectsSheet = new Texture(Gdx.files.internal("statusEffects.png"));
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
-        assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
+        Texture assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
         woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
-        bloodEffect = new TextureRegion(effectsSheet, 128, 0, 32, 32);
-        poisonEffect = new TextureRegion(effectsSheet, 0, 0, 32, 32);
-        freezeEffect = new TextureRegion(effectsSheet, 160, 0, 32, 32);
         keyOutline = new TextureRegion(assetsSheet, 800,50,168,96);
         key = new TextureRegion(assetsSheet, 800,139,168,90);
 
@@ -119,6 +116,7 @@ public class MazeRunnerGame extends Game {
         this.loadVampiricHeartAnimation();
         this.loadDawnThinAnimation();
         this.loadDawnWideAnimation();
+        this.loadStatusEffectsTextures();
 
 
         // TODO: iziane
@@ -342,6 +340,14 @@ public class MazeRunnerGame extends Game {
         skin.dispose(); // Dispose the skin
     }
 
+    private void loadStatusEffectsTextures() {
+        TextureAtlas effectsAtlas = new TextureAtlas(Gdx.files.internal("statusEffects.atlas"));
+        this.bloodEffect = effectsAtlas.findRegion("blood");
+        this.poisonEffect = effectsAtlas.findRegion("poison");
+        this.freezeEffect = effectsAtlas.findRegion("snowflake");
+        this.sunscreenEffect = effectsAtlas.findRegion("cloudy_sun");
+    }
+
     // Getter methods
     public Animation<TextureRegion> getTouristDown() {
         return touristDown;
@@ -476,6 +482,7 @@ public class MazeRunnerGame extends Game {
         return woodenSign;
     }
 
+    // Status effect getters
     public TextureRegion getPoisonEffect() {
         return poisonEffect;
     }
@@ -489,7 +496,7 @@ public class MazeRunnerGame extends Game {
     }
 
     public TextureRegion getSunscreenEffect() {
-        return freezeEffect; // temporary effect since we do not have proper textures yet
+        return sunscreenEffect;
     }
 
 	public TextureRegion getExitClosedTexture() {
