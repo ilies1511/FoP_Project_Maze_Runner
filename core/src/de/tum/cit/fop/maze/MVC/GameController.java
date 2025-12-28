@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
-import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -31,17 +30,17 @@ public class GameController {
 	private final HUD hud;
 	private final GameField gameField;
 	private final SoundController soundController;
-	private GameScreen gameScreen;
+	private final SoundController gameScreenSoundController;
 	private WaveManager waveManager;
 
 	private float flickerTimer = 0f;
 
-	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, GameScreen gameScreen) {
+	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController) {
 		this.game = game;
 		this.player = player;
 		this.hud = hud;
 		this.gameField = gameField;
-		this.gameScreen = gameScreen;
+		this.gameScreenSoundController = gameScreenSoundController;
 		this.soundController = new SoundController();
 	}
 
@@ -232,7 +231,7 @@ public class GameController {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
 					System.out.println("You escaped! Level Finished.");
                     soundController.dispose();
-                    gameScreen.getSoundController().dispose();
+                    gameScreenSoundController.dispose();
 					game.goToGameWonScreen();
 //					soundController.playWinSound(1);
 				}
@@ -284,13 +283,17 @@ public class GameController {
 	private void playerDie() {
 		player.die();
 		soundController.dispose();
-		gameScreen.getSoundController().dispose();
+		gameScreenSoundController.dispose();
 		game.goToGameLostScreen();
 
 	}
 
 	public void setWaveManager(WaveManager waveManager) {
 		this.waveManager = waveManager;
+	}
+
+	public WaveManager getWaveManager() {
+		return waveManager;
 	}
 
 	//	public boolean flicker(float delta) {

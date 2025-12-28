@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
         pausedScreen = new PausedOverlay(stage, game, this);
 //        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
-		this.gameController = new GameController(game, player, hud, gameField, this);
+		this.gameController = new GameController(game, player, hud, gameField, soundController);
 
 		if (isSurvivalMode) {
 			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
@@ -232,6 +232,10 @@ public class GameScreen implements Screen {
 
     public HUD getHUD() {
         return hud;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
     // Additional methods and logic can be added as needed for the game screen
 }
