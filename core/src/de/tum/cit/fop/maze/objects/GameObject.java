@@ -114,9 +114,7 @@ public abstract class GameObject {
 //		}
 		bounds.setPosition(position.x, position.y);
 		if (drawable != null) {
-            if (velocity.len2() > 0.1f){
-                drawable.update(delta);
-            }
+            drawable.update(delta);
 		}
 	}
 
