@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
+import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -30,20 +32,22 @@ public class GameController {
 	private final MazeRunnerGame game;
 	private final Player player;
 	private final HUD hud;
-	private final GameField gameField;
+	private GameField gameField;
 	private final SoundController soundController;
 	private final SoundController gameScreenSoundController;
-	private WaveManager waveManager;
+	private GameScreen gameScreen;
+	private WaveManager waveManager = null;
 
 	private float flickerTimer = 0f;
 
-	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController) {
+	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
 		this.game = game;
 		this.player = player;
 		this.hud = hud;
 		this.gameField = gameField;
 		this.gameScreenSoundController = gameScreenSoundController;
 		this.soundController = new SoundController();
+		this.gameScreen = gameScreen;
 	}
 
 	public void update(float delta) {
@@ -277,10 +281,19 @@ public class GameController {
 			else {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
 					System.out.println("You escaped! Level Finished.");
-                    soundController.dispose();
-                    gameScreenSoundController.dispose();
-					game.goToGameWonScreen();
-//					soundController.playWinSound(1);
+					if (gameScreen.isSurvivalMode()) {
+						this.player.setHasKeys(false);
+						this.player.setCurrentKeys(0);
+						this.gameScreen.getPlayer().setCurrentKeys(0);
+						this.gameScreen.getPlayer().setHasKeys(false);
+						this.hud.renderHUD();
+						this.startNextLevel();
+	//						gameScreen.startNextLevel();
+					} else {
+						soundController.dispose();
+						gameScreen.getSoundController().dispose();
+						game.goToGameWonScreen();
+					}
 				}
 			}
 		}
@@ -332,13 +345,32 @@ public class GameController {
 		soundController.dispose();
 		gameScreenSoundController.dispose();
 		game.goToGameLostScreen();
-
 	}
 
 	public void setWaveManager(WaveManager waveManager) {
 		this.waveManager = waveManager;
 	}
 
+	public void setGameField(GameField newMap) {
+		this.gameField = newMap;
+	}
+
+	public void startNextLevel() {
+		GameField newMap = MazeGenerator.generateMaze(19, 19, this.game);
+		Vector2 entryPos = gameField.getTileTypeCoords(newMap, TileType.ENTRY_POINT);
+
+		this.gameScreen.setGameField(newMap);
+		this.setGameField(newMap);
+		if (waveManager != null) {
+			waveManager.setGameField(newMap);
+		}
+		if (entryPos != null) {
+			player.getPlayerGameObject().position.set(entryPos.x, entryPos.y);
+		}
+		if (soundController != null) {
+			soundController.playWinSound(1.0f);
+		}
+	}
 	public WaveManager getWaveManager() {
 		return waveManager;
 	}

@@ -3,7 +3,6 @@ package de.tum.cit.fop.maze.objects;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
-import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.*;
 
@@ -120,12 +119,6 @@ public class Player extends GameObject {
         }
     }
 
-//    public void activateInvis(MazeRunnerGame game){
-//        if(canInvis){
-//            game.loadCharacterInvisAnimation();
-//        }
-//    }
-
     public int getCurrentHealth() {
         return currentHealth;
     }
@@ -215,10 +208,6 @@ public class Player extends GameObject {
         this.canInvis = canInvis;
     }
 
-//    public void multiplySpeed(float multiplier) {
-//        this.multiplySpeed(multiplier);
-//    }
-
     public boolean isInGodMode() {
         return isInGodMode;
     }
@@ -250,4 +239,8 @@ public class Player extends GameObject {
     public void setInvis(boolean invis) {
         this.invis = invis;
     }
+
+	public void setCurrentKeys(int keys) {
+		this.currentKeys = keys;
+	}
 }

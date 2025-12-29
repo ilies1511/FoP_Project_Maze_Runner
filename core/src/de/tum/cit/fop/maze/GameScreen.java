@@ -11,11 +11,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Drawing.Drawable;
+import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
+import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
@@ -52,8 +54,10 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
+	private boolean isSurvivalMode;
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
+//	private WaveManager waveManager;
 
 
 //  For testing
@@ -67,6 +71,7 @@ public class GameScreen implements Screen {
         soundController = new SoundController();
         soundController.playBackgroundMusic(0.5f);
 		this.game = game;
+		this.isSurvivalMode = isSurvivalMode;
 
 		Drawable.initializeTextureMap(game);
 
@@ -107,7 +112,7 @@ public class GameScreen implements Screen {
         pausedScreen = new PausedOverlay(stage, game, this);
 //        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
-		this.gameController = new GameController(game, player, hud, gameField, soundController);
+		this.gameController = new GameController(game, player, hud, gameField, soundController, this);
 
 		if (isSurvivalMode) {
 			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
@@ -162,6 +167,7 @@ public class GameScreen implements Screen {
 		}
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
 		boolean playerHidden = !gameController.isPlayerVisible(delta);
+//		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
 		mapRenderer.render(gameField, player, delta, playerHidden);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
@@ -241,4 +247,13 @@ public class GameScreen implements Screen {
         return gameController;
     }
     // Additional methods and logic can be added as needed for the game screen
+
+	public boolean isSurvivalMode() {
+		return this.isSurvivalMode;
+	}
+
+	public void setGameField(GameField newGameField) {
+		this.gameField = newGameField;
+	}
+
 }
