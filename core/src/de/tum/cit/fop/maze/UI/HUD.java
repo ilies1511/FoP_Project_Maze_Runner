@@ -58,6 +58,7 @@ public class HUD {
         table.setFillParent(true); // Make the table fill the stage
         keyOutlineTable = new Table();
         keyOutlineTable.setFillParent(true);
+        keyOutlineTable.debug();
         //   table.defaults().space(10).expandX();
         //table.debug();
         stage.addActor(table);
@@ -79,22 +80,8 @@ public class HUD {
         renderPlayerHP();
         table.add(uiContainer).width(2200).height(200);
 
-        requiredKeys = player.getRequiredKeys();
-         keyStack = new Stack[requiredKeys];
-
         keyOutlineTable.top().right().padRight(40);
-       Label keyLabel = new Label("Keys", game.getSkin(), "vampire-style");
-       keyLabel.setFontScale(2);
-        keyOutlineTable.add(keyLabel);
-        keyOutlineTable.row();
-        for(int i = 0; i < requiredKeys; i++){
-            keyStack[i] = new Stack();
-            Image keyOutline =new Image(game.getKeyOutline());
-//            keyOutlineTable.add(key).width(170).height(100).padRight(10).padTop(10);
-            keyStack[i].add(keyOutline);
-            keyOutlineTable.add(keyStack[i]).size(170,100);
-        }
-
+        updatePlayerKeys();
         uiContainer.add(heartTable).padTop(20);
 
         xpLabel = new Label("XP:" + playerXP, game.getSkin(), "vampire-style");
@@ -106,13 +93,27 @@ public class HUD {
     }
 
     public void updatePlayerKeys(){
+        requiredKeys = player.getRequiredKeys();
+        keyStack = new Stack[requiredKeys];
+        keyOutlineTable.clearChildren();
+        Label keyLabel = new Label("Keys", game.getSkin(), "vampire-style");
+        keyLabel.setFontScale(2);
+        keyOutlineTable.add(keyLabel);
+        keyOutlineTable.row();
         playerKeys = player.getCurrentKeys();
-        for(int i = 0; i < playerKeys; i++){
-            Image key =new Image(game.getKey());
-            keyStack[i].add(key);
+        for(int i = 0; i < requiredKeys; i++){
+            keyStack[i] = new Stack();
+            Image keyOutline =new Image(game.getKeyOutline());
+//            keyOutlineTable.add(key).width(170).height(100).padRight(10).padTop(10);
+            keyStack[i].add(keyOutline);
+            keyOutlineTable.add(keyStack[i]).size(170,100);
+
 
 //            keyOutlineTable.add(keyStack[i]).size(160,90);
-
+        }
+        for(int i = 0; i<playerKeys;i ++){
+            Image key =new Image(game.getKey());
+            keyStack[i].add(key);
         }
 
     }

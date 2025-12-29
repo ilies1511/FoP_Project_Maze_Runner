@@ -284,9 +284,7 @@ public class GameController {
 					if (gameScreen.isSurvivalMode()) {
 						this.player.setHasKeys(false);
 						this.player.setCurrentKeys(0);
-						this.gameScreen.getPlayer().setCurrentKeys(0);
-						this.gameScreen.getPlayer().setHasKeys(false);
-						this.hud.renderHUD();
+						hud.updatePlayerKeys();
 						this.startNextLevel();
 	//						gameScreen.startNextLevel();
 					} else {
