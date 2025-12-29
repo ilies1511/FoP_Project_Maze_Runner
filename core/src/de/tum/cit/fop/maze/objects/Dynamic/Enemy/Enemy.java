@@ -48,9 +48,9 @@ public class Enemy extends GameObject {
         this.isDead = false;
     }
 
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField) {
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         float detectionRange = 5.5f; // if within 1.5 tiles
-        if (this.position.dst(playerPosition) < detectionRange) {
+        if (this.position.dst(playerPosition) < detectionRange && !player.isInvis()) {
             Vector2 direction = new Vector2(playerPosition).sub(this.position); //chase character
             direction.nor(); // Normalize to length 1
             this.velocity = direction.scl(this.getSpeed());

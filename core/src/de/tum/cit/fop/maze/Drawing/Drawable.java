@@ -27,6 +27,7 @@ public class Drawable {
 	private float animationTime;
 	private Animation<TextureRegion> currentAnimation;
 
+
 	public Drawable(AnimationType animationType) {
 		assert textureMap != null; // should initialize before creating any drawable
 		this.currentAnimation = textureMap.get(animationType);
@@ -57,8 +58,16 @@ public class Drawable {
 		tempMap.put(AnimationType.FREEZE_TRAP, game.getFreezeTrapAnimation());
 		tempMap.put(AnimationType.DAWN_THIN_ANIMATION, game.getDawnThinAnimation());
 		tempMap.put(AnimationType.DAWN_WIDE_ANIMATION, game.getDawnWideAnimation());
+        tempMap.put(AnimationType.CHARACTER_INVIS_UP, game.getCharacterInvisUpAnimation());
+        tempMap.put(AnimationType.CHARACTER_INVIS_DOWN, game.getCharacterInvisDownAnimation());
+        tempMap.put(AnimationType.CHARACTER_INVIS_LEFT, game.getCharacterInvisLeftAnimation());
+        tempMap.put(AnimationType.CHARACTER_INVIS_RIGHT, game.getCharacterInvisRightAnimation());
+        tempMap.put(AnimationType.CHARACTER_INVIS_VICTORY_POSE, game.getCharacterInvisDownWin());
+        tempMap.put(AnimationType.CHARACTER_INVIS_LOSER_POSE, game.getCharacterInvisDownSad());
 		textureMap = Map.copyOf(tempMap);
 	}
+
+
 
 	private static Animation<TextureRegion> createSingleFrameAnim(TextureRegion region) {
 		Array<TextureRegion> frames = new Array<>();
@@ -81,4 +90,8 @@ public class Drawable {
 	public void animate(Batch batch, Vector2 position, Vector2 spriteSizes) {
 		batch.draw(this.currentAnimation.getKeyFrame(this.animationTime, true), position.x, position.y, spriteSizes.x, spriteSizes.y);
 	}
+
+    public Animation<TextureRegion> getCurrentAnimation() {
+        return currentAnimation;
+    }
 }

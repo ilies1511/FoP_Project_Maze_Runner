@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.objects.Player;
 
 public class PatrolEnemy extends Enemy {
     private final float moveInterval = 2.0f; // Direction CHange
@@ -16,7 +17,7 @@ public class PatrolEnemy extends Enemy {
     }
 
     @Override
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField) {
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         moveTimer += deltaTime;
 
         Vector2 nextPos = this.nextPosition(deltaTime);

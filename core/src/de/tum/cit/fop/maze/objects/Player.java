@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze.objects;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.*;
 
@@ -19,6 +20,7 @@ public class Player extends GameObject {
     private int xp;
     private boolean canDash;
     private boolean canInvis;
+    private boolean invis;
    // private boolean isDead;
 
     private boolean isInGodMode;
@@ -95,6 +97,10 @@ public class Player extends GameObject {
         if (effect.getClass() == Dash.class && this.isDashInCooldown()) { // do not apply dash if it's in cooldown
             return;
         }
+        if (effect.getClass() == Invis.class && this.isInvisInCooldown()) { // do not apply dash if it's in cooldown
+            return;
+        }
+
         this.removeEffect(effect.getClass());
         effect.onStart();
         this.effects.add(effect);
@@ -113,6 +119,12 @@ public class Player extends GameObject {
             this.removeEffect(effectType);
         }
     }
+
+//    public void activateInvis(MazeRunnerGame game){
+//        if(canInvis){
+//            game.loadCharacterInvisAnimation();
+//        }
+//    }
 
     public int getCurrentHealth() {
         return currentHealth;
@@ -175,6 +187,9 @@ public class Player extends GameObject {
     private boolean isDashInCooldown() {
         return hasEffect(DashCooldown.class);
     }
+    private boolean isInvisInCooldown() {
+        return hasEffect(InvisCooldown.class);
+    }
 
     public int getXp() {
         return xp;
@@ -226,5 +241,13 @@ public class Player extends GameObject {
 
     public int getRequiredKeys() {
         return requiredKeys;
+    }
+
+    public boolean isInvis() {
+        return invis;
+    }
+
+    public void setInvis(boolean invis) {
+        this.invis = invis;
     }
 }

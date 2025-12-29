@@ -143,7 +143,11 @@ public abstract class GameObject {
 			batch.draw(texture, position.x, position.y, spriteSizes.x, spriteSizes.y);
 		}
 	}
-	// TODO: iziane
+
+    public Drawable getDrawable() {
+        return drawable;
+    }
+    // TODO: iziane
 	// New animate
 //	public void draw(Batch batch) {
 //		if (drawable != null) {

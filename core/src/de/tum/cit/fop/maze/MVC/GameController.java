@@ -12,6 +12,7 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
 import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
@@ -19,6 +20,7 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
@@ -64,6 +66,7 @@ public class GameController {
 	private void handleInput(float delta) {
 		boolean isMoving = false;
 		soundController.stopSteppingSound();
+        handleInvisStatic();
 
 		// Dash
 		if ((Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getDashKey())) && player.isCanDash()) {
@@ -74,12 +77,24 @@ public class GameController {
 		float speed = player.getPlayerGameObject().getSpeed();
 		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
 			player.getPlayerGameObject().velocity.y = speed;
-			player.changeAnimation(AnimationType.CHARACTER_UP);
+            if(player.isInvis()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
+            }
+            else{
+                player.changeAnimation(AnimationType.CHARACTER_UP);
+            }
+
 			isMoving = true;
 		}
 		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
 			player.getPlayerGameObject().velocity.y = -speed;
-			player.changeAnimation(AnimationType.CHARACTER_DOWN);
+            if(player.isInvis()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
+            }
+            else{
+                player.changeAnimation(AnimationType.CHARACTER_DOWN);
+            }
+
 			isMoving = true;
 		}
 		else {
@@ -89,12 +104,24 @@ public class GameController {
 		// X-Axis
 		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
 			player.getPlayerGameObject().velocity.x = -speed;
-			player.changeAnimation(AnimationType.CHARACTER_LEFT);
+            if(player.isInvis()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
+            }
+            else{
+                player.changeAnimation(AnimationType.CHARACTER_LEFT);
+            }
+
 			isMoving = true;
 		}
 		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
 			player.getPlayerGameObject().velocity.x = speed;
-			player.changeAnimation(AnimationType.CHARACTER_RIGHT);
+            if(player.isInvis()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
+            }
+            else{
+                player.changeAnimation(AnimationType.CHARACTER_RIGHT);
+            }
+
 			isMoving = true;
 		}
 		else {
@@ -102,6 +129,7 @@ public class GameController {
 		}
 
 		// Attack Logic
+        //TODO Attack animation + attack animation in INVIS
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
 			soundController.playPlayerHitSound(1);
 			System.out.println("Attacking!");
@@ -123,12 +151,24 @@ public class GameController {
 
 		// Emotes
 		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-			player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
+            if(player.isInvis()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_VICTORY_POSE);
+            }
+            else{
+                player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
+            }
+
 			soundController.playWinSound(1);
 			isMoving = true;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-			player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
+            if(player.isInvis()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_LOSER_POSE);
+            }
+            else{
+                player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
+            }
+
 			soundController.playPlayerDieSound(1);
 			isMoving = true;
 		}
@@ -181,7 +221,7 @@ public class GameController {
 
 	private void handleEnemyLogic(Enemy enemy, float delta, Iterator<GameObject> iter) {
 		GameObject enemyGo = enemy.getEnemyEntity();
-		enemy.updateBehavior(delta, player.getPlayerGameObject().position, gameField);
+		enemy.updateBehavior(delta, player.getPlayerGameObject().position, gameField, player);
 
 		Vector2 nextPos = enemyGo.nextPosition(delta);
 		if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGo.getSize())) {
@@ -200,16 +240,20 @@ public class GameController {
 				}
 			}
 			else {
-				if (flickerTimer <= 0 && !player.isCanInvis() && !player.isInGodMode()) {
+				if (flickerTimer <= 0 && !player.isInvis() && !player.isInGodMode()) {
 					System.out.println("YOU WERE DAMAGED!");
 					player.getDamageOrHeal(1);
 					flickerTimer = 3f;
 					soundController.playPlayerHitSound(1);
 				}
 			}
-            if (enemy instanceof de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer) {
-                iter.remove();
-            }
+//            if (enemy instanceof de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer) {
+//                if(!player.isInvis()){
+////                    iter.remove();
+//                    //
+//                }
+//
+//            }
 		}
 	}
 
@@ -306,4 +350,49 @@ public class GameController {
 //		//player visible if timer is 0 or if flickering
 //		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
 //	}
+    private void handleInvisStatic(){
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)&&player.isCanInvis()){
+
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterUpAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterDownAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterLeftAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterRightAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterDownWin()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_VICTORY_POSE);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterDownSad()){
+                player.changeAnimation(AnimationType.CHARACTER_INVIS_LOSER_POSE);
+            }
+            this.player.addOrReapplyEffect(new Invis(player, 5f, game));
+        }
+        if(!player.isInvis()){
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisUpAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_UP);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisDownAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_DOWN);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisLeftAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_LEFT);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisRightAnimation()){
+                player.changeAnimation(AnimationType.CHARACTER_RIGHT);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisDownWin()){
+                player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
+            }
+            if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisDownSad()){
+                player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
+            }
+        }
+    }
 }

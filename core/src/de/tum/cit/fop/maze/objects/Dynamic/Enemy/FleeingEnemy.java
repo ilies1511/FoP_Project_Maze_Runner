@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.objects.GameObject;
+import de.tum.cit.fop.maze.objects.Player;
+
 import java.util.List;
 
 public class FleeingEnemy extends Enemy {
@@ -17,7 +19,7 @@ public class FleeingEnemy extends Enemy {
     }
 
     @Override
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField) {
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         float detectionRange = 4.0f; // range
 
         Vector2 separation = new Vector2(0, 0);
@@ -36,7 +38,7 @@ public class FleeingEnemy extends Enemy {
             }
         }
 
-        if (this.position.dst(playerPosition) < detectionRange) {
+        if (this.position.dst(playerPosition) < detectionRange && !player.isInvis()) {
 
             float diffX = (this.position.x - playerPosition.x) + separation.x;
             float diffY = (this.position.y - playerPosition.y) + separation.y;

@@ -70,6 +70,7 @@ public class GameScreen implements Screen {
 
 		Drawable.initializeTextureMap(game);
 
+
 		this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
 		if (this.gameField == null) {
 			System.err.println("Map failed to load! Check file path.");

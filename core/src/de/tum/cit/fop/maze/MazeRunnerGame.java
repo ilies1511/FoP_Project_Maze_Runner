@@ -40,6 +40,14 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> characterDownSad, characterUpSad, characterLeftSad, characterRightSad;
     // Happy/Win/PowerUp Animations
     private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
+    private Animation<TextureRegion> characterInvisDownAnimation, characterInvisUpAnimation, characterInvisLeftAnimation, characterInvisRightAnimation;
+    // Jumping Animations
+    private Animation<TextureRegion> characterInvisDownJumpAnimation, characterInvisUpJumpAnimation, characterInvisLeftJumpAnimation, characterInvisRightJumpAnimation;
+    // Sad or Damage Animations
+    private Animation<TextureRegion> characterInvisDownSad, characterInvisUpSad, characterInvisLeftSad, characterInvisRightSad;
+    // Happy/Win/PowerUp Animations
+    private Animation<TextureRegion> characterInvisDownWin, characterInvisUpWin, characterInvisLeftWin, characterInvisRightWin;
+    //Enemies
     //Enemies
     private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
     private Animation<TextureRegion> bouncerDown, bouncerUp, bouncerLeft, bouncerRight;
@@ -109,6 +117,9 @@ public class MazeRunnerGame extends Game {
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         this.loadCharacterAnimation(); // Dracula
+
+        this.loadCharacterInvisAnimation();
+
         this.loadTouristAnimation();
         this.loadBouncerAnimation();
         this.loadMazeTiles();
@@ -229,6 +240,43 @@ public class MazeRunnerGame extends Game {
         // Call your helper to set up the animations
         charAnimation(tmp);
         }
+    private void loadCharacterInvisAnimation() {
+        Texture walkSheet = new Texture(Gdx.files.internal("DraculaInvis.png"));
+        int frameWidth = 16;
+        int frameHeight = 32;
+
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
+
+        // Call your helper to set up the animations
+        charInvisAnimation(tmp);
+    }
+    private void charInvisAnimation(TextureRegion[][] tmp) {
+        // ROW 0: DOWN
+        characterInvisDownAnimation = new Animation<>(0.1f, getFrames(tmp[0], 0, 4)); // Walk 0-3
+        characterInvisDownJumpAnimation = new Animation<>(0.1f, getFrames(tmp[0], 4, 3)); // Jump 4-6
+        characterInvisDownSad = new Animation<>(0.2f, getFrames(tmp[0], 7, 3)); // Sad 7-9
+        characterInvisDownWin = new Animation<>(0.1f, getFrames(tmp[0], 10, 1)); // Win 10
+
+        // ROW 1: RIGHT
+        characterInvisRightAnimation = new Animation<>(0.1f, getFrames(tmp[1], 0, 4));
+        characterInvisRightJumpAnimation = new Animation<>(0.1f, getFrames(tmp[1], 4, 3));
+        characterInvisRightSad = new Animation<>(0.2f, getFrames(tmp[1], 7, 3));
+        characterInvisRightWin = new Animation<>(0.1f, getFrames(tmp[1], 10, 1));
+
+        // ROW 2: UP
+        characterInvisUpAnimation = new Animation<>(0.1f, getFrames(tmp[2], 0, 4));
+        characterInvisUpJumpAnimation = new Animation<>(0.1f, getFrames(tmp[2], 4, 3));
+        characterInvisUpSad = new Animation<>(0.2f, getFrames(tmp[2], 7, 3));
+        characterInvisUpWin = new Animation<>(0.1f, getFrames(tmp[2], 10, 1));
+
+        // ROW 3: LEFT
+        characterInvisLeftAnimation = new Animation<>(0.1f, getFrames(tmp[3], 0, 4));
+        characterInvisLeftJumpAnimation = new Animation<>(0.1f, getFrames(tmp[3], 4, 3));
+        characterInvisLeftSad = new Animation<>(0.2f, getFrames(tmp[3], 7, 3));
+        characterInvisLeftWin = new Animation<>(0.1f, getFrames(tmp[3], 10, 1));
+
+    }
+
 
     private void charAnimation(TextureRegion[][] tmp) {
         // ROW 0: DOWN
@@ -532,5 +580,69 @@ public class MazeRunnerGame extends Game {
 
     public TextureRegion getKeyOutline() {
         return keyOutline;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisDownAnimation() {
+        return characterInvisDownAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisUpAnimation() {
+        return characterInvisUpAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisLeftAnimation() {
+        return characterInvisLeftAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisRightAnimation() {
+        return characterInvisRightAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisDownJumpAnimation() {
+        return characterInvisDownJumpAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisUpJumpAnimation() {
+        return characterInvisUpJumpAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisLeftJumpAnimation() {
+        return characterInvisLeftJumpAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisRightJumpAnimation() {
+        return characterInvisRightJumpAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisDownSad() {
+        return characterInvisDownSad;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisUpSad() {
+        return characterInvisUpSad;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisLeftSad() {
+        return characterInvisLeftSad;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisRightSad() {
+        return characterInvisRightSad;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisDownWin() {
+        return characterInvisDownWin;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisUpWin() {
+        return characterInvisUpWin;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisLeftWin() {
+        return characterInvisLeftWin;
+    }
+
+    public Animation<TextureRegion> getCharacterInvisRightWin() {
+        return characterInvisRightWin;
     }
 }

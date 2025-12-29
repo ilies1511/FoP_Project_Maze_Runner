@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.*;
 
@@ -17,10 +18,10 @@ public class Bouncer extends Enemy {
     }
 
     @Override
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField) {
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         List<Vector2> path = findPath(this.position, playerPosition, gameField);
 
-        if (path != null && !path.isEmpty()) {
+        if (path != null && !path.isEmpty() && !player.isInvis()) {
             Vector2 target = path.get(0);
 
             // calculate
