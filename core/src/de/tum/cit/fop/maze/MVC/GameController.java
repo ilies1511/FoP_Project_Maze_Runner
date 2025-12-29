@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -29,10 +30,10 @@ public class GameController {
 	private final MazeRunnerGame game;
 	private final Player player;
 	private final HUD hud;
-	private final GameField gameField;
+	private GameField gameField;
 	private final SoundController soundController;
 	private GameScreen gameScreen;
-	private WaveManager waveManager;
+	private WaveManager waveManager = null;
 
 	private float flickerTimer = 0f;
 
@@ -231,10 +232,19 @@ public class GameController {
 			else {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
 					System.out.println("You escaped! Level Finished.");
-                    soundController.dispose();
-                    gameScreen.getSoundController().dispose();
-					game.goToGameWonScreen();
-//					soundController.playWinSound(1);
+					if (gameScreen.isSurvivalMode()) {
+						this.player.setHasKeys(false);
+						this.player.setCurrentKeys(0);
+						this.gameScreen.getPlayer().setCurrentKeys(0);
+						this.gameScreen.getPlayer().setHasKeys(false);
+						this.hud.renderHUD();
+						this.startNextLevel();
+//						gameScreen.startNextLevel();
+					} else {
+	                    soundController.dispose();
+	                    gameScreen.getSoundController().dispose();
+						game.goToGameWonScreen();
+					}
 				}
 			}
 		}
@@ -293,11 +303,24 @@ public class GameController {
 		this.waveManager = waveManager;
 	}
 
-	//	public boolean flicker(float delta) {
-//		if (flickerTimer > 0f) {
-//			flickerTimer -= delta;
-//		}
-//		//player visible if timer is 0 or if flickering
-//		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-//	}
+	public void setGameField(GameField newMap) {
+		this.gameField = newMap;
+	}
+
+	public void startNextLevel() {
+		GameField newMap = MazeGenerator.generateMaze(19, 19, this.game);
+		Vector2 entryPos = gameField.getTileTypeCoords(newMap, TileType.ENTRY_POINT);
+
+		this.gameScreen.setGameField(newMap);
+		this.setGameField(newMap);
+		if (waveManager != null) {
+			waveManager.setGameField(newMap);
+		}
+		if (entryPos != null) {
+			player.getPlayerGameObject().position.set(entryPos.x, entryPos.y);
+		}
+		if (soundController != null) {
+			soundController.playWinSound(1.0f);
+		}
+	}
 }

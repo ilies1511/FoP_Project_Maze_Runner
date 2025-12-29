@@ -146,24 +146,8 @@ public class GameField {
 		return playerStartPos;
 	}
 
-	public void setPlayerStartPos(Vector2 pos) {
-		this.playerStartPos = pos;
-	}
-
 	public int getWidth() {
 		return width;
-	}
-	// END -- Getters
-
-	public int getHeight() {
-		return height;
-	}
-
-	// BEGIN -- Setters
-	public void setTile(int x, int y, TileType tile) {
-		if (isValid(x, y)) {
-			grid[y * width + x] = tile;
-		}
 	}
 
 	public int getRequiredKeys() {
@@ -174,6 +158,43 @@ public class GameField {
 			return 1;
 		}
 		return keysInMap.size();
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public <T extends GameObject> List<T> getObjectsByType(Class<T> type) {
+		List<T> result = new ArrayList<>();
+		for (GameObject obj : gameObjects) {
+			if (type.isInstance(obj)) {
+				result.add(type.cast(obj));
+			}
+		}
+		return result;
+	}
+
+	public Vector2 getTileTypeCoords(GameField newMap, TileType TYPE) {
+		for (int y = 0; y < newMap.getHeight(); y++) {
+			for (int x = 0; x < newMap.getWidth(); x++) {
+				if (newMap.getTile(x, y) == TYPE) {
+					return new Vector2(x, y);
+				}
+			}
+		}
+		return null;
+	}
+	// END -- Getters
+
+	// BEGIN -- Setters
+	public void setPlayerStartPos(Vector2 pos) {
+		this.playerStartPos = pos;
+	}
+
+	public void setTile(int x, int y, TileType tile) {
+		if (isValid(x, y)) {
+			grid[y * width + x] = tile;
+		}
 	}
 	// END -- Setters
 
@@ -204,14 +225,14 @@ public class GameField {
 		return false;
 	}
 
-	public <T extends GameObject> List<T> getObjectsByType(Class<T> type) {
-		List<T> result = new ArrayList<>();
-		for (GameObject obj : gameObjects) {
-			if (type.isInstance(obj)) {
-				result.add(type.cast(obj));
-			}
-		}
-		return result;
-	}
+	// Find the Entry tile
+//		for (int y = 0; y < newMap.getHeight(); y++) {
+//			for (int x = 0; x < newMap.getWidth(); x++) {
+//				if (newMap.getTile(x, y) == TileType.ENTRY_POINT) {
+//					player.getPlayerGameObject().position.set(x, y);
+//					break;
+//				}
+//			}
+//		}
 	// END -- Methods
 }

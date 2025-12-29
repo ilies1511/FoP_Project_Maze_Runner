@@ -257,4 +257,8 @@ public class Player extends GameObject {
     public int getRequiredKeys() {
         return requiredKeys;
     }
+
+	public void setCurrentKeys(int keys) {
+		this.currentKeys = keys;
+	}
 }

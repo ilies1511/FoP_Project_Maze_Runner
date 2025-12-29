@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class WaveManager {
 	// BEGIN -- Attributes
-	private final GameField gameField;
+	private GameField gameField;
 	private final Random random;
 
 	private float timeSinceLastSpawn = 0;
@@ -36,6 +36,9 @@ public class WaveManager {
 	// END -- Getters
 
 	// BEGIN -- Setters
+	public void setGameField(GameField newMap) {
+		this.gameField = newMap;
+	}
 	// END -- Setters
 
 	// BEGIN -- Methods
