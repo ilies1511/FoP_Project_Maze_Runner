@@ -207,6 +207,9 @@ public class GameController {
 					soundController.playPlayerHitSound(1);
 				}
 			}
+            if (enemy instanceof de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer) {
+                iter.remove();
+            }
 		}
 	}
 

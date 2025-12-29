@@ -40,8 +40,9 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> characterDownSad, characterUpSad, characterLeftSad, characterRightSad;
     // Happy/Win/PowerUp Animations
     private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
-    //Enemy(Tourist)
+    //Enemies
     private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
+    private Animation<TextureRegion> bouncerDown, bouncerUp, bouncerLeft, bouncerRight;
     // Maze Textures
     private TextureRegion wallTile;
     private TextureRegion emptyTile;
@@ -107,8 +108,9 @@ public class MazeRunnerGame extends Game {
 
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
-        this.loadCharacterAnimation(); // Load character animation
+        this.loadCharacterAnimation(); // Dracula
         this.loadTouristAnimation();
+        this.loadBouncerAnimation();
         this.loadMazeTiles();
         this.loadKeyShineAnimation();
         this.loadGarlicTrapAnimation();
@@ -302,11 +304,23 @@ public class MazeRunnerGame extends Game {
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        // Map the rows (The "Walk Only" sheet usually has 4 rows: 0=Up, 1=Left, 2=Down, 3=Right)
         touristUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
         touristLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
         touristDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
         touristRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
+    }
+
+    private void loadBouncerAnimation() {
+        Texture walkSheet = new Texture(Gdx.files.internal("bouncer.png"));
+        int frameWidth = 64;
+        int frameHeight = 64;
+
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
+
+        bouncerUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
+        bouncerLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
+        bouncerDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
+        bouncerRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
     }
 
     private void loadMazeTiles() {
@@ -437,6 +451,11 @@ public class MazeRunnerGame extends Game {
     public Animation<TextureRegion> getCharacterRightWin() {
         return characterRightWin;
     }
+
+    public Animation<TextureRegion> getBouncerDown() { return bouncerDown; }
+    public Animation<TextureRegion> getBouncerUp() { return bouncerUp; }
+    public Animation<TextureRegion> getBouncerLeft() { return bouncerLeft; }
+    public Animation<TextureRegion> getBouncerRight() { return bouncerRight; }
 
     // Collectable animation Getters
     public Animation<TextureRegion> getKeyShineAnimation() {

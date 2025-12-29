@@ -21,6 +21,7 @@ import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.Dawn;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
@@ -170,7 +171,8 @@ public class GameScreen implements Screen {
 	}
 
 	private void addTestObjects() {
-		gameField.addGameObject(new FleeingEnemy(new Vector2(7f, 7f)));
+		gameField.addGameObject(new Bouncer(new Vector2(4f, 9f)));
+		gameField.addGameObject(new Bouncer(new Vector2(9f, 3f)));
 		gameField.addGameObject(new Key(new Vector2(5f, 5f)));
 	}
 

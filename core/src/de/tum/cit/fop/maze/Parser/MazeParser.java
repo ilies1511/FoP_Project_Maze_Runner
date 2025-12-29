@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.*;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.TrapCreator;
@@ -13,7 +12,6 @@ import de.tum.cit.fop.maze.objects.traps.TrapCreator;
 import java.io.IOException;
 import java.util.Properties;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.PatrolEnemy;
 
 //public class MazeParser {
 //	// BEGIN -- Attributes
