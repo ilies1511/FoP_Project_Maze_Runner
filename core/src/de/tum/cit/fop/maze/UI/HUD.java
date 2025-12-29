@@ -58,7 +58,7 @@ public class HUD {
         table.setFillParent(true); // Make the table fill the stage
         keyOutlineTable = new Table();
         keyOutlineTable.setFillParent(true);
-        keyOutlineTable.debug();
+//        keyOutlineTable.debug();
         //   table.defaults().space(10).expandX();
         //table.debug();
         stage.addActor(table);
