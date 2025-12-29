@@ -25,6 +25,11 @@ public class ProgressionOverlay {
     private Stage stage;
     private MazeRunnerGame game;
     private Table table;
+    private int healthUpgrades;
+    private int speedUpgrades;
+    private boolean dashDisable;
+    private boolean speedDisable;
+    private boolean invisDisable;
 
     private Player player;
 private SoundController soundController;
@@ -83,11 +88,19 @@ private SoundController soundController;
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (player.getXp() >= 15) {
+                    healthUpgrades++;
 
                     player.receiveXP(-15);
                     player.setMaxHealth(player.getMaxHealth()+1);
                     player.getDamageOrHeal(-1);
-                    dash.setDisabled(false);
+                    if(dashDisable == false){
+                        dash.setDisabled(false);
+                        dashDisable = true;
+                    }
+
+                    if(healthUpgrades >= 10){
+                    maxHealth.setDisabled(true);
+                    }
                 }
 
             }
@@ -110,9 +123,12 @@ private SoundController soundController;
             public void changed(ChangeEvent event, Actor actor) {
                 if (player.getXp() >= 15) {
                     dash.setDisabled(true);
+                    if(speedDisable == false){
+                        maxSpeed.setDisabled(false);
+                        speedDisable = true;
+                    }
                     player.setCanDash(true);
                     player.receiveXP(-15);
-                    maxSpeed.setDisabled(false);
 
                 }
 
@@ -135,9 +151,16 @@ private SoundController soundController;
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (player.getXp() >= 15) {
+                    speedUpgrades++;
                     player.receiveXP(-15);
                     player.multiplySpeed(1.15f);
-                    invis.setDisabled(false);
+                    if(invisDisable == false){
+                        invis.setDisabled(false);
+                        invisDisable = true;
+                    }
+                    if(speedUpgrades >= 5){
+                        maxSpeed.setDisabled(true);
+                    }
                 }
 
             }
@@ -160,7 +183,7 @@ private SoundController soundController;
             public void changed(ChangeEvent event, Actor actor) {
                 //TODO LOGIC
                 if (player.getXp() >= 15) {
-                    dash.setDisabled(true);
+                    invis.setDisabled(true);
                     player.setCanInvis(true);
                     player.receiveXP(-15);
                 }

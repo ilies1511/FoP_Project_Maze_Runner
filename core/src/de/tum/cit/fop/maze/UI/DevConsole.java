@@ -32,6 +32,7 @@ public class DevConsole {
     private Player player;
     private HUD hud;
 
+
     public DevConsole(MazeRunnerGame game, GameScreen gameScreen, Stage stage, Player player, HUD hud) {
 
         setCommands = "XP|HP|SpeedMultiplier|Dash|Invis|GodMode";
@@ -145,21 +146,28 @@ public class DevConsole {
                 if ((c == '\r' || c == '\n') && !textField.getText().isEmpty()) {
                     String command = textField.getText();
 
-                    //TODO LOGIC
                     Matcher matcher = pattern.matcher(command);
                     if (matcher.matches()) {
                         consoleLabel.setText(consoleLabel.getText() + "\n> " + command);
                         String stringCommand = matcher.group(1);
 
-                        if (matcher.group(2) != null) {
-                            String intCommand = matcher.group(2);
-                            Consumer<String> action = commandMap.get(stringCommand);
+                        if (matcher.group(2) != null ) {
+                            try{
+                                if( Integer.parseInt(matcher.group(2)) < 2147483647 && Integer.parseInt(matcher.group(2))> 0){
+                                    String intCommand = matcher.group(2);
+                                    Consumer<String> action = commandMap.get(stringCommand);
 
-                            if (action != null) {
-                                action.accept(intCommand);
-                            } else {
-                                consoleLabel.setText(consoleLabel.getText() + "\n> " + "Unknown command logic: " + stringCommand);
+                                    if (action != null) {
+                                        action.accept(intCommand);
+                                    } else {
+                                        consoleLabel.setText(consoleLabel.getText() + "\n> " + "Unknown command logic: " + stringCommand);
+                                    }
+                                }
                             }
+                            catch (Exception e){
+                                consoleLabel.setText(consoleLabel.getText() + "\n> " + "Out of bounds value");
+                            }
+
                         } else {
                             Consumer<String> action = commandMap.get(stringCommand);
 
@@ -202,5 +210,5 @@ public class DevConsole {
         Gdx.input.setInputProcessor(stage);
     }
 
-    //TODO INVIS COMMAND
+
 }
