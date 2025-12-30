@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
@@ -38,7 +39,7 @@ public class FleeingEnemy extends Enemy {
             }
         }
 
-        if (this.position.dst(playerPosition) < detectionRange && !player.isInvis()) {
+        if (this.position.dst(playerPosition) < detectionRange && !player.hasEffect(Invis.class)) {
 
             float diffX = (this.position.x - playerPosition.x) + separation.x;
             float diffY = (this.position.y - playerPosition.y) + separation.y;

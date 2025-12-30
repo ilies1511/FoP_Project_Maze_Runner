@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.*;
@@ -28,7 +29,7 @@ public class Bouncer extends Enemy {
 
         List<Vector2> path = findPath(this.position, playerPosition, gameField);
 
-        if (path != null && !path.isEmpty() && !player.isInvis()) {
+        if (path != null && !path.isEmpty() && !player.hasEffect(Invis.class)) {
             Vector2 target = path.get(0);
 
             // calculate

@@ -22,7 +22,6 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
-import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
@@ -103,7 +102,7 @@ public class GameController {
 		float speed = player.getPlayerGameObject().getSpeed();
 		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
 			player.getPlayerGameObject().velocity.y = speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
             }
             else{
@@ -114,7 +113,7 @@ public class GameController {
 		}
 		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
 			player.getPlayerGameObject().velocity.y = -speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
             }
             else{
@@ -130,7 +129,7 @@ public class GameController {
 		// X-Axis
 		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
 			player.getPlayerGameObject().velocity.x = -speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
             }
             else{
@@ -141,7 +140,7 @@ public class GameController {
 		}
 		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
 			player.getPlayerGameObject().velocity.x = speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
             }
             else{
@@ -158,7 +157,7 @@ public class GameController {
         //TODO Attack animation + attack animation in INVIS
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             player.setAttacking(true);
-            player.setInvis(false); // attacking breaks invisibility
+            player.endEffect(Invis.class); // attacking breaks invisibility
             Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
 
             if (currentAnim == game.getCharacterUpAnimation() || currentAnim == game.getCharacterInvisUpAnimation()) {
@@ -192,7 +191,7 @@ public class GameController {
 
 		// Emotes
 		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_VICTORY_POSE);
             }
             else{
@@ -203,7 +202,7 @@ public class GameController {
 			isMoving = true;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LOSER_POSE);
             }
             else{
@@ -281,7 +280,7 @@ public class GameController {
 				}
 			}
 			else {
-				if (flickerTimer <= 0 && !player.isInvis() && !player.isInGodMode()) {
+				if (flickerTimer <= 0 && !player.hasEffect(Invis.class) && !player.isInGodMode()) {
 					System.out.println("YOU WERE DAMAGED!");
 					player.getDamageOrHeal(1);
 					flickerTimer = 3f;
@@ -439,9 +438,9 @@ public class GameController {
             if(player.getDrawable().getCurrentAnimation() == game.getCharacterDownSad()){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LOSER_POSE);
             }
-            this.player.addOrReapplyEffect(new Invis(player, 5f, game));
+            this.player.addOrReapplyEffect(new Invis(player, 5f));
         }
-        if(!player.isInvis()){
+        if(!player.hasEffect(Invis.class)){
             if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisUpAnimation()){
                 player.changeAnimation(AnimationType.CHARACTER_UP);
             }

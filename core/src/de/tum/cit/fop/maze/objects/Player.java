@@ -1,6 +1,5 @@
 package de.tum.cit.fop.maze.objects;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
@@ -81,8 +80,22 @@ public class Player extends GameObject {
         return this.maxHealth;
     }
 
-    private void removeEffect(Class<? extends Effect> effectType) {
-        // removes only one Effect (if exists)
+    public void endEffect(Class<? extends Effect> effectTypeClass) {
+        // removes only one Effect (if exists), triggers onEnd
+        for (int i = 0; i < effects.size(); i++) {
+            Effect e = effects.get(i);
+            if (e.getClass() == effectTypeClass) {
+                e.onEnd();
+                effects.get(i).onEnd();
+                effects.remove(i);
+                break;
+            }
+        }
+        this.gameScreen.getHUD().updatePlayerStatusEffects();
+    }
+
+    private void endEffectNoOnEndTrigger(Class<? extends Effect> effectType) {
+        // removes only one Effect (if exists), does not trigger onEnd
         for (int i = 0; i < effects.size(); i++) {
             Effect e = effects.get(i);
             if (e.getClass() == effectType) {
@@ -102,7 +115,7 @@ public class Player extends GameObject {
             return;
         }
 
-        this.removeEffect(effect.getClass());
+        this.endEffectNoOnEndTrigger(effect.getClass());
         effect.onStart();
         this.effects.add(effect);
         this.gameScreen.getHUD().updatePlayerStatusEffects();
@@ -117,7 +130,7 @@ public class Player extends GameObject {
             }
         }
         for (Class<? extends Effect> effectType : effectsToRemove) {
-            this.removeEffect(effectType);
+            this.endEffectNoOnEndTrigger(effectType);
         }
     }
 
@@ -258,14 +271,6 @@ public class Player extends GameObject {
 
     public int getRequiredKeys() {
         return requiredKeys;
-    }
-
-    public boolean isInvis() {
-        return invis;
-    }
-
-    public void setInvis(boolean invis) {
-        this.invis = invis;
     }
 
 	public void setCurrentKeys(int keys) {
