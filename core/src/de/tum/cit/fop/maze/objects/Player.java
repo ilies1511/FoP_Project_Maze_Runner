@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.objects;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
@@ -80,6 +81,14 @@ public class Player extends GameObject {
         return this.maxHealth;
     }
 
+    @Override
+    public void animate(Batch batch) {
+        if (!this.hasEffect(FlickerHidden.class)) {
+            this.drawable.animate(batch, this.position, this.spriteSizes);
+        }
+    }
+
+
     public void endEffect(Class<? extends Effect> effectTypeClass) {
         // removes only one Effect (if exists), triggers onEnd
         for (int i = 0; i < effects.size(); i++) {
@@ -123,7 +132,7 @@ public class Player extends GameObject {
 
     public void tickEffects(float deltaTime) {
         ArrayList<Class<? extends Effect>> effectsToRemove = new ArrayList<>();
-        for (Effect effect : effects) {
+        for (Effect effect : new ArrayList<>(effects)) { // create a temporary copy of effects list to avoid onTick modifying effects
             boolean isFinished = effect.onTick(deltaTime);
             if (isFinished) {
                 effectsToRemove.add(effect.getClass());

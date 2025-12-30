@@ -14,6 +14,7 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
 import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.Flicker;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
@@ -37,8 +38,6 @@ public class GameController {
 	private final SoundController gameScreenSoundController;
 	private GameScreen gameScreen;
 	private WaveManager waveManager = null;
-
-	private float flickerTimer = 0f;
 
 	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
 		this.game = game;
@@ -248,8 +247,8 @@ public class GameController {
                 if (((Dawn) obj).updateDawn(delta)) {
                     iter.remove();
                 } else {
-                    if (this.flickerTimer <= 0.0f && ((Dawn) obj).checkPlayerCollision(this.player)) {
-                        this.flickerTimer = 3f;
+                    if (!this.player.hasEffect(Flicker.class) && ((Dawn) obj).checkPlayerCollision(this.player)) {
+                        this.player.addOrReapplyEffect(new Flicker(this.player));
                     }
                 }
             }
@@ -280,10 +279,10 @@ public class GameController {
 				}
 			}
 			else {
-				if (flickerTimer <= 0 && !player.hasEffect(Invis.class) && !player.isInGodMode()) {
+				if (!this.player.hasEffect(Flicker.class) && !player.hasEffect(Invis.class) && !player.isInGodMode()) {
 					System.out.println("YOU WERE DAMAGED!");
 					player.getDamageOrHeal(1);
-					flickerTimer = 3f;
+					this.player.addOrReapplyEffect(new Flicker(this.player));
 					soundController.playPlayerHitSound(1);
 				}
 			}
@@ -363,13 +362,6 @@ public class GameController {
 		}
 	}
 
-	public boolean isPlayerVisible(float delta) {
-		if (flickerTimer > 0f) {
-			flickerTimer -= delta;
-		}
-		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-	}
-
 	public SoundController getSoundController() {
 		return soundController;
 	}
@@ -409,13 +401,6 @@ public class GameController {
 		return waveManager;
 	}
 
-	//	public boolean flicker(float delta) {
-//		if (flickerTimer > 0f) {
-//			flickerTimer -= delta;
-//		}
-//		//player visible if timer is 0 or if flickering
-//		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-//	}
     private void handleInvisStatic(){
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.Q)&&player.isCanInvis()){

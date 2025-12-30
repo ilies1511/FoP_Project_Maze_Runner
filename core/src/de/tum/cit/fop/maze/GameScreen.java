@@ -47,7 +47,6 @@ public class GameScreen implements Screen {
 	private final ProgressionOverlay progressionOverlay;
 	private final DevConsole devConsole;
 	private final SoundController soundController;
-	private float flickerTimer = 0f;
 	private GameField gameField;
 	//	private ArrayList<Enemy> enemies;
 	//	private ArrayList<Collectable> collectables;
@@ -166,9 +165,8 @@ public class GameScreen implements Screen {
 			}
 		}
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
-		boolean playerHidden = !gameController.isPlayerVisible(delta);
 //		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
-		mapRenderer.render(gameField, player, delta, playerHidden);
+		mapRenderer.render(gameField, player, delta);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
 	}

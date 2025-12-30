@@ -28,7 +28,7 @@ public class MapRenderer {
 		}
 	}
 
-	public void render(GameField gameField, Player player, float delta, boolean playerHidden) {
+	public void render(GameField gameField, Player player, float delta) {
 		batch.begin();
 
 		drawGameField(gameField);
@@ -37,9 +37,7 @@ public class MapRenderer {
 		for (GameObject obj : gameField.getGameObjects()) {
 			obj.animate(batch);
 		}
-		if (!playerHidden) {
-			player.animate(batch);
-		}
+        player.animate(batch);
 		batch.end();
 	}
 }
