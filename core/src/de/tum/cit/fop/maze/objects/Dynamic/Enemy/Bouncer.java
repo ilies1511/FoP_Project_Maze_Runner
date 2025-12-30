@@ -11,14 +11,21 @@ import java.util.*;
 public class Bouncer extends Enemy {
 
     private static final float MOVE_SPEED = 1.5f;
+    private static final float DETECTION_RANGE = 7.0f;
+    private Vector2 prevPosition;
 
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
         this.speed = MOVE_SPEED;
-    }
+        this.prevPosition = new Vector2(startPos);    }
 
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
+        if (this.position.dst(playerPosition) > DETECTION_RANGE) {
+            this.velocity.set(0, 0);
+            return;
+        }
+
         List<Vector2> path = findPath(this.position, playerPosition, gameField);
 
         if (path != null && !path.isEmpty() && !player.isInvis()) {
@@ -38,6 +45,15 @@ public class Bouncer extends Enemy {
         }
 
         updateAnimationDirection();
+    }
+
+    public void updateAnimation(float delta) {
+        if (position.dst(prevPosition) < 0.01f) {
+            setAnimationTime(0);//idle if wall
+        }
+
+        super.updateAnimation(delta);
+        prevPosition.set(position);
     }
 
     private void updateAnimationDirection() {

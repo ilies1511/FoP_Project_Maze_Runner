@@ -15,6 +15,8 @@ import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.Arrays;
 import java.util.List;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
+
 
 /**
  * The MazeRunnerGame class represents the core of the Maze Runner game.
@@ -81,7 +83,7 @@ public class MazeRunnerGame extends Game {
     // Dawn Animations
     private Animation<TextureRegion> dawnThinAnimation;
     private Animation<TextureRegion> dawnWideAnimation;
-
+    private TextureRegion shadowTexture;
 
 
     /**
@@ -101,12 +103,15 @@ public class MazeRunnerGame extends Game {
     /**
      * Called when the game is created. Initializes the SpriteBatch and Skin.
      */
+
+
     @Override
     public void create() {
         // Initialize settings AFTER creating game (so that loading works)
         this.gameInfo.initializeSettings();
 
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
+        this.Shadow();
 
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
         Texture assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
@@ -182,6 +187,14 @@ public class MazeRunnerGame extends Game {
 //	public TextureRegion getEnemyTexture() {
 //		return enemyTexture;
 //	}
+
+
+    public void Shadow(){
+        Texture shadowSheet = new Texture(Gdx.files.internal("lpc_shadow.png"));
+        TextureRegion[][] tmp = TextureRegion.split(shadowSheet, 64, 64);
+        TextureRegion genericShadow = tmp[10][0];
+        Enemy.setShadowTexture(genericShadow);
+    }
 
     public void disposeAllScreens() {
         List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen, this.gameLostScreen);

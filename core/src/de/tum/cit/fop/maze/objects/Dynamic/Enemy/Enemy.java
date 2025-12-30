@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -8,9 +9,16 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Enemy extends GameObject {
     boolean isDead;
+    private static TextureRegion shadowTexture;
+
+    public static void setShadowTexture(TextureRegion texture) {
+        shadowTexture = texture;
+    }
 
     public Enemy(Vector2 startPos, Vector2 size, AnimationType animationType) {
         super(
@@ -65,6 +73,20 @@ public class Enemy extends GameObject {
         player.addOrReapplyEffect(new Buff(player, 2f));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
         return drop;
+    }
+
+    public void animate(Batch batch) {
+        if (shadowTexture != null) {
+            float width = this.spriteSizes.x;
+            float height = this.spriteSizes.y;
+            float shadowWidth = width * 1.5f;
+            float shadowHeight = shadowWidth;
+
+            float x = position.x + (width - shadowWidth) / 2f;
+            float y = position.y - 0.05f; // near feet
+            batch.draw(shadowTexture, x, y, shadowWidth, shadowHeight);        }
+
+        super.animate(batch);
     }
 
     public boolean isDead() {
