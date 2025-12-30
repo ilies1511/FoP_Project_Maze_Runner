@@ -43,6 +43,7 @@ public class MazeRunnerGame extends Game {
     // Happy/Win/PowerUp Animations
     private Animation<TextureRegion> characterDownWin, characterUpWin, characterLeftWin, characterRightWin;
     private Animation<TextureRegion> characterInvisDownAnimation, characterInvisUpAnimation, characterInvisLeftAnimation, characterInvisRightAnimation;
+    private Animation<TextureRegion> characterAttackDownAnimation, characterAttackUpAnimation, characterAttackLeftAnimation, characterAttackRightAnimation;
     // Jumping Animations
     private Animation<TextureRegion> characterInvisDownJumpAnimation, characterInvisUpJumpAnimation, characterInvisLeftJumpAnimation, characterInvisRightJumpAnimation;
     // Sad or Damage Animations
@@ -247,12 +248,28 @@ public class MazeRunnerGame extends Game {
         Texture walkSheet = new Texture(Gdx.files.internal("dracula.png"));
         int frameWidth = 16;
         int frameHeight = 32;
+        int attackWidth = 32;
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        // Call your helper to set up the animations
         charAnimation(tmp);
+        int startY = 4*frameHeight;
+
+
+        //Attack
+        characterAttackDownAnimation = createAnimation(walkSheet, 0, startY, attackWidth, frameHeight, 4);
+        characterAttackUpAnimation = createAnimation(walkSheet, 0, startY + frameHeight, attackWidth, frameHeight, 4);
+        characterAttackRightAnimation = createAnimation(walkSheet, 0, startY + (2 * frameHeight), attackWidth, frameHeight, 4);
+        characterAttackLeftAnimation = createAnimation(walkSheet, 0, startY + (3 * frameHeight), attackWidth, frameHeight, 4);
+    }
+
+    private Animation<TextureRegion> createAnimation(Texture texture, int startX, int startY, int frameWidth, int frameHeight, int frameCount) {
+        Array<TextureRegion> frames = new Array<>();
+        for (int i = 0; i < frameCount; i++) {
+            frames.add(new TextureRegion(texture, startX + (i * frameWidth), startY, frameWidth, frameHeight));
         }
+        return new Animation<>(0.1f, frames);
+    }
     private void loadCharacterInvisAnimation() {
         Texture walkSheet = new Texture(Gdx.files.internal("DraculaInvis.png"));
         int frameWidth = 16;
@@ -593,6 +610,21 @@ public class MazeRunnerGame extends Game {
 
     public TextureRegion getKeyOutline() {
         return keyOutline;
+    }
+    public Animation<TextureRegion> getCharacterAttackDownAnimation() {
+        return characterAttackDownAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterAttackUpAnimation() {
+        return characterAttackUpAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterAttackLeftAnimation() {
+        return characterAttackLeftAnimation;
+    }
+
+    public Animation<TextureRegion> getCharacterAttackRightAnimation() {
+        return characterAttackRightAnimation;
     }
 
     public Animation<TextureRegion> getCharacterInvisDownAnimation() {

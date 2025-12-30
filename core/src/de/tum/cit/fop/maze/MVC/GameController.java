@@ -27,6 +27,7 @@ import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 public class GameController {
 	private final MazeRunnerGame game;
@@ -68,6 +69,27 @@ public class GameController {
 	}
 
 	private void handleInput(float delta) {
+
+        if (player.isAttacking()) {
+            player.updateAnimation(delta);
+
+            Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
+            if (currentAnim.isAnimationFinished(player.getDrawable().getAnimationTime())) {
+                player.setAttacking(false); // Attack finished
+                if (currentAnim == game.getCharacterAttackUpAnimation()) {
+                    player.changeAnimation(AnimationType.CHARACTER_UP);
+                } else if (currentAnim == game.getCharacterAttackLeftAnimation()) {
+                    player.changeAnimation(AnimationType.CHARACTER_LEFT);
+                } else if (currentAnim == game.getCharacterAttackRightAnimation()) {
+                    player.changeAnimation(AnimationType.CHARACTER_RIGHT);
+                } else {
+                    // Default to Down (for Attack Down or fallback)
+                    player.changeAnimation(AnimationType.CHARACTER_DOWN);
+                }            } else {
+                return;
+            }
+        }
+
 		boolean isMoving = false;
 		soundController.stopSteppingSound();
         handleInvisStatic();
@@ -135,6 +157,20 @@ public class GameController {
 		// Attack Logic
         //TODO Attack animation + attack animation in INVIS
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
+            player.setAttacking(true);
+            player.setInvis(false); // attacking breaks invisibility
+            Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
+
+            if (currentAnim == game.getCharacterUpAnimation() || currentAnim == game.getCharacterInvisUpAnimation()) {
+                player.changeAnimation(AnimationType.CHARACTER_ATTACK_UP);
+            } else if (currentAnim == game.getCharacterLeftAnimation() || currentAnim == game.getCharacterInvisLeftAnimation()) {
+                player.changeAnimation(AnimationType.CHARACTER_ATTACK_LEFT);
+            } else if (currentAnim == game.getCharacterRightAnimation() || currentAnim == game.getCharacterInvisRightAnimation()) {
+                player.changeAnimation(AnimationType.CHARACTER_ATTACK_RIGHT);
+            } else {
+                // idle
+                player.changeAnimation(AnimationType.CHARACTER_ATTACK_DOWN);
+            }
 			soundController.playPlayerHitSound(1);
 			System.out.println("Attacking!");
 
@@ -151,6 +187,7 @@ public class GameController {
 					}
 				}
 			}
+            return;
 		}
 
 		// Emotes

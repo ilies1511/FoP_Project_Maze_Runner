@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.objects;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
@@ -20,6 +21,7 @@ public class Player extends GameObject {
     private boolean canDash;
     private boolean canInvis;
     private boolean invis;
+    private boolean isAttacking = false;
    // private boolean isDead;
 
     private boolean isInGodMode;
@@ -119,6 +121,24 @@ public class Player extends GameObject {
         }
     }
 
+    public void changeAnimation(AnimationType animationType) {
+        super.changeAnimation(animationType);
+
+        // if attack
+        if (animationType == AnimationType.CHARACTER_ATTACK_UP ||
+                animationType == AnimationType.CHARACTER_ATTACK_DOWN ||
+                animationType == AnimationType.CHARACTER_ATTACK_LEFT ||
+                animationType == AnimationType.CHARACTER_ATTACK_RIGHT) {
+
+            //double width
+            this.spriteSizes.set(0.8f, 0.8f);
+
+        } else {
+            //normal
+            this.spriteSizes.set(0.4f, 0.8f);
+        }
+    }
+
     public int getCurrentHealth() {
         return currentHealth;
     }
@@ -168,6 +188,14 @@ public class Player extends GameObject {
 
 		System.out.println("Key collected!");
 	}
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.isAttacking = attacking;
+    }
 
     public void die(){
         soundController.playPlayerDieSound(1f);

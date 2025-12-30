@@ -18,7 +18,8 @@ public abstract class GameObject {
 	protected Vector2 spriteSizes;
 	protected Drawable drawable;
 	protected Rectangle bounds;
-	// END -- Attributes
+    protected AnimationType currentAnimationType;
+    // END -- Attributes
 
 
 	// BEGIN -- Constructor

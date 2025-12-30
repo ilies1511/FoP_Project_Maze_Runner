@@ -40,6 +40,10 @@ public class Drawable {
 		tempMap.put(AnimationType.CHARACTER_DOWN, game.getCharacterDownAnimation());
 		tempMap.put(AnimationType.CHARACTER_LEFT, game.getCharacterLeftAnimation());
 		tempMap.put(AnimationType.CHARACTER_RIGHT, game.getCharacterRightAnimation());
+        tempMap.put(AnimationType.CHARACTER_ATTACK_UP, game.getCharacterAttackUpAnimation());
+        tempMap.put(AnimationType.CHARACTER_ATTACK_DOWN, game.getCharacterAttackDownAnimation());
+        tempMap.put(AnimationType.CHARACTER_ATTACK_LEFT, game.getCharacterAttackLeftAnimation());
+        tempMap.put(AnimationType.CHARACTER_ATTACK_RIGHT, game.getCharacterAttackRightAnimation());
         tempMap.put(AnimationType.TOURIST_DOWN, game.getTouristDown());
         tempMap.put(AnimationType.TOURIST_UP, game.getTouristUp());
         tempMap.put(AnimationType.TOURIST_LEFT, game.getTouristLeft());
@@ -67,7 +71,9 @@ public class Drawable {
 		textureMap = Map.copyOf(tempMap);
 	}
 
-
+    public float getAnimationTime() {
+        return animationTime;
+    }
 
 	private static Animation<TextureRegion> createSingleFrameAnim(TextureRegion region) {
 		Array<TextureRegion> frames = new Array<>();
