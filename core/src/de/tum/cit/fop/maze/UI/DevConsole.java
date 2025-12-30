@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.effects.Buff;
+import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Poison;
 import de.tum.cit.fop.maze.objects.Player;
 
@@ -91,9 +92,9 @@ public class DevConsole {
         });
         commandMap.put("setGodMode", val -> {
             if (Integer.parseInt(val) == 1) {
-                player.setInGodMode(true);
+                player.addOrReapplyEffect(new GodMode(player));
             } else if (Integer.parseInt(val) == 0) {
-                player.setInGodMode(false);
+                player.endEffect(GodMode.class);
             } else {
                 consoleLabel.setText(consoleLabel.getText() + "\n> " + "Please enter a value between 1 and 0");
             }

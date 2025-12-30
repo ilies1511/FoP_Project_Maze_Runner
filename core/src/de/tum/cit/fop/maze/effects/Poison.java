@@ -17,9 +17,7 @@ public class Poison extends Effect {
 
     @Override
     public void onStart() {
-        if (!player.isInGodMode()) {
-            this.player.getPlayerGameObject().multiplySpeed(SPEED_MULTIPLIER);
-        }
+        this.player.getPlayerGameObject().multiplySpeed(SPEED_MULTIPLIER);
     }
 
 

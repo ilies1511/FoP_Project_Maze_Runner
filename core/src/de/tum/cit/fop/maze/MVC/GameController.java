@@ -15,6 +15,7 @@ import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
 import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.Flicker;
+import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
@@ -279,7 +280,7 @@ public class GameController {
 				}
 			}
 			else {
-				if (!this.player.hasEffect(Flicker.class) && !player.hasEffect(Invis.class) && !player.isInGodMode()) {
+				if (!this.player.hasEffect(Flicker.class) && !player.hasEffect(Invis.class) && !player.hasEffect(GodMode.class)) {
 					System.out.println("YOU WERE DAMAGED!");
 					player.getDamageOrHeal(1);
 					this.player.addOrReapplyEffect(new Flicker(this.player));

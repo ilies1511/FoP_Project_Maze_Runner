@@ -8,11 +8,12 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player extends GameObject {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
     private final static int STARTING_PLAYER_HEALTH = 3;
-    private int requiredKeys;
+    private final int requiredKeys;
 
     private final ArrayList<Effect> effects;
     private int currentHealth;
@@ -20,11 +21,8 @@ public class Player extends GameObject {
     private int xp;
     private boolean canDash;
     private boolean canInvis;
-    private boolean invis;
     private boolean isAttacking = false;
-   // private boolean isDead;
 
-    private boolean isInGodMode;
 	private boolean hasKeys = false;
     private int currentKeys = 0;
 
@@ -37,7 +35,6 @@ public class Player extends GameObject {
                 0.8f), AnimationType.CHARACTER_DOWN);
         canDash = false;
         canInvis = false;
-        isInGodMode = false;
         this.xp = 0;
         this.currentHealth = STARTING_PLAYER_HEALTH;
         this.maxHealth = STARTING_PLAYER_HEALTH;
@@ -120,7 +117,10 @@ public class Player extends GameObject {
         if (effect.getClass() == Dash.class && this.isDashInCooldown()) { // do not apply dash if it's in cooldown
             return;
         }
-        if (effect.getClass() == Invis.class && this.isInvisInCooldown()) { // do not apply dash if it's in cooldown
+        if (effect.getClass() == Invis.class && this.isInvisInCooldown()) { // do not apply invis if it's in cooldown
+            return;
+        }
+        if (this.hasEffect(GodMode.class) && Arrays.asList(Freeze.class, Poison.class).contains(effect.getClass())) { // do not apply negative effects while in god mode
             return;
         }
 
@@ -256,14 +256,6 @@ public class Player extends GameObject {
 
     public void setCanInvis(boolean canInvis) {
         this.canInvis = canInvis;
-    }
-
-    public boolean isInGodMode() {
-        return isInGodMode;
-    }
-
-    public void setInGodMode(boolean inGodMode) {
-        isInGodMode = inGodMode;
     }
 
     public SoundController getSoundController() {

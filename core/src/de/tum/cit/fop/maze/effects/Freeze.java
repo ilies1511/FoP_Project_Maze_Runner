@@ -13,7 +13,7 @@ public class Freeze extends Effect {
 
     @Override
     public void onStart() {
-        if (!player.isInGodMode()) {
+        if (!player.hasEffect(GodMode.class)) {
             this.player.getPlayerGameObject().multiplySpeed(SPEED_MULTIPLIER);
         }
     }
