@@ -14,6 +14,7 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
 import de.tum.cit.fop.maze.effects.Dash;
+import de.tum.cit.fop.maze.effects.Flicker;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
@@ -22,7 +23,6 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
-import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
@@ -38,8 +38,6 @@ public class GameController {
 	private final SoundController gameScreenSoundController;
 	private GameScreen gameScreen;
 	private WaveManager waveManager = null;
-
-	private float flickerTimer = 0f;
 
 	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
 		this.game = game;
@@ -103,7 +101,7 @@ public class GameController {
 		float speed = player.getPlayerGameObject().getSpeed();
 		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
 			player.getPlayerGameObject().velocity.y = speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
             }
             else{
@@ -114,7 +112,7 @@ public class GameController {
 		}
 		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
 			player.getPlayerGameObject().velocity.y = -speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
             }
             else{
@@ -130,7 +128,7 @@ public class GameController {
 		// X-Axis
 		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
 			player.getPlayerGameObject().velocity.x = -speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
             }
             else{
@@ -141,7 +139,7 @@ public class GameController {
 		}
 		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
 			player.getPlayerGameObject().velocity.x = speed;
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
             }
             else{
@@ -158,7 +156,7 @@ public class GameController {
         //TODO Attack animation + attack animation in INVIS
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             player.setAttacking(true);
-            player.setInvis(false); // attacking breaks invisibility
+            player.endEffect(Invis.class); // attacking breaks invisibility
             Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
 
             if (currentAnim == game.getCharacterUpAnimation() || currentAnim == game.getCharacterInvisUpAnimation()) {
@@ -192,7 +190,7 @@ public class GameController {
 
 		// Emotes
 		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_VICTORY_POSE);
             }
             else{
@@ -203,7 +201,7 @@ public class GameController {
 			isMoving = true;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
-            if(player.isInvis()){
+            if(player.hasEffect(Invis.class)){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LOSER_POSE);
             }
             else{
@@ -249,8 +247,8 @@ public class GameController {
                 if (((Dawn) obj).updateDawn(delta)) {
                     iter.remove();
                 } else {
-                    if (this.flickerTimer <= 0.0f && ((Dawn) obj).checkPlayerCollision(this.player)) {
-                        this.flickerTimer = 3f;
+                    if (!this.player.hasEffect(Flicker.class) && ((Dawn) obj).checkPlayerCollision(this.player)) {
+                        this.player.addOrReapplyEffect(new Flicker(this.player));
                     }
                 }
             }
@@ -281,10 +279,10 @@ public class GameController {
 				}
 			}
 			else {
-				if (flickerTimer <= 0 && !player.isInvis() && !player.isInGodMode()) {
+				if (!this.player.hasEffect(Flicker.class) && !player.hasEffect(Invis.class) && !player.isInGodMode()) {
 					System.out.println("YOU WERE DAMAGED!");
 					player.getDamageOrHeal(1);
-					flickerTimer = 3f;
+					this.player.addOrReapplyEffect(new Flicker(this.player));
 					soundController.playPlayerHitSound(1);
 				}
 			}
@@ -364,13 +362,6 @@ public class GameController {
 		}
 	}
 
-	public boolean isPlayerVisible(float delta) {
-		if (flickerTimer > 0f) {
-			flickerTimer -= delta;
-		}
-		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-	}
-
 	public SoundController getSoundController() {
 		return soundController;
 	}
@@ -410,13 +401,6 @@ public class GameController {
 		return waveManager;
 	}
 
-	//	public boolean flicker(float delta) {
-//		if (flickerTimer > 0f) {
-//			flickerTimer -= delta;
-//		}
-//		//player visible if timer is 0 or if flickering
-//		return ((flickerTimer <= 0) || (flickerTimer % 0.2f > 0.1f));
-//	}
     private void handleInvisStatic(){
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.Q)&&player.isCanInvis()){
@@ -439,9 +423,9 @@ public class GameController {
             if(player.getDrawable().getCurrentAnimation() == game.getCharacterDownSad()){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LOSER_POSE);
             }
-            this.player.addOrReapplyEffect(new Invis(player, 5f, game));
+            this.player.addOrReapplyEffect(new Invis(player, 5f));
         }
-        if(!player.isInvis()){
+        if(!player.hasEffect(Invis.class)){
             if(player.getDrawable().getCurrentAnimation() == game.getCharacterInvisUpAnimation()){
                 player.changeAnimation(AnimationType.CHARACTER_UP);
             }

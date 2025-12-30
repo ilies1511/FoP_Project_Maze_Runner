@@ -81,8 +81,30 @@ public class Player extends GameObject {
         return this.maxHealth;
     }
 
-    private void removeEffect(Class<? extends Effect> effectType) {
-        // removes only one Effect (if exists)
+    @Override
+    public void animate(Batch batch) {
+        if (!this.hasEffect(FlickerHidden.class)) {
+            this.drawable.animate(batch, this.position, this.spriteSizes);
+        }
+    }
+
+
+    public void endEffect(Class<? extends Effect> effectTypeClass) {
+        // removes only one Effect (if exists), triggers onEnd
+        for (int i = 0; i < effects.size(); i++) {
+            Effect e = effects.get(i);
+            if (e.getClass() == effectTypeClass) {
+                e.onEnd();
+                effects.get(i).onEnd();
+                effects.remove(i);
+                break;
+            }
+        }
+        this.gameScreen.getHUD().updatePlayerStatusEffects();
+    }
+
+    private void endEffectNoOnEndTrigger(Class<? extends Effect> effectType) {
+        // removes only one Effect (if exists), does not trigger onEnd
         for (int i = 0; i < effects.size(); i++) {
             Effect e = effects.get(i);
             if (e.getClass() == effectType) {
@@ -102,7 +124,7 @@ public class Player extends GameObject {
             return;
         }
 
-        this.removeEffect(effect.getClass());
+        this.endEffectNoOnEndTrigger(effect.getClass());
         effect.onStart();
         this.effects.add(effect);
         this.gameScreen.getHUD().updatePlayerStatusEffects();
@@ -110,14 +132,14 @@ public class Player extends GameObject {
 
     public void tickEffects(float deltaTime) {
         ArrayList<Class<? extends Effect>> effectsToRemove = new ArrayList<>();
-        for (Effect effect : effects) {
+        for (Effect effect : new ArrayList<>(effects)) { // create a temporary copy of effects list to avoid onTick modifying effects
             boolean isFinished = effect.onTick(deltaTime);
             if (isFinished) {
                 effectsToRemove.add(effect.getClass());
             }
         }
         for (Class<? extends Effect> effectType : effectsToRemove) {
-            this.removeEffect(effectType);
+            this.endEffectNoOnEndTrigger(effectType);
         }
     }
 
@@ -258,14 +280,6 @@ public class Player extends GameObject {
 
     public int getRequiredKeys() {
         return requiredKeys;
-    }
-
-    public boolean isInvis() {
-        return invis;
-    }
-
-    public void setInvis(boolean invis) {
-        this.invis = invis;
     }
 
 	public void setCurrentKeys(int keys) {

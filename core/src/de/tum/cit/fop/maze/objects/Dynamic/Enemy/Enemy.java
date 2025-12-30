@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.effects.Buff;
+import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
@@ -58,7 +59,7 @@ public class Enemy extends GameObject {
 
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         float detectionRange = 5.5f; // if within 1.5 tiles
-        if (this.position.dst(playerPosition) < detectionRange && !player.isInvis()) {
+        if (this.position.dst(playerPosition) < detectionRange && !player.hasEffect(Invis.class)) {
             Vector2 direction = new Vector2(playerPosition).sub(this.position); //chase character
             direction.nor(); // Normalize to length 1
             this.velocity = direction.scl(this.getSpeed());

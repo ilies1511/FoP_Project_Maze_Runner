@@ -131,9 +131,6 @@ public abstract class GameObject {
 			drawable.changeAnimation(animationType);
 		}
 	}
-//	public void animate(Batch batch) {
-//		this.drawable.animate(batch, this.position, this.spriteSizes);
-//	}
 
 	// We can call it draw --> more intuative to use in GameScreen
 	public void animate(Batch batch) {
