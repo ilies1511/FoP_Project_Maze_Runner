@@ -38,28 +38,21 @@ public class GameScreen implements Screen {
 
 	private final MazeRunnerGame game;
 	private final Camera camera;
-	private final BitmapFont font;
 	private final Player player;
 	private final Stage stage;
-	private final GameObject playerGameObject;
 	private final HUD hud;
 	private final PausedOverlay pausedScreen;
 	private final ProgressionOverlay progressionOverlay;
 	private final DevConsole devConsole;
 	private final SoundController soundController;
 	private GameField gameField;
-	//	private ArrayList<Enemy> enemies;
-	//	private ArrayList<Collectable> collectables;
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
 	private boolean isSurvivalMode;
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
-//	private WaveManager waveManager;
 
-
-//  For testing
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
@@ -90,13 +83,9 @@ public class GameScreen implements Screen {
 		}
 
 		this.player = new Player(this); //create an instance of the player
-		this.playerGameObject = this.player.getPlayerGameObject();
 
 		// Create and configure the camera for the game view
-		this.camera = new Camera(this);
-
-		// Get the font from the game's skin
-		font = game.getSkin().getFont("vampire-font");
+		this.camera = new Camera();
 
 		Viewport viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
 		stage = new Stage(viewport); // Create a stage for UI elements
@@ -109,7 +98,6 @@ public class GameScreen implements Screen {
         devConsole = new DevConsole(game, this, stage, player, hud);
 
         pausedScreen = new PausedOverlay(stage, game, this);
-//        shapeRenderer = new ShapeRenderer();
 		this.mapRenderer = new MapRenderer(game);
 		this.gameController = new GameController(game, player, hud, gameField, soundController, this);
 
@@ -133,6 +121,8 @@ public class GameScreen implements Screen {
 	// Screen interface methods with necessary functionality
 	@Override
 	public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
+
 		handleGlobalInput();
 
 		if (!isPaused) {
@@ -144,7 +134,6 @@ public class GameScreen implements Screen {
 				isPaused = true;
 				isInProgression = true;
 			}
-			ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
 			gameController.update(delta);
 
@@ -152,10 +141,9 @@ public class GameScreen implements Screen {
 				camera.zoom_in();
 			if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomOutKey()))
 				camera.zoom_out();
-			this.camera.update(delta);
+			this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
 		}
-
-		else if (isPaused) {
+		else {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
 				pausedScreen.hidePausedMenu();
 			}
@@ -164,6 +152,7 @@ public class GameScreen implements Screen {
 				isInProgression = false;
 			}
 		}
+
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
 //		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
 		mapRenderer.render(gameField, player, delta);

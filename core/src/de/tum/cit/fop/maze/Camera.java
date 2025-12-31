@@ -2,6 +2,7 @@ package de.tum.cit.fop.maze;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class Camera {
     private static final float VIEWPORT_WIDTH = 25f;  // Visible world width
@@ -12,10 +13,8 @@ public class Camera {
     private static final float CAMERA_LERP_SPEED = 3f;
 
     private final OrthographicCamera camera;
-    private final GameScreen gameScreen;
 
-    public Camera(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public Camera() {
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         this.camera.zoom = INITIAL_ZOOM_LEVEL;
@@ -25,15 +24,15 @@ public class Camera {
         return this.camera;
     }
 
-    public void update(float delta) {
+    public void update(float delta, Vector2 playerPos, int gameFieldWidth, int gameFieldHeight) {
         // Make sure camera stays inside maze always
         float minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
 //        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 1.6f;
         float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 3 - 1.6f;
-        float maxCameraX = this.gameScreen.getGameField().getWidth() - VIEWPORT_WIDTH * this.camera.zoom / 2;
-        float maxCameraY = this.gameScreen.getGameField().getHeight() - VIEWPORT_HEIGHT * this.camera.zoom / 2;
-        float playerX = this.gameScreen.getPlayer().getPlayerGameObject().position.x;
-        float playerY = this.gameScreen.getPlayer().getPlayerGameObject().position.y;
+        float maxCameraX = gameFieldWidth - VIEWPORT_WIDTH * this.camera.zoom / 2;
+        float maxCameraY = gameFieldHeight - VIEWPORT_HEIGHT * this.camera.zoom / 2;
+        float playerX = playerPos.x;
+        float playerY = playerPos.y;
         float target_x = 0f;
         if (minCameraX < maxCameraX) {
             target_x = MathUtils.clamp(playerX, minCameraX, maxCameraX);
