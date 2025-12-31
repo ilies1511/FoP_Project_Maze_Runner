@@ -3,31 +3,23 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Drawing.Drawable;
-import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
-import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
 import de.tum.cit.fop.maze.UI.ProgressionOverlay;
-import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
-import de.tum.cit.fop.maze.objects.collectables.Heart;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 
 /**
@@ -49,7 +41,7 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
-	private boolean isSurvivalMode;
+	private final boolean isSurvivalMode;
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
 
@@ -135,13 +127,12 @@ public class GameScreen implements Screen {
 				isInProgression = true;
 			}
 
-			gameController.update(delta);
-
 			if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomInKey()))
 				camera.zoom_in();
 			if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getZoomOutKey()))
 				camera.zoom_out();
-			this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
+
+			gameController.update(delta);
 		}
 		else {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
@@ -153,6 +144,7 @@ public class GameScreen implements Screen {
 			}
 		}
 
+        this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
 //		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
 		mapRenderer.render(gameField, player, delta);

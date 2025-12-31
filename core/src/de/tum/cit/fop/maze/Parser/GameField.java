@@ -100,8 +100,6 @@
 package de.tum.cit.fop.maze.Parser;
 
 import com.badlogic.gdx.math.Vector2;
-//import de.tum.cit.fop.maze.objects.GameObjectTemp;
-import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 

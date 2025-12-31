@@ -37,7 +37,7 @@ public class GameController {
 	private GameField gameField;
 	private final SoundController soundController;
 	private final SoundController gameScreenSoundController;
-	private GameScreen gameScreen;
+	private final GameScreen gameScreen;
 	private WaveManager waveManager = null;
 
 	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
