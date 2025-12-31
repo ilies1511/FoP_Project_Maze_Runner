@@ -1,4 +1,5 @@
 package de.tum.cit.fop.maze.MVC;
+import de.tum.cit.fop.maze.MVC.CharacterWASD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -28,6 +29,7 @@ import de.tum.cit.fop.maze.objects.traps.Trap;
 import java.util.Iterator;
 import java.util.ListIterator;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 
 public class GameController {
 	private final MazeRunnerGame game;
@@ -83,7 +85,7 @@ public class GameController {
                 } else if (currentAnim == game.getCharacterAttackRightAnimation()) {
                     player.changeAnimation(AnimationType.CHARACTER_RIGHT);
                 } else {
-                    // Default to Down (for Attack Down or fallback)
+                    // fallback
                     player.changeAnimation(AnimationType.CHARACTER_DOWN);
                 }            } else {
                 return;
@@ -99,96 +101,10 @@ public class GameController {
 			this.player.addOrReapplyEffect(new Dash(player));
 		}
 
-		// Y-Axis
-		float speed = player.getPlayerGameObject().getSpeed();
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-			player.getPlayerGameObject().velocity.y = speed;
-            if(player.isInvis()){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_UP);
-            }
+        CharacterWASD.basic2d(this.player,isMoving,game);
 
-			isMoving = true;
-		}
-		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-			player.getPlayerGameObject().velocity.y = -speed;
-            if(player.isInvis()){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_DOWN);
-            }
-
-			isMoving = true;
-		}
-		else {
-			player.getPlayerGameObject().velocity.y = 0f;
-		}
-
-		// X-Axis
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-			player.getPlayerGameObject().velocity.x = -speed;
-            if(player.isInvis()){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_LEFT);
-            }
-
-			isMoving = true;
-		}
-		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-			player.getPlayerGameObject().velocity.x = speed;
-            if(player.isInvis()){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_RIGHT);
-            }
-
-			isMoving = true;
-		}
-		else {
-			player.getPlayerGameObject().velocity.x = 0f;
-		}
-
-		// Attack Logic
         //TODO Attack animation + attack animation in INVIS
-		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
-            player.setAttacking(true);
-            player.setInvis(false); // attacking breaks invisibility
-            Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
-
-            if (currentAnim == game.getCharacterUpAnimation() || currentAnim == game.getCharacterInvisUpAnimation()) {
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_UP);
-            } else if (currentAnim == game.getCharacterLeftAnimation() || currentAnim == game.getCharacterInvisLeftAnimation()) {
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_LEFT);
-            } else if (currentAnim == game.getCharacterRightAnimation() || currentAnim == game.getCharacterInvisRightAnimation()) {
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_RIGHT);
-            } else {
-                // idle
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_DOWN);
-            }
-			soundController.playPlayerHitSound(1);
-			System.out.println("Attacking!");
-
-			ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
-			while (iter.hasNext()) {
-				GameObject obj = iter.next();
-				if (obj instanceof Enemy) {
-					Enemy enemy = (Enemy) obj;
-					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
-						iter.remove();
-						Collectable drop = enemy.onDeath(player);
-						iter.add(drop);
-						System.out.println("Enemy Killed!");
-					}
-				}
-			}
-            return;
-		}
+		CharacterWASD.basicAttack(this.player, this.game, this.gameField, this.soundController);
 
 		// Emotes
 		if (Gdx.input.isKeyPressed(Input.Keys.K)) {
@@ -288,13 +204,9 @@ public class GameController {
 					soundController.playPlayerHitSound(1);
 				}
 			}
-//            if (enemy instanceof de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer) {
-//                if(!player.isInvis()){
-////                    iter.remove();
-//                    //
-//                }
-//
-//            }
+            if (enemy instanceof Bouncer) {
+                ((Bouncer) enemy).startFleeing();
+            }
 		}
 	}
 
@@ -338,26 +250,22 @@ public class GameController {
 		float velocityX = player.getPlayerGameObject().velocity.x;
 		float velocityY = player.getPlayerGameObject().velocity.y;
 		float maxSpeed = player.getPlayerGameObject().getSpeed();
-
 		float diagonalMultiplier = 1.0f;
 		float currentSpeedSqr = velocityX * velocityX + velocityY * velocityY;
+        float moveAmountX = velocityX * diagonalMultiplier * delta;
+        float nextX = player.getPlayerGameObject().position.x + moveAmountX;
+        float currentY = player.getPlayerGameObject().position.y;
+        float currentX = player.getPlayerGameObject().position.x;
+        float moveAmountY = velocityY * diagonalMultiplier * delta;
+        float nextY = player.getPlayerGameObject().position.y + moveAmountY;
 
-		if (currentSpeedSqr > (maxSpeed * maxSpeed) + 0.001f) {
+        if (currentSpeedSqr > (maxSpeed * maxSpeed) + 0.001f) {
 			float currentSpeed = (float) Math.sqrt(currentSpeedSqr);
 			diagonalMultiplier = maxSpeed / currentSpeed;
 		}
-
-		float moveAmountX = velocityX * diagonalMultiplier * delta;
-		float nextX = player.getPlayerGameObject().position.x + moveAmountX;
-		float currentY = player.getPlayerGameObject().position.y;
-
 		if (!gameField.isInsideWall(nextX, currentY, player.getPlayerGameObject().getSize())) {
 			player.getPlayerGameObject().position.x = nextX;
 		}
-
-		float currentX = player.getPlayerGameObject().position.x;
-		float moveAmountY = velocityY * diagonalMultiplier * delta;
-		float nextY = player.getPlayerGameObject().position.y + moveAmountY;
 
 		if (!gameField.isInsideWall(currentX, nextY, player.getPlayerGameObject().getSize())) {
 			player.getPlayerGameObject().position.y = nextY;

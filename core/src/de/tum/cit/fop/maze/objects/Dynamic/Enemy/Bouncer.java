@@ -13,14 +13,35 @@ public class Bouncer extends Enemy {
     private static final float MOVE_SPEED = 1.5f;
     private static final float DETECTION_RANGE = 7.0f;
     private Vector2 prevPosition;
+    private float fleeTimer = 0f;
+    private Vector2 fleeVelocity = new Vector2();
+    private Random random = new Random();
 
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
         this.speed = MOVE_SPEED;
         this.prevPosition = new Vector2(startPos);    }
 
+    public void startFleeing() {
+        if (fleeTimer > 0) return;
+        fleeTimer = 2.0f; // 2 sec buffer
+
+        float dirX = random.nextBoolean() ? 1f : -1f;
+        float dirY = random.nextBoolean() ? 1f : -1f;
+
+        // Set the velocity vector (normalized and scaled by speed)
+        fleeVelocity.set(dirX, dirY).nor().scl(this.speed);
+    }
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
+
+        if (fleeTimer > 0) {
+            fleeTimer -= deltaTime;
+            this.velocity.set(fleeVelocity);
+            updateAnimationDirection();
+            return; // skip
+        }
+
         if (this.position.dst(playerPosition) > DETECTION_RANGE) {
             this.velocity.set(0, 0);
             return;
@@ -150,7 +171,6 @@ public class Bouncer extends Enemy {
         return x + "," + y;
     }
 
-    // Helper class for A* nodes
     private static class Node {
         int x, y;
         Node parent;
