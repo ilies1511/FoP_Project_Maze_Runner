@@ -72,6 +72,38 @@ public class MenuScreen implements Screen {
                 soundController.playUI_buttonClickSound(1);
             }
         });
+        //TODO change story mode logic
+        goToStoryMode.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                goToStory();
+            }
+        });
+
+
+        table.row();
+        TextButton goToLevels = new TextButton("Levels", game.getSkin(), "vampire-style");
+        table.add(goToLevels).width(300).left().padLeft(50).padBottom(50);
+        goToStoryMode.getLabel().setTouchable(Touchable.disabled);
+        goToStoryMode.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !goToStoryMode.isDisabled()) {
+                    soundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                soundController.playUI_buttonClickSound(1);
+            }
+        });
+        //TODO change levels logic
+        goToLevels.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                goToStory();
+            }
+        });
 
 
         table.row();
@@ -131,12 +163,7 @@ public class MenuScreen implements Screen {
         });
 
 
-        goToStoryMode.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-              goToStory();
-            }
-        });
+
 
         goToExitButton.addListener(new ChangeListener() {
             @Override

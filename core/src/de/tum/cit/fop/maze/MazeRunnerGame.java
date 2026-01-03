@@ -62,6 +62,7 @@ public class MazeRunnerGame extends Game {
     private TextureRegion trapTexture;
     //UI
     private Texture spriteSheet;
+    private   Texture assetsSheet;
     private TextureRegion woodenSign;
     // Status effects
     private TextureRegion bloodEffect;
@@ -115,7 +116,7 @@ public class MazeRunnerGame extends Game {
         this.Shadow();
 
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
-        Texture assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
+        assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
         woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
         keyOutline = new TextureRegion(assetsSheet, 800,50,168,96);
         key = new TextureRegion(assetsSheet, 800,139,168,90);
@@ -403,10 +404,13 @@ public class MazeRunnerGame extends Game {
 
     private void loadMazeTiles() {
         try {
-            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
-            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
+            TextureRegion wallTexture = new TextureRegion(assetsSheet, 563,382,120,120);
+            TextureRegion emptyTexture = new TextureRegion(assetsSheet, 384,830,120,120);
 
-            this.wallTile = new TextureRegion(wallTexture);
+//            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
+//            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
+
+            this.wallTile = wallTexture;
             this.emptyTile = new TextureRegion(emptyTexture);
         } catch (Exception e) {
             System.err.println("Error loading maze tiles: " + e.getMessage());
