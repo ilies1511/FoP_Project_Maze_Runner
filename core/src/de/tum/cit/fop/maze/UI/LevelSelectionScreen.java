@@ -19,11 +19,11 @@ public class LevelSelectionScreen {
     private Table levelSelectionTable;
     private SoundController soundController;
     private MazeRunnerGame game;
-    private StoryModeScreen storyModeScreen;
+    private LevelModeScreen levelyModeScreen;
 
-    public LevelSelectionScreen(Stage stage, MazeRunnerGame game, StoryModeScreen storyModeScreen, MenuScreen menuScreen) {
+    public LevelSelectionScreen(Stage stage, MazeRunnerGame game, LevelModeScreen levelyModeScreen, MenuScreen menuScreen) {
         this.game = game;
-        this.storyModeScreen = storyModeScreen;
+        this.levelyModeScreen = levelyModeScreen;
         this.soundController = menuScreen.getSoundController();
         
         levelSelectionTable = new Table();
@@ -121,7 +121,7 @@ public class LevelSelectionScreen {
 
     private void goBackToStoryMode() {
         levelSelectionTable.setVisible(false);
-        storyModeScreen.getStoryTable().setVisible(true);
+        levelyModeScreen.getLevelTable().setVisible(true);
     }
 
     public Table getLevelSelectionTable() {

@@ -26,7 +26,7 @@ public class EndlessModeScreen {
         stage.addActor(table);
         table.top();
 
-        Label label = new Label("Survival Mode", game.getSkin(), "vampire-style");
+        Label label = new Label("Endless Mode", game.getSkin(), "vampire-style");
         label.setFontScale(3.0f);
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
 

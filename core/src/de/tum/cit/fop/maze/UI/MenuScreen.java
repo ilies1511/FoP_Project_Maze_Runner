@@ -26,6 +26,7 @@ public class MenuScreen implements Screen {
     private final Stage stage;
     private Table table;
     private final StoryModeScreen storyModeScreen;
+    private final LevelModeScreen levelModeScreen;
     private final SettingsScreen settingsScreen;
     private final SoundController soundController;
     private final EndlessModeScreen endlessModeScreen;
@@ -101,7 +102,7 @@ public class MenuScreen implements Screen {
         goToLevels.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                goToStory();
+                goToLevel();
             }
         });
 
@@ -189,6 +190,7 @@ public class MenuScreen implements Screen {
         storyModeScreen = new StoryModeScreen(stage, game, this);
         endlessModeScreen = new EndlessModeScreen(stage, game, this);
         settingsScreen = new SettingsScreen(stage,game,this);
+        levelModeScreen = new LevelModeScreen(stage, game, this);
         // TODO add listeners to Statistics, EndlessMode
         leaderboardScreen = new LeaderboardScreen(stage, game, this);
     }
@@ -233,9 +235,10 @@ public class MenuScreen implements Screen {
     private void hideAllTables() {
         table.setVisible(false);
         storyModeScreen.getStoryTable().setVisible(false);
-        if(storyModeScreen.getLevelSelectionScreen() != null) {
-            storyModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
+        if(levelModeScreen.getLevelSelectionScreen() != null) {
+            levelModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
         }
+        levelModeScreen.getLevelTable().setVisible(false);
         settingsScreen.getTable().setVisible(false);
         endlessModeScreen.getEndlessTable().setVisible(false);
         leaderboardScreen.getLeaderboardTable().setVisible(false);
@@ -244,6 +247,10 @@ public class MenuScreen implements Screen {
     public void goToStory(){
         hideAllTables();
         storyModeScreen.getStoryTable().setVisible(true);
+    }
+    public void goToLevel(){
+        hideAllTables();
+        levelModeScreen.getLevelTable().setVisible(true);
     }
 
     public void goBackToMenu(){

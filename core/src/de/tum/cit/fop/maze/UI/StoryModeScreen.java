@@ -15,7 +15,7 @@ import de.tum.cit.fop.maze.SoundController;
 public class StoryModeScreen {
     private Table storyTable;
     private SoundController soundController;
-    private LevelSelectionScreen levelSelectionScreen;
+    private Table confirmationTable;
     
     public StoryModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         storyTable = new Table();
@@ -74,9 +74,15 @@ public class StoryModeScreen {
         newGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                goToLevelSelection();
+                if(continueGame.isDisabled()){
+                    game.goToBackgroundStory();
+                }
+              else{
+                    confirmNewGame();
+                }
             }
         });
+
 
         storyTable.row();
 
@@ -101,20 +107,69 @@ public class StoryModeScreen {
                 menuScreen.goBackToMenu();
             }
         });
-        levelSelectionScreen = new LevelSelectionScreen(stage, game, this, menuScreen);
-    }
+        confirmationTable = new Table();
+        confirmationTable.setVisible(false);
+        confirmationTable.setFillParent(true);
+        stage.addActor(confirmationTable);
+        confirmationTable.top();
+        Label confLabel = new Label("Are you sure you want to start a new game?", game.getSkin(), "vampire-style");
+        confLabel.setFontScale(2.7f);
+        confirmationTable.add(confLabel).expandX().center().padTop(50).padBottom(400).row();
 
-    private void goToLevelSelection() {
-        storyTable.setVisible(false);
-        levelSelectionScreen.getLevelSelectionTable().setVisible(true);
+        TextButton yes = new TextButton("Yes", game.getSkin(), "vampire-style");
+        confirmationTable.add(yes).width(300).left().padLeft(50).padBottom(50);
+        yes.getLabel().setTouchable(Touchable.disabled);
+        yes.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !yes.isDisabled()) {
+                    soundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                soundController.playUI_buttonClickSound(1);
+            }
+        });
+        yes.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.goToBackgroundStory();
+            }
+        });
+        TextButton no = new TextButton("No", game.getSkin(), "vampire-style");
+        confirmationTable.add(no).width(300).left().padLeft(50).padBottom(50);
+        no.getLabel().setTouchable(Touchable.disabled);
+        no.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (pointer == -1 && !no.isDisabled()) {
+                    soundController.playUI_hoverOverSound(1);
+                }
+            }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                soundController.playUI_buttonClickSound(1);
+            }
+        });
+        no.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                backToStory();
+            }
+        });
     }
 
     public Table getStoryTable() {
         return storyTable;
     }
-
-    public LevelSelectionScreen getLevelSelectionScreen() {
-        return levelSelectionScreen;
+    public void confirmNewGame(){
+        storyTable.setVisible(false);
+        confirmationTable.setVisible(true);
     }
-
+    public void backToStory(){
+        storyTable.setVisible(true);
+        confirmationTable.setVisible(false);
+    }
 }
+
