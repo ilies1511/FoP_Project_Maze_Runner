@@ -405,7 +405,7 @@ public class MazeRunnerGame extends Game {
     private void loadMazeTiles() {
         try {
             TextureRegion wallTexture = new TextureRegion(assetsSheet, 563,382,120,120);
-            TextureRegion emptyTexture = new TextureRegion(assetsSheet, 384,830,120,120);
+            TextureRegion emptyTexture = new TextureRegion(assetsSheet, 423,832,120,120);
 
 //            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
 //            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
