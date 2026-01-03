@@ -20,9 +20,9 @@ public class MapRenderer {
 		for (int y = 0; y < gameField.getHeight(); y++) {
 			for (int x = 0; x < gameField.getWidth(); x++) {
 				TileType tile = gameField.getTile(x, y);
-				batch.draw(game.getEmptyTile(), x, y, 1, 1);
+				batch.draw(game.getEmptyTile4(), x, y, 1, 1);
 				if (tile == TileType.WALL) {
-					batch.draw(game.getWallTile(), x, y, 1, 1);
+					batch.draw(game.getWallTile3(), x, y, 1, 1);
 				}
 			}
 		}

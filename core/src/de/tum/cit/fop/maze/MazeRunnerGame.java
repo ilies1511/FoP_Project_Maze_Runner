@@ -55,8 +55,38 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
     private Animation<TextureRegion> bouncerDown, bouncerUp, bouncerLeft, bouncerRight;
     // Maze Textures
-    private TextureRegion wallTile;
-    private TextureRegion emptyTile;
+
+    private TextureRegion emptyTile1;
+    private TextureRegion emptyTile2;
+    private TextureRegion emptyTile3;
+    private TextureRegion emptyTile4;
+    private TextureRegion emptyTile5;
+    private TextureRegion emptyTile6;
+    private TextureRegion emptyTile7;
+    private TextureRegion danceFloorTile;
+
+    private TextureRegion wallTile1;
+    private TextureRegion wallTile2;
+    private TextureRegion wallTile3;
+    private TextureRegion wallTile4;
+    private TextureRegion wallTile5;
+    private TextureRegion wallTile6;
+    private TextureRegion wallTile7;
+    private TextureRegion wallTile8;
+
+    private TextureRegion decor1;
+    private TextureRegion decor2;
+    private TextureRegion decor3;
+    private TextureRegion decor4;
+    private TextureRegion decor5;
+    private TextureRegion decor6;
+    private TextureRegion decor7;
+    private TextureRegion decor8;
+    private TextureRegion decor9;
+    private TextureRegion decor10;
+    private TextureRegion decor11;
+
+
     //TODO (Connect Parser to Game Assets): - iziane Texture Regions for our Objects
     private TextureRegion keyTexture;
     private TextureRegion trapTexture;
@@ -129,7 +159,7 @@ public class MazeRunnerGame extends Game {
 
         this.loadTouristAnimation();
         this.loadBouncerAnimation();
-        this.loadMazeTiles();
+
         this.loadKeyShineAnimation();
         this.loadGarlicTrapAnimation();
         this.loadFreezeTrapAnimation();
@@ -141,6 +171,7 @@ public class MazeRunnerGame extends Game {
 
         // TODO: iziane
         this.loadObjectTextures();
+        this.loadMazeTiles();
         goToMenu(); // Navigate to the menu screen
     }
 
@@ -404,14 +435,76 @@ public class MazeRunnerGame extends Game {
 
     private void loadMazeTiles() {
         try {
-            TextureRegion wallTexture = new TextureRegion(assetsSheet, 563,382,120,120);
-            TextureRegion emptyTexture = new TextureRegion(assetsSheet, 423,832,120,120);
+            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 18,382,120,120);
+            TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293,382,120,120);
+            TextureRegion wallTexture3 = new TextureRegion(assetsSheet, 563,382,120,120);
+            TextureRegion wallTexture4 = new TextureRegion(assetsSheet, 824,382,120,120);
+            TextureRegion wallTexture5 = new TextureRegion(assetsSheet, 18,533,120,120);
+            TextureRegion wallTexture6 = new TextureRegion(assetsSheet, 157,533,120,120);
+            TextureRegion wallTexture7 = new TextureRegion(assetsSheet, 293,533,120,120);
+            TextureRegion wallTexture8 = new TextureRegion(assetsSheet, 427,533,120,120);
+
+            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 18,832,120,120);
+            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157,832,120,120);
+            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293,832,120,120);
+            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427,832,120,120);
+            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563,832,120,120);
+            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693,832,120,120);
+            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824,832,120,120);
+            TextureRegion danceFloorTexture = new TextureRegion(assetsSheet, 824,533,120,120);
+
+            TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 293,686,120,120);
+            TextureRegion decorTexture2 = new TextureRegion(assetsSheet, 427,686,120,120);
+            TextureRegion decorTexture3 = new TextureRegion(assetsSheet, 563,686,120,120);
+            TextureRegion decorTexture4 = new TextureRegion(assetsSheet, 693,686,120,120);
+            TextureRegion decorTexture5 = new TextureRegion(assetsSheet, 824,832,120,120);
+            TextureRegion decorTexture6 = new TextureRegion(assetsSheet, 18,832,120,120);
+            TextureRegion decorTexture7 = new TextureRegion(assetsSheet, 18,832,120,120);
+            TextureRegion decorTexture8 = new TextureRegion(assetsSheet, 18,832,120,120);
+            TextureRegion decorTexture9 = new TextureRegion(assetsSheet, 18,832,120,120);
+            TextureRegion decorTexture10 = new TextureRegion(assetsSheet, 18,832,120,120);
+            TextureRegion decorTexture11 = new TextureRegion(assetsSheet, 18,832,120,120);
+
+
+            TextureRegion exitTexture = new TextureRegion(assetsSheet, 22,686,113,119);
 
 //            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
 //            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
 
-            this.wallTile = wallTexture;
-            this.emptyTile = new TextureRegion(emptyTexture);
+            this.wallTile3 = wallTexture3;
+            this.wallTile1 = wallTexture1;
+            this.wallTile2 = wallTexture2;
+            this.wallTile4 = wallTexture4;
+            this.wallTile5 = wallTexture5;
+            this.wallTile6 = wallTexture6;
+            this.wallTile7 = wallTexture7;
+            this.wallTile8 = wallTexture8;
+
+            this.danceFloorTile = danceFloorTexture;
+            this.emptyTile1 = emptyTexture1;
+            this.emptyTile2 = emptyTexture2;
+            this.emptyTile3 = emptyTexture3;
+            this.emptyTile4 = emptyTexture4;
+            this.emptyTile5 = emptyTexture5;
+            this.emptyTile6 = emptyTexture6;
+            this.emptyTile7 = emptyTexture7;
+
+            this.decor1 = decorTexture1;
+            this.decor2 = decorTexture2;
+            this.decor3 = decorTexture3;
+            this.decor4 = decorTexture4;
+            this.decor5 = decorTexture5;
+            this.decor6 = decorTexture6;
+            this.decor7 = decorTexture7;
+            this.decor8 = decorTexture8;
+            this.decor9 = decorTexture9;
+            this.decor10 = decorTexture10;
+            this.decor11 = decorTexture11;
+
+            this.wallTile3 = decorTexture2;
+
+
+            this.exitClosedTexture = exitTexture;
         } catch (Exception e) {
             System.err.println("Error loading maze tiles: " + e.getMessage());
             System.err.println("Make sure maze_wall.png and maze_empty.png exist in the assets folder");
@@ -567,12 +660,68 @@ public class MazeRunnerGame extends Game {
     }
 
     // Maze Tile Getters
-    public TextureRegion getWallTile() {
-        return wallTile;
+    public TextureRegion getWallTile3() {
+        return wallTile3;
     }
 
-    public TextureRegion getEmptyTile() {
-        return emptyTile;
+    public TextureRegion getEmptyTile1() {
+        return emptyTile1;
+    }
+
+    public TextureRegion getEmptyTile2() {
+        return emptyTile2;
+    }
+
+    public TextureRegion getEmptyTile3() {
+        return emptyTile3;
+    }
+
+    public TextureRegion getEmptyTile5() {
+        return emptyTile5;
+    }
+
+    public TextureRegion getEmptyTile6() {
+        return emptyTile6;
+    }
+
+    public TextureRegion getEmptyTile7() {
+        return emptyTile7;
+    }
+
+    public TextureRegion getDanceFloorTile() {
+        return danceFloorTile;
+    }
+
+    public TextureRegion getWallTile1() {
+        return wallTile1;
+    }
+
+    public TextureRegion getWallTile2() {
+        return wallTile2;
+    }
+
+    public TextureRegion getWallTile4() {
+        return wallTile4;
+    }
+
+    public TextureRegion getWallTile5() {
+        return wallTile5;
+    }
+
+    public TextureRegion getWallTile6() {
+        return wallTile6;
+    }
+
+    public TextureRegion getWallTile7() {
+        return wallTile7;
+    }
+
+    public TextureRegion getWallTile8() {
+        return wallTile8;
+    }
+
+    public TextureRegion getEmptyTile4() {
+        return emptyTile4;
     }
 
     public Texture getSpriteSheet() {
