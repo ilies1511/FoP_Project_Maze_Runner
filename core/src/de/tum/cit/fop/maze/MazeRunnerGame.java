@@ -84,7 +84,8 @@ public class MazeRunnerGame extends Game {
     private TextureRegion decor8;
     private TextureRegion decor9;
     private TextureRegion decor10;
-    private TextureRegion decor11;
+
+    private TextureRegion casketTile;
 
 
     //TODO (Connect Parser to Game Assets): - iziane Texture Regions for our Objects
@@ -453,20 +454,20 @@ public class MazeRunnerGame extends Game {
             TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824,832,120,120);
             TextureRegion danceFloorTexture = new TextureRegion(assetsSheet, 824,533,120,120);
 
-            TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 293,686,120,120);
-            TextureRegion decorTexture2 = new TextureRegion(assetsSheet, 427,686,120,120);
-            TextureRegion decorTexture3 = new TextureRegion(assetsSheet, 563,686,120,120);
-            TextureRegion decorTexture4 = new TextureRegion(assetsSheet, 693,686,120,120);
-            TextureRegion decorTexture5 = new TextureRegion(assetsSheet, 824,832,120,120);
-            TextureRegion decorTexture6 = new TextureRegion(assetsSheet, 18,832,120,120);
-            TextureRegion decorTexture7 = new TextureRegion(assetsSheet, 18,832,120,120);
-            TextureRegion decorTexture8 = new TextureRegion(assetsSheet, 18,832,120,120);
-            TextureRegion decorTexture9 = new TextureRegion(assetsSheet, 18,832,120,120);
-            TextureRegion decorTexture10 = new TextureRegion(assetsSheet, 18,832,120,120);
-            TextureRegion decorTexture11 = new TextureRegion(assetsSheet, 18,832,120,120);
-
+            TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 410,670,140,140);
+            TextureRegion decorTexture2 = new TextureRegion(assetsSheet, 585,670,140,140);
+            TextureRegion decorTexture3 = new TextureRegion(assetsSheet, 775,715,140,90);
+            TextureRegion decorTexture4 = new TextureRegion(assetsSheet, 950,670,140,140);
+            TextureRegion decorTexture5 = new TextureRegion(assetsSheet, 18,1000,140,90);
+            TextureRegion decorTexture6 = new TextureRegion(assetsSheet, 280,980,140,110);
+            TextureRegion decorTexture7 = new TextureRegion(assetsSheet, 445,980,127,140);
+            TextureRegion decorTexture8 = new TextureRegion(assetsSheet, 565,950,137,157);
+            TextureRegion decorTexture9 = new TextureRegion(assetsSheet, 695,950,140,140);
+            TextureRegion decorTexture10 = new TextureRegion(assetsSheet, 855,955,110,135);
 
             TextureRegion exitTexture = new TextureRegion(assetsSheet, 22,686,113,119);
+
+            TextureRegion casketTexture = new TextureRegion(assetsSheet, 800,210,240,147);
 
 //            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
 //            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
@@ -499,9 +500,9 @@ public class MazeRunnerGame extends Game {
             this.decor8 = decorTexture8;
             this.decor9 = decorTexture9;
             this.decor10 = decorTexture10;
-            this.decor11 = decorTexture11;
 
-            this.wallTile3 = decorTexture2;
+            this.casketTile = casketTexture;
+
 
 
             this.exitClosedTexture = exitTexture;
@@ -722,6 +723,50 @@ public class MazeRunnerGame extends Game {
 
     public TextureRegion getEmptyTile4() {
         return emptyTile4;
+    }
+
+    public TextureRegion getDecor1() {
+        return decor1;
+    }
+
+    public TextureRegion getDecor2() {
+        return decor2;
+    }
+
+    public TextureRegion getDecor3() {
+        return decor3;
+    }
+
+    public TextureRegion getDecor4() {
+        return decor4;
+    }
+
+    public TextureRegion getDecor5() {
+        return decor5;
+    }
+
+    public TextureRegion getDecor6() {
+        return decor6;
+    }
+
+    public TextureRegion getDecor7() {
+        return decor7;
+    }
+
+    public TextureRegion getDecor8() {
+        return decor8;
+    }
+
+    public TextureRegion getDecor9() {
+        return decor9;
+    }
+
+    public TextureRegion getDecor10() {
+        return decor10;
+    }
+
+    public TextureRegion getCasketTile() {
+        return casketTile;
     }
 
     public Texture getSpriteSheet() {
