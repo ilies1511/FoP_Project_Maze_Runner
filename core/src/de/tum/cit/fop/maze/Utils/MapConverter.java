@@ -29,20 +29,6 @@ import java.util.Map;
 public class MapConverter {
 
 	private static final Map<Character, TileType> LEGEND = new HashMap<>();
-//	static {
-//		LEGEND.put('#', 0);
-//		LEGEND.put('0', 0);
-//		LEGEND.put('S', 1);
-//		LEGEND.put('1', 1);
-//		LEGEND.put('E', 2);
-//		LEGEND.put('2', 2);
-//		LEGEND.put('T', 3);
-//		LEGEND.put('3', 3);
-//		LEGEND.put('M', 4);
-//		LEGEND.put('4', 4);
-//		LEGEND.put('K', 5);
-//		LEGEND.put('5', 5);
-//	}
 	static {
 //		LEGEND.put('.', TileType.EMPTY.ordinal());
 		LEGEND.put('.', TileType.EMPTY);
