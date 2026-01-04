@@ -46,7 +46,6 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
-//	private final boolean isSurvivalMode;
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
 	private int currentStoryLevelIndex = 0;
@@ -83,29 +82,9 @@ public class GameScreen implements Screen {
         soundController = new SoundController();
         soundController.playBackgroundMusic(0.5f);
 		this.game = game;
-//		this.isSurvivalMode = isSurvivalMode;
-
 		Drawable.initializeTextureMap(game);
-
-
 		init_mode();
-
-//		this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
-//		if (this.gameField == null) {
-//			System.err.println("Map failed to load! Check file path.");
-//			this.gameField = new GameField(5, 5);
-//		}
-//		else {
-//			System.out.println("Map loaded successfully!");
-//			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
-//		}
-//
-//		if (!isSurvivalMode) {
-//			addTestObjects();
-//		}
-
 		this.player = new Player(this); //create an instance of the player
-
 		// Create and configure the camera for the game view
 		this.camera = new Camera();
 
@@ -114,19 +93,12 @@ public class GameScreen implements Screen {
 
         this.hud = new HUD(player, stage, game, this);
 
-
-
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
 
         pausedScreen = new PausedOverlay(stage, game, this);
 		this.mapRenderer = new MapRenderer(game);
 		this.gameController = new GameController(game, player, hud, gameField, soundController, this);
-
-//		if (isSurvivalMode) {
-//			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
-//			this.gameController.setWaveManager(waveManager);
-//		}
 
 		if (game.getGameMode() == GameMode.ENDLESS_MODE) {
 			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
@@ -260,11 +232,6 @@ public class GameScreen implements Screen {
     public GameController getGameController() {
         return gameController;
     }
-    // Additional methods and logic can be added as needed for the game screen
-//
-//	public boolean isSurvivalMode() {
-//		return this.isSurvivalMode;
-//	}
 
 	public void setGameField(GameField newGameField) {
 		this.gameField = newGameField;

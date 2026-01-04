@@ -222,15 +222,4 @@ public class GameField {
 		}
 		return false;
 	}
-
-	// Find the Entry tile
-//		for (int y = 0; y < newMap.getHeight(); y++) {
-//			for (int x = 0; x < newMap.getWidth(); x++) {
-//				if (newMap.getTile(x, y) == TileType.ENTRY_POINT) {
-//					player.getPlayerGameObject().position.set(x, y);
-//					break;
-//				}
-//			}
-//		}
-	// END -- Methods
 }
