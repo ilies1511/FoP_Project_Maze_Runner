@@ -3,11 +3,16 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.crashinvaders.vfx.VfxManager;
+import com.crashinvaders.vfx.effects.VignettingEffect;
+import com.crashinvaders.vfx.effects.BloomEffect;
+import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import de.tum.cit.fop.maze.Drawing.Drawable;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MVC.GameController;
@@ -21,6 +26,7 @@ import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -45,13 +51,25 @@ public class GameScreen implements Screen {
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
 
-
+    private VfxManager vfxManager;
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
      */
 
 	public GameScreen(MazeRunnerGame game, boolean isSurvivalMode) {
+        vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
+        VignettingEffect vignette = new VignettingEffect(false);
+        vignette.setIntensity(1.2f);
+        BloomEffect bloom = new BloomEffect();
+        bloom.setBloomIntensity(2.2f);
+        bloom.setBlurPasses(6);
+        bloom.setThreshold(0.7f);
+        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
+        filmGrainEffect.setNoiseAmount(0.5f);
+        vfxManager.addEffect(filmGrainEffect);
+        vfxManager.addEffect(bloom);
+        vfxManager.addEffect(vignette);
         soundController = new SoundController();
         soundController.playBackgroundMusic(0.5f);
 		this.game = game;
@@ -115,6 +133,9 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
+        vfxManager.cleanUpBuffers();
+        vfxManager.beginInputCapture();
+
 		handleGlobalInput();
 
 		if (!isPaused) {
@@ -150,6 +171,9 @@ public class GameScreen implements Screen {
 		mapRenderer.render(gameField, player, delta);
 		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 		stage.draw();
+        vfxManager.endInputCapture();
+        vfxManager.applyEffects();
+        vfxManager.renderToScreen();
 	}
 
 	public GameField getGameField() {

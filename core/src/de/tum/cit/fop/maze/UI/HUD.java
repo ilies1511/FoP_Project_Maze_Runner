@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -70,6 +73,7 @@ public class HUD {
         //uiContainer.debug();
         uiContainer.top();
         TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
+        uiContainer.setColor(Color.GRAY);
         uiContainer.setBackground(signDrawable);
 
         heartTable = new Table();
@@ -130,28 +134,66 @@ public class HUD {
         // call every time after updating player health
         heartTable.clearChildren();
         for (int i = 0; i < redHearts; i++) {
-            Image heart = new Image(game.getSkin().getDrawable("heart"));
-            heartTable.add(heart).width(50).height(50).padRight(10).padTop(10);
+            Image heart = new Image(game.getHeart());
+            heartTable.add(heart).width(70).height(60).padRight(15).padTop(10);
         }
         for (int i = 0; i < emptyHearts; i++) {
             Image emptyHeart = new Image(game.getSkin().getDrawable("heart-bg"));
-            heartTable.add(emptyHeart).width(50).height(50).padRight(10).padTop(10);
+            heartTable.add(emptyHeart).width(55).height(55).padRight(15).padTop(10);
         }
     }
 
     public void updatePlayerStatusEffects() {
 
-        if(player.hasEffect(Buff.class)){
-            drawRing(new Image(game.getBloodEffect()), player.getEffectDuration(Buff.class), "Buff");
+        if (player.hasEffect(Buff.class)) {
+            if (bloodEffect == null) {
+                drawRing(new Image(game.getBloodEffect()), player.getEffectDuration(Buff.class), "Buff");
+            }
+        } else {
+            if (bloodEffect != null) {
+                removeStatusEffectUI(bloodEffect);
+                bloodEffect = null;
+            }
         }
         if (player.hasEffect(Poison.class)) {
-            drawRing(new Image(game.getPoisonEffect()), player.getEffectDuration(Poison.class), "Poison");
+            if (poisonEffect == null) {
+                drawRing(new Image(game.getPoisonEffect()), player.getEffectDuration(Poison.class), "Poison");
+            }
+        } else {
+            if (poisonEffect != null) {
+                removeStatusEffectUI(poisonEffect);
+                poisonEffect = null;
+            }
         }
         if (player.hasEffect(Freeze.class)) {
-            drawRing(new Image(game.getFreezeEffect()), player.getEffectDuration(Freeze.class), "Freeze");
+            if (freezeEffect == null) {
+                drawRing(new Image(game.getFreezeEffect()), player.getEffectDuration(Freeze.class), "Freeze");
+            }
+        } else {
+            if (freezeEffect != null) {
+                removeStatusEffectUI(freezeEffect);
+                freezeEffect = null;
+            }
         }
         if (player.hasEffect(Sunscreen.class)) {
-            drawRing(new Image(game.getSunscreenEffect()), player.getEffectDuration(Sunscreen.class), "Sunscreen");
+            if (sunscreenEffect == null) {
+                drawRing(new Image(game.getSunscreenEffect()), player.getEffectDuration(Sunscreen.class), "Sunscreen");
+            }
+        } else {
+            if (sunscreenEffect != null) {
+                removeStatusEffectUI(sunscreenEffect);
+                sunscreenEffect = null;
+            }
+        }
+    }
+    private void removeStatusEffectUI(Stack stack){
+        if (stack != null) {
+            Cell cell = statusEffectsTable.getCell(stack);
+            if (cell != null) {
+                cell.setActor(null);
+                cell.size(0).pad(0);
+            }
+            statusEffectsTable.invalidateHierarchy();
         }
     }
 
@@ -186,13 +228,14 @@ public class HUD {
                 batch.end(); // Pause sprite batch
 
                 Gdx.gl.glEnable(GL20.GL_BLEND);
-
                 Gdx.gl.glLineWidth(8);
 
-                shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-                shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+                shapeRenderer.setProjectionMatrix(getStage().getCamera().combined);
+                shapeRenderer.setTransformMatrix(new Matrix4());
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(Color.GREEN);
+
+                Vector2 stagePos = localToStageCoordinates(new Vector2(0, 0));
 
                 float r = Math.min(getWidth(), getHeight()) / 1.8f;
                 float cx = getX() + getWidth() / 2f;
@@ -202,15 +245,15 @@ public class HUD {
 
                 if (percentage > 0) {
                     int segments = 30;
-                    float startAngle = 90 * com.badlogic.gdx.math.MathUtils.degreesToRadians;
-                    float totalSweep = -360 * percentage * com.badlogic.gdx.math.MathUtils.degreesToRadians;
+                    float startAngle = 90 * MathUtils.degreesToRadians;
+                    float totalSweep = -360 * percentage * MathUtils.degreesToRadians;
                     float step = totalSweep / segments;
-                    float lastX = cx + com.badlogic.gdx.math.MathUtils.cos(startAngle) * r;
-                    float lastY = cy + com.badlogic.gdx.math.MathUtils.sin(startAngle) * r;
+                    float lastX = cx + MathUtils.cos(startAngle) * r;
+                    float lastY = cy + MathUtils.sin(startAngle) * r;
                     for (int i = 1; i <= segments; i++) {
                         float currentAngle = startAngle + (step * i);
-                        float nextX = cx + com.badlogic.gdx.math.MathUtils.cos(currentAngle) * r;
-                        float nextY = cy + com.badlogic.gdx.math.MathUtils.sin(currentAngle) * r;
+                        float nextX = cx + MathUtils.cos(currentAngle) * r;
+                        float nextY = cy + MathUtils.sin(currentAngle) * r;
                         shapeRenderer.line(lastX, lastY, nextX, nextY);
 
                         lastX = nextX;
@@ -218,6 +261,7 @@ public class HUD {
                     }
                 }
                 shapeRenderer.end();
+                Gdx.gl.glLineWidth(1);
                 batch.begin();
             }
         };

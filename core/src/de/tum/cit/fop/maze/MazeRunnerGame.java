@@ -95,6 +95,7 @@ public class MazeRunnerGame extends Game {
     private Texture spriteSheet;
     private   Texture assetsSheet;
     private TextureRegion woodenSign;
+    private TextureRegion heart;
     // Status effects
     private TextureRegion bloodEffect;
     private TextureRegion poisonEffect;
@@ -149,6 +150,8 @@ public class MazeRunnerGame extends Game {
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
         assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
         woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
+        Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
+        heart = new TextureRegion(heartTexture);
         keyOutline = new TextureRegion(assetsSheet, 800,50,168,96);
         key = new TextureRegion(assetsSheet, 800,139,168,90);
 
@@ -887,5 +890,9 @@ public class MazeRunnerGame extends Game {
 
     public Animation<TextureRegion> getCharacterInvisRightWin() {
         return characterInvisRightWin;
+    }
+
+    public TextureRegion getHeart() {
+        return heart;
     }
 }
