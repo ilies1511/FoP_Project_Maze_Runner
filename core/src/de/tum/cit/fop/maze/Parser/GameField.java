@@ -206,6 +206,27 @@ public class GameField {
 		return x >= 0 && x < width && y >= 0 && y < height;
 	}
 
+	private boolean isSolid(TileType tile) {
+		if (tile == TileType.EXIT)
+			return true;
+		if (tile == TileType.WALL)
+			return true;
+
+		switch (tile) {
+			case WALL_1:
+			case WALL_2:
+			case WALL_3:
+			case WALL_4:
+			case WALL_5:
+			case WALL_6:
+			case WALL_7:
+			case WALL_8:
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	public boolean isInsideWall(float x, float y, Vector2 size) {
 		int minX = (int) x;
 		int maxX = (int) (x + size.x - 0.001f);
@@ -215,9 +236,11 @@ public class GameField {
 		for (int row = minY; row <= maxY; row++) {
 			for (int col = minX; col <= maxX; col++) {
 				TileType tile = this.getTile(col, row);
-				if (tile == TileType.WALL || tile == TileType.EXIT) {
+//				if (tile == TileType.WALL || tile == TileType.EXIT) {
+//					return true;
+//				}
+				if (isSolid(tile))
 					return true;
-				}
 			}
 		}
 		return false;

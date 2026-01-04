@@ -120,6 +120,7 @@ public class MazeRunnerGame extends Game {
 	private GameMode gameMode;
 
 	public static final String[] STORY_LEVELS = {
+			"story_mode/test.properties",
 			"story_mode/berghain_main.properties",
 			"story_mode/berghain_panorama.properties",
 			"story_mode/berghain_darkroom.properties"

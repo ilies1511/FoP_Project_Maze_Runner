@@ -1,5 +1,7 @@
 package de.tum.cit.fop.maze.Utils;
 
+import de.tum.cit.fop.maze.Parser.TileType;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,20 +28,65 @@ import java.util.Map;
 
 public class MapConverter {
 
-	private static final Map<Character, Integer> LEGEND = new HashMap<>();
+	private static final Map<Character, TileType> LEGEND = new HashMap<>();
+//	static {
+//		LEGEND.put('#', 0);
+//		LEGEND.put('0', 0);
+//		LEGEND.put('S', 1);
+//		LEGEND.put('1', 1);
+//		LEGEND.put('E', 2);
+//		LEGEND.put('2', 2);
+//		LEGEND.put('T', 3);
+//		LEGEND.put('3', 3);
+//		LEGEND.put('M', 4);
+//		LEGEND.put('4', 4);
+//		LEGEND.put('K', 5);
+//		LEGEND.put('5', 5);
+//	}
 	static {
-		LEGEND.put('#', 0);
-		LEGEND.put('0', 0);
-		LEGEND.put('S', 1);
-		LEGEND.put('1', 1);
-		LEGEND.put('E', 2);
-		LEGEND.put('2', 2);
-		LEGEND.put('T', 3);
-		LEGEND.put('3', 3);
-		LEGEND.put('M', 4);
-		LEGEND.put('4', 4);
-		LEGEND.put('K', 5);
-		LEGEND.put('5', 5);
+//		LEGEND.put('.', TileType.EMPTY.ordinal());
+		LEGEND.put('.', TileType.EMPTY);
+		LEGEND.put('#', TileType.WALL);
+		LEGEND.put('S', TileType.ENTRY_POINT);
+		LEGEND.put('E', TileType.EXIT);
+		LEGEND.put('T', TileType.TRAP);
+		LEGEND.put('M', TileType.ENEMY);
+		LEGEND.put('K', TileType.KEY);
+
+		// BEGIN -- Story Mode
+		// Walls Variations
+		LEGEND.put('=', TileType.WALL_1);
+		LEGEND.put('%', TileType.WALL_2);
+		LEGEND.put('|', TileType.WALL_3);
+		LEGEND.put('-', TileType.WALL_4);
+		LEGEND.put('+', TileType.WALL_5);
+		LEGEND.put('[', TileType.WALL_6);
+		LEGEND.put(']', TileType.WALL_7);
+		LEGEND.put('^', TileType.WALL_8);
+
+		// Floor Variations
+		LEGEND.put('*', TileType.DANCE_FLOOR);
+		LEGEND.put(',', TileType.EMPTY_1);
+		LEGEND.put(':', TileType.EMPTY_2);
+		LEGEND.put(';', TileType.EMPTY_3);
+		LEGEND.put('"', TileType.EMPTY_4);
+		LEGEND.put('`', TileType.EMPTY_5);
+		LEGEND.put('~', TileType.EMPTY_6);
+		LEGEND.put('_', TileType.EMPTY_7);
+
+		//Decor
+		LEGEND.put('a', TileType.DECOR_1);
+		LEGEND.put('b', TileType.DECOR_2);
+		LEGEND.put('c', TileType.DECOR_3);
+		LEGEND.put('d', TileType.DECOR_4);
+		LEGEND.put('e', TileType.DECOR_5);
+		LEGEND.put('f', TileType.DECOR_6);
+		LEGEND.put('g', TileType.DECOR_7);
+		LEGEND.put('h', TileType.DECOR_8);
+		LEGEND.put('i', TileType.DECOR_9);
+		LEGEND.put('j', TileType.DECOR_10);
+		LEGEND.put('k', TileType.DECOR_11);
+		// EMD -- Story Mode
 	}
 
 	private static void write_to_properties_File(String outputPath, StringBuilder propertiesContent) {
@@ -65,9 +112,11 @@ public class MapConverter {
 				char c = row.charAt(xIndex);
 
 				if (LEGEND.containsKey(c)) {
-					int typeId = LEGEND.get(c);
+					TileType type = LEGEND.get(c);
+					int typeId = type.ordinal();
 					int gameY = (height - 1) - yIndex;
-					propertiesContent.append(xIndex).append(",").append(gameY).append("=").append(typeId).append("\n");
+					propertiesContent.append(xIndex).append(",").append(gameY)
+							.append("=").append(typeId).append("\n");
 				}
 			}
 		}
@@ -109,6 +158,7 @@ public class MapConverter {
 				{"maps/tmp/berghain_main.txt", "maps/story_mode/berghain_main.properties"},
 				{"maps/tmp/berghain_darkroom.txt", "maps/story_mode/berghain_darkroom.properties"},
 				{"maps/tmp/berghain_panorama.txt", "maps/story_mode/berghain_panorama.properties"},
+				{"maps/tmp/test.txt", "maps/story_mode/test.properties"},
 				// TODO: 03.01 Add more
 		};
 
