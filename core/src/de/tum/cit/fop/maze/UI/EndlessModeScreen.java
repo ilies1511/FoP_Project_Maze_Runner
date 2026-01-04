@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
@@ -73,16 +74,11 @@ public class EndlessModeScreen {
             }
         });
         newGame.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                soundController.dispose();
-//                // TODO add logic
-//            }
 	        @Override
 	        public void changed(ChangeEvent event, Actor actor) {
 		        soundController.dispose();
-		        game.disposeAllScreens();
-		        game.setScreen(new GameScreen(game, true));
+				game.setGameMode(GameMode.ENDLESS_MODE);
+		        game.setScreen(new GameScreen(game));
 	        }
         });
 

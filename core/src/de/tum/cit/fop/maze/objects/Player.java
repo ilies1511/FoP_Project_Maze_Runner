@@ -277,4 +277,9 @@ public class Player extends GameObject {
 	public void setCurrentKeys(int keys) {
 		this.currentKeys = keys;
 	}
+
+	public void setPosition(Vector2 pos) {
+		if (pos != null)
+			this.position = pos;
+	}
 }

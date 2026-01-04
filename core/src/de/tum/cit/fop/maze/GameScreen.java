@@ -9,11 +9,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.Drawing.Drawable;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
+import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
+import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
@@ -21,6 +24,8 @@ import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+
+import java.util.Map;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -41,38 +46,63 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
-	private final boolean isSurvivalMode;
+//	private final boolean isSurvivalMode;
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
+	private int currentStoryLevelIndex = 0;
 
 
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
      */
+	private void init_mode() {
+		GameMode gameMode =  game.getGameMode();
 
-	public GameScreen(MazeRunnerGame game, boolean isSurvivalMode) {
+		if (gameMode == GameMode.LEVELS_MODE) {
+			this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
+			addTestObjects();
+		}
+		else if (gameMode == GameMode.ENDLESS_MODE) {
+			this.gameField = MazeGenerator.generateMaze(15, 15, game);
+		}
+		else if (gameMode == GameMode.STORY_MODE) {
+			this.gameField = MazeParser.loadMap(MazeRunnerGame.STORY_LEVELS[0], this.game);
+		}
+		if (this.gameField == null) {
+			System.err.println("CRITICAL: Map failed to load for mode " + gameMode);
+			this.gameField = new GameField(15, 15);
+		}
+		else {
+			System.out.println("Map loaded successfully for " + gameMode);
+			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+		}
+	}
+
+	public GameScreen(MazeRunnerGame game) {
         soundController = new SoundController();
         soundController.playBackgroundMusic(0.5f);
 		this.game = game;
-		this.isSurvivalMode = isSurvivalMode;
+//		this.isSurvivalMode = isSurvivalMode;
 
 		Drawable.initializeTextureMap(game);
 
 
-		this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
-		if (this.gameField == null) {
-			System.err.println("Map failed to load! Check file path.");
-			this.gameField = new GameField(5, 5);
-		}
-		else {
-			System.out.println("Map loaded successfully!");
-			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
-		}
+		init_mode();
 
-		if (!isSurvivalMode) {
-			addTestObjects();
-		}
+//		this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
+//		if (this.gameField == null) {
+//			System.err.println("Map failed to load! Check file path.");
+//			this.gameField = new GameField(5, 5);
+//		}
+//		else {
+//			System.out.println("Map loaded successfully!");
+//			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+//		}
+//
+//		if (!isSurvivalMode) {
+//			addTestObjects();
+//		}
 
 		this.player = new Player(this); //create an instance of the player
 
@@ -93,7 +123,12 @@ public class GameScreen implements Screen {
 		this.mapRenderer = new MapRenderer(game);
 		this.gameController = new GameController(game, player, hud, gameField, soundController, this);
 
-		if (isSurvivalMode) {
+//		if (isSurvivalMode) {
+//			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
+//			this.gameController.setWaveManager(waveManager);
+//		}
+
+		if (game.getGameMode() == GameMode.ENDLESS_MODE) {
 			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
 			this.gameController.setWaveManager(waveManager);
 		}
@@ -226,13 +261,34 @@ public class GameScreen implements Screen {
         return gameController;
     }
     // Additional methods and logic can be added as needed for the game screen
-
-	public boolean isSurvivalMode() {
-		return this.isSurvivalMode;
-	}
+//
+//	public boolean isSurvivalMode() {
+//		return this.isSurvivalMode;
+//	}
 
 	public void setGameField(GameField newGameField) {
 		this.gameField = newGameField;
 	}
 
+	public void loadNextStoryLevel() {
+		currentStoryLevelIndex++;
+		if (currentStoryLevelIndex >= MazeRunnerGame.STORY_LEVELS.length) {
+			soundController.playWinSound(1f);
+			game.goToGameWonScreen();
+			return;
+		}
+		String nextMapPath = MazeRunnerGame.STORY_LEVELS[currentStoryLevelIndex];
+		GameField newMap = MazeParser.loadMap(nextMapPath, game);
+		gameController.setGameField(newMap);
+		this.gameField = newMap;
+		if (gameField != null) {
+			Vector2 entry = gameField.getTileTypeCoords(newMap, TileType.ENTRY_POINT);
+			player.setPosition(entry);
+		}
+		else
+			player.setPosition(new Vector2(1, 1));
+		player.setCurrentKeys(0);
+		player.setHasKeys(false);
+		hud.renderHUD();
+	}
 }
