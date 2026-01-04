@@ -24,9 +24,6 @@ import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
-
-import java.util.Map;
-
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
  * It handles the game logic and rendering of the game elements.
@@ -245,17 +242,31 @@ public class GameScreen implements Screen {
 			return;
 		}
 		String nextMapPath = MazeRunnerGame.STORY_LEVELS[currentStoryLevelIndex];
+		System.out.println("Loading Level: " + nextMapPath);
 		GameField newMap = MazeParser.loadMap(nextMapPath, game);
-		gameController.setGameField(newMap);
+
 		this.gameField = newMap;
-		if (gameField != null) {
-			Vector2 entry = gameField.getTileTypeCoords(newMap, TileType.ENTRY_POINT);
-			player.setPosition(entry);
+		gameController.setGameField(newMap);
+
+		if (newMap != null) {
+			Vector2 start = gameField.getPlayerStartPos();
+			if (start != null) {
+				System.out.println("Player Start Position at: " + gameField.getPlayerStartPos());
+				player.setPosition(gameField.getPlayerStartPos());
+			}
+			else {
+				Vector2 fallBack = gameField.getTileTypeCoords(newMap, TileType.EMPTY);
+				if (fallBack != null)
+					player.setPosition(fallBack);
+				else
+					player.setPosition(new Vector2(1, 1));
+			}
 		}
-		else
-			player.setPosition(new Vector2(1, 1));
-		player.setCurrentKeys(0);
-		player.setHasKeys(false);
-		hud.renderHUD();
+		else {
+			System.err.println("CRITICAL: Map failed to load");
+		}
+//		player.setCurrentKeys(0);
+//		player.setHasKeys(false);
+//		hud.renderHUD();
 	}
 }
