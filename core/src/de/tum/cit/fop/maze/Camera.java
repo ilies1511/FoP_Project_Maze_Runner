@@ -28,7 +28,7 @@ public class Camera {
         // Make sure camera stays inside maze always
         float minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
 //        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 1.6f;
-        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 3 - 1.6f;
+        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 2.3f;
         float maxCameraX = gameFieldWidth - VIEWPORT_WIDTH * this.camera.zoom / 2;
         float maxCameraY = gameFieldHeight - VIEWPORT_HEIGHT * this.camera.zoom / 2;
         float playerX = playerPos.x;

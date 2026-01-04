@@ -508,6 +508,7 @@ public class MazeRunnerGame extends Game {
 
 
 
+
             this.exitClosedTexture = exitTexture;
         } catch (Exception e) {
             System.err.println("Error loading maze tiles: " + e.getMessage());
