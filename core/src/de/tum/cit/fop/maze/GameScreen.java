@@ -66,7 +66,7 @@ public class GameScreen implements Screen {
         bloom.setBlurPasses(6);
         bloom.setThreshold(0.7f);
         FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
-        filmGrainEffect.setNoiseAmount(0.5f);
+        filmGrainEffect.setNoiseAmount(0.3f);
         vfxManager.addEffect(filmGrainEffect);
         vfxManager.addEffect(bloom);
         vfxManager.addEffect(vignette);
