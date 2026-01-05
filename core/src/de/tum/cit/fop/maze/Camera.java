@@ -16,10 +16,7 @@ public class Camera {
 
     private final OrthographicCamera camera;
 
-    private float minCameraX;
-    private float minCameraY;
-    private float maxCameraX;
-    private float maxCameraY;
+
 
     public Camera() {
         this.camera = new OrthographicCamera();
@@ -33,21 +30,20 @@ public class Camera {
 
     public void update(float delta, Vector2 playerPos, int gameFieldWidth, int gameFieldHeight) {
         // Make sure camera stays inside maze always
-
-        if(VIEWPORT_WIDTH > gameFieldWidth && !zooming){
-            camera.zoom =gameFieldWidth/VIEWPORT_WIDTH;
+        float minCameraY = 0;
+        if (VIEWPORT_WIDTH > gameFieldWidth && !zooming) {
+            camera.zoom = gameFieldWidth / VIEWPORT_WIDTH;
             camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 4.0f);
-            minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - (2.3f-gameFieldWidth/VIEWPORT_WIDTH);
-        }
-        else if(VIEWPORT_WIDTH <= gameFieldWidth && !zooming){
+            minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - (2.3f - gameFieldWidth / VIEWPORT_WIDTH);
+        } else if (VIEWPORT_WIDTH <= gameFieldWidth && !zooming) {
             camera.zoom = INITIAL_ZOOM_LEVEL;
             camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 4.0f);
             minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 2.3f;
         }
 //        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 1.6f;
-         minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
-         maxCameraX = gameFieldWidth - VIEWPORT_WIDTH * this.camera.zoom / 2;
-         maxCameraY = gameFieldHeight - VIEWPORT_HEIGHT * this.camera.zoom / 2;
+        float minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
+        float maxCameraX = gameFieldWidth - VIEWPORT_WIDTH * this.camera.zoom / 2;
+        float maxCameraY = gameFieldHeight - VIEWPORT_HEIGHT * this.camera.zoom / 2;
         float playerX = playerPos.x;
         float playerY = playerPos.y;
         float target_x = 0f;
@@ -83,19 +79,4 @@ public class Camera {
         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 4.0f);
     }
 
-    public float getMinCameraX() {
-        return minCameraX;
-    }
-
-    public float getMinCameraY() {
-        return minCameraY;
-    }
-
-    public float getMaxCameraX() {
-        return maxCameraX;
-    }
-
-    public float getMaxCameraY() {
-        return maxCameraY;
-    }
 }
