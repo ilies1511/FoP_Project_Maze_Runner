@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.effects.Buff;
@@ -32,6 +34,7 @@ public class DevConsole {
     private String getCommands;
     private Player player;
     private HUD hud;
+    private  TextField inputField;
 
 
     public DevConsole(MazeRunnerGame game, GameScreen gameScreen, Stage stage, Player player, HUD hud) {
@@ -52,6 +55,7 @@ public class DevConsole {
         this.gameScreen = gameScreen;
         this.player = player;
         this.hud = hud;
+        Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
 
 //        Pixmap pixmap = new Pixmap(1000, 950, Pixmap.Format.RGBA8888);
 //        pixmap.setColor(Color.BLACK);
@@ -63,7 +67,7 @@ public class DevConsole {
         table.setFillParent(true);
         table.setVisible(false);
         table.top().left();
-        //  table.debug();
+
 
         Label consoleLabel = new Label("Developer console \ntype \"getHelp\" for the list of commands", game.getSkin(), "title");
         consoleLabel.setFontScale(0.4f);
@@ -132,8 +136,10 @@ public class DevConsole {
         });
         commandMap.put("getKeys", val -> {
             player.setHasKeys(true);
+            player.setCurrentKeys(player.getRequiredKeys());
+            hud.updatePlayerKeys();
         });
-        TextField inputField = new TextField("", game.getSkin(), "default");
+        inputField = new TextField("", game.getSkin(), "default");
         TextField.TextFieldStyle style = inputField.getStyle();
 
         if (style.background != null) {
@@ -193,7 +199,7 @@ public class DevConsole {
 
         table.add(scrollPane).width(1000).height(950);
         table.row();
-        table.add(inputField).fillX();
+        table.add(inputField).width(1000);
 
         this.stage = stage;
         stage.addActor(table);
@@ -203,6 +209,7 @@ public class DevConsole {
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
+        inputField.setText("");
     }
 
     public void showConsole() {

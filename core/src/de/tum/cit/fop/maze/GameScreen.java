@@ -3,6 +3,7 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
 	private final Camera camera;
 	private final Player player;
 	private final Stage stage;
+    private final Stage devStage;
 	private final HUD hud;
 	private final PausedOverlay pausedScreen;
 	private final ProgressionOverlay progressionOverlay;
@@ -105,11 +107,12 @@ public class GameScreen implements Screen {
 
 		Viewport viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
 		stage = new Stage(viewport); // Create a stage for UI elements
+        devStage = new Stage(viewport);
 
         this.hud = new HUD(player, stage, game, this);
 
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
-        devConsole = new DevConsole(game, this, stage, player, hud);
+        devConsole = new DevConsole(game, this, devStage, player, hud);
 
         pausedScreen = new PausedOverlay(stage, game, this);
 		this.mapRenderer = new MapRenderer(game);
@@ -135,6 +138,10 @@ public class GameScreen implements Screen {
 	// Screen interface methods with necessary functionality
 	@Override
 	public void render(float delta) {
+        this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        devStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
         vfxManager.cleanUpBuffers();
@@ -169,15 +176,23 @@ public class GameScreen implements Screen {
 			}
 		}
 
-        this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
+
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
+        mapRenderer.render(gameField, player, delta);
+        game.getSpriteBatch().setShader(null);
+
 //		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
-		mapRenderer.render(gameField, player, delta);
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		stage.draw();
+
+
+
+        stage.draw();
+
         vfxManager.endInputCapture();
         vfxManager.applyEffects();
         vfxManager.renderToScreen();
+        devStage.getViewport().apply();
+        devStage.draw();
+
 	}
 
 	public GameField getGameField() {
@@ -196,7 +211,9 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+        vfxManager.resize(width, height);
 		stage.getViewport().update(width, height, true);
+
 	}
 
 	@Override

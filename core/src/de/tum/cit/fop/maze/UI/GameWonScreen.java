@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
@@ -53,7 +54,7 @@ public class GameWonScreen implements Screen {
 		this.stage = new Stage(viewport, game.getSpriteBatch());
 
         switch (game.getGameMode()){
-            case 1:
+            case STORY_MODE:
                 Gdx.input.setCursorCatched(true);
                 Gdx.input.setInputProcessor(null);
                 storyTable = new Table();
@@ -68,13 +69,12 @@ public class GameWonScreen implements Screen {
 
                 TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
 
-                table.setBackground(backgroundDrawable);
+                storyTable.setBackground(backgroundDrawable);
                 storyTable.add(storyLabel).width(1500f);
 
-                stage.addActor(table);
+                stage.addActor(storyTable);
                 break;
-            case 2:
-
+            case LEVELS_MODE:
                 table = new Table();
             table.setFillParent(true);
             table.center();
@@ -121,9 +121,10 @@ public class GameWonScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if(game.getGameMode().equals()){
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(game.getGameMode() == GameMode.STORY_MODE){
+
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isTextSkipped){
                 storyLabel.setText(fullText);
