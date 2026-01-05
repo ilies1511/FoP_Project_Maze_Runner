@@ -75,6 +75,7 @@ public class StoryModeScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(continueGame.isDisabled()){
+					soundController.dispose();
                     game.goToBackgroundStory();
                 }
               else{
