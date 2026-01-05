@@ -108,6 +108,7 @@ public class MazeRunnerGame extends Game {
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
     private Animation<TextureRegion> vampiricHeartAnimation;
+    private Animation<TextureRegion> exitPortalAnimation;
     // Traps
     private Animation<TextureRegion> garlicTrapAnimation;
     private Animation<TextureRegion> freezeTrapAnimation;
@@ -386,6 +387,12 @@ public class MazeRunnerGame extends Game {
         this.keyShineAnimation = new Animation<>(0.08f, atlas.findRegions("key"), Animation.PlayMode.LOOP);
     }
 
+    private void loadPortalAnimation(){
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("exit_portal.atlas"));
+
+        this.exitPortalAnimation = new Animation<>(0.08f, atlas.findRegions("exit_portal"), Animation.PlayMode.LOOP);
+    }
+
     private void loadVampiricHeartAnimation() {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("vampiric_heart.atlas"));
 
@@ -619,6 +626,10 @@ public class MazeRunnerGame extends Game {
 
     public Animation<TextureRegion> getCharacterLeftSad() {
         return characterLeftSad;
+    }
+
+    public Animation<TextureRegion> getExitPortalAnimation() {
+        return exitPortalAnimation;
     }
 
     public Animation<TextureRegion> getCharacterRightSad() {
