@@ -301,7 +301,7 @@ public class GameController {
 		if (player.getPlayerGameObject().position.dst(exit.position) < 1.5f) {
 			if (exit.isLocked()) {
 				if (player.hasKeys()) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+					if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getInteractKey())) {
 						exit.open();
 						gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);
 						System.out.println("Door opened!");
@@ -410,7 +410,7 @@ public class GameController {
 
     private void handleInvisStatic(){
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)&&player.isCanInvis()){
+        if(Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAbilityKey())&&player.isCanInvis()){
 
             if(player.getDrawable().getCurrentAnimation() == game.getCharacterUpAnimation()){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);

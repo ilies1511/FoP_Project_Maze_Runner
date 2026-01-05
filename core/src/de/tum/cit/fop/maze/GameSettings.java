@@ -17,6 +17,10 @@ public class GameSettings {
     public int dashKey;
     public int zoomInKey;
     public int zoomOutKey;
+    public int interactKey;
+    public int abilityKey;
+    public int consoleKey;
+    public int progressionTreeKey;
 
     public GameSettings() {
         this.maxHealth = 10;
@@ -28,6 +32,10 @@ public class GameSettings {
         this.dashKey = Input.Keys.SHIFT_LEFT;
         this.zoomInKey = Input.Keys.EQUALS;
         this.zoomOutKey = Input.Keys.MINUS;
+        this.interactKey = Input.Keys.E;
+        this.abilityKey = Input.Keys.Q;
+        this.consoleKey = Input.Keys.DEL;
+        this.progressionTreeKey = Input.Keys.I;
     }
 
     static public GameSettings loadGameSettings() {
@@ -99,6 +107,14 @@ public class GameSettings {
         saveToJson();
     }
 
+    public int getProgressionTreeKey() {
+        return progressionTreeKey;
+    }
+
+    public void setProgressionTreeKey(int progressionTreeKey) {
+        this.progressionTreeKey = progressionTreeKey;
+    }
+
     public int getDashKey() {
         return this.dashKey;
     }
@@ -119,6 +135,30 @@ public class GameSettings {
 
     public int getZoomInKey() {
         return this.zoomInKey;
+    }
+
+    public void setInteractKey(int interactKey) {
+        this.interactKey = interactKey;
+    }
+
+    public void setAbilityKey(int abilityKey) {
+        this.abilityKey = abilityKey;
+    }
+
+    public void setConsoleKey(int consoleKey) {
+        this.consoleKey = consoleKey;
+    }
+
+    public int getInteractKey() {
+        return interactKey;
+    }
+
+    public int getAbilityKey() {
+        return abilityKey;
+    }
+
+    public int getConsoleKey() {
+        return consoleKey;
     }
 
     public void setZoomInKey(int zoomInKey) {

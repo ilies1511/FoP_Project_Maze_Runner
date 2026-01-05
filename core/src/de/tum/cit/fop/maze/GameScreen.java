@@ -125,11 +125,11 @@ public class GameScreen implements Screen {
 	}
 
 	private void handleGlobalInput() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && !isInDevConsole) {
+		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getConsoleKey()) && !isInDevConsole) {
 			devConsole.showConsole();
 			isInDevConsole = true;
 		}
-		else if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE) && isInDevConsole) {
+		else if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getConsoleKey()) && isInDevConsole) {
 			devConsole.hideConsole();
 			isInDevConsole = false;
 		}
@@ -153,7 +153,7 @@ public class GameScreen implements Screen {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 				pausedScreen.showPausedMenu();
 			}
-			else if (Gdx.input.isKeyJustPressed(Input.Keys.I) && !isInDevConsole) {
+			else if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getProgressionTreeKey()) && !isInDevConsole) {
 				progressionOverlay.showProgressionMenu();
 				isPaused = true;
 				isInProgression = true;
@@ -170,7 +170,7 @@ public class GameScreen implements Screen {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !isInProgression) {
 				pausedScreen.hidePausedMenu();
 			}
-			else if (Gdx.input.isKeyJustPressed(Input.Keys.I) && isInProgression) {
+			else if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getProgressionTreeKey()) && isInProgression) {
 				progressionOverlay.hideProgressionMenu();
 				isInProgression = false;
 			}

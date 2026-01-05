@@ -52,7 +52,7 @@ public class SettingsScreen {
 
         // Back to menu button
         TextButton goToMenuButton = new TextButton("Back to menu", game.getSkin(), "vampire-style");
-        table.add(goToMenuButton).width(300).row();
+        table.add(goToMenuButton).width(400).row();
         goToMenuButton.getLabel().setTouchable(Touchable.disabled);
         goToMenuButton.addListener(new ClickListener() {
             @Override
@@ -102,6 +102,24 @@ public class SettingsScreen {
                 () -> game.getGameInfo().getSettings().getDashKey(),
                 (code) -> game.getGameInfo().getSettings().setDashKey(code));
 
+        addKeyBindingButton("Interact",
+                () -> game.getGameInfo().getSettings().getInteractKey(),
+                (code) -> game.getGameInfo().getSettings().setInteractKey(code));
+
+        addKeyBindingButton("Ability",
+                () -> game.getGameInfo().getSettings().getAbilityKey(),
+                (code) -> game.getGameInfo().getSettings().setAbilityKey(code));
+
+        addKeyBindingButton("Console",
+                () -> game.getGameInfo().getSettings().getConsoleKey(),
+                (code) -> game.getGameInfo().getSettings().setConsoleKey(code));
+
+
+        addKeyBindingButton("Progression Tree",
+                () -> game.getGameInfo().getSettings().getProgressionTreeKey(),
+                (code) -> game.getGameInfo().getSettings().setProgressionTreeKey(code));
+
+
         addKeyBindingButton("Zoom in",
                 () -> game.getGameInfo().getSettings().getZoomInKey(),
                 (code) -> game.getGameInfo().getSettings().setZoomInKey(code));
@@ -111,7 +129,7 @@ public class SettingsScreen {
                 (code) -> game.getGameInfo().getSettings().setZoomOutKey(code));
 
         TextButton restoreDefaultSettingsButton = new TextButton("Restore default settings", game.getSkin(), "vampire-style");
-        table.add(restoreDefaultSettingsButton).width(300).row();
+        table.add(restoreDefaultSettingsButton).width(400).row();
         restoreDefaultSettingsButton.getLabel().setTouchable(Touchable.disabled);
         restoreDefaultSettingsButton.addListener(new ClickListener() {
             @Override
@@ -159,7 +177,7 @@ public class SettingsScreen {
             }
         });
 
-        this.table.add(binding).width(300).row();
+        this.table.add(binding).width(400).row();
 
         this.bindingButtons.add(binding);
     }
