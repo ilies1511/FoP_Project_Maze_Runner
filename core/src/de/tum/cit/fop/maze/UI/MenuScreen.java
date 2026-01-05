@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
@@ -31,6 +32,7 @@ public class MenuScreen implements Screen {
     private final SoundController soundController;
     private final EndlessModeScreen endlessModeScreen;
     private final LeaderboardScreen leaderboardScreen;
+	private MazeRunnerGame game;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -38,6 +40,7 @@ public class MenuScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(MazeRunnerGame game) {
+		this.game = game;
         soundController = new SoundController();
         soundController.playMainMenuMusic(0.5f);
 
@@ -246,10 +249,12 @@ public class MenuScreen implements Screen {
 
     public void goToStory(){
         hideAllTables();
+		game.setGameMode(GameMode.STORY_MODE);
         storyModeScreen.getStoryTable().setVisible(true);
     }
     public void goToLevel(){
         hideAllTables();
+	    game.setGameMode(GameMode.LEVELS_MODE);
         levelModeScreen.getLevelTable().setVisible(true);
     }
 
@@ -265,6 +270,7 @@ public class MenuScreen implements Screen {
 
     public void goToEndless(){
         hideAllTables();
+	    game.setGameMode(GameMode.ENDLESS_MODE);
         endlessModeScreen.getEndlessTable().setVisible(true);
     }
 

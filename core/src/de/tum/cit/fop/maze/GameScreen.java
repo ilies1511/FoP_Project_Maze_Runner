@@ -14,11 +14,14 @@ import com.crashinvaders.vfx.effects.VignettingEffect;
 import com.crashinvaders.vfx.effects.BloomEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import de.tum.cit.fop.maze.Drawing.Drawable;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
+import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
+import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.UI.DevConsole;
 import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.UI.PausedOverlay;
@@ -26,7 +29,6 @@ import de.tum.cit.fop.maze.UI.ProgressionOverlay;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
-
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -47,53 +49,57 @@ public class GameScreen implements Screen {
 	private boolean isPaused = false;
 	private boolean isInProgression = false;
 	private boolean isInDevConsole = false;
-	private final boolean isSurvivalMode;
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
+	private int currentStoryLevelIndex = 0;
 
     private VfxManager vfxManager;
     /**
      * Constructor for GameScreen. Sets up the camera and font.
      *
      */
+	private void init_mode() {
+		GameMode gameMode =  game.getGameMode();
 
-	public GameScreen(MazeRunnerGame game, boolean isSurvivalMode) {
-        vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
-        VignettingEffect vignette = new VignettingEffect(false);
-        vignette.setIntensity(1.2f);
-        BloomEffect bloom = new BloomEffect();
-        bloom.setBloomIntensity(2.2f);
-        bloom.setBlurPasses(6);
-        bloom.setThreshold(0.7f);
-        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
-        filmGrainEffect.setNoiseAmount(0.3f);
-        vfxManager.addEffect(filmGrainEffect);
-        vfxManager.addEffect(bloom);
-        vfxManager.addEffect(vignette);
+		if (gameMode == GameMode.LEVELS_MODE) {
+			this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
+			addTestObjects();
+		}
+		else if (gameMode == GameMode.ENDLESS_MODE) {
+			this.gameField = MazeGenerator.generateMaze(15, 15, game);
+		}
+		else if (gameMode == GameMode.STORY_MODE) {
+			this.gameField = MazeParser.loadMap(MazeRunnerGame.STORY_LEVELS[0], this.game);
+		}
+		if (this.gameField == null) {
+			System.err.println("CRITICAL: Map failed to load for mode " + gameMode);
+			this.gameField = new GameField(15, 15);
+		}
+		else {
+			System.out.println("Map loaded successfully for " + gameMode);
+			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
+		}
+	}
+
+	public GameScreen(MazeRunnerGame game) {
+		vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
+		VignettingEffect vignette = new VignettingEffect(false);
+		vignette.setIntensity(1.2f);
+		BloomEffect bloom = new BloomEffect();
+		bloom.setBloomIntensity(2.2f);
+		bloom.setBlurPasses(6);
+		bloom.setThreshold(0.7f);
+		FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
+		filmGrainEffect.setNoiseAmount(0.3f);
+		vfxManager.addEffect(filmGrainEffect);
+		vfxManager.addEffect(bloom);
+		vfxManager.addEffect(vignette);
         soundController = new SoundController();
         soundController.playBackgroundMusic(0.5f);
 		this.game = game;
-		this.isSurvivalMode = isSurvivalMode;
-
 		Drawable.initializeTextureMap(game);
-
-
-		this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
-		if (this.gameField == null) {
-			System.err.println("Map failed to load! Check file path.");
-			this.gameField = new GameField(5, 5);
-		}
-		else {
-			System.out.println("Map loaded successfully!");
-			System.out.println("Size: " + gameField.getWidth() + "x" + gameField.getHeight());
-		}
-
-		if (!isSurvivalMode) {
-			addTestObjects();
-		}
-
+		init_mode();
 		this.player = new Player(this); //create an instance of the player
-
 		// Create and configure the camera for the game view
 		this.camera = new Camera();
 
@@ -102,8 +108,6 @@ public class GameScreen implements Screen {
 
         this.hud = new HUD(player, stage, game, this);
 
-
-
         progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
         devConsole = new DevConsole(game, this, stage, player, hud);
 
@@ -111,7 +115,7 @@ public class GameScreen implements Screen {
 		this.mapRenderer = new MapRenderer(game);
 		this.gameController = new GameController(game, player, hud, gameField, soundController, this);
 
-		if (isSurvivalMode) {
+		if (game.getGameMode() == GameMode.ENDLESS_MODE) {
 			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
 			this.gameController.setWaveManager(waveManager);
 		}
@@ -249,14 +253,44 @@ public class GameScreen implements Screen {
     public GameController getGameController() {
         return gameController;
     }
-    // Additional methods and logic can be added as needed for the game screen
-
-	public boolean isSurvivalMode() {
-		return this.isSurvivalMode;
-	}
 
 	public void setGameField(GameField newGameField) {
 		this.gameField = newGameField;
 	}
 
+	public void loadNextStoryLevel() {
+		currentStoryLevelIndex++;
+		if (currentStoryLevelIndex >= MazeRunnerGame.STORY_LEVELS.length) {
+			soundController.playWinSound(1f);
+			game.goToGameWonScreen();
+			return;
+		}
+		String nextMapPath = MazeRunnerGame.STORY_LEVELS[currentStoryLevelIndex];
+		System.out.println("Loading Level: " + nextMapPath);
+		GameField newMap = MazeParser.loadMap(nextMapPath, game);
+
+		this.gameField = newMap;
+		gameController.setGameField(newMap);
+
+		if (newMap != null) {
+			Vector2 start = gameField.getPlayerStartPos();
+			if (start != null) {
+				System.out.println("Player Start Position at: " + gameField.getPlayerStartPos());
+				player.setPosition(gameField.getPlayerStartPos());
+			}
+			else {
+				Vector2 fallBack = gameField.getTileTypeCoords(newMap, TileType.EMPTY);
+				if (fallBack != null)
+					player.setPosition(fallBack);
+				else
+					player.setPosition(new Vector2(1, 1));
+			}
+		}
+		else {
+			System.err.println("CRITICAL: Map failed to load");
+		}
+//		player.setCurrentKeys(0);
+//		player.setHasKeys(false);
+//		hud.renderHUD();
+	}
 }

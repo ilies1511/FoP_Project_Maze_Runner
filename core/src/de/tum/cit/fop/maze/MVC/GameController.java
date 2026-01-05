@@ -316,17 +316,23 @@ public class GameController {
 			}
 			else {
 				if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {
-					System.out.println("You escaped! Level Finished.");
-					if (gameScreen.isSurvivalMode()) {
-						this.player.setHasKeys(false);
-						this.player.setCurrentKeys(0);
-						hud.updatePlayerKeys();
-						this.startNextLevel();
-	//						gameScreen.startNextLevel();
-					} else {
-						soundController.dispose();
-						gameScreen.getSoundController().dispose();
-						game.goToGameWonScreen();
+					switch (game.getGameMode()) {
+						case STORY_MODE:
+							gameScreen.loadNextStoryLevel();
+							break;
+						case ENDLESS_MODE:
+							this.player.setHasKeys(false);
+							this.player.setCurrentKeys(0);
+							hud.updatePlayerKeys();
+							this.startNextLevel();
+							break;
+						case LEVELS_MODE:
+						default:
+							soundController.dispose();
+							if(gameScreen.getSoundController() != null)
+								gameScreen.getSoundController().dispose();
+							game.goToGameWonScreen();
+							break;
 					}
 				}
 			}
