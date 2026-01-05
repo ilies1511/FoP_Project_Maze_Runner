@@ -61,6 +61,10 @@ public class GameController {
 		if (waveManager != null) {
 			waveManager.update(delta);
 		}
+        if(player.hasKeys()){
+
+            hud.rotateArrow();
+        }
 		player.tickEffects(delta);
 		handleInput(delta);
 		updateGameObjects(delta);
@@ -305,6 +309,7 @@ public class GameController {
 						exit.open();
 						gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);
 						System.out.println("Door opened!");
+                        hud.deleteArrow();
 					}
 					else {
 						// System.out.println("Press O to open");

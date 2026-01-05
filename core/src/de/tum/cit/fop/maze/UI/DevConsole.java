@@ -138,6 +138,7 @@ public class DevConsole {
             player.setHasKeys(true);
             player.setCurrentKeys(player.getRequiredKeys());
             hud.updatePlayerKeys();
+            hud.createArrow();
         });
         inputField = new TextField("", game.getSkin(), "default");
         TextField.TextFieldStyle style = inputField.getStyle();

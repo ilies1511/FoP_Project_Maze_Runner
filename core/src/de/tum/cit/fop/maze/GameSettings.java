@@ -34,7 +34,7 @@ public class GameSettings {
         this.zoomOutKey = Input.Keys.MINUS;
         this.interactKey = Input.Keys.E;
         this.abilityKey = Input.Keys.Q;
-        this.consoleKey = Input.Keys.DEL;
+        this.consoleKey = Input.Keys.SLASH;
         this.progressionTreeKey = Input.Keys.I;
     }
 

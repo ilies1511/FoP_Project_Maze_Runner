@@ -54,6 +54,7 @@ public class GameScreen implements Screen {
 	private final MapRenderer mapRenderer;
 	private final GameController gameController;
 	private int currentStoryLevelIndex = 0;
+    private Viewport viewport;
 
     private VfxManager vfxManager;
     /**
@@ -105,7 +106,7 @@ public class GameScreen implements Screen {
 		// Create and configure the camera for the game view
 		this.camera = new Camera();
 
-		Viewport viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
+        viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
 		stage = new Stage(viewport); // Create a stage for UI elements
         devStage = new Stage(viewport);
 
@@ -310,4 +311,12 @@ public class GameScreen implements Screen {
 //		player.setHasKeys(false);
 //		hud.renderHUD();
 	}
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
+    }
 }

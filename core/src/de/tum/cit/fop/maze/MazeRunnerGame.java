@@ -95,6 +95,7 @@ public class MazeRunnerGame extends Game {
     //UI
     private Texture spriteSheet;
     private   Texture assetsSheet;
+    private TextureRegion arrow;
     private TextureRegion woodenSign;
     private TextureRegion heart;
     // Status effects
@@ -164,7 +165,8 @@ public class MazeRunnerGame extends Game {
         heart = new TextureRegion(heartTexture);
         keyOutline = new TextureRegion(assetsSheet, 800,50,168,96);
         key = new TextureRegion(assetsSheet, 800,139,168,90);
-
+        Texture arrowTexture = new Texture(Gdx.files.internal("arrow.png"));
+        arrow = new TextureRegion(arrowTexture);
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         this.loadCharacterAnimation(); // Dracula
@@ -556,6 +558,10 @@ public class MazeRunnerGame extends Game {
         this.poisonEffect = effectsAtlas.findRegion("poison");
         this.freezeEffect = effectsAtlas.findRegion("snowflake");
         this.sunscreenEffect = effectsAtlas.findRegion("cloudy_sun");
+    }
+
+    public TextureRegion getArrow() {
+        return arrow;
     }
 
     // Getter methods

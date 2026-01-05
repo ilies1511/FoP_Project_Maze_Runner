@@ -3,24 +3,34 @@ package de.tum.cit.fop.maze.UI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Camera;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.effects.Buff;
 import de.tum.cit.fop.maze.effects.Freeze;
 import de.tum.cit.fop.maze.effects.Poison;
 import de.tum.cit.fop.maze.effects.Sunscreen;
 import de.tum.cit.fop.maze.objects.Player;
+import de.tum.cit.fop.maze.objects.Static.Exit;
 
+import java.util.List;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class HUD {
@@ -35,6 +45,7 @@ public class HUD {
     private Table heartTable;
     private Table statusEffectsTable;
     private Table keyOutlineTable;
+    private Table arrowTable;
     private Stack bloodEffect;
     private Stack poisonEffect;
     private Stack freezeEffect;
@@ -44,29 +55,40 @@ public class HUD {
     private int playerKeys;
     private int requiredKeys;
     private Stack[] keyStack;
+    private Image arrow;
+    private Exit exit;
+    private boolean hasArrow;
+
 
     public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         shapeRenderer = new ShapeRenderer();
-
         this.player = player;
         this.stage = stage;
         this.game = game;
         this.gameScreen = gameScreen;
+
         renderHUD();
     }
 
 
     public void renderHUD() {
+
         table = new Table(); // Create a table for layout
         table.setFillParent(true); // Make the table fill the stage
         keyOutlineTable = new Table();
         keyOutlineTable.setFillParent(true);
-//        keyOutlineTable.debug();
-        //   table.defaults().space(10).expandX();
-        //table.debug();
+
+
+        arrowTable = new Table();
+        arrowTable.setFillParent(true);
+
+
+
         stage.addActor(table);
         stage.addActor(keyOutlineTable);
+        stage.addActor(arrowTable);
         table.bottom();
+        arrowTable.center();
         playerXP = player.getXp();
 
         uiContainer = new Table();
@@ -82,7 +104,7 @@ public class HUD {
         statusEffectsTable = new Table();
         //statusEffectsTable.debug();
         renderPlayerHP();
-        table.add(uiContainer).width(2200).height(200);
+        table.add(uiContainer).width(3200).height(200);
 
         keyOutlineTable.top().right().padRight(40);
         updatePlayerKeys();
@@ -93,6 +115,75 @@ public class HUD {
         uiContainer.add(xpLabel);
         uiContainer.row();
         uiContainer.add(statusEffectsTable).bottom();
+
+    }
+
+    public void createArrow(){
+
+       if(!hasArrow){
+           arrow = new Image(game.getArrow());
+           //arrowTable.add(arrow).center().width(150).height(150);
+           arrow.setOrigin(Align.center);
+           arrow.setSize(100, 100);
+           stage.addActor(arrow);
+           arrowFollow();
+           exit = null;
+           float closestDist = Float.MAX_VALUE;
+           List<Exit> exits = gameScreen.getGameField().getObjectsByType(Exit.class);
+           for(Exit e : exits){
+               float currentDist = gameScreen.getPlayer().position.dst2(e.position);
+               if (currentDist < closestDist) {
+                   closestDist = currentDist;
+                   exit = e;
+               }
+           }
+       }
+
+        hasArrow = true;
+    }
+    private void arrowFollow(){
+        if (arrow == null) return;
+
+        float playerX = gameScreen.getPlayer().position.x;
+        float playerY = gameScreen.getPlayer().position.y;
+
+
+        Viewport gameViewport = gameScreen.getViewport();
+        OrthographicCamera gameCamera = gameScreen.getCamera().getCamera();
+
+
+        Vector3 screenPos = new Vector3(playerX, playerY, 0);
+
+        gameCamera.project(screenPos,
+                gameViewport.getScreenX(),
+                gameViewport.getScreenY(),
+                gameViewport.getScreenWidth(),
+                gameViewport.getScreenHeight()
+        );
+
+        float flippedY = Gdx.graphics.getHeight() - screenPos.y;
+
+
+        Vector2 stagePos = stage.screenToStageCoordinates(new Vector2(screenPos.x, flippedY));
+
+        arrow.setPosition(
+                stagePos.x - arrow.getWidth() / 2 + 20,
+                stagePos.y - arrow.getHeight() / 2 + 100
+        );
+
+    }
+    public void rotateArrow(){
+
+        if(exit!=null){
+           arrowFollow();
+            arrow.setOrigin(Align.center);
+            float angle = exit.position.cpy().sub(gameScreen.getPlayer().position).angleDeg();
+            arrow.setRotation(angle);
+        }
+    }
+    public void deleteArrow(){
+        arrowTable.clearChildren();
+        hasArrow = false;
 
     }
 
@@ -324,4 +415,7 @@ public class HUD {
                 })
         ));
     }
+
+
+
 }
