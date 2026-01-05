@@ -1,0 +1,22 @@
+/* LEGEND CHEAT SHEET:
+ -------------------------
+ S = Start       E = Exit
+ K = Key         T = Trap
+ M = Enemy       * = Dance Floor
+
+ WALLS:
+ # = Default     = = Wall 1
+ % = Wall 2      | = Wall 3
+ - = Wall 4      + = Wall 5
+ [ = Wall 6      ] = Wall 7
+ ^ = Wall 8
+
+ FLOORS:
+ . = Default     , = Floor 1
+ : = Floor 2     ; = Floor 3
+ " = Floor 4     ` = Floor 5
+ ~ = Floor 6     _ = Floor 7
+
+ DECOR:
+ a, b, c, d, e, f, g, h, i, j, k
+*/

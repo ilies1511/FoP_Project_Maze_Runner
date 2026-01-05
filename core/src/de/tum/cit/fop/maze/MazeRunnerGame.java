@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.UI.*;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
@@ -118,6 +119,14 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> dawnThinAnimation;
     private Animation<TextureRegion> dawnWideAnimation;
     private TextureRegion shadowTexture;
+	private GameMode gameMode;
+
+	public static final String[] STORY_LEVELS = {
+			"story_mode/test.properties",
+			"story_mode/berghain_main.properties",
+			"story_mode/berghain_panorama.properties",
+			"story_mode/berghain_darkroom.properties"
+	};
 
 
     /**
@@ -256,7 +265,7 @@ public class MazeRunnerGame extends Game {
      */
     public void goToGame() {
         disposeAllScreens();
-        this.setScreen(new GameScreen(this, false)); // Set the current screen to GameScreen
+        this.setScreen(new GameScreen(this)); // Set the current screen to GameScreen
     }
 
 
@@ -892,6 +901,14 @@ public class MazeRunnerGame extends Game {
     public Animation<TextureRegion> getCharacterInvisRightWin() {
         return characterInvisRightWin;
     }
+
+	public void setGameMode(GameMode Mode) {
+		this.gameMode = Mode;
+	}
+
+	public GameMode getGameMode() {
+		return this.gameMode;
+	}
 
     public TextureRegion getHeart() {
         return heart;
