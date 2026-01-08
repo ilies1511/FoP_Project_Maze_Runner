@@ -92,8 +92,7 @@ public class CharacterWASD {
             ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
             while (iter.hasNext()) {
                 GameObject obj = iter.next();
-                if (obj instanceof Enemy) {
-                    Enemy enemy = (Enemy) obj;
+                if (obj instanceof Enemy enemy) {
                     if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
                         iter.remove();
                         Collectable drop = enemy.onDeath(player);
