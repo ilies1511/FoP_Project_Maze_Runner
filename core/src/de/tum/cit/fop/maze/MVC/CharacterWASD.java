@@ -37,7 +37,6 @@ public class CharacterWASD {
             else{
                 player.changeAnimation(AnimationType.CHARACTER_DOWN);
             }
-
             isMoving = true;
         }
         else {
@@ -53,7 +52,6 @@ public class CharacterWASD {
             else{
                 player.changeAnimation(AnimationType.CHARACTER_LEFT);
             }
-
             isMoving = true;
         }
         else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
@@ -64,7 +62,6 @@ public class CharacterWASD {
             else{
                 player.changeAnimation(AnimationType.CHARACTER_RIGHT);
             }
-
             isMoving = true;
         }
         else {

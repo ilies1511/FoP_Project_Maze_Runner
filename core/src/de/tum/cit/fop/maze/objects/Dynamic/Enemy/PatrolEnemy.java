@@ -21,11 +21,7 @@ public class PatrolEnemy extends Enemy {
         moveTimer += deltaTime;
 
         Vector2 nextPos = this.nextPosition(deltaTime);
-
-        // Check if next position is inside a wall and do change dir if it is
         boolean willHitWall = gameField.isInsideWall(nextPos.x, nextPos.y, this.getSize());
-
-        // Change direction when timer is up or about ot hit wall
         if (moveTimer >= moveInterval || willHitWall) {
             pickRandomDirection();
             moveTimer = 0;
@@ -34,10 +30,8 @@ public class PatrolEnemy extends Enemy {
 
     private void pickRandomDirection() {
         if (MathUtils.randomBoolean()) {
-            // Left or Right
             this.velocity.set(MathUtils.randomSign(), 0);
         } else {
-            // Up or Down
             this.velocity.set(0, MathUtils.randomSign());
         }
         this.velocity.scl(this.getSpeed());

@@ -12,9 +12,10 @@ import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Enemy extends GameObject {
-    boolean isDead;
+public abstract class Enemy extends GameObject {
+    protected boolean isDead = false;
     private static TextureRegion shadowTexture;
+    private static final float detectionRange = 5.5f; // if within 5.5 tiles
 
     public static void setShadowTexture(TextureRegion texture) {
         shadowTexture = texture;
@@ -29,9 +30,7 @@ public class Enemy extends GameObject {
                 size,
                 animationType // temporary, might move to each enemy separately
         );
-        this.isDead = false;
     }
-
     public Enemy(Vector2 startPos, AnimationType animationType) {
         super(
                 startPos,
@@ -41,9 +40,7 @@ public class Enemy extends GameObject {
                 new Vector2(0.5f, 0.8f),
                 animationType // temporary, might move to each enemy separately
         );
-        this.isDead = false;
     }
-
     public Enemy(Vector2 startPos) {
         super(
                 startPos,
@@ -53,18 +50,15 @@ public class Enemy extends GameObject {
                 new Vector2(0.5f, 0.8f),
                 AnimationType.TOURIST_DOWN // temporary, might move to each enemy separately
         );
-        this.isDead = false;
     }
 
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
-        float detectionRange = 5.5f; // if within 1.5 tiles
-        if (this.position.dst(playerPosition) < detectionRange && !player.isInvis()) {
-            Vector2 direction = new Vector2(playerPosition).sub(this.position); //chase character
-            direction.nor(); // Normalize to length 1
-            this.velocity = direction.scl(this.getSpeed());
+        if (isDead) {return;}
+        if (position.dst(playerPosition) < detectionRange && !player.isInvis()) {
+            Vector2 direction = new Vector2(playerPosition).sub(position).nor(); //chase character
+            this.velocity = direction.scl(speed);
         } else {
-            // Stand still
-            this.velocity.set(0, 0);
+            velocity.set(0, 0);
         }
     }
 
@@ -77,17 +71,10 @@ public class Enemy extends GameObject {
 
     public void animate(Batch batch) {
         if (shadowTexture != null) {
-            float width = this.spriteSizes.x;
-            float height = this.spriteSizes.y;
-            float shadowWidth = width * 1.5f;
-            float shadowHeight = shadowWidth;
-
-            float x = position.x + (width - shadowWidth) / 2f;
-            float y = position.y - 0.05f; // near feet
-            batch.draw(shadowTexture, x, y, shadowWidth, shadowHeight);        }
-
+            float shadowWidth = spriteSizes.x * 1.5f;
+            batch.draw(shadowTexture, position.x + (spriteSizes.x - shadowWidth) / 2f, position.y - 0.05f, shadowWidth, shadowWidth);
         super.animate(batch);
-    }
+    }}
 
     public boolean isDead() {
         return isDead;
