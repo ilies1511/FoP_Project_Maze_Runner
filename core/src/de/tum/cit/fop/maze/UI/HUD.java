@@ -95,7 +95,7 @@ public class HUD {
         //uiContainer.debug();
         uiContainer.top();
         TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
-        uiContainer.setColor(Color.GRAY);
+        //uiContainer.setColor(Color.GRAY);
         //uiContainer.setBackground(signDrawable);
 
         heartTable = new Table();

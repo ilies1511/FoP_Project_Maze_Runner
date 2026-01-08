@@ -32,7 +32,6 @@ public class GameLostScreen implements Screen {
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
         soundController = new SoundController();
-        soundController.playPlayerDieSound(1);
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
 

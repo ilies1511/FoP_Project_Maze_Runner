@@ -48,7 +48,7 @@ public class GameWonScreen implements Screen {
 		this.game = game;
 
 		this.soundController = new SoundController();
-		soundController.playWinSound(0.5f);
+		soundController.playBackgrounStorydMusic(0.5f);
 
 		Viewport viewport = new FitViewport(2000, 1200);
 		this.stage = new Stage(viewport, game.getSpriteBatch());

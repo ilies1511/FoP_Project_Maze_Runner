@@ -23,10 +23,7 @@ import de.tum.cit.fop.maze.MVC.MapRenderer;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
-import de.tum.cit.fop.maze.UI.DevConsole;
-import de.tum.cit.fop.maze.UI.HUD;
-import de.tum.cit.fop.maze.UI.PausedOverlay;
-import de.tum.cit.fop.maze.UI.ProgressionOverlay;
+import de.tum.cit.fop.maze.UI.*;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
@@ -55,6 +52,7 @@ public class GameScreen implements Screen {
 	private final GameController gameController;
 	private int currentStoryLevelIndex = 0;
     private Viewport viewport;
+    private AchievementController achievementController;
 
     private VfxManager vfxManager;
     /**
@@ -102,13 +100,15 @@ public class GameScreen implements Screen {
 		this.game = game;
 		Drawable.initializeTextureMap(game);
 		init_mode();
+        viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
+        stage = new Stage(viewport); // Create a stage for UI elements
+        devStage = new Stage(viewport);
+        achievementController = new AchievementController(devStage,game,soundController);
+        achievementController.startAchievement();
 		this.player = new Player(this); //create an instance of the player
 		// Create and configure the camera for the game view
 		this.camera = new Camera();
 
-        viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
-		stage = new Stage(viewport); // Create a stage for UI elements
-        devStage = new Stage(viewport);
 
         this.hud = new HUD(player, stage, game, this);
 
@@ -123,6 +123,7 @@ public class GameScreen implements Screen {
 			WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
 			this.gameController.setWaveManager(waveManager);
 		}
+
 	}
 
 	private void handleGlobalInput() {
@@ -140,13 +141,13 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
         this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        devStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
 
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
 
         vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
+        viewport.apply();
 
 		handleGlobalInput();
 
@@ -179,12 +180,15 @@ public class GameScreen implements Screen {
 
 
 		game.getSpriteBatch().setProjectionMatrix(camera.getCamera().combined);
+
         mapRenderer.render(gameField, player, delta);
         game.getSpriteBatch().setShader(null);
 
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        devStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 //		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
 
-
+//        viewport.apply();
 
         stage.draw();
 
@@ -212,9 +216,9 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-        vfxManager.resize(width, height);
-		stage.getViewport().update(width, height, true);
 
+		stage.getViewport().update(width, height, true);
+        vfxManager.resize(width, height);
 	}
 
 	@Override
@@ -279,8 +283,11 @@ public class GameScreen implements Screen {
 	public void loadNextStoryLevel() {
 		currentStoryLevelIndex++;
 		if (currentStoryLevelIndex >= MazeRunnerGame.STORY_LEVELS.length) {
-			soundController.playWinSound(1f);
 			game.goToGameWonScreen();
+            soundController.dispose();
+            if(game.getGameMode() == GameMode.STORY_MODE){
+                achievementController.endAchievement();
+            }
 			return;
 		}
 		String nextMapPath = MazeRunnerGame.STORY_LEVELS[currentStoryLevelIndex];
@@ -318,5 +325,9 @@ public class GameScreen implements Screen {
 
     public Viewport getViewport() {
         return viewport;
+    }
+
+    public  AchievementController getAchievementController() {
+            return achievementController;
     }
 }

@@ -73,6 +73,14 @@ public class Enemy extends GameObject {
         player.receiveXP(15);
         player.addOrReapplyEffect(new Buff(player, 2f));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
+        player.setKills(player.getKills()+1);
+        if(player.getKills() == 1){
+            player.getAchievementController().firstBloodAchievement();
+        }
+        if(player.getKills() == 50){
+            player.getAchievementController().killsAchievement();
+        }
+
         return drop;
     }
 

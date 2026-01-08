@@ -55,7 +55,7 @@ public class DevConsole {
         this.gameScreen = gameScreen;
         this.player = player;
         this.hud = hud;
-        Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
+
 
 //        Pixmap pixmap = new Pixmap(1000, 950, Pixmap.Format.RGBA8888);
 //        pixmap.setColor(Color.BLACK);
