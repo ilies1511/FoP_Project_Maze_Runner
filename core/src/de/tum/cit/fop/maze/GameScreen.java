@@ -3,7 +3,6 @@ package de.tum.cit.fop.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -52,7 +51,7 @@ public class GameScreen implements Screen {
 	private final GameController gameController;
 	private int currentStoryLevelIndex = 0;
     private Viewport viewport;
-    private AchievementController achievementController;
+    private AchievementUI achievementUI;
 
     private VfxManager vfxManager;
     /**
@@ -87,7 +86,7 @@ public class GameScreen implements Screen {
 		VignettingEffect vignette = new VignettingEffect(false);
 		vignette.setIntensity(1.2f);
 		BloomEffect bloom = new BloomEffect();
-		bloom.setBloomIntensity(2.2f);
+		bloom.setBloomIntensity(1.5f);
 		bloom.setBlurPasses(6);
 		bloom.setThreshold(0.7f);
 		FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
@@ -103,8 +102,8 @@ public class GameScreen implements Screen {
         viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
         stage = new Stage(viewport); // Create a stage for UI elements
         devStage = new Stage(viewport);
-        achievementController = new AchievementController(devStage,game,soundController);
-        achievementController.startAchievement();
+        achievementUI = new AchievementUI(stage,game,soundController);
+        achievementUI.startAchievement();
 		this.player = new Player(this); //create an instance of the player
 		// Create and configure the camera for the game view
 		this.camera = new Camera();
@@ -285,9 +284,6 @@ public class GameScreen implements Screen {
 		if (currentStoryLevelIndex >= MazeRunnerGame.STORY_LEVELS.length) {
 			game.goToGameWonScreen();
             soundController.dispose();
-            if(game.getGameMode() == GameMode.STORY_MODE){
-                achievementController.endAchievement();
-            }
 			return;
 		}
 		String nextMapPath = MazeRunnerGame.STORY_LEVELS[currentStoryLevelIndex];
@@ -327,7 +323,7 @@ public class GameScreen implements Screen {
         return viewport;
     }
 
-    public  AchievementController getAchievementController() {
-            return achievementController;
+    public AchievementUI getAchievementUI() {
+        return achievementUI;
     }
 }

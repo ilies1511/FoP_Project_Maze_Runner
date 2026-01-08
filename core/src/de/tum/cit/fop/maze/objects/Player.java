@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.SoundController;
-import de.tum.cit.fop.maze.UI.AchievementController;
+import de.tum.cit.fop.maze.AchievementController;
+import de.tum.cit.fop.maze.UI.AchievementUI;
 import de.tum.cit.fop.maze.effects.*;
 
 import java.util.ArrayList;
@@ -33,7 +34,10 @@ public class Player extends GameObject {
     private final GameScreen gameScreen;
     private final SoundController soundController;
 
-    private  AchievementController achievementController;
+    private final AchievementUI achievementUI;
+
+
+
 
     public Player(GameScreen gameScreen) {
         super(gameScreen.getGameField().getPlayerStartPos(), new Vector2(0f, 0f), DEFAULT_PLAYER_SPEED, new Vector2(0.4f, 0.4f), new Vector2(0.4f,
@@ -49,8 +53,9 @@ public class Player extends GameObject {
         this.gameScreen = gameScreen;
 		this.requiredKeys = gameScreen.getGameField().getRequiredKeys();
         this.soundController = gameScreen.getSoundController();
+        achievementUI = gameScreen.getAchievementUI();
 
-        achievementController = gameScreen.getAchievementController();
+
     }
 
     public int receiveXP(int xpReceived) {
@@ -290,10 +295,8 @@ public class Player extends GameObject {
 			this.position = pos;
 	}
 
-    public AchievementController getAchievementController() {
-
-            return achievementController;
-
+    public AchievementUI getAchievementUI() {
+        return achievementUI;
     }
 
     public int getKills() {

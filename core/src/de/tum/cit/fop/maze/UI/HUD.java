@@ -175,14 +175,14 @@ public class HUD {
     public void rotateArrow(){
 
         if(exit!=null){
-           arrowFollow();
+            arrowFollow();
             arrow.setOrigin(Align.center);
             float angle = exit.position.cpy().sub(gameScreen.getPlayer().position).angleDeg();
             arrow.setRotation(angle);
         }
     }
     public void deleteArrow(){
-        arrowTable.clearChildren();
+       arrow.remove();
         hasArrow = false;
 
     }
@@ -415,7 +415,6 @@ public class HUD {
                 })
         ));
     }
-
 
 
 }

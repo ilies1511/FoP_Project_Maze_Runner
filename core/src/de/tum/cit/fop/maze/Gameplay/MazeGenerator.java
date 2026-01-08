@@ -33,7 +33,7 @@ public class MazeGenerator {
 	private static void placeKeys(int width, int height, GameField gameField) {
 		Random random = new Random();
 
-		int keysToPlace = 3;
+		int keysToPlace = 1;
 		while (keysToPlace > 0) {
 			int rx = random.nextInt(width);
 			int ry = random.nextInt(height);

@@ -23,6 +23,7 @@ public class Key extends Collectable {
         player.collectKey();
         hud.updatePlayerKeys();
         if(player.hasKeys()){
+            hud.deleteArrow();
             hud.createArrow();
         }
 

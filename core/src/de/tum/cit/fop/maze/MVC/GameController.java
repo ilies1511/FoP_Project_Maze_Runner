@@ -54,6 +54,9 @@ public class GameController {
 		if (player.getCurrentHealth() <= 0) {
 			if (waveManager != null) {
 				ScoreManager.getInstance().addScore(waveManager.getScore());
+                if(waveManager.getScore() == 1000){ //TODO Nikita change value
+                    gameScreen.getAchievementUI().pointsAchievement();
+                }
 			}
 			playerDie();
 			return;
@@ -62,7 +65,6 @@ public class GameController {
 			waveManager.update(delta);
 		}
         if(player.hasKeys()){
-
             hud.rotateArrow();
         }
 		player.tickEffects(delta);
@@ -202,7 +204,7 @@ public class GameController {
                 player.changeAnimation(AnimationType.CHARACTER_VICTORY_POSE);
             }
 
-			soundController.playWinSound(1);
+			soundController.playWinSound(0.2f);
 			isMoving = true;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.L)) {
@@ -213,7 +215,7 @@ public class GameController {
                 player.changeAnimation(AnimationType.CHARACTER_LOSER_POSE);
             }
 
-			soundController.playPlayerDieSound(1);
+			soundController.playPlayerDieSound(0.2f);
 			isMoving = true;
 		}
 
@@ -416,6 +418,7 @@ public class GameController {
     private void handleInvisStatic(){
 
         if(Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAbilityKey())&&player.isCanInvis()){
+            gameScreen.getAchievementUI().invisAchievement();
 
             if(player.getDrawable().getCurrentAnimation() == game.getCharacterUpAnimation()){
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);

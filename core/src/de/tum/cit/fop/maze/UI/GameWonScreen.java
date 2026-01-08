@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.AchievementController;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
@@ -50,6 +51,7 @@ public class GameWonScreen implements Screen {
 		this.soundController = new SoundController();
 		soundController.playBackgrounStorydMusic(0.5f);
 
+
 		Viewport viewport = new FitViewport(2000, 1200);
 		this.stage = new Stage(viewport, game.getSpriteBatch());
 
@@ -73,6 +75,8 @@ public class GameWonScreen implements Screen {
                 storyTable.add(storyLabel).width(1500f);
 
                 stage.addActor(storyTable);
+                AchievementUI achievementUI = new AchievementUI(stage, game, soundController);
+                achievementUI.endAchievement();
                 break;
             case LEVELS_MODE:
                 table = new Table();

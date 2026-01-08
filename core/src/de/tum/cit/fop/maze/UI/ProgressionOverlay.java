@@ -28,11 +28,12 @@ public class ProgressionOverlay {
     private int healthUpgrades;
     private int speedUpgrades;
     private boolean dashDisable;
+    private boolean healthDisable;
     private boolean speedDisable;
     private boolean invisDisable;
 
     private Player player;
-private SoundController soundController;
+    private SoundController soundController;
 
     public ProgressionOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen, Player player, HUD hud) {
 
@@ -100,6 +101,7 @@ private SoundController soundController;
 
                     if(healthUpgrades >= 10){
                     maxHealth.setDisabled(true);
+                    healthDisable = true;
                     }
                 }
 
@@ -240,5 +242,9 @@ private SoundController soundController;
         Gdx.input.setCursorCatched(true);
         Gdx.input.setInputProcessor(null);
         gameScreen.setPaused(false);
+        if(healthDisable && speedDisable && invisDisable && dashDisable){
+            gameScreen.getAchievementUI().upgradesAchievement();
+        }
+
     }
 }

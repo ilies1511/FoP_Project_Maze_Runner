@@ -156,6 +156,7 @@ public class DevConsole {
 
                     Matcher matcher = pattern.matcher(command);
                     if (matcher.matches()) {
+                        gameScreen.getAchievementUI().consoleAchievement();
                         consoleLabel.setText(consoleLabel.getText() + "\n> " + command);
                         String stringCommand = matcher.group(1);
 

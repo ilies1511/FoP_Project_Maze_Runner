@@ -94,10 +94,20 @@ public class MazeRunnerGame extends Game {
     private TextureRegion trapTexture;
     //UI
     private Texture spriteSheet;
-    private   Texture assetsSheet;
+    private Texture assetsSheet;
+    private Texture achievementsSheet;
     private TextureRegion arrow;
     private TextureRegion woodenSign;
     private TextureRegion heart;
+    private TextureRegion trophy;
+    private TextureRegion startAchievement;
+    private TextureRegion endAchievement;
+    private TextureRegion firstBloodAchievement;
+    private TextureRegion upgradesAchievement;
+    private TextureRegion killsAchievement;
+    private TextureRegion invisAchievement;
+    private TextureRegion consoleAchievement;
+    private TextureRegion pointsAchievement;
     // Status effects
     private TextureRegion bloodEffect;
     private TextureRegion poisonEffect;
@@ -154,12 +164,22 @@ public class MazeRunnerGame extends Game {
     public void create() {
         // Initialize settings AFTER creating game (so that loading works)
         this.gameInfo.initializeSettings();
+        this.gameInfo.initializeAchievements();
 
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
         this.Shadow();
 
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
         assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
+        achievementsSheet = new Texture(Gdx.files.internal("achievements.png"));
+        startAchievement = new TextureRegion(achievementsSheet, 11, 135,103,122);
+        endAchievement = new TextureRegion(achievementsSheet, 145, 125,105,125);
+        firstBloodAchievement = new TextureRegion(achievementsSheet, 295, 145,55,80);
+        upgradesAchievement = new TextureRegion(achievementsSheet, 405, 135,100,100);
+        killsAchievement = new TextureRegion(achievementsSheet, 11, 285,100,100);
+        invisAchievement = new TextureRegion(achievementsSheet, 165, 280,105,105);
+        consoleAchievement = new TextureRegion(achievementsSheet, 280, 280,90,90);
+        pointsAchievement = new TextureRegion(achievementsSheet, 415, 280,80,90);
         woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
         Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
         heart = new TextureRegion(heartTexture);
@@ -167,6 +187,8 @@ public class MazeRunnerGame extends Game {
         key = new TextureRegion(assetsSheet, 800,139,168,90);
         Texture arrowTexture = new Texture(Gdx.files.internal("arrow.png"));
         arrow = new TextureRegion(arrowTexture);
+        Texture trophyTexture = new Texture(Gdx.files.internal("trophy.png"));
+        trophy = new TextureRegion(trophyTexture);
 
         skin = new Skin(Gdx.files.internal("craft/craftacular-ui.json")); // Load UI skin
         this.loadCharacterAnimation(); // Dracula
@@ -929,5 +951,41 @@ public class MazeRunnerGame extends Game {
 
     public TextureRegion getHeart() {
         return heart;
+    }
+
+    public TextureRegion getTrophy() {
+        return trophy;
+    }
+
+    public TextureRegion getPointsAchievement() {
+        return pointsAchievement;
+    }
+
+    public TextureRegion getConsoleAchievement() {
+        return consoleAchievement;
+    }
+
+    public TextureRegion getInvisAchievement() {
+        return invisAchievement;
+    }
+
+    public TextureRegion getKillsAchievement() {
+        return killsAchievement;
+    }
+
+    public TextureRegion getUpgradesAchievement() {
+        return upgradesAchievement;
+    }
+
+    public TextureRegion getFirstBloodAchievement() {
+        return firstBloodAchievement;
+    }
+
+    public TextureRegion getEndAchievement() {
+        return endAchievement;
+    }
+
+    public TextureRegion getStartAchievement() {
+        return startAchievement;
     }
 }
