@@ -24,14 +24,16 @@ public class Bouncer extends Enemy {
         super(startPos, AnimationType.BOUNCER_DOWN);
         this.speed = MOVE_SPEED;}
 
-    public void startFleeing() {
+    public void startFleeing() { //apply as an interface
         fleeTimer = 2.0f; // 2 sec buffer
         float dirX = random.nextBoolean() ? 1f : -1f;
         float dirY = random.nextBoolean() ? 1f : -1f;
         fleeVelocity.set(dirX, dirY).nor();
     }
+
+
     @Override
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) { //stop when wall
         if (fleeTimer > 0) {
             fleeTimer -= deltaTime;
             velocity.set(currentDirection).scl(speed);
@@ -39,7 +41,7 @@ public class Bouncer extends Enemy {
             return;
         }
 
-        if (position.dst(playerPosition) > DETECTION_RANGE || player.isInvis()) {
+        if (position.dst(playerPosition) > DETECTION_RANGE || player.isInvis()) { //random redirection after kill, apply as an interface
             velocity.set(0, 0);
             return;
         }

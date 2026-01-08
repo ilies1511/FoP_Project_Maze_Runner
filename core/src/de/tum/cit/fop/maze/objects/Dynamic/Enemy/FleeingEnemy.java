@@ -11,6 +11,8 @@ import java.util.List;
 public class FleeingEnemy extends Enemy {
     private float danceTimer = 0f;
 
+    // implement a behavior that if in detection range flee method once a kill is experienced
+
     public FleeingEnemy(Vector2 startPos) {
         super(startPos, AnimationType.TOURIST_DOWN);
         this.speed = 2.5f; // faster than normal enemies
