@@ -22,13 +22,6 @@ public class Bouncer extends Enemy {
         super(startPos, AnimationType.BOUNCER_DOWN);
         this.speed = MOVE_SPEED;}
 
-    public void startFleeing() { //apply as an interface
-        if (fleeTimer > 0) return;
-        fleeTimer = 2.0f; // 2 sec buffer
-        float dirX = MathUtils.randomBoolean() ? 1f : -1f;
-        float dirY = MathUtils.randomBoolean() ? 1f : -1f;
-        currentDirection.set(dirX, dirY).nor();
-    }
 
 
     @Override
@@ -38,10 +31,10 @@ public class Bouncer extends Enemy {
             fleeTimer -= deltaTime;
             velocity.set(currentDirection).scl(speed);
             if (isBlocked(currentDirection, deltaTime, gameField)) {
-                startFleeing();
+                flee();
                 fleeTimer = 0;
             }
-            updateAnimationDirection();
+            AnimationDirection();
             return;
         }
         if (position.dst(playerPosition) > DETECTION_RANGE || player.hasEffect(Invis.class)) {
@@ -49,6 +42,41 @@ public class Bouncer extends Enemy {
             return;
         }
 
+        chase(deltaTime, playerPosition, gameField);
+    }
+
+    private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
+        float lookAhead = speed * delta * 5; //5
+        return gameField.isInsideWall(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize());
+    }
+
+
+    public void AnimationDirection() {
+        if (velocity.len2() < 0.1f) return;
+
+        if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
+            if (velocity.x > 0) changeAnimation(AnimationType.BOUNCER_RIGHT);
+            else changeAnimation(AnimationType.BOUNCER_LEFT);
+        } else {
+            if (velocity.y > 0) changeAnimation(AnimationType.BOUNCER_UP);
+            else changeAnimation(AnimationType.BOUNCER_DOWN);
+        }
+    }
+
+    @Override
+    public void flee() {
+        if (fleeTimer > 0) return;
+        fleeTimer = 2.0f; // 2 sec buffer
+        float dirX = MathUtils.randomBoolean() ? 1f : -1f;
+        float dirY = MathUtils.randomBoolean() ? 1f : -1f;
+        currentDirection.set(dirX, dirY).nor();
+    }
+
+    public void patrol(float delta) {
+        //Bouncer will not patrol, only chase wherevr the drac is on the map
+    }
+
+    public void chase(float deltaTime,  Vector2 playerPosition,  GameField gameField) {
         Vector2 targetDir = new Vector2(playerPosition).sub(position).nor();
         if (!isBlocked(targetDir, deltaTime, gameField)) {
             velocity.set(targetDir).scl(speed);
@@ -61,25 +89,6 @@ public class Bouncer extends Enemy {
         }
         else {
             velocity.set(0, 0);
-        }
-        updateAnimationDirection();
-    }
-
-    private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
-        float lookAhead = speed * delta * 5; //5
-        return gameField.isInsideWall(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize());
-    }
-
-
-    private void updateAnimationDirection() {
-        if (velocity.len2() < 0.1f) return;
-
-        if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
-            if (velocity.x > 0) changeAnimation(AnimationType.BOUNCER_RIGHT);
-            else changeAnimation(AnimationType.BOUNCER_LEFT);
-        } else {
-            if (velocity.y > 0) changeAnimation(AnimationType.BOUNCER_UP);
-            else changeAnimation(AnimationType.BOUNCER_DOWN);
         }
     }
 

@@ -13,7 +13,7 @@ import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public abstract class Enemy extends GameObject {
+public abstract class Enemy extends GameObject implements Enemies {
     protected boolean isDead = false;
     private static TextureRegion shadowTexture;
     private static final float detectionRange = 5.5f; // if within 5.5 tiles

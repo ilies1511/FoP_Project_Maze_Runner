@@ -38,4 +38,23 @@ public class PatrolEnemy extends Enemy {
     }
 
 
+    @Override
+    public void flee() {
+
+    }
+
+    @Override
+    public void patrol(float delta) {
+
+    }
+
+    @Override
+    public void chase(float deltaTime, Vector2 playerPosition, GameField gameField) {
+
+    }
+
+    @Override
+    public void AnimationDirection() {
+
+    }
 }

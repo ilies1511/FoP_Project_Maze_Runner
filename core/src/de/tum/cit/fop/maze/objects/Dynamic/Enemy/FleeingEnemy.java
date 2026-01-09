@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
@@ -41,26 +40,16 @@ public class FleeingEnemy extends Enemy {
             velocity.set(finalDir).scl(speed);
             Vector2 nextPos = new Vector2(position).mulAdd(velocity, deltaTime);
             if (gameField.isInsideWall(nextPos.x, nextPos.y, getSize())) {
-                flees();
+                flee();
             }
             danceTimer = 0;
-            updateAnimationDirection();
+            AnimationDirection();
         } else {
-            //dance logic idle
-            velocity.set(0, 0);
-            danceTimer += deltaTime;
-
-            if (danceTimer > 0.25f) { // turn every 0.25 seconds
-                danceTimer = 0;
-                //  random dir
-                AnimationType[] idleAnims = {
-                        AnimationType.TOURIST_DOWN, AnimationType.TOURIST_LEFT,
-                        AnimationType.TOURIST_UP, AnimationType.TOURIST_RIGHT
-                };
-                changeAnimation(idleAnims[(int)(Math.random() * idleAnims.length)]);}
+            //patrol being dancing in tourist's case
+            patrol(deltaTime);
     }}
 
-    private void updateAnimationDirection() {
+    public void AnimationDirection() {
         if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
             if (velocity.x > 0) {
                 changeAnimation(AnimationType.TOURIST_RIGHT);
@@ -81,7 +70,7 @@ public class FleeingEnemy extends Enemy {
             if (obj instanceof FleeingEnemy) {
                 FleeingEnemy tourist = (FleeingEnemy) obj;
                 if (tourist.getPosition().dst(deathPosition) < 6.0f) { //6 tiles
-                    tourist.flees();
+                    tourist.flee();
                 }
             }
         }
@@ -92,10 +81,31 @@ public class FleeingEnemy extends Enemy {
         return gameField.isInsideWall(nextPos.x, nextPos.y, this.getSize());
     }
 
-    public void flees() {
+
+    @Override
+    public void flee() {
         scareTimer = 2.0f; // 2 sec
         float x = MathUtils.randomBoolean() ? 1 : -1;
         float y = MathUtils.randomBoolean() ? 1 : -1;
         fleeDir.set(x, y).nor();
+    }
+
+    @Override
+    public void patrol(float deltaTime) {
+        velocity.set(0, 0);
+        danceTimer += deltaTime;
+        if (danceTimer > 0.25f) { // turn every 0.25 seconds
+            danceTimer = 0;
+            //  random dir
+            AnimationType[] idleAnims = {
+                    AnimationType.TOURIST_DOWN, AnimationType.TOURIST_LEFT,
+                    AnimationType.TOURIST_UP, AnimationType.TOURIST_RIGHT
+            };
+            changeAnimation(idleAnims[(int)(Math.random() * idleAnims.length)]);}
+    }
+
+    @Override
+    public void chase(float deltaTime, Vector2 playerPosition, GameField gameField) {
+        //Tourist will not chase. Will flee when it sees a kill
     }
 }

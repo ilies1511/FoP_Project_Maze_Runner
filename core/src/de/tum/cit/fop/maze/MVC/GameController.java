@@ -109,60 +109,9 @@ public class GameController {
 			this.player.addOrReapplyEffect(new Dash(player));
 		}
 
-		// Y-Axis
-		float speed = player.getPlayerGameObject().getSpeed();
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
-			player.getPlayerGameObject().velocity.y = speed;
-            if(player.hasEffect(Invis.class)){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_UP);
-            }
-
-			isMoving = true;
-		}
-		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
-			player.getPlayerGameObject().velocity.y = -speed;
-            if(player.hasEffect(Invis.class)){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_DOWN);
-            }
-
-			isMoving = true;
-		}
-		else {
-			player.getPlayerGameObject().velocity.y = 0f;
-		}
-
-		// X-Axis
-		if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
-			player.getPlayerGameObject().velocity.x = -speed;
-            if(player.hasEffect(Invis.class)){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_LEFT);
-            }
-
-			isMoving = true;
-		}
-		else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
-			player.getPlayerGameObject().velocity.x = speed;
-            if(player.hasEffect(Invis.class)){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
-            }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_RIGHT);
-            }
-
-			isMoving = true;
-		}
-		else {
-			player.getPlayerGameObject().velocity.x = 0f;
-		}
+        //WASD
+        isMoving = CharacterWASD.yAxis(player, isMoving, game);
+        isMoving = CharacterWASD.xAxis(player, isMoving, game);
 
 		// Attack Logic
         //TODO Attack animation + attack animation in INVIS
@@ -307,7 +256,7 @@ public class GameController {
 				}
 			}
             if (enemy instanceof Bouncer) {
-                ((Bouncer) enemy).startFleeing();
+                ((Bouncer) enemy).flee();
             }
 		}
 	}
