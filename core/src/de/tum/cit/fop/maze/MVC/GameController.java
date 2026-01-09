@@ -194,7 +194,8 @@ public class GameController {
 						Collectable drop = enemy.onDeath(player);
 						iter.add(drop);
 						System.out.println("Enemy Killed!");
-					}
+                        FleeingEnemy.scaredTourists(gameField, enemy.getPosition());
+                    }
 				}
 			}
             return;
