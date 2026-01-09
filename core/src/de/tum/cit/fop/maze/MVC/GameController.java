@@ -1,4 +1,5 @@
 package de.tum.cit.fop.maze.MVC;
+import de.tum.cit.fop.maze.MVC.CharacterWASD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,11 +25,13 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
 import java.util.ListIterator;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 
 public class GameController {
 	private final MazeRunnerGame game;
@@ -39,6 +42,8 @@ public class GameController {
 	private final SoundController gameScreenSoundController;
 	private final GameScreen gameScreen;
 	private WaveManager waveManager = null;
+
+	private float flickerTimer = 0f;
 
 	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
 		this.game = game;
@@ -88,7 +93,7 @@ public class GameController {
                 } else if (currentAnim == game.getCharacterAttackRightAnimation()) {
                     player.changeAnimation(AnimationType.CHARACTER_RIGHT);
                 } else {
-                    // Default to Down (for Attack Down or fallback)
+                    // fallback
                     player.changeAnimation(AnimationType.CHARACTER_DOWN);
                 }            } else {
                 return;
@@ -237,8 +242,15 @@ public class GameController {
         ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.next();
-			obj.updateAnimation(delta);
-
+            if (obj instanceof Enemy) {
+                if (obj.getVelocity().len2() > 0.01f) { //Move
+                    obj.updateAnimation(delta);
+                } else { //Idle
+                    obj.setAnimationTime(0f);
+                }
+            } else {
+                obj.updateAnimation(delta);
+            }
 			if (obj instanceof Enemy) {
 				handleEnemyLogic((Enemy) obj, delta, iter);
 			}
@@ -272,7 +284,7 @@ public class GameController {
 		Vector2 nextPos = enemyGo.nextPosition(delta);
 		if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGo.getSize())) {
 			enemyGo.move(delta);
-		}
+		} else enemyGo.getVelocity().set(0, 0);
 
 		if (GameObject.entitiesOverlap(player.getPlayerGameObject(), enemyGo)) {
 			if (enemy instanceof FleeingEnemy) {
@@ -293,13 +305,9 @@ public class GameController {
 					soundController.playPlayerHitSound(1);
 				}
 			}
-//            if (enemy instanceof de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer) {
-//                if(!player.isInvis()){
-////                    iter.remove();
-//                    //
-//                }
-//
-//            }
+            if (enemy instanceof Bouncer) {
+                ((Bouncer) enemy).startFleeing();
+            }
 		}
 	}
 
