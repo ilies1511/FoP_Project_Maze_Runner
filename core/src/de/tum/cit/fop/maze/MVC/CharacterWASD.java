@@ -8,6 +8,7 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
@@ -98,6 +99,7 @@ public class CharacterWASD {
                         Collectable drop = enemy.onDeath(player);
                         iter.add(drop);
                         System.out.println("Enemy Killed!");
+                        FleeingEnemy.scaredTourists(gameField, enemy.getPosition());
                     }
                 }
             }

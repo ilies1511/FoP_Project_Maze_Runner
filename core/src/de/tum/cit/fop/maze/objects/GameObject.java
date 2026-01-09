@@ -2,6 +2,7 @@ package de.tum.cit.fop.maze.objects;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
@@ -147,6 +148,10 @@ public abstract class GameObject {
 
     public Drawable getDrawable() {
         return drawable;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
     // TODO: iziane
 	// New animate

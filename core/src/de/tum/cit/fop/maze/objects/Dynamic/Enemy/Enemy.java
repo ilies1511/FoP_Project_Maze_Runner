@@ -91,4 +91,7 @@ public abstract class Enemy extends GameObject {
     }
 
 
+    public Vector2 getPosition() {
+        return position;
+    }
 }

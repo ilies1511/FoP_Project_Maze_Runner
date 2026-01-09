@@ -1,9 +1,11 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.*;
@@ -15,40 +17,56 @@ public class Bouncer extends Enemy {
     private float fleeTimer = 0f;
     private Vector2 currentDirection = new Vector2();
 
-
-    private Vector2 prevPosition;
-    private Vector2 fleeVelocity = new Vector2();
-    private Random random = new Random();
-
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
         this.speed = MOVE_SPEED;}
 
     public void startFleeing() { //apply as an interface
+        if (fleeTimer > 0) return;
         fleeTimer = 2.0f; // 2 sec buffer
-        float dirX = random.nextBoolean() ? 1f : -1f;
-        float dirY = random.nextBoolean() ? 1f : -1f;
-        fleeVelocity.set(dirX, dirY).nor();
+        float dirX = MathUtils.randomBoolean() ? 1f : -1f;
+        float dirY = MathUtils.randomBoolean() ? 1f : -1f;
+        currentDirection.set(dirX, dirY).nor();
     }
 
 
     @Override
-    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) { //stop when wall
+    public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
+        //TODO: Redirect when enaging with tourist
         if (fleeTimer > 0) {
             fleeTimer -= deltaTime;
             velocity.set(currentDirection).scl(speed);
+            if (isBlocked(currentDirection, deltaTime, gameField)) {
+                startFleeing();
+                fleeTimer = 0;
+            }
             updateAnimationDirection();
             return;
         }
-
-        if (position.dst(playerPosition) > DETECTION_RANGE || player.isInvis()) { //random redirection after kill, apply as an interface
+        if (position.dst(playerPosition) > DETECTION_RANGE || player.isInvis()) {
             velocity.set(0, 0);
             return;
         }
 
         Vector2 targetDir = new Vector2(playerPosition).sub(position).nor();
-        velocity.set(targetDir).scl(speed);
+        if (!isBlocked(targetDir, deltaTime, gameField)) {
+            velocity.set(targetDir).scl(speed);
+        }
+        else if (!isBlocked(new Vector2(Math.signum(targetDir.x), 0), deltaTime, gameField)) {
+            velocity.set(Math.signum(targetDir.x) * speed, 0);
+        }
+        else if (!isBlocked(new Vector2(0, Math.signum(targetDir.y)), deltaTime, gameField)) {
+            velocity.set(0, Math.signum(targetDir.y) * speed);
+        }
+        else {
+            velocity.set(0, 0);
+        }
         updateAnimationDirection();
+    }
+
+    private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
+        float lookAhead = speed * delta * 5; //5
+        return gameField.isInsideWall(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize());
     }
 
 

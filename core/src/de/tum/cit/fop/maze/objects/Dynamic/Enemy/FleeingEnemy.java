@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -10,8 +11,9 @@ import java.util.List;
 
 public class FleeingEnemy extends Enemy {
     private float danceTimer = 0f;
+    private float scareTimer = 0f;
+    private Vector2 fleeDir = new Vector2();
 
-    // implement a behavior that if in detection range flee method once a kill is experienced
 
     public FleeingEnemy(Vector2 startPos) {
         super(startPos, AnimationType.TOURIST_DOWN);
@@ -32,10 +34,14 @@ public class FleeingEnemy extends Enemy {
             }
         }
 
-        float distToPlayer = position.dst(playerPosition);
-        if (this.position.dst(playerPosition) < 4.0f && !player.isInvis()) {
-            Vector2 runDir = new Vector2(position).sub(playerPosition).add(separation).nor();
-            velocity = runDir.scl(speed);
+        if (scareTimer > 0) {
+            scareTimer -= deltaTime;
+            Vector2 finalDir = new Vector2(fleeDir).add(separation).nor();
+            velocity.set(finalDir).scl(speed);
+            Vector2 nextPos = new Vector2(position).mulAdd(velocity, deltaTime);
+            if (gameField.isInsideWall(nextPos.x, nextPos.y, getSize())) {
+                flees();
+            }
             danceTimer = 0;
             updateAnimationDirection();
         } else {
@@ -53,10 +59,6 @@ public class FleeingEnemy extends Enemy {
                 changeAnimation(idleAnims[(int)(Math.random() * idleAnims.length)]);}
     }}
 
-    private Vector2 getPosition() {
-        return this.position;
-    }
-
     private void updateAnimationDirection() {
         if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
             if (velocity.x > 0) {
@@ -73,8 +75,26 @@ public class FleeingEnemy extends Enemy {
         }
     }
 
+    public static void scaredTourists(GameField gameField, Vector2 deathPosition) {
+        for (GameObject obj : gameField.getGameObjects()) {
+            if (obj instanceof FleeingEnemy) {
+                FleeingEnemy tourist = (FleeingEnemy) obj;
+                if (tourist.getPosition().dst(deathPosition) < 6.0f) { //6 tiles
+                    tourist.flees();
+                }
+            }
+        }
+    }
+
     private boolean willHitWall(Vector2 velocity, float delta, GameField gameField) {
         Vector2 nextPos = new Vector2(this.position).mulAdd(velocity, delta);
         return gameField.isInsideWall(nextPos.x, nextPos.y, this.getSize());
+    }
+
+    public void flees() {
+        scareTimer = 2.0f; // 2 sec
+        float x = MathUtils.randomBoolean() ? 1 : -1;
+        float y = MathUtils.randomBoolean() ? 1 : -1;
+        fleeDir.set(x, y).nor();
     }
 }

@@ -148,8 +148,15 @@ public class GameController {
         ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
 		while (iter.hasNext()) {
 			GameObject obj = iter.next();
-			obj.updateAnimation(delta);
-
+            if (obj instanceof Enemy) {
+                if (obj.getVelocity().len2() > 0.01f) { //Move
+                    obj.updateAnimation(delta);
+                } else { //Idle
+                    obj.setAnimationTime(0f);
+                }
+            } else {
+                obj.updateAnimation(delta);
+            }
 			if (obj instanceof Enemy) {
 				handleEnemyLogic((Enemy) obj, delta, iter);
 			}
@@ -183,7 +190,7 @@ public class GameController {
 		Vector2 nextPos = enemyGo.nextPosition(delta);
 		if (!gameField.isInsideWall(nextPos.x, nextPos.y, enemyGo.getSize())) {
 			enemyGo.move(delta);
-		}
+		} else enemyGo.getVelocity().set(0, 0);
 
 		if (GameObject.entitiesOverlap(player.getPlayerGameObject(), enemyGo)) {
 			if (enemy instanceof FleeingEnemy) {
