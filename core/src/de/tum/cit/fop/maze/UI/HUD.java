@@ -182,7 +182,9 @@ public class HUD {
         }
     }
     public void deleteArrow(){
-       arrow.remove();
+        if(hasArrow){
+            arrow.remove();
+        }
         hasArrow = false;
 
     }
