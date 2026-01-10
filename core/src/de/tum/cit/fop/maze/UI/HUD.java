@@ -14,13 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.tum.cit.fop.maze.Camera;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.effects.Buff;
 import de.tum.cit.fop.maze.effects.Freeze;
 import de.tum.cit.fop.maze.effects.Poison;
@@ -29,9 +26,6 @@ import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 
 import java.util.List;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class HUD {
 
@@ -73,16 +67,13 @@ public class HUD {
 
     public void renderHUD() {
 
-        table = new Table(); // Create a table for layout
-        table.setFillParent(true); // Make the table fill the stage
+        table = new Table();
+        table.setFillParent(true);
         keyOutlineTable = new Table();
         keyOutlineTable.setFillParent(true);
 
-
         arrowTable = new Table();
         arrowTable.setFillParent(true);
-
-
 
         stage.addActor(table);
         stage.addActor(keyOutlineTable);
@@ -92,17 +83,13 @@ public class HUD {
         playerXP = player.getXp();
 
         uiContainer = new Table();
-        //uiContainer.debug();
         uiContainer.top();
-        TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
-        //uiContainer.setColor(Color.GRAY);
+        //TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
         //uiContainer.setBackground(signDrawable);
 
         heartTable = new Table();
-        // heartTable.debug();
 
         statusEffectsTable = new Table();
-        //statusEffectsTable.debug();
         renderPlayerHP();
         table.add(uiContainer).width(3200).height(200);
 
@@ -199,12 +186,8 @@ public class HUD {
         for(int i = 0; i < requiredKeys; i++){
             keyStack[i] = new Stack();
             Image keyOutline =new Image(game.getKeyOutline());
-//            keyOutlineTable.add(key).width(170).height(100).padRight(10).padTop(10);
             keyStack[i].add(keyOutline);
             keyOutlineTable.add(keyStack[i]).size(170,100);
-
-
-//            keyOutlineTable.add(keyStack[i]).size(160,90);
         }
         for(int i = 0; i<playerKeys;i ++){
             Image key =new Image(game.getKey());
@@ -238,7 +221,7 @@ public class HUD {
 
         if (player.hasEffect(Buff.class)) {
             if (bloodEffect == null) {
-                drawRing(new Image(game.getBloodEffect()), player.getEffectDuration(Buff.class), "Buff");
+                addEffect(new Image(game.getBloodEffect()), player.getEffectDuration(Buff.class), "Buff");
             }
         } else {
             if (bloodEffect != null) {
@@ -248,7 +231,7 @@ public class HUD {
         }
         if (player.hasEffect(Poison.class)) {
             if (poisonEffect == null) {
-                drawRing(new Image(game.getPoisonEffect()), player.getEffectDuration(Poison.class), "Poison");
+                addEffect(new Image(game.getPoisonEffect()), player.getEffectDuration(Poison.class), "Poison");
             }
         } else {
             if (poisonEffect != null) {
@@ -258,7 +241,7 @@ public class HUD {
         }
         if (player.hasEffect(Freeze.class)) {
             if (freezeEffect == null) {
-                drawRing(new Image(game.getFreezeEffect()), player.getEffectDuration(Freeze.class), "Freeze");
+                addEffect(new Image(game.getFreezeEffect()), player.getEffectDuration(Freeze.class), "Freeze");
             }
         } else {
             if (freezeEffect != null) {
@@ -268,7 +251,7 @@ public class HUD {
         }
         if (player.hasEffect(Sunscreen.class)) {
             if (sunscreenEffect == null) {
-                drawRing(new Image(game.getSunscreenEffect()), player.getEffectDuration(Sunscreen.class), "Sunscreen");
+                addEffect(new Image(game.getSunscreenEffect()), player.getEffectDuration(Sunscreen.class), "Sunscreen");
             }
         } else {
             if (sunscreenEffect != null) {
@@ -288,36 +271,29 @@ public class HUD {
         }
     }
 
-    private void drawRing(Image img, float maxT, String effect) {
+    private void addEffect(Image img, float maxT, String effectName) {
         Stack stack = new Stack() {
             @Override
             public void act(float delta) {
-                // Only update this stack (and its children/actions) if the game is running
-                if (!gameScreen.isPaused()) {
-                    super.act(delta);
-                }
+                if (!gameScreen.isPaused()) super.act(delta);
             }
         };
 
-        Image newEffect = img;
-        stack.add(newEffect);
+        stack.add(img);
+        Actor cooldownOverlay = new Actor(){
+            private final float maxTime = maxT;
+            private float timeLeft = maxT;
 
-        Actor cooldownOverlay = new Actor() {
-
-            float maxTime = maxT;
-            float timeLeft = maxTime;
-
-            @Override
             public void act(float delta) {
                 super.act(delta);
-                timeLeft -= delta;
-                if (timeLeft < 0) timeLeft = 0;
+                timeLeft = Math.max(0, timeLeft - delta);
             }
 
             @Override
             public void draw(Batch batch, float parentAlpha) {
-                batch.end(); // Pause sprite batch
+                if (timeLeft <= 0) return;
 
+                batch.end();
                 Gdx.gl.glEnable(GL20.GL_BLEND);
                 Gdx.gl.glLineWidth(8);
 
@@ -326,95 +302,92 @@ public class HUD {
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
                 shapeRenderer.setColor(Color.GREEN);
 
-                Vector2 stagePos = localToStageCoordinates(new Vector2(0, 0));
-
                 float r = Math.min(getWidth(), getHeight()) / 1.8f;
                 float cx = getX() + getWidth() / 2f;
                 float cy = getY() + getHeight() / 2f;
-
                 float percentage = timeLeft / maxTime;
 
-                if (percentage > 0) {
-                    int segments = 30;
-                    float startAngle = 90 * MathUtils.degreesToRadians;
-                    float totalSweep = -360 * percentage * MathUtils.degreesToRadians;
-                    float step = totalSweep / segments;
-                    float lastX = cx + MathUtils.cos(startAngle) * r;
-                    float lastY = cy + MathUtils.sin(startAngle) * r;
-                    for (int i = 1; i <= segments; i++) {
-                        float currentAngle = startAngle + (step * i);
-                        float nextX = cx + MathUtils.cos(currentAngle) * r;
-                        float nextY = cy + MathUtils.sin(currentAngle) * r;
-                        shapeRenderer.line(lastX, lastY, nextX, nextY);
+                int segments = 30;
+                float startAngle = 90 * MathUtils.degreesToRadians;
+                float totalSweep = -360 * percentage * MathUtils.degreesToRadians;
+                float step = totalSweep / segments;
 
-                        lastX = nextX;
-                        lastY = nextY;
-                    }
+                float lastX = cx + MathUtils.cos(startAngle) * r;
+                float lastY = cy + MathUtils.sin(startAngle) * r;
+
+                for (int i = 1; i <= segments; i++) {
+                    float currentAngle = startAngle + (step * i);
+                    float nextX = cx + MathUtils.cos(currentAngle) * r;
+                    float nextY = cy + MathUtils.sin(currentAngle) * r;
+
+                    shapeRenderer.line(lastX, lastY, nextX, nextY);
+
+                    lastX = nextX;
+                    lastY = nextY;
                 }
+
                 shapeRenderer.end();
                 Gdx.gl.glLineWidth(1);
                 batch.begin();
             }
         };
-
         stack.add(cooldownOverlay);
 
-        Stack previousStack = null;
-        if (Objects.equals(effect, "Poison")) previousStack = poisonEffect;
-        else if (Objects.equals(effect, "Buff")) previousStack = bloodEffect;
-        else if (Objects.equals(effect, "Freeze")) previousStack = freezeEffect;
-        else if (Objects.equals(effect, "Sunscreen")) previousStack = sunscreenEffect;
-        boolean replace = false;
+        Stack previousStack = getActiveEffect(effectName);
 
         if (previousStack != null) {
             Cell cell = statusEffectsTable.getCell(previousStack);
             if (cell != null) {
                 cell.setActor(stack);
-                replace = true;
             }
             previousStack.clearActions();
-        }
-        if (!replace) {
+        } else {
             statusEffectsTable.add(stack).size(60, 60).pad(5);
         }
 
-        // statusEffectsTable.add(stack).size(60, 60).pad(5);
         statusEffectsTable.pack();
 
+        setActiveEffect(effectName, stack);
 
         Stack finalStack = stack;
-
-        if (Objects.equals(effect, "Poison")) poisonEffect = stack;
-        else if (Objects.equals(effect, "Buff")) bloodEffect = stack;
-        else if (Objects.equals(effect, "Freeze")) freezeEffect = stack;
-        else if (Objects.equals(effect, "Sunscreen")) sunscreenEffect = stack;
-
-
         stack.addAction(Actions.sequence(
                 Actions.delay(maxT),
-                Actions.run(() -> {
-
-                    if (Objects.equals(effect, "Poison") && poisonEffect == finalStack || Objects.equals(effect, "Buff") && bloodEffect == finalStack || Objects.equals(effect, "Freeze") && freezeEffect == finalStack || Objects.equals(effect, "Sunscreen") && sunscreenEffect == finalStack) {
-                        Cell cell = statusEffectsTable.getCell(finalStack);
-                        finalStack.remove();
-                        if (cell != null) {
-                            cell.setActor(null);
-                            cell.size(0).pad(0);
-                        }
-                        statusEffectsTable.invalidateHierarchy();
-                    }
-                    if (Objects.equals(effect, "Poison") && poisonEffect == finalStack) {
-                        poisonEffect = null;
-                    } else if (Objects.equals(effect, "Buff") && bloodEffect == finalStack) {
-                        bloodEffect = null;
-                    } else if  (Objects.equals(effect, "Freeze") && freezeEffect == finalStack) {
-                        freezeEffect = null;
-                    } else if  (Objects.equals(effect, "Sunscreen") && sunscreenEffect == finalStack) {
-                        sunscreenEffect = null;
-                    }
-                })
+                Actions.run(() -> removeEffectIfExpired(effectName, finalStack))
         ));
     }
 
 
+    private Stack getActiveEffect(String effectName) {
+        switch (effectName) {
+            case "Poison":    return poisonEffect;
+            case "Buff":      return bloodEffect;
+            case "Freeze":    return freezeEffect;
+            case "Sunscreen": return sunscreenEffect;
+            default:          return null;
+        }
+    }
+
+    private void setActiveEffect(String effectName, Stack stack) {
+        switch (effectName) {
+            case "Poison":    poisonEffect = stack; break;
+            case "Buff":      bloodEffect = stack; break;
+            case "Freeze":    freezeEffect = stack; break;
+            case "Sunscreen": sunscreenEffect = stack; break;
+        }
+    }
+
+    private void removeEffectIfExpired(String effectName, Stack stackToRemove) {
+        if (getActiveEffect(effectName) == stackToRemove) {
+            Cell cell = statusEffectsTable.getCell(stackToRemove);
+            stackToRemove.remove();
+
+            if (cell != null) {
+                cell.setActor(null);
+                cell.size(0).pad(0);
+            }
+            statusEffectsTable.invalidateHierarchy();
+
+            setActiveEffect(effectName, null);
+        }
+    }
 }

@@ -7,8 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.effects.Buff;
@@ -22,22 +20,25 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class DevConsole {
     private final Map<String, Consumer<String>> commandMap = new HashMap<>();
-    Pattern pattern;
-    private MazeRunnerGame game;
-    private GameScreen gameScreen;
     private Stage stage;
     private Table table;
     ;
     private String setCommands;
     private String getCommands;
     private Player player;
-    private HUD hud;
     private  TextField inputField;
+    private MazeRunnerGame game;
+    private HUD hud;
+    private GameScreen gameScreen;
 
 
-    public DevConsole(MazeRunnerGame game, GameScreen gameScreen, Stage stage, Player player, HUD hud) {
+    public DevConsole(MazeRunnerGame game,GameScreen gameScreen, HUD hud,  Stage stage, Player player) {
+        this.game = game;
+        this.hud = hud;
+        this.gameScreen = gameScreen;
 
         setCommands = "XP|HP|SpeedMultiplier|Dash|Invis|GodMode";
         getCommands = "Buff|Debuff|Keys|Help";
@@ -51,10 +52,7 @@ public class DevConsole {
 
         Pattern pattern = Pattern.compile(regex);
 
-        this.game = game;
-        this.gameScreen = gameScreen;
         this.player = player;
-        this.hud = hud;
 
 
 //        Pixmap pixmap = new Pixmap(1000, 950, Pixmap.Format.RGBA8888);
