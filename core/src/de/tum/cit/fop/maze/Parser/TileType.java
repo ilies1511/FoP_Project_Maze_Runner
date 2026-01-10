@@ -18,6 +18,10 @@ public enum TileType {
 	WALL_6,
 	WALL_7,
 	WALL_8,
+	WALL_HIGH_1,
+	WALL_HIGH_2,
+	WALL_HIGH_3,
+	WALL_HIGH_4,
 
 	DANCE_FLOOR,
 	EMPTY_1,
