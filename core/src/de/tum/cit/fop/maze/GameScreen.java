@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
 		this.game = game;
 		Drawable.initializeTextureMap(game);
 		init_mode();
-        viewport = new FitViewport(2000, 1200); // TODO maybe add camera in the brackets
+        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionHeight(), game.getGameInfo().getSettings().getResolutionWidth());
         stage = new Stage(viewport); // Create a stage for UI elements
         devStage = new Stage(viewport);
         achievementUI = new AchievementUI(stage,game,soundController);
