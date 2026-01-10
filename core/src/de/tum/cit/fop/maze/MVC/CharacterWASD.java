@@ -19,27 +19,27 @@ import java.util.ListIterator;
 public class CharacterWASD {
     public  CharacterWASD() {}
     public static boolean yAxis(Player player, Boolean isMoving, MazeRunnerGame game) {
+        boolean isXmoving = Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey()) || Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey());
         float speed = player.getPlayerGameObject().getSpeed();
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
             player.getPlayerGameObject().velocity.y = speed;
-            if(player.hasEffect(Invis.class)){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
+            if (!isXmoving) {
+                if (player.hasEffect(Invis.class)) {
+                    player.changeAnimation(AnimationType.CHARACTER_INVIS_UP);
+                } else {
+                    player.changeAnimation(AnimationType.CHARACTER_UP);
+                }
             }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_UP);
-            }
-
             return true;
-        }
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
+        } else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getDownKey())) {
             player.getPlayerGameObject().velocity.y = -speed;
-            if(player.hasEffect(Invis.class)){
-                player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
+            if (!isXmoving) {
+                if (player.hasEffect(Invis.class)) {
+                    player.changeAnimation(AnimationType.CHARACTER_INVIS_DOWN);
+                } else {
+                    player.changeAnimation(AnimationType.CHARACTER_DOWN);
+                }
             }
-            else{
-                player.changeAnimation(AnimationType.CHARACTER_DOWN);
-            }
-
             return true;
         }
         else {
