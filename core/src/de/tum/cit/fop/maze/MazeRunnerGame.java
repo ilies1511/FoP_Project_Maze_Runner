@@ -74,6 +74,7 @@ public class MazeRunnerGame extends Game {
     private TextureRegion wallTile6;
     private TextureRegion wallTile7;
     private TextureRegion wallTile8;
+    private TextureRegion buildingTile;
 
     private TextureRegion decor1;
     private TextureRegion decor2;
@@ -482,6 +483,7 @@ public class MazeRunnerGame extends Game {
             TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 18,382,120,120);
             TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293,382,120,120);
             TextureRegion wallTexture3 = new TextureRegion(assetsSheet, 563,382,120,120);
+            TextureRegion buildingTexture = new TextureRegion(assetsSheet, 694,382,120,120);
             TextureRegion wallTexture4 = new TextureRegion(assetsSheet, 824,382,120,120);
             TextureRegion wallTexture5 = new TextureRegion(assetsSheet, 18,533,120,120);
             TextureRegion wallTexture6 = new TextureRegion(assetsSheet, 157,533,120,120);
@@ -546,7 +548,7 @@ public class MazeRunnerGame extends Game {
 
             this.casketTile = casketTexture;
 
-
+            this.buildingTile = buildingTexture;
 
 
             this.exitClosedTexture = exitTexture;
@@ -987,5 +989,9 @@ public class MazeRunnerGame extends Game {
 
     public TextureRegion getStartAchievement() {
         return startAchievement;
+    }
+
+    public TextureRegion getBuildingTile() {
+        return buildingTile;
     }
 }

@@ -119,7 +119,6 @@ public class HUD {
     }
 
     public void createArrow(){
-
        if(!hasArrow){
            arrow = new Image(game.getArrow());
            //arrowTable.add(arrow).center().width(150).height(150);
@@ -173,7 +172,6 @@ public class HUD {
 
     }
     public void rotateArrow(){
-
         if(exit!=null){
             arrowFollow();
             arrow.setOrigin(Align.center);
