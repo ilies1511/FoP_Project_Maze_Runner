@@ -43,6 +43,7 @@ public class Bouncer extends Enemy {
         }
 
         chase(deltaTime, playerPosition, gameField);
+        AnimationDirection();
     }
 
     private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
