@@ -90,7 +90,12 @@ public class Drawable {
 	}
 
 	public void changeAnimation(AnimationType animationType) {
-		this.currentAnimation = textureMap.get(animationType);
+        Animation<TextureRegion> newAnimation = textureMap.get(animationType);
+        if(currentAnimation!=newAnimation){
+            currentAnimation = newAnimation;
+            animationTime = 0f;
+        }
+
 	}
 
 	public void animate(Batch batch, Vector2 position, Vector2 spriteSizes) {

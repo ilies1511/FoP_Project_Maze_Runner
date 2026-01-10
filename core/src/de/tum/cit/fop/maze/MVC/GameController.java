@@ -110,8 +110,12 @@ public class GameController {
 		}
 
         //WASD
-        isMoving = CharacterWASD.yAxis(player, isMoving, game);
-        isMoving = CharacterWASD.xAxis(player, isMoving, game);
+        if (CharacterWASD.yAxis(player, isMoving, game)){
+            isMoving = true;
+        }
+        if (CharacterWASD.xAxis(player, isMoving, game)){
+            isMoving = true;
+        }
 
 		// Attack Logic
         //TODO Attack animation + attack animation in INVIS
@@ -140,6 +144,7 @@ public class GameController {
 					Enemy enemy = (Enemy) obj;
 					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
 						iter.remove();
+                        soundController.playEnemyDieSound(1f);
 						Collectable drop = enemy.onDeath(player);
 						iter.add(drop);
 						System.out.println("Enemy Killed!");
