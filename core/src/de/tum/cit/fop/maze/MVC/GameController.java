@@ -110,8 +110,12 @@ public class GameController {
 		}
 
         //WASD
-        isMoving = CharacterWASD.yAxis(player, isMoving, game);
-        isMoving = CharacterWASD.xAxis(player, isMoving, game);
+        if (CharacterWASD.yAxis(player, isMoving, game)){
+            isMoving = true;
+        }
+        if (CharacterWASD.xAxis(player, isMoving, game)){
+            isMoving = true;
+        }
 
 		// Attack Logic
         //TODO Attack animation + attack animation in INVIS
