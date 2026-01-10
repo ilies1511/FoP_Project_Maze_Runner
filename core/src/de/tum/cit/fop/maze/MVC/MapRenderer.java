@@ -85,12 +85,14 @@ public class MapRenderer {
 					continue;
 				}
 				if (isSingleWall(gameField, x, y)) {
-					wallToDraw = getWallFront_Small(tile);
+//					wallToDraw = getWallFront_Small(tile);
+					wallToDraw = getWallFront(tile);
 					batch.draw(wallToDraw, x, y, 1, 1);
 					continue;
 				}
 				boolean wallBelow = isWallAt(gameField, x, y - 1);
-				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
+//				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
+				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront_Small(tile);
 				batch.draw(wallToDraw, x, y, 1, 1);
 			}
 		}
