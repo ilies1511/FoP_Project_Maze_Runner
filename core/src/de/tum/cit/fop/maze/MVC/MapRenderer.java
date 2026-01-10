@@ -33,6 +33,16 @@ public class MapRenderer {
 				|| t == TileType.WALL_HIGH_4;
 	}
 
+	private boolean isSingleWall(GameField f, int x, int y) {
+		if (!isWallAt(f, x, y)) {
+			return false;
+		}
+		return !isWallAt(f, x + 1, y)
+				&& !isWallAt(f, x - 1, y)
+				&& !isWallAt(f, x, y - 1)
+				&& !isWallAt(f, x, y + 1);
+	}
+
 	private boolean isWallAt(GameField f, int x, int y) {
 		if (x < 0 || y < 0 || x >= f.getWidth() || y >= f.getHeight()) {
 			return false;
@@ -54,15 +64,33 @@ public class MapRenderer {
 		};
 	}
 
+	private TextureRegion getWallFront_Small(TileType t) {
+//		return switch (t) {
+//			case WALL_1 -> game.getWallTile1();
+//			case WALL_2 -> game.getWallTile2();
+//			case WALL_3 -> game.getWallTile3();
+//			case WALL_4, WALL -> game.getWallTile4();
+//			default -> game.getWallTile1();
+//		};
+		return game.getWallTile4();
+	}
+
 	private void drawWalls2_5D(GameField gameField) {
 		for (int y = 0; y < gameField.getHeight(); y++) {
 			for (int x = 0; x < gameField.getWidth(); x++) {
+				TextureRegion wallToDraw;
 				TileType tile = gameField.getTile(x, y);
+
 				if (!isWall(tile)) {
 					continue;
 				}
+				if (isSingleWall(gameField, x, y)) {
+					wallToDraw = getWallFront_Small(tile);
+					batch.draw(wallToDraw, x, y, 1, 1);
+					continue;
+				}
 				boolean wallBelow = isWallAt(gameField, x, y - 1);
-				TextureRegion wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
+				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
 				batch.draw(wallToDraw, x, y, 1, 1);
 			}
 		}
