@@ -111,10 +111,10 @@ public class GameScreen implements Screen {
 
         this.hud = new HUD(player, stage, game, this);
 
-        progressionOverlay = new ProgressionOverlay(stage, game, this, player, hud);
-        devConsole = new DevConsole(game, this, devStage, player, hud);
+        progressionOverlay = new ProgressionOverlay(game, stage,  this);
+        devConsole = new DevConsole(game,this, hud, devStage, player);
 
-        pausedScreen = new PausedOverlay(stage, game, this);
+        pausedScreen = new PausedOverlay(game, stage,  this);
 		this.mapRenderer = new MapRenderer(game);
 		this.gameController = new GameController(game, player, hud, gameField, soundController, this);
 
@@ -146,7 +146,7 @@ public class GameScreen implements Screen {
 
         vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
-//        viewport.apply();
+        viewport.apply();
 
 		handleGlobalInput();
 

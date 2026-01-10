@@ -22,13 +22,13 @@ public class PausedOverlay {
 
     private final GameScreen gameScreen;
     private Stage stage;
-    private MazeRunnerGame game;
     private Table table;
     private SoundController soundController;
+    private MazeRunnerGame game;
 
-    public PausedOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
-        this.game = game;
+    public PausedOverlay(MazeRunnerGame game, Stage stage, GameScreen gameScreen) {
         this.gameScreen = gameScreen;
+        this.game = game;
         soundController = gameScreen.getSoundController();
         table = new Table();
         table.setFillParent(true);

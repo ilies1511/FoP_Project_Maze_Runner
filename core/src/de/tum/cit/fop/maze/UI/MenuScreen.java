@@ -47,12 +47,12 @@ public class MenuScreen implements Screen {
         soundController.playMainMenuMusic(0.5f);
 
 
-        Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
-        stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+        Viewport viewport = new FitViewport(2000, 1200);
+        stage = new Stage(viewport, game.getSpriteBatch());
 
-        table = new Table(); // Create a table for layout
-        table.setFillParent(true); // Make the table fill the stage
-        stage.addActor(table); // Add the table to the stage
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
         table.top();
 
@@ -62,7 +62,7 @@ public class MenuScreen implements Screen {
 
 
 
-        // Create and add a button to go to the game screen
+
         TextButton goToStoryMode = new TextButton("Story Mode", game.getSkin(), "vampire-style");
         table.add(goToStoryMode).width(300).left().padLeft(50).padBottom(50);
         goToStoryMode.getLabel().setTouchable(Touchable.disabled);

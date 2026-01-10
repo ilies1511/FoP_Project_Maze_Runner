@@ -21,9 +21,7 @@ import de.tum.cit.fop.maze.objects.Player;
 
 public class ProgressionOverlay {
     private final GameScreen gameScreen;
-    private final HUD hud;
     private Stage stage;
-    private MazeRunnerGame game;
     private Table table;
     private int healthUpgrades;
     private int speedUpgrades;
@@ -31,17 +29,16 @@ public class ProgressionOverlay {
     private boolean healthDisable;
     private boolean speedDisable;
     private boolean invisDisable;
-
+    private MazeRunnerGame game;
     private Player player;
+
     private SoundController soundController;
 
-    public ProgressionOverlay(Stage stage, MazeRunnerGame game, GameScreen gameScreen, Player player, HUD hud) {
-
-
+    public ProgressionOverlay(MazeRunnerGame game, Stage stage,  GameScreen gameScreen ) {
         this.game = game;
+        this.player = gameScreen.getPlayer();
+
         this.gameScreen = gameScreen;
-        this.player = player;
-        this.hud = hud;
 
         soundController = gameScreen.getSoundController();
 
