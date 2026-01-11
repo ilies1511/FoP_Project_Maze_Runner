@@ -49,6 +49,10 @@ public class MapConverter {
 		LEGEND.put('[', TileType.WALL_6);
 		LEGEND.put(']', TileType.WALL_7);
 		LEGEND.put('^', TileType.WALL_8);
+		LEGEND.put('1', TileType.WALL_HIGH_1);
+		LEGEND.put('2', TileType.WALL_HIGH_2);
+		LEGEND.put('3', TileType.WALL_HIGH_3);
+		LEGEND.put('4', TileType.WALL_HIGH_4);
 
 		// Floor Variations
 		LEGEND.put('*', TileType.DANCE_FLOOR);
@@ -71,7 +75,6 @@ public class MapConverter {
 		LEGEND.put('h', TileType.DECOR_8);
 		LEGEND.put('i', TileType.DECOR_9);
 		LEGEND.put('j', TileType.DECOR_10);
-		LEGEND.put('k', TileType.DECOR_11);
 		// EMD -- Story Mode
 	}
 
@@ -145,6 +148,7 @@ public class MapConverter {
 				{"maps/tmp/berghain_darkroom.txt", "maps/story_mode/berghain_darkroom.properties"},
 				{"maps/tmp/berghain_panorama.txt", "maps/story_mode/berghain_panorama.properties"},
 				{"maps/tmp/test.txt", "maps/story_mode/test.properties"},
+				{"maps/tmp/berghain_eg.txt", "maps/story_mode/berghain_eg.properties"},
 				// TODO: 03.01 Add more
 		};
 
