@@ -17,22 +17,6 @@ public class MapRenderer {
 		this.batch = game.getSpriteBatch();
 	}
 
-	private void drawDecors(GameField gameField) {
-		for (int y = 0; y < gameField.getHeight(); y++) {
-			for (int x = 0; x < gameField.getWidth(); x++) {
-				TileType tile = gameField.getTile(x, y);
-				if (!isDecor(tile)) {
-					continue;
-				}
-				TextureRegion decor = getDecorTexture(tile);
-				if (decor == null) {
-					continue;
-				}
-				batch.draw(decor, x, y, 1, 1);
-			}
-		}
-	}
-
 	private boolean isDecor(TileType t) {
 		return t == TileType.DECOR_1
 				|| t == TileType.DECOR_2
@@ -105,10 +89,13 @@ public class MapRenderer {
 
 	private TextureRegion getWallFront(TileType t) {
 		return switch (t) {
-			case WALL, WALL_1 -> game.getWallTile1();
+			case WALL, WALL_1 -> game.getWallTile1(); // TODO: 11.01 - iziane --> swap to case WALL, WALL_1 -> game.getWallHigh1();
 			case WALL_2 -> game.getWallHigh2();
 			case WALL_3 -> game.getWallHigh3();
 			case WALL_4 -> game.getWallHigh4();
+			case WALL_5 -> game.getWallHigh5();
+			case WALL_6 -> game.getWallHigh6();
+			case WALL_7 -> game.getWallHigh7();
 			default -> game.getWallHigh1();
 		};
 	}
@@ -116,12 +103,29 @@ public class MapRenderer {
 	private TextureRegion getWallFront_Small(TileType t) {
 		return switch (t) {
 //			case WALL_1 -> game.getWallTile1();
-			case WALL, WALL_1 -> game.getWallHigh1();
+			case WALL, WALL_1 -> game.getWallHigh1(); // TODO: 11.01 - iziane --> swap to case WALL, WALL_1 -> game.getWallTile1();
 			case WALL_2 -> game.getWallTile2();
 			case WALL_3 -> game.getWallTile3();
 			case WALL_4 -> game.getWallTile4();
+			case WALL_5, WALL_6, WALL_7, WALL_8 -> game.getWallTile8();
 			default -> game.getWallTile1();
 		};
+	}
+
+	private void drawDecors(GameField gameField) {
+		for (int y = 0; y < gameField.getHeight(); y++) {
+			for (int x = 0; x < gameField.getWidth(); x++) {
+				TileType tile = gameField.getTile(x, y);
+				if (!isDecor(tile)) {
+					continue;
+				}
+				TextureRegion decor = getDecorTexture(tile);
+				if (decor == null) {
+					continue;
+				}
+				batch.draw(decor, x, y, 1, 1);
+			}
+		}
 	}
 
 	private void drawWalls2_5D(GameField gameField) {

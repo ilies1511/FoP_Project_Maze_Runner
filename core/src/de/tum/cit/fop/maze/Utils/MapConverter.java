@@ -75,6 +75,7 @@ public class MapConverter {
 		LEGEND.put('h', TileType.DECOR_8);
 		LEGEND.put('i', TileType.DECOR_9);
 		LEGEND.put('j', TileType.DECOR_10);
+		LEGEND.put('k', TileType.CASKET);
 		// EMD -- Story Mode
 	}
 

@@ -9,14 +9,14 @@ M = Enemy
 
 WALLS:
 # = Default
-= = Wall_1
-% = Wall_2
-| = Wall_3
-- = Wall_4
-+ = Wall_5
-[ = Wall_6
-] = Wall_7
-^ = Wall_8
+= = horizontal metal aka Wall_1
+% = cross metal aka Wall_2
+| = full beton aka Wall_3
+- = brick aka Wall_4
++ = Berghain tag aka Wall_5
+[ = Techno aka Wall_6
+] = Love tag + % aka Wall_7
+^ = small tags in purple and blue aka Wall_8
 1 = Wall_High_1
 2 = Wall_High_2
 3 = Wall_High_3
@@ -24,14 +24,14 @@ WALLS:
 B = buildingTile
 
 FLOORS:
-. = Default
-, = Floor_1
-: = Floor_2
-; = Floor_3
-" = Floor_4
-` = Floor_5
-~ = Floor_6
-_ = Floor_7
+. = toilet
+, = beton aka Floor_1
+: = metal aka Floor_2
+; = wooden aka Floor_3
+" = Toilet aka Floor_4
+` = gummi aka Floor_5
+~ = Pflaster aka Floor_6
+_ = yellow aka Floor_7
 
 DECOR:
 a = Speaker_right
@@ -40,9 +40,9 @@ c = DC
 d = Speaker_left
 e = Table with drinks
 f = drinks
-g = Candle small
-h = Candle big
-i = no photos
-j = separation
-k = statue
+g = Candle small + Candle big
+h = no photos
+i = separation
+j = statue
+k = Casket
 */
