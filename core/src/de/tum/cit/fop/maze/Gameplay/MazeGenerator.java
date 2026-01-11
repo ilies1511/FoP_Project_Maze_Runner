@@ -60,7 +60,7 @@ public class MazeGenerator {
 			}
 		}
 		gameField.setTile((int) exitCoords.x, (int) exitCoords.y, TileType.EXIT);
-		gameField.addGameObject(new Exit(exitCoords.x, exitCoords.y, game));
+		gameField.addGameObject(new Exit(exitCoords.x, exitCoords.y));
 	}
 
 	private static ArrayList<Vector2> getUnvisitedNeighbors(Vector2 current, GameField field, int w, int h) {

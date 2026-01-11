@@ -29,7 +29,7 @@ import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 //TODO (Connect Parser to Game Assets) - iziane
 public class MazeParser {
 	// BEGIN -- Methods
-	private static void processTile(GameField field, int x, int y, int id, MazeRunnerGame game) {
+	private static void processTile(GameField field, int x, int y, int id) {
 		TileType[] allTypes = TileType.values();
 		TileType type;
 
@@ -50,7 +50,7 @@ public class MazeParser {
 				break;
 			case EXIT:
 				field.setTile(x, y, TileType.EXIT);
-				field.addGameObject(new Exit(x, y, game));
+				field.addGameObject(new Exit(x, y));
 				break;
 			case TRAP:
 				field.setTile(x, y, TileType.EMPTY);
@@ -85,7 +85,7 @@ public class MazeParser {
 				int y = Integer.parseInt(parts[1].trim());
 				int typeId = Integer.parseInt(value.trim());
 
-				processTile(gameField, x, y, typeId, game);
+				processTile(gameField, x, y, typeId);
 			}
 		}
 	}
