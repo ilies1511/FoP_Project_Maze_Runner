@@ -34,12 +34,14 @@ public class MapRenderer {
 	}
 
 	private boolean isSingleWall(GameField f, int x, int y) {
-		if (!isWallAt(f, x, y)) {
+		if (!isWallAt(f, x, y) || y == 0 ) {
 			return false;
 		}
-		return !isWallAt(f, x + 1, y)
-				&& !isWallAt(f, x - 1, y)
-				&& !isWallAt(f, x, y - 1)
+//		return !isWallAt(f, x + 1, y)
+//				&& !isWallAt(f, x - 1, y)
+//				&& !isWallAt(f, x, y - 1)
+//				&& !isWallAt(f, x, y + 1);
+		return !isWallAt(f, x, y - 1)
 				&& !isWallAt(f, x, y + 1);
 	}
 
@@ -56,23 +58,23 @@ public class MapRenderer {
 
 	private TextureRegion getWallFront(TileType t) {
 		return switch (t) {
-			case WALL_1 -> game.getWallHigh1();
+			case WALL, WALL_1 -> game.getWallTile1();
 			case WALL_2 -> game.getWallHigh2();
 			case WALL_3 -> game.getWallHigh3();
-			case WALL_4, WALL -> game.getWallHigh4();
-			default -> game.getWallHigh1();
+			case WALL_4 -> game.getWallHigh4();
+		default -> game.getWallHigh1();
 		};
 	}
 
 	private TextureRegion getWallFront_Small(TileType t) {
-//		return switch (t) {
+		return switch (t) {
 //			case WALL_1 -> game.getWallTile1();
-//			case WALL_2 -> game.getWallTile2();
-//			case WALL_3 -> game.getWallTile3();
-//			case WALL_4, WALL -> game.getWallTile4();
-//			default -> game.getWallTile1();
-//		};
-		return game.getWallTile4();
+			case WALL, WALL_1 -> game.getWallHigh1();
+			case WALL_2 -> game.getWallTile2();
+			case WALL_3 -> game.getWallTile3();
+			case WALL_4 -> game.getWallTile4();
+			default -> game.getWallTile1();
+		};
 	}
 
 	private void drawWalls2_5D(GameField gameField) {
@@ -85,14 +87,12 @@ public class MapRenderer {
 					continue;
 				}
 				if (isSingleWall(gameField, x, y)) {
-//					wallToDraw = getWallFront_Small(tile);
-					wallToDraw = getWallFront(tile);
+					wallToDraw = getWallFront_Small(tile);
 					batch.draw(wallToDraw, x, y, 1, 1);
 					continue;
 				}
 				boolean wallBelow = isWallAt(gameField, x, y - 1);
-//				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
-				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront_Small(tile);
+				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
 				batch.draw(wallToDraw, x, y, 1, 1);
 			}
 		}
