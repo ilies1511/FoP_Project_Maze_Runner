@@ -514,7 +514,7 @@ public class MazeRunnerGame extends Game {
 
     private void loadMazeTiles() {
         try {
-            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 18,382,120,120);
+            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 22,382,120,120);
             TextureRegion wallHighTexture1 = new TextureRegion(assetsSheet, 156,382,120,120);
             TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293,382,120,120);
             TextureRegion wallHighTexture2 = new TextureRegion(assetsSheet, 432,382,120,120);
@@ -592,7 +592,6 @@ public class MazeRunnerGame extends Game {
             this.wallHigh2 = wallHighTexture2;
             this.wallHigh3 = wallHighTexture3;
             this.wallHigh4 = wallHighTexture4;
-
 
             this.exitClosedTexture = exitTexture;
         } catch (Exception e) {
