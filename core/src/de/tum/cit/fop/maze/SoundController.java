@@ -24,7 +24,7 @@ public class SoundController {
 //TODO Enemy, key, playerDie, playerHeal, win, touristRun  sounds
 
         public SoundController(){
-            backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/PressFuse-FrenchFuse.mp3"));
+            backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/background_music.mp3"));
             stepping = Gdx.audio.newMusic(Gdx.files.internal("Sounds/stepping.mp3"));
             mainMenu = Gdx.audio.newMusic(Gdx.files.internal("Sounds/mainMenuBackground.mp3"));
             backgroundStory = Gdx.audio.newMusic(Gdx.files.internal("Sounds/backgroundStory.mp3"));
