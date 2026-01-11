@@ -18,7 +18,7 @@ import java.util.ListIterator;
 
 public class CharacterWASD {
     public  CharacterWASD() {}
-    public static boolean yAxis(Player player, Boolean isMoving, MazeRunnerGame game) {
+    public static boolean yAxis(Player player, MazeRunnerGame game) {
         boolean isXmoving = Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey()) || Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey());
         float speed = player.getPlayerGameObject().getSpeed();
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getUpKey())) {
@@ -48,7 +48,7 @@ public class CharacterWASD {
         }
     }
 
-    public static boolean xAxis(Player player, Boolean isMoving, MazeRunnerGame game) {
+    public static boolean xAxis(Player player, MazeRunnerGame game) {
         float speed = player.getPlayerGameObject().getSpeed();
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             player.getPlayerGameObject().velocity.x = -speed;
@@ -74,5 +74,20 @@ public class CharacterWASD {
             player.getPlayerGameObject().velocity.x = 0f;
             return false;
         }
+    }
+    public static void attackChange(Player player, MazeRunnerGame game) {
+        Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
+
+        if (currentAnim == game.getCharacterUpAnimation() || currentAnim == game.getCharacterInvisUpAnimation()) {
+            player.changeAnimation(AnimationType.CHARACTER_ATTACK_UP);
+        } else if (currentAnim == game.getCharacterLeftAnimation() || currentAnim == game.getCharacterInvisLeftAnimation()) {
+            player.changeAnimation(AnimationType.CHARACTER_ATTACK_LEFT);
+        } else if (currentAnim == game.getCharacterRightAnimation() || currentAnim == game.getCharacterInvisRightAnimation()) {
+            player.changeAnimation(AnimationType.CHARACTER_ATTACK_RIGHT);
+        } else {
+            // idle
+            player.changeAnimation(AnimationType.CHARACTER_ATTACK_DOWN);
+        }
+        System.out.println("Attacking!");
     }
 }

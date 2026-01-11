@@ -43,7 +43,6 @@ public class GameController {
 	private final GameScreen gameScreen;
 	private WaveManager waveManager = null;
 
-	private float flickerTimer = 0f;
 
 	public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
 		this.game = game;
@@ -110,10 +109,10 @@ public class GameController {
 		}
 
         //WASD
-        if (CharacterWASD.yAxis(player, isMoving, game)){
+        if (CharacterWASD.yAxis(player, game)){
             isMoving = true;
         }
-        if (CharacterWASD.xAxis(player, isMoving, game)){
+        if (CharacterWASD.xAxis(player, game)){
             isMoving = true;
         }
 
@@ -122,22 +121,10 @@ public class GameController {
 		if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             player.setAttacking(true);
             player.endEffect(Invis.class); // attacking breaks invisibility
-            Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
+            CharacterWASD.attackChange(player, game);
+            soundController.playPlayerHitSound(1);
 
-            if (currentAnim == game.getCharacterUpAnimation() || currentAnim == game.getCharacterInvisUpAnimation()) {
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_UP);
-            } else if (currentAnim == game.getCharacterLeftAnimation() || currentAnim == game.getCharacterInvisLeftAnimation()) {
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_LEFT);
-            } else if (currentAnim == game.getCharacterRightAnimation() || currentAnim == game.getCharacterInvisRightAnimation()) {
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_RIGHT);
-            } else {
-                // idle
-                player.changeAnimation(AnimationType.CHARACTER_ATTACK_DOWN);
-            }
-			soundController.playPlayerHitSound(1);
-			System.out.println("Attacking!");
-
-			ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
+            ListIterator<GameObject> iter = gameField.getGameObjects().listIterator();
 			while (iter.hasNext()) {
 				GameObject obj = iter.next();
 				if (obj instanceof Enemy) {
