@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -48,11 +49,11 @@ public class SettingsScreen {
 
         Label label = new Label("Settings", game.getSkin(), "vampire-style");
         label.setFontScale(3.0f);
-        table.add(label).expandX().center().padTop(50).padBottom(80).row();
+        table.add(label).expandX().center().colspan(4).row();
 
         // Back to menu button
         TextButton goToMenuButton = new TextButton("Back to menu", game.getSkin(), "vampire-style");
-        table.add(goToMenuButton).width(400).row();
+        table.add(goToMenuButton).width(400).colspan(4).row();
         goToMenuButton.getLabel().setTouchable(Touchable.disabled);
         goToMenuButton.addListener(new ClickListener() {
             @Override
@@ -128,8 +129,75 @@ public class SettingsScreen {
                 () -> game.getGameInfo().getSettings().getZoomOutKey(),
                 (code) -> game.getGameInfo().getSettings().setZoomOutKey(code));
 
+        table.add(new Label("Resolution Height:", game.getSkin(), "vampire-style")).width(400);
+
+        TextField resolutionHeight = new TextField("", game.getSkin(), "default");
+        TextField.TextFieldStyle style = resolutionHeight.getStyle();
+
+        if (style.background != null) {
+            style.background.setRightWidth(20);
+        }
+        resolutionHeight.setStyle(style);
+        resolutionHeight.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionHeight()));
+        resolutionHeight.setTextFieldListener(new TextField.TextFieldListener() {
+            @Override
+            public void keyTyped(TextField textField, char c) {
+                if ((c == '\r' || c == '\n') && !textField.getText().isEmpty()) {
+                    String height = textField.getText();
+                    if( Integer.parseInt(height) < 2147483647 && Integer.parseInt(height)> 0) {
+                        try {
+                        game.getGameInfo().getSettings().setResolutionHeight(Integer.parseInt(height));
+                            stage.getViewport().update(Integer.parseInt(height),stage.getViewport().getScreenHeight() , true);
+                        } catch (Exception e) {
+                            resolutionHeight.setText("");
+                            System.out.println("not an int: " + e.getMessage());
+                        }
+                    }
+                    else{
+                        resolutionHeight.setText("");
+                    }
+
+                }
+            }
+        });
+        table.add(resolutionHeight).width(400);
+
+        table.add(new Label("Resolution Width:", game.getSkin(), "vampire-style")).width(400);
+
+        TextField resolutionWidth = new TextField("", game.getSkin(), "default");
+        style = resolutionWidth.getStyle();
+        if (style.background != null) {
+            style.background.setRightWidth(20);
+        }
+        resolutionWidth.setStyle(style);
+        resolutionWidth.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionWidth()));
+        resolutionWidth.setTextFieldListener(new TextField.TextFieldListener() {
+            @Override
+            public void keyTyped(TextField textField, char c) {
+                if ((c == '\r' || c == '\n') && !textField.getText().isEmpty()) {
+                    String width = textField.getText();
+                    if( Integer.parseInt(width) < 2147483647 && Integer.parseInt(width)> 0) {
+                        try {
+                            game.getGameInfo().getSettings().setResolutionWidth(Integer.parseInt(width));
+                            stage.getViewport().update(stage.getViewport().getScreenHeight(), Integer.parseInt(width), true); // Update the stage viewport on resize
+                        } catch (Exception e) {
+                            resolutionWidth.setText("");
+                            System.out.println("not an int: " + e.getMessage());
+                        }
+                    }
+                    else{
+                        resolutionWidth.setText("");
+                    }
+
+                }
+            }
+        });
+
+
+        table.add(resolutionWidth).width(400).row();
+
         TextButton restoreDefaultSettingsButton = new TextButton("Restore default settings", game.getSkin(), "vampire-style");
-        table.add(restoreDefaultSettingsButton).width(400).row();
+        table.add(restoreDefaultSettingsButton).width(400).colspan(4).row();
         restoreDefaultSettingsButton.getLabel().setTouchable(Touchable.disabled);
         restoreDefaultSettingsButton.addListener(new ClickListener() {
             @Override
@@ -150,6 +218,9 @@ public class SettingsScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 game.getGameInfo().restoreDefaultSettings(); // Restore default settings when pressed
                 updateKeyBindingButtons();
+                resolutionHeight.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionHeight()));
+                resolutionWidth.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionWidth()));
+                stage.getViewport().update(game.getGameInfo().getSettings().getResolutionHeight(),game.getGameInfo().getSettings().getResolutionWidth(), true);
             }
         });
     }
@@ -177,7 +248,7 @@ public class SettingsScreen {
             }
         });
 
-        this.table.add(binding).width(400).row();
+        this.table.add(binding).width(400).colspan(4).row();
 
         this.bindingButtons.add(binding);
     }

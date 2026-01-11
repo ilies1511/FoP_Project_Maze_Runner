@@ -35,6 +35,7 @@ public class MenuScreen implements Screen {
     private final LeaderboardScreen leaderboardScreen;
     private final AchievementScreen achievementScreen;
 	private MazeRunnerGame game;
+    private Viewport viewport;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -47,7 +48,7 @@ public class MenuScreen implements Screen {
         soundController.playMainMenuMusic(0.5f);
 
 
-        Viewport viewport = new FitViewport(2000, 1200);
+        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionHeight(), game.getGameInfo().getSettings().getResolutionWidth());
         stage = new Stage(viewport, game.getSpriteBatch());
 
         table = new Table();
@@ -316,4 +317,7 @@ public class MenuScreen implements Screen {
         return soundController;
     }
 
+    public Viewport getViewport() {
+        return viewport;
+    }
 }

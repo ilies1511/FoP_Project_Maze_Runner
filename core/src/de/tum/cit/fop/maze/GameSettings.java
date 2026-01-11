@@ -21,6 +21,8 @@ public class GameSettings {
     public int abilityKey;
     public int consoleKey;
     public int progressionTreeKey;
+    public int resolutionHeight;
+    public int ResolutionWidth;
 
     public GameSettings() {
         this.maxHealth = 10;
@@ -36,6 +38,8 @@ public class GameSettings {
         this.abilityKey = Input.Keys.Q;
         this.consoleKey = Input.Keys.SLASH;
         this.progressionTreeKey = Input.Keys.I;
+        this.resolutionHeight = 1920;
+        this.ResolutionWidth = 1080;
     }
 
     static public GameSettings loadGameSettings() {
@@ -164,6 +168,22 @@ public class GameSettings {
     public void setZoomInKey(int zoomInKey) {
         this.zoomInKey = zoomInKey;
         saveToJson();
+    }
+
+    public int getResolutionHeight() {
+        return resolutionHeight;
+    }
+
+    public void setResolutionHeight(int resolutionHeight) {
+        this.resolutionHeight = resolutionHeight;
+    }
+
+    public int getResolutionWidth() {
+        return ResolutionWidth;
+    }
+
+    public void setResolutionWidth(int getResolutionWidth) {
+        this.ResolutionWidth = getResolutionWidth;
     }
 
     public int getZoomOutKey() {
