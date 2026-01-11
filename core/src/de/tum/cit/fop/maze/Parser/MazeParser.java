@@ -26,7 +26,7 @@ import java.util.Properties;
 //TODO (Connect Parser to Game Assets) - iziane
 public class MazeParser {
 	// BEGIN -- Methods
-	private static void processTile(GameField field, int x, int y, int id, MazeRunnerGame game) {
+	private static void processTile(GameField field, int x, int y, int id) {
 		TileType[] allTypes = TileType.values();
 		TileType type;
 
@@ -47,7 +47,7 @@ public class MazeParser {
 				break;
 			case EXIT:
 				field.setTile(x, y, TileType.EXIT);
-				field.addGameObject(new Exit(x, y, game));
+				field.addGameObject(new Exit(x, y));
 				break;
 			case TRAP:
 				field.setTile(x, y, TileType.EMPTY);
@@ -55,7 +55,7 @@ public class MazeParser {
 				break;
 			case ENEMY:
 				field.setTile(x, y, TileType.EMPTY);
-				field.addGameObject(new Tourist(new Vector2(x, y)));
+				field.addGameObject(new Tourist(new Vector2(x, y))); //TODO 11.01 - iziane
 				break;
 			case KEY:
 				field.setTile(x, y, TileType.EMPTY);
@@ -82,7 +82,7 @@ public class MazeParser {
 				int y = Integer.parseInt(parts[1].trim());
 				int typeId = Integer.parseInt(value.trim());
 
-				processTile(gameField, x, y, typeId, game);
+				processTile(gameField, x, y, typeId);
 			}
 		}
 	}

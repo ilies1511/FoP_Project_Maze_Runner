@@ -141,12 +141,13 @@ public class MazeRunnerGame extends Game {
 	private GameMode gameMode;
 
 	public static final String[] STORY_LEVELS = {
+			"story_mode/berghain_main_big.properties",
+//			"story_mode/berghain_eg.properties",
 			"story_mode/test.properties",
 			"story_mode/berghain_main.properties",
 			"story_mode/berghain_panorama.properties",
 			"story_mode/berghain_darkroom.properties"
 	};
-
 
     /**
      * Constructor for MazeRunnerGame.
@@ -811,15 +812,15 @@ public class MazeRunnerGame extends Game {
         return wallTile4;
     }
 
-    public TextureRegion getWallTile5() {
+    public TextureRegion getWallHigh5() {
         return wallTile5;
     }
 
-    public TextureRegion getWallTile6() {
+    public TextureRegion getWallHigh6() {
         return wallTile6;
     }
 
-    public TextureRegion getWallTile7() {
+    public TextureRegion getWallHigh7() {
         return wallTile7;
     }
 

@@ -314,9 +314,14 @@ public class GameScreen implements Screen {
 		else {
 			System.err.println("CRITICAL: Map failed to load");
 		}
-//		player.setCurrentKeys(0);
-//		player.setHasKeys(false);
-//		hud.renderHUD();
+		player.setCurrentKeys(0);
+		player.setHasKeys(false);
+
+//		player.updateRequiredKeys();
+		player.setRequiredKeys(newMap.getRequiredKeys());
+
+
+		hud.updatePlayerKeys();
 	}
 
     public Camera getCamera() {
