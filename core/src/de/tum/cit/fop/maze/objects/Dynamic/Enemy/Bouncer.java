@@ -10,13 +10,17 @@ import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Bouncer extends Enemy {
 
+    private int lives = 2;
     private static final float MOVE_SPEED = 1.5f;
     private static final float DETECTION_RANGE = 7.0f;
     private float fleeTimer = 0f;
+    private float flickerTimer = 0f;
     private Vector2 currentDirection = new Vector2();
+    private boolean isFlickering = false;
 
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
@@ -26,7 +30,13 @@ public class Bouncer extends Enemy {
 
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
-        //TODO: Redirect when enaging with tourist
+        //TODO: Redirect when engaging with tourist
+        if (flickerTimer > 0) {
+            flickerTimer -= deltaTime;
+            if (flickerTimer <= 0) {
+                isFlickering = false;
+            }
+        }
         if (fleeTimer > 0) {
             fleeTimer -= deltaTime;
             velocity.set(currentDirection).scl(speed);
@@ -52,6 +62,16 @@ public class Bouncer extends Enemy {
     }
 
 
+    public void animate(Batch batch) {
+        if (isFlickering) {
+            if (MathUtils.sin(flickerTimer * 30) > 0) {
+                super.animate(batch);
+            }
+        } else {
+            super.animate(batch);
+        }
+    }
+
     public void AnimationDirection() {
         if (velocity.len2() < 0.1f) return;
 
@@ -62,6 +82,18 @@ public class Bouncer extends Enemy {
             if (velocity.y > 0) changeAnimation(AnimationType.BOUNCER_UP);
             else changeAnimation(AnimationType.BOUNCER_DOWN);
         }
+    }
+
+    public boolean takeDamage() {
+        lives--;
+        if (lives <= 0) {
+            return true;
+        }
+        fleeTimer = 0;
+        flee();
+        isFlickering = true;
+        flickerTimer = 2.0f;
+        return false; //survive
     }
 
     @Override
@@ -78,6 +110,7 @@ public class Bouncer extends Enemy {
     }
 
     public void chase(float deltaTime,  Vector2 playerPosition,  GameField gameField) {
+        //chase until hidden behind a wall
         Vector2 targetDir = new Vector2(playerPosition).sub(position).nor();
         if (!isBlocked(targetDir, deltaTime, gameField)) {
             velocity.set(targetDir).scl(speed);

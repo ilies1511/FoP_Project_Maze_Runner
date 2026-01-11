@@ -65,15 +65,18 @@ public class FleeingEnemy extends Enemy {
         }
     }
 
-    public static void scaredTourists(GameField gameField, Vector2 deathPosition) {
+    public static boolean scaredTourists(GameField gameField, Vector2 deathPosition) {
+        boolean scared = false;
         for (GameObject obj : gameField.getGameObjects()) {
             if (obj instanceof FleeingEnemy) {
                 FleeingEnemy tourist = (FleeingEnemy) obj;
                 if (tourist.getPosition().dst(deathPosition) < 6.0f) { //6 tiles
                     tourist.flee();
+                    scared = true;
                 }
             }
         }
+        return scared;
     }
 
     private boolean willHitWall(Vector2 velocity, float delta, GameField gameField) {

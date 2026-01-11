@@ -142,13 +142,24 @@ public class GameController {
 				GameObject obj = iter.next();
 				if (obj instanceof Enemy) {
 					Enemy enemy = (Enemy) obj;
-					if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
-						iter.remove();
-                        soundController.playEnemyDieSound(1f);
-						Collectable drop = enemy.onDeath(player);
-						iter.add(drop);
-						System.out.println("Enemy Killed!");
-                        FleeingEnemy.scaredTourists(gameField, enemy.getPosition());
+                    if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
+                        boolean isDead = true;
+                        if (enemy instanceof Bouncer) {
+                            isDead = ((Bouncer) enemy).takeDamage();
+                            if (!isDead) {
+                                soundController.playEnemyHitSound(1f);
+                            }
+                        }
+                        if (isDead) {
+                            iter.remove();
+                            soundController.playEnemyDieSound(1f);
+                            Collectable drop = enemy.onDeath(player);
+                            iter.add(drop);
+                            System.out.println("Enemy Killed!");
+                            if (FleeingEnemy.scaredTourists(gameField, enemy.getPosition())) {
+                                soundController.playTouristRunSound(1f);
+                            }
+                        }
                     }
 				}
 			}
@@ -260,9 +271,6 @@ public class GameController {
 					soundController.playPlayerHitSound(1);
 				}
 			}
-            if (enemy instanceof Bouncer) {
-                ((Bouncer) enemy).flee();
-            }
 		}
 	}
 
