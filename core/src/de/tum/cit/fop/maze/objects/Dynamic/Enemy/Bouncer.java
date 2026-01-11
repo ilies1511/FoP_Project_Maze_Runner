@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class Bouncer extends Enemy {
 //to loose bouncer you either run far away or hide behind a wall
     private int lives = 2;
-    private static final float MOVE_SPEED = 1.5f;
     private static final float DETECTION_RANGE = 7.0f;
     private float fleeTimer = 0f;
     private float flickerTimer = 0f;
@@ -22,7 +21,7 @@ public class Bouncer extends Enemy {
 
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
-        this.speed = MOVE_SPEED;}
+        this.speed = 1.5f;}
 
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {

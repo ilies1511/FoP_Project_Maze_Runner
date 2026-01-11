@@ -56,6 +56,7 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
     private Animation<TextureRegion> bouncerDown, bouncerUp, bouncerLeft, bouncerRight;
     private Animation<TextureRegion> junkieDown, junkieUp, junkieLeft, junkieRight;
+    private Animation<TextureRegion> junkieAttackDown, junkieAttackUp, junkieAttackLeft, junkieAttackRight;
     // Maze Textures
 
     private TextureRegion emptyTile1;
@@ -204,6 +205,7 @@ public class MazeRunnerGame extends Game {
         this.loadTouristAnimation();
         this.loadBouncerAnimation();
         this.loadJunkieAnimation();
+        this.loadJunkieAttcackAnimation();
 
         this.loadKeyShineAnimation();
         this.loadGarlicTrapAnimation();
@@ -497,6 +499,19 @@ public class MazeRunnerGame extends Game {
         junkieRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
     }
 
+    private void loadJunkieAttcackAnimation() {
+        Texture walkSheet = new Texture(Gdx.files.internal("junkie_att.png"));
+        int frameWidth = 64;
+        int frameHeight = 64;
+
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
+
+        junkieAttackUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 12));
+        junkieAttackLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 12));
+        junkieAttackDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 12));
+        junkieAttackRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 12));
+    }
+
     private void loadMazeTiles() {
         try {
             TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 18,382,120,120);
@@ -719,6 +734,11 @@ public class MazeRunnerGame extends Game {
     public Animation<TextureRegion> getJunkieUp() { return junkieUp; }
     public Animation<TextureRegion> getJunkieLeft() { return junkieLeft; }
     public Animation<TextureRegion> getJunkieRight() { return junkieRight; }
+
+    public Animation<TextureRegion> getJunkieAttackDown() {return junkieAttackDown;}
+    public Animation<TextureRegion> getJunkieAttackUp() {return junkieAttackUp;}
+    public Animation<TextureRegion> getJunkieAttackLeft() {return junkieAttackLeft;}
+    public Animation<TextureRegion> getJunkieAttackRight() {return junkieAttackRight;}
 
     // Collectable animation Getters
     public Animation<TextureRegion> getKeyShineAnimation() {

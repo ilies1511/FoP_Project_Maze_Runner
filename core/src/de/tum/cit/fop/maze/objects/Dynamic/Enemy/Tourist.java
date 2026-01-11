@@ -9,13 +9,13 @@ import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
 
-public class FleeingEnemy extends Enemy {
+public class Tourist extends Enemy {
     private float danceTimer = 0f;
     private float scareTimer = 0f;
     private Vector2 fleeDir = new Vector2();
 
 
-    public FleeingEnemy(Vector2 startPos) {
+    public Tourist(Vector2 startPos) {
         super(startPos, AnimationType.TOURIST_DOWN);
         this.speed = 2.5f; // faster than normal enemies
     }
@@ -24,8 +24,8 @@ public class FleeingEnemy extends Enemy {
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
 
         Vector2 separation = new Vector2();
-        List<FleeingEnemy> friends = gameField.getObjectsByType(FleeingEnemy.class);
-        for (FleeingEnemy other : friends) {
+        List<Tourist> friends = gameField.getObjectsByType(Tourist.class);
+        for (Tourist other : friends) {
             if (other == this) continue; // skip if urself
             if (position.dst(other.position) < 0.8f) {
                 // push away
@@ -68,8 +68,8 @@ public class FleeingEnemy extends Enemy {
     public static boolean scaredTourists(GameField gameField, Vector2 deathPosition) {
         boolean scared = false;
         for (GameObject obj : gameField.getGameObjects()) {
-            if (obj instanceof FleeingEnemy) {
-                FleeingEnemy tourist = (FleeingEnemy) obj;
+            if (obj instanceof Tourist) {
+                Tourist tourist = (Tourist) obj;
                 if (tourist.getPosition().dst(deathPosition) < 6.0f) { //6 tiles
                     tourist.flee();
                     scared = true;

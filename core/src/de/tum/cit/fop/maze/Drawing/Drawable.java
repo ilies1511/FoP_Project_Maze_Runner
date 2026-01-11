@@ -56,6 +56,10 @@ public class Drawable {
         tempMap.put(AnimationType.JUNKIE_UP, game.getJunkieUp());
         tempMap.put(AnimationType.JUNKIE_LEFT, game.getJunkieLeft());
         tempMap.put(AnimationType.JUNKIE_RIGHT, game.getJunkieRight());
+        tempMap.put(AnimationType.JUNKIE_ATTACK_DOWN, game.getJunkieAttackDown());
+        tempMap.put(AnimationType.JUNKIE_ATTACK_UP, game.getJunkieAttackUp());
+        tempMap.put(AnimationType.JUNKIE_ATTACK_LEFT, game.getJunkieAttackLeft());
+        tempMap.put(AnimationType.JUNKIE_ATTACK_RIGHT, game.getJunkieAttackRight());
 		tempMap.put(AnimationType.CHARACTER_VICTORY_POSE, game.getCharacterDownWin());
 		tempMap.put(AnimationType.CHARACTER_LOSER_POSE, game.getCharacterDownSad());
 		tempMap.put(AnimationType.KEY_SHINE_ANIMATION, game.getKeyShineAnimation());
