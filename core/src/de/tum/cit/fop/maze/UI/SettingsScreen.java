@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.UI;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -147,7 +148,8 @@ public class SettingsScreen {
                     if( Integer.parseInt(height) < 2147483647 && Integer.parseInt(height)> 0) {
                         try {
                         game.getGameInfo().getSettings().setResolutionHeight(Integer.parseInt(height));
-                            stage.getViewport().update(Integer.parseInt(height),stage.getViewport().getScreenHeight() , true);
+                            Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+                            stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(),  true); // Update the stage viewport on resize
                         } catch (Exception e) {
                             resolutionHeight.setText("");
                             System.out.println("not an int: " + e.getMessage());
@@ -179,7 +181,8 @@ public class SettingsScreen {
                     if( Integer.parseInt(width) < 2147483647 && Integer.parseInt(width)> 0) {
                         try {
                             game.getGameInfo().getSettings().setResolutionWidth(Integer.parseInt(width));
-                            stage.getViewport().update(stage.getViewport().getScreenHeight(), Integer.parseInt(width), true); // Update the stage viewport on resize
+                            Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+                            stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(),  true);
                         } catch (Exception e) {
                             resolutionWidth.setText("");
                             System.out.println("not an int: " + e.getMessage());
@@ -220,7 +223,8 @@ public class SettingsScreen {
                 updateKeyBindingButtons();
                 resolutionHeight.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionHeight()));
                 resolutionWidth.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionWidth()));
-                stage.getViewport().update(game.getGameInfo().getSettings().getResolutionHeight(),game.getGameInfo().getSettings().getResolutionWidth(), true);
+                Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+                stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(),  true);
             }
         });
     }

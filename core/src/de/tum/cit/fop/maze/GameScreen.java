@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
 		this.game = game;
 		Drawable.initializeTextureMap(game);
 		init_mode();
-        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionHeight(), game.getGameInfo().getSettings().getResolutionWidth());
+        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
         stage = new Stage(viewport); // Create a stage for UI elements
         devStage = new Stage(viewport);
         achievementUI = new AchievementUI(stage,game,soundController);
@@ -218,6 +218,10 @@ public class GameScreen implements Screen {
 
 		stage.getViewport().update(width, height, true);
         vfxManager.resize(width, height);
+//        camera.getCamera().viewportWidth = width;
+//         camera.getCamera().viewportHeight = height;
+//         camera.getCamera().update();
+        //TODO NIKITA
 	}
 
 	@Override

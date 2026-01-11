@@ -48,8 +48,9 @@ public class MenuScreen implements Screen {
         soundController.playMainMenuMusic(0.5f);
 
 
-        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionHeight(), game.getGameInfo().getSettings().getResolutionWidth());
+        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
         stage = new Stage(viewport, game.getSpriteBatch());
+        Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
 
         table = new Table();
         table.setFillParent(true);

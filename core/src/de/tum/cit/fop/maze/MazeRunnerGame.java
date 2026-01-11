@@ -497,13 +497,13 @@ public class MazeRunnerGame extends Game {
             TextureRegion wallTexture7 = new TextureRegion(assetsSheet, 293,533,120,120);
             TextureRegion wallTexture8 = new TextureRegion(assetsSheet, 427,533,120,120);
 
-            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 18,832,120,120);
-            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157,832,120,120);
-            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293,832,120,120);
-            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427,832,120,120);
-            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563,832,120,120);
-            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693,832,120,120);
-            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824,832,120,120);
+            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 20,835,120,120);
+            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157,835,120,120);
+            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293,835,120,120);
+            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427,835,120,120);
+            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563,835,120,120);
+            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693,835,120,120);
+            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824,835,120,120);
             TextureRegion danceFloorTexture = new TextureRegion(assetsSheet, 824,533,120,120);
 
             TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 410,670,140,140);

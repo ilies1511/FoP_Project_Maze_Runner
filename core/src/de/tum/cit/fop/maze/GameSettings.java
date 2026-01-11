@@ -22,7 +22,7 @@ public class GameSettings {
     public int consoleKey;
     public int progressionTreeKey;
     public int resolutionHeight;
-    public int ResolutionWidth;
+    public int resolutionWidth;
 
     public GameSettings() {
         this.maxHealth = 10;
@@ -38,8 +38,8 @@ public class GameSettings {
         this.abilityKey = Input.Keys.Q;
         this.consoleKey = Input.Keys.SLASH;
         this.progressionTreeKey = Input.Keys.I;
-        this.resolutionHeight = 1920;
-        this.ResolutionWidth = 1080;
+        this.resolutionWidth= 1920;
+        this.resolutionHeight = 1080;
     }
 
     static public GameSettings loadGameSettings() {
@@ -179,11 +179,11 @@ public class GameSettings {
     }
 
     public int getResolutionWidth() {
-        return ResolutionWidth;
+        return resolutionWidth;
     }
 
     public void setResolutionWidth(int getResolutionWidth) {
-        this.ResolutionWidth = getResolutionWidth;
+        this.resolutionWidth = getResolutionWidth;
     }
 
     public int getZoomOutKey() {

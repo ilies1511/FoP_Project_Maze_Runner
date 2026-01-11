@@ -43,7 +43,7 @@ public class BackgroundStoryScreen implements Screen {
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
 
-        Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
+        Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight()); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
 
         Table table = new Table();

@@ -52,7 +52,7 @@ public class GameWonScreen implements Screen {
 		soundController.playBackgrounStorydMusic(0.5f);
 
 
-		Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionHeight(), game.getGameInfo().getSettings().getResolutionWidth());
+		Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
 		this.stage = new Stage(viewport, game.getSpriteBatch());
 
         switch (game.getGameMode()){
