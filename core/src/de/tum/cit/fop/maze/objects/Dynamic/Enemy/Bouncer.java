@@ -39,11 +39,19 @@ public class Bouncer extends Enemy {
         }
         if (fleeTimer > 0) {
             fleeTimer -= deltaTime;
-            velocity.set(currentDirection).scl(speed);
             if (isBlocked(currentDirection, deltaTime, gameField)) {
-                flee();
-                fleeTimer = 0;
+                if (Math.abs(currentDirection.x) > 0 && !isBlocked(new Vector2(Math.signum(currentDirection.x), 0), deltaTime, gameField)) {
+                    currentDirection.set(Math.signum(currentDirection.x), 0);
+                }
+                else if (Math.abs(currentDirection.y) > 0 && !isBlocked(new Vector2(0, Math.signum(currentDirection.y)), deltaTime, gameField)) {
+                    currentDirection.set(0, Math.signum(currentDirection.y));
+                }
+                else {
+                    velocity.set(0, 0);
+                    return;
+                }
             }
+            velocity.set(currentDirection).scl(speed);
             AnimationDirection();
             return;
         }
@@ -84,13 +92,13 @@ public class Bouncer extends Enemy {
         }
     }
 
-    public boolean takeDamage() {
+    public boolean takeDamage(Vector2 playerPos) {
         lives--;
         if (lives <= 0) {
             return true;
         }
-        fleeTimer = 0;
-        flee();
+        currentDirection.set(position).sub(playerPos).nor();
+        fleeTimer = 2.0f;
         isFlickering = true;
         flickerTimer = 2.0f;
         return false; //survive

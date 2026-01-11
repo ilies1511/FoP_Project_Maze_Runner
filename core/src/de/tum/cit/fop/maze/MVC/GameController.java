@@ -145,7 +145,7 @@ public class GameController {
                     if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
                         boolean isDead = true;
                         if (enemy instanceof Bouncer) {
-                            isDead = ((Bouncer) enemy).takeDamage();
+                            isDead = ((Bouncer) enemy).takeDamage(player.getPlayerGameObject().position);
                             if (!isDead) {
                                 soundController.playEnemyHitSound(1f);
                             }
