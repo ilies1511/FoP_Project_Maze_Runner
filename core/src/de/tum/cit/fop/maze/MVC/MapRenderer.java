@@ -17,6 +17,37 @@ public class MapRenderer {
 		this.batch = game.getSpriteBatch();
 	}
 
+	private boolean isDecor(TileType t) {
+		return t == TileType.DECOR_1
+				|| t == TileType.DECOR_2
+				|| t == TileType.DECOR_3
+				|| t == TileType.DECOR_4
+				|| t == TileType.DECOR_5
+				|| t == TileType.DECOR_6
+				|| t == TileType.DECOR_7
+				|| t == TileType.DECOR_8
+				|| t == TileType.DECOR_9
+				|| t == TileType.DECOR_10
+				|| t == TileType.CASKET;
+	}
+
+	private TextureRegion getDecorTexture(TileType t) {
+		return switch (t) {
+			case DECOR_1 -> game.getDecor1();
+			case DECOR_2 -> game.getDecor2();
+			case DECOR_3 -> game.getDecor3();
+			case DECOR_4 -> game.getDecor4();
+			case DECOR_5 -> game.getDecor5();
+			case DECOR_6 -> game.getDecor6();
+			case DECOR_7 -> game.getDecor7();
+			case DECOR_8 -> game.getDecor8();
+			case DECOR_9 -> game.getDecor9();
+			case DECOR_10 -> game.getDecor10();
+			case CASKET -> game.getCasketTile();
+			default -> null;
+		};
+	}
+
 	private boolean isWall(TileType t) {
 		return t == TileType.WALL
 				|| t == TileType.WALL_1
@@ -34,12 +65,14 @@ public class MapRenderer {
 	}
 
 	private boolean isSingleWall(GameField f, int x, int y) {
-		if (!isWallAt(f, x, y)) {
+		if (!isWallAt(f, x, y) || y == 0) {
 			return false;
 		}
-		return !isWallAt(f, x + 1, y)
-				&& !isWallAt(f, x - 1, y)
-				&& !isWallAt(f, x, y - 1)
+//		return !isWallAt(f, x + 1, y)
+//				&& !isWallAt(f, x - 1, y)
+//				&& !isWallAt(f, x, y - 1)
+//				&& !isWallAt(f, x, y + 1);
+		return !isWallAt(f, x, y - 1)
 				&& !isWallAt(f, x, y + 1);
 	}
 
@@ -56,23 +89,43 @@ public class MapRenderer {
 
 	private TextureRegion getWallFront(TileType t) {
 		return switch (t) {
-			case WALL_1 -> game.getWallHigh1();
+			case WALL, WALL_1 -> game.getWallTile1(); // TODO: 11.01 - iziane --> swap to case WALL, WALL_1 -> game.getWallHigh1();
 			case WALL_2 -> game.getWallHigh2();
 			case WALL_3 -> game.getWallHigh3();
-			case WALL_4, WALL -> game.getWallHigh4();
+			case WALL_4 -> game.getWallHigh4();
+			case WALL_5 -> game.getWallHigh5();
+			case WALL_6 -> game.getWallHigh6();
+			case WALL_7 -> game.getWallHigh7();
 			default -> game.getWallHigh1();
 		};
 	}
 
 	private TextureRegion getWallFront_Small(TileType t) {
-//		return switch (t) {
+		return switch (t) {
 //			case WALL_1 -> game.getWallTile1();
-//			case WALL_2 -> game.getWallTile2();
-//			case WALL_3 -> game.getWallTile3();
-//			case WALL_4, WALL -> game.getWallTile4();
-//			default -> game.getWallTile1();
-//		};
-		return game.getWallTile4();
+			case WALL, WALL_1 -> game.getWallHigh1(); // TODO: 11.01 - iziane --> swap to case WALL, WALL_1 -> game.getWallTile1();
+			case WALL_2 -> game.getWallTile2();
+			case WALL_3 -> game.getWallTile3();
+			case WALL_4 -> game.getWallTile4();
+			case WALL_5, WALL_6, WALL_7, WALL_8 -> game.getWallTile8();
+			default -> game.getWallTile1();
+		};
+	}
+
+	private void drawDecors(GameField gameField) {
+		for (int y = 0; y < gameField.getHeight(); y++) {
+			for (int x = 0; x < gameField.getWidth(); x++) {
+				TileType tile = gameField.getTile(x, y);
+				if (!isDecor(tile)) {
+					continue;
+				}
+				TextureRegion decor = getDecorTexture(tile);
+				if (decor == null) {
+					continue;
+				}
+				batch.draw(decor, x, y, 1, 1);
+			}
+		}
 	}
 
 	private void drawWalls2_5D(GameField gameField) {
@@ -85,14 +138,12 @@ public class MapRenderer {
 					continue;
 				}
 				if (isSingleWall(gameField, x, y)) {
-//					wallToDraw = getWallFront_Small(tile);
-					wallToDraw = getWallFront(tile);
+					wallToDraw = getWallFront_Small(tile);
 					batch.draw(wallToDraw, x, y, 1, 1);
 					continue;
 				}
 				boolean wallBelow = isWallAt(gameField, x, y - 1);
-//				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
-				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront_Small(tile);
+				wallToDraw = wallBelow ? getWallTop(tile) : getWallFront(tile);
 				batch.draw(wallToDraw, x, y, 1, 1);
 			}
 		}
@@ -103,7 +154,7 @@ public class MapRenderer {
 			for (int x = 0; x < gameField.getWidth(); x++) {
 				TileType tile = gameField.getTile(x, y);
 
-				TextureRegion floor = game.getEmptyTile1();
+				TextureRegion floor = game.getEmptyTile4(); // TODO 11.01 iziane - stick to one default
 
 				switch (tile) {
 					case EMPTY_1 -> floor = game.getEmptyTile1();
@@ -127,6 +178,8 @@ public class MapRenderer {
 
 		drawFloors(gameField);
 		drawWalls2_5D(gameField);
+		drawDecors(gameField);
+
 		gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
 		for (GameObject obj : gameField.getGameObjects()) {
 			obj.animate(batch);

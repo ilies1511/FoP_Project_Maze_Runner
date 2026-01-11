@@ -8,7 +8,7 @@ import de.tum.cit.fop.maze.objects.GameObject;
 public class Exit extends GameObject {
 	private boolean isLocked = true;
 
-	public Exit(float x, float y, MazeRunnerGame game) {
+	public Exit(float x, float y) {
 		super(
 				new Vector2(x, y),
 				new Vector2(0, 0),
