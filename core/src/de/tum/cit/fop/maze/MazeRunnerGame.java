@@ -556,7 +556,7 @@ public class MazeRunnerGame extends Game {
 //            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
 
             this.wallTile3 = wallTexture3;
-            this.wallTile1 = wallTexture1;
+            this.wallTile1 = wallHighTexture1;
             this.wallTile2 = wallTexture2;
             this.wallTile4 = wallTexture4;
             this.wallTile5 = wallTexture5;
@@ -588,7 +588,7 @@ public class MazeRunnerGame extends Game {
 
             this.buildingTile = buildingTexture;
 
-            this.wallHigh1 = wallHighTexture1;
+            this.wallHigh1 = wallTexture1;
             this.wallHigh2 = wallHighTexture2;
             this.wallHigh3 = wallHighTexture3;
             this.wallHigh4 = wallHighTexture4;
