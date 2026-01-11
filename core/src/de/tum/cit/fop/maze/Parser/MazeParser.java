@@ -58,7 +58,7 @@ public class MazeParser {
 				break;
 			case ENEMY:
 				field.setTile(x, y, TileType.EMPTY);
-				field.addGameObject(new FleeingEnemy(new Vector2(x, y)));
+				field.addGameObject(new Junkie(new Vector2(x, y)));
 				break;
 			case KEY:
 				field.setTile(x, y, TileType.EMPTY);

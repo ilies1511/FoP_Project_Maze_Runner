@@ -43,7 +43,7 @@ public class FleeingEnemy extends Enemy {
                 flee();
             }
             danceTimer = 0;
-            AnimationDirection();
+            this.AnimationDirection();
         } else {
             //patrol being dancing in tourist's case
             patrol(deltaTime);
