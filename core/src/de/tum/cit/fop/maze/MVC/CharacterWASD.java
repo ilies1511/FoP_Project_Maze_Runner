@@ -1,20 +1,11 @@
 package de.tum.cit.fop.maze.MVC;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.MazeRunnerGame;
-import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.Invis;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
-import de.tum.cit.fop.maze.objects.collectables.Collectable;
-
-import java.util.ListIterator;
 
 public class CharacterWASD {
     public  CharacterWASD() {}

@@ -1,5 +1,4 @@
 package de.tum.cit.fop.maze.MVC;
-import de.tum.cit.fop.maze.MVC.CharacterWASD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,12 +19,11 @@ import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Tourist;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.Static.Exit;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
-import de.tum.cit.fop.maze.objects.collectables.Key;
 import de.tum.cit.fop.maze.objects.traps.Trap;
 
 import java.util.Iterator;
@@ -143,7 +141,7 @@ public class GameController {
                             Collectable drop = enemy.onDeath(player);
                             iter.add(drop);
                             System.out.println("Enemy Killed!");
-                            if (FleeingEnemy.scaredTourists(gameField, enemy.getPosition())) {
+                            if (Tourist.scaredTourists(gameField, enemy.getPosition())) {
                                 soundController.playTouristRunSound(1f);
                             }
                         }
@@ -240,7 +238,7 @@ public class GameController {
 		} else enemyGo.getVelocity().set(0, 0);
 
 		if (GameObject.entitiesOverlap(player.getPlayerGameObject(), enemyGo)) {
-			if (enemy instanceof FleeingEnemy) {
+			if (enemy instanceof Tourist) {
 				Vector2 pushDir = new Vector2(player.getPlayerGameObject().position).sub(enemyGo.position).nor();
 				Vector2 pushAmount = pushDir.scl(0.2f);
 				float newX = player.getPlayerGameObject().position.x + pushAmount.x;

@@ -1,12 +1,11 @@
 package de.tum.cit.fop.maze.Gameplay;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.PatrolEnemy;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Tourist;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Junkie;
 
 import java.util.Random;
 
@@ -70,10 +69,10 @@ public class WaveManager {
 		if (maxAttempts > 0) {
 			Enemy newEnemy;
 			if (difficultyLevel >= 3 && random.nextBoolean()) {
-				newEnemy = new PatrolEnemy(new Vector2(x, y));
+				newEnemy = new Junkie(new Vector2(x, y));
 			}
 			else {
-				newEnemy = new FleeingEnemy(new Vector2(x, y));
+				newEnemy = new Tourist(new Vector2(x, y));
 			}
 			gameField.addGameObject(newEnemy);
 			System.out.println("Spawned Enemy at " + x + ", " + y);

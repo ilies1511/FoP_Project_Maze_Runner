@@ -3,7 +3,6 @@ package de.tum.cit.fop.maze.Parser;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
-import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.*;
 import de.tum.cit.fop.maze.objects.Static.Exit;
@@ -12,8 +11,6 @@ import de.tum.cit.fop.maze.objects.traps.TrapCreator;
 
 import java.io.IOException;
 import java.util.Properties;
-
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.FleeingEnemy;
 
 /*
 	Value | Type
@@ -58,7 +55,7 @@ public class MazeParser {
 				break;
 			case ENEMY:
 				field.setTile(x, y, TileType.EMPTY);
-				field.addGameObject(new FleeingEnemy(new Vector2(x, y)));
+				field.addGameObject(new Tourist(new Vector2(x, y)));
 				break;
 			case KEY:
 				field.setTile(x, y, TileType.EMPTY);
