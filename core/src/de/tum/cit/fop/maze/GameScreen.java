@@ -146,7 +146,7 @@ public class GameScreen implements Screen {
 
         vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
-        viewport.apply();
+//        viewport.apply();
 
 		handleGlobalInput();
 

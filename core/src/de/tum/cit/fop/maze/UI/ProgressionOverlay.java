@@ -155,7 +155,7 @@ public class ProgressionOverlay {
                     player.multiplySpeed(1.15f);
                     if(invisDisable == false){
                         invis.setDisabled(false);
-                        invisDisable = true;
+                        invisDisable = false;
                     }
                     if(speedUpgrades >= 5){
                         maxSpeed.setDisabled(true);
@@ -183,6 +183,7 @@ public class ProgressionOverlay {
                 //TODO LOGIC
                 if (player.getXp() >= 15) {
                     invis.setDisabled(true);
+                    invisDisable = true;
                     player.setCanInvis(true);
                     player.receiveXP(-15);
                 }
