@@ -122,6 +122,20 @@ public class GameField {
 			case WALL_6:
 			case WALL_7:
 			case WALL_8:
+			case WALL_HIGH_1:
+			case WALL_HIGH_2:
+			case WALL_HIGH_3:
+			case WALL_HIGH_4:
+			case DECOR_1:
+			case DECOR_2:
+			case DECOR_3:
+			case DECOR_4:
+			case DECOR_5:
+			case DECOR_6:
+			case DECOR_7:
+			case DECOR_8:
+			case DECOR_9:
+			case DECOR_10:
 				return true;
 			default:
 				return false;

@@ -42,6 +42,6 @@ public enum TileType {
 	DECOR_8,
 	DECOR_9,
 	DECOR_10,
-	DECOR_11,
+	CASKET
 	// EMD--Story Mode
 }

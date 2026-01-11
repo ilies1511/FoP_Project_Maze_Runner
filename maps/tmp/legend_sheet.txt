@@ -1,22 +1,48 @@
 /* LEGEND CHEAT SHEET:
  -------------------------
- S = Start       E = Exit
- K = Key         T = Trap
- M = Enemy       * = Dance Floor
+S = Start
+E = Exit
+K = Key
+T = Trap
+M = Enemy
+* = Dance Floor
 
- WALLS:
- # = Default     = = Wall 1
- % = Wall 2      | = Wall 3
- - = Wall 4      + = Wall 5
- [ = Wall 6      ] = Wall 7
- ^ = Wall 8
+WALLS:
+# = Default
+= = Wall_1
+% = Wall_2
+| = Wall_3
+- = Wall_4
++ = Wall_5
+[ = Wall_6
+] = Wall_7
+^ = Wall_8
+1 = Wall_High_1
+2 = Wall_High_2
+3 = Wall_High_3
+4 = Wall_High_4
+B = buildingTile
 
- FLOORS:
- . = Default     , = Floor 1
- : = Floor 2     ; = Floor 3
- " = Floor 4     ` = Floor 5
- ~ = Floor 6     _ = Floor 7
+FLOORS:
+. = Default
+, = Floor_1
+: = Floor_2
+; = Floor_3
+" = Floor_4
+` = Floor_5
+~ = Floor_6
+_ = Floor_7
 
- DECOR:
- a, b, c, d, e, f, g, h, i, j, k
+DECOR:
+a = Speaker_right
+b = Speaker_front
+c = DC
+d = Speaker_left
+e = Table with drinks
+f = drinks
+g = Candle small
+h = Candle big
+i = no photos
+j = separation
+k = statue
 */
