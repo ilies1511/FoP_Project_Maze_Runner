@@ -4,29 +4,25 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.Parser.TileType;
-import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
-import java.util.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Bouncer extends Enemy {
-
+//to loose bouncer you either run far away or hide behind a wall
     private int lives = 2;
     private static final float MOVE_SPEED = 1.5f;
     private static final float DETECTION_RANGE = 7.0f;
     private float fleeTimer = 0f;
     private float flickerTimer = 0f;
+    private float Cooldown = 0f;
     private Vector2 currentDirection = new Vector2();
     private boolean isFlickering = false;
 
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
         this.speed = MOVE_SPEED;}
-
-
 
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
@@ -39,19 +35,7 @@ public class Bouncer extends Enemy {
         }
         if (fleeTimer > 0) {
             fleeTimer -= deltaTime;
-            if (isBlocked(currentDirection, deltaTime, gameField)) {
-                if (Math.abs(currentDirection.x) > 0 && !isBlocked(new Vector2(Math.signum(currentDirection.x), 0), deltaTime, gameField)) {
-                    currentDirection.set(Math.signum(currentDirection.x), 0);
-                }
-                else if (Math.abs(currentDirection.y) > 0 && !isBlocked(new Vector2(0, Math.signum(currentDirection.y)), deltaTime, gameField)) {
-                    currentDirection.set(0, Math.signum(currentDirection.y));
-                }
-                else {
-                    velocity.set(0, 0);
-                    return;
-                }
-            }
-            velocity.set(currentDirection).scl(speed);
+            moveInCurrDirection(deltaTime, gameField);
             AnimationDirection();
             return;
         }
@@ -81,7 +65,7 @@ public class Bouncer extends Enemy {
     }
 
     public void AnimationDirection() {
-        if (velocity.len2() < 0.1f) return;
+        if (velocity.len2() < 0.5f) return;
 
         if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
             if (velocity.x > 0) changeAnimation(AnimationType.BOUNCER_RIGHT);
@@ -97,7 +81,8 @@ public class Bouncer extends Enemy {
         if (lives <= 0) {
             return true;
         }
-        currentDirection.set(position).sub(playerPos).nor();
+        Vector2 awayFromPlayer = new Vector2(position).sub(playerPos).nor();
+        finDirection(awayFromPlayer); // Helper to snap to valid grid direction
         fleeTimer = 2.0f;
         isFlickering = true;
         flickerTimer = 2.0f;
@@ -119,19 +104,53 @@ public class Bouncer extends Enemy {
 
     public void chase(float deltaTime,  Vector2 playerPosition,  GameField gameField) {
         //chase until hidden behind a wall
-        Vector2 targetDir = new Vector2(playerPosition).sub(position).nor();
-        if (!isBlocked(targetDir, deltaTime, gameField)) {
-            velocity.set(targetDir).scl(speed);
+        Cooldown -= deltaTime;
+        if (Cooldown <= 0 || isBlocked(currentDirection, deltaTime, gameField)) {
+            Vector2 toPlayer = new Vector2(playerPosition).sub(position);
+            Vector2[] directions = { // no diagonals
+                    new Vector2(1, 0), new Vector2(-1, 0),
+                    new Vector2(0, 1), new Vector2(0, -1)
+            };
+
+            Vector2 next = null;
+            float maximum = -Float.MAX_VALUE;
+            for (Vector2 curr : directions) {
+                if (!isBlocked(curr, deltaTime, gameField)) {
+                    float toDrac = toPlayer.dot(curr);
+                    if (toDrac > maximum) {
+                        maximum = toDrac;
+                        next = curr;
+                    }
+                }
+            }
+
+            if (next != null && maximum > 0.2f) {
+                currentDirection.set(next);
+                Cooldown = 0.2f;
+            } else {
+                currentDirection.set(0,0);
+            }
         }
-        else if (!isBlocked(new Vector2(Math.signum(targetDir.x), 0), deltaTime, gameField)) {
-            velocity.set(Math.signum(targetDir.x) * speed, 0);
-        }
-        else if (!isBlocked(new Vector2(0, Math.signum(targetDir.y)), deltaTime, gameField)) {
-            velocity.set(0, Math.signum(targetDir.y) * speed);
-        }
-        else {
+
+        moveInCurrDirection(deltaTime, gameField);
+    }
+
+    private void moveInCurrDirection (float delta, GameField gameField) {
+        if (currentDirection.len2() > 0 && !isBlocked(currentDirection, delta, gameField)) {
+            velocity.set(currentDirection).scl(speed);
+        } else {
             velocity.set(0, 0);
+            Cooldown = 0;
         }
+    }
+
+    private void finDirection (Vector2 awayFromPlayer) {
+        if (Math.abs(awayFromPlayer.x) > Math.abs(awayFromPlayer.y)) {
+            currentDirection.set(Math.signum(awayFromPlayer.x), 0);
+        } else {
+            currentDirection.set(0, Math.signum(awayFromPlayer.y));
+        }
+        Cooldown = 0.5f;
     }
 
 }
