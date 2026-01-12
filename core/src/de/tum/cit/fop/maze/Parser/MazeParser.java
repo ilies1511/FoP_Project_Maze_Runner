@@ -2,6 +2,7 @@ package de.tum.cit.fop.maze.Parser;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.*;
@@ -55,7 +56,18 @@ public class MazeParser {
 				break;
 			case ENEMY:
 				field.setTile(x, y, TileType.EMPTY);
-				field.addGameObject(new Tourist(new Vector2(x, y))); //TODO 11.01 - iziane
+				Vector2 pos = new Vector2(x, y);
+				int roll = MathUtils.random(99);
+
+				if (roll < 10) {
+					field.addGameObject(new Bouncer(pos));
+				}
+				else if (roll < 50) {
+					field.addGameObject(new Tourist(pos));
+				}
+				else {
+					field.addGameObject(new Junkie(pos));
+				}
 				break;
 			case KEY:
 				field.setTile(x, y, TileType.EMPTY);
