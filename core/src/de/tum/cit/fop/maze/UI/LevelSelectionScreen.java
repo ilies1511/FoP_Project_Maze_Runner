@@ -2,6 +2,8 @@ package de.tum.cit.fop.maze.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
@@ -27,6 +30,12 @@ public class LevelSelectionScreen {
         this.soundController = menuScreen.getSoundController();
         
         levelSelectionTable = new Table();
+        Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
+        backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+
+        levelSelectionTable.setBackground(backgroundDrawable);
         levelSelectionTable.setVisible(false);
         levelSelectionTable.setFillParent(true);
         stage.addActor(levelSelectionTable);

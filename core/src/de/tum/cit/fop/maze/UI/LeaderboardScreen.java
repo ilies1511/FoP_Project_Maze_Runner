@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.UI;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.Utils.ScoreManager;
@@ -25,6 +29,12 @@ public class LeaderboardScreen {
         this.soundController = menuScreen.getSoundController();
 
         table = new Table();
+        Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
+        backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+
+        table.setBackground(backgroundDrawable);
         table.setVisible(false);
         table.setFillParent(true);
         stage.addActor(table);

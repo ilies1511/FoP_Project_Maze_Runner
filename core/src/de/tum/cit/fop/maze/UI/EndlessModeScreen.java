@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.UI;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
@@ -20,6 +24,12 @@ public class EndlessModeScreen {
     public EndlessModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         soundController = menuScreen.getSoundController();
         table = new Table();
+        Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
+        backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+
+        table.setBackground(backgroundDrawable);
         table.setVisible(false);
         table.setFillParent(true);
         stage.addActor(table);
