@@ -65,6 +65,10 @@ public class Player extends GameObject {
     }
 
     public int getDamageOrHeal(int damage) {
+        if (damage > 0) {
+            soundController.playPlayerHitSound(1f);
+        }
+
         // negative damage for heal
         if (currentHealth - damage < 0) {
             currentHealth = 0;

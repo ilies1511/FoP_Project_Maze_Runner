@@ -127,7 +127,7 @@ public class GameController {
 				GameObject obj = iter.next();
 				if (obj instanceof Enemy) {
 					Enemy enemy = (Enemy) obj;
-                    if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1.5f) {
+                    if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < 1f) {
                         boolean isDead = true;
                         if (enemy instanceof Bouncer) {
                             isDead = ((Bouncer) enemy).takeDamage(player.getPlayerGameObject().position);
