@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.effects.Flicker;
+import de.tum.cit.fop.maze.effects.GodMode;
+import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
@@ -71,7 +74,9 @@ public class Junkie extends Enemy {
             this.velocity.set(0, Math.signum(toPlayer.y));
         }
         AnimationDirection();
-        player.getDamageOrHeal(1);
+        if (!player.hasEffect(Flicker.class) && !player.hasEffect(Invis.class) && !player.hasEffect(GodMode.class)) {
+            player.getDamageOrHeal(1);
+        }
     }
 
     public void flee() {
