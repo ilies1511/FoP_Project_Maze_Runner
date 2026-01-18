@@ -5,14 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.SoundController;
-import de.tum.cit.fop.maze.AchievementController;
 import de.tum.cit.fop.maze.UI.AchievementUI;
 import de.tum.cit.fop.maze.effects.*;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.PlayerMemento;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Saveable<PlayerMemento> {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
     private final static int STARTING_PLAYER_HEALTH = 3;
     private int requiredKeys;
@@ -318,4 +319,48 @@ public class Player extends GameObject {
 	public void setRequiredKeys(int requiredKeys) {
 		this.requiredKeys = requiredKeys;
 	}
+
+    @Override
+    public PlayerMemento getMemento() {
+        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "CHARACTER_DOWN";
+        return new PlayerMemento(
+            this.currentHealth,
+            this.maxHealth,
+            this.xp,
+            this.canDash,
+            this.canInvis,
+            this.hasKeys,
+            this.currentKeys,
+            this.requiredKeys,
+            this.kills,
+            this.position.x,
+            this.position.y,
+            this.velocity.x,
+            this.velocity.y,
+            this.speed,
+            animType
+        );
+    }
+
+    @Override
+    public void loadFromMemento(PlayerMemento memento) {
+        this.currentHealth = memento.currentHealth;
+        this.maxHealth = memento.maxHealth;
+        this.xp = memento.xp;
+        this.canDash = memento.canDash;
+        this.canInvis = memento.canInvis;
+        this.hasKeys = memento.hasKeys;
+        this.currentKeys = memento.currentKeys;
+        this.requiredKeys = memento.requiredKeys;
+        this.kills = memento.kills;
+        this.position.set(memento.positionX, memento.positionY);
+        this.velocity.set(memento.velocityX, memento.velocityY);
+        this.speed = memento.speed;
+        // Note: Animation will be restored by the animation type string
+        if (this.gameScreen.getHUD() != null) {
+            this.gameScreen.getHUD().renderPlayerHP();
+            this.gameScreen.getHUD().updatePlayerKeys();
+            this.gameScreen.getHUD().updatePlayerXP();
+        }
+    }
 }

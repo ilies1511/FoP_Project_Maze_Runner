@@ -2,10 +2,11 @@ package de.tum.cit.fop.maze.objects.Static;
 
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
-import de.tum.cit.fop.maze.MazeRunnerGame;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.ExitMemento;
 import de.tum.cit.fop.maze.objects.GameObject;
 
-public class Exit extends GameObject {
+public class Exit extends GameObject implements Saveable<ExitMemento> {
 	private boolean isLocked = true;
 
 	public Exit(float x, float y) {
@@ -34,5 +35,17 @@ public class Exit extends GameObject {
 
 	public boolean isLocked() {
 		return isLocked;
+	}
+
+	@Override
+	public ExitMemento getMemento() {
+		String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "EXIT_CLOSED";
+		return new ExitMemento(this.position.x, this.position.y, this.isLocked, animType);
+	}
+
+	@Override
+	public void loadFromMemento(ExitMemento memento) {
+		this.position.set(memento.positionX, memento.positionY);
+		this.isLocked = memento.isLocked;
 	}
 }
