@@ -8,11 +8,13 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.AchievementController;
 import de.tum.cit.fop.maze.UI.AchievementUI;
 import de.tum.cit.fop.maze.effects.*;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.PlayerMemento;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Saveable<PlayerMemento> {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
     private final static int STARTING_PLAYER_HEALTH = 3;
     private int requiredKeys;
@@ -318,4 +320,18 @@ public class Player extends GameObject {
 	public void setRequiredKeys(int requiredKeys) {
 		this.requiredKeys = requiredKeys;
 	}
+
+    @Override
+    public PlayerMemento getMemento() {
+        return new PlayerMemento(
+            this.currentHealth,
+            this.maxHealth
+        );
+    }
+
+    @Override
+    public void loadFromMemento(PlayerMemento memento) {
+        this.currentHealth = memento.currentHealth;
+        this.maxHealth = memento.maxHealth;
+    }
 }
