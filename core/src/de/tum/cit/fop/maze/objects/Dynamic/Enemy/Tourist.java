@@ -39,7 +39,7 @@ public class Tourist extends Enemy {
             Vector2 finalDir = new Vector2(fleeDir).add(separation).nor();
             velocity.set(finalDir).scl(speed);
             Vector2 nextPos = new Vector2(position).mulAdd(velocity, deltaTime);
-            if (gameField.isInsideWall(nextPos.x, nextPos.y, getSize())) {
+            if (WallOrObstacle(nextPos.x, nextPos.y, getSize(), gameField)) {
                 flee();
             }
             danceTimer = 0;
@@ -81,7 +81,7 @@ public class Tourist extends Enemy {
 
     private boolean willHitWall(Vector2 velocity, float delta, GameField gameField) {
         Vector2 nextPos = new Vector2(this.position).mulAdd(velocity, delta);
-        return gameField.isInsideWall(nextPos.x, nextPos.y, this.getSize());
+        return WallOrObstacle(nextPos.x, nextPos.y, this.getSize(), gameField);
     }
 
 

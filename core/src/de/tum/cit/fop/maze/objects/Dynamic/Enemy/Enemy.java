@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.effects.Buff;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.GameObject;
@@ -61,6 +62,28 @@ public abstract class Enemy extends GameObject implements Enemies {
         } else {
             velocity.set(0, 0);
         }
+    }
+
+    protected boolean WallOrObstacle(float x, float y, Vector2 size, GameField gameField) {
+        if (!gameField.isInsideWall(x, y, size)) {
+            return false;
+        }
+
+        int minX = (int) x;
+        int maxX = (int) (x + size.x - 0.001f);
+        int minY = (int) y;
+        int maxY = (int) (y + size.y - 0.001f);
+
+        for (int row = minY; row <= maxY; row++) {
+            for (int col = minX; col <= maxX; col++) {
+                TileType tile = gameField.getTile(col, row);
+                if (tile != TileType.EMPTY) {
+                    return true;
+                }
+            }
+        }
+        // if DAWN
+        return false;
     }
 
     public Collectable onDeath(Player player) {

@@ -4,13 +4,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Bouncer extends Enemy {
-//to loose bouncer you either run far away or hide behind a wall
+//to loose bouncer you either run far away or hide behind a wall4
     private int lives = 2;
     private static final float DETECTION_RANGE = 7.0f;
     private float fleeTimer = 0f;
@@ -49,7 +50,7 @@ public class Bouncer extends Enemy {
 
     private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
         float lookAhead = speed * delta * 5; //5
-        return gameField.isInsideWall(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize());
+        return WallOrObstacle(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize(), gameField);
     }
 
 
@@ -136,6 +137,7 @@ public class Bouncer extends Enemy {
 
     private void moveInCurrDirection (float delta, GameField gameField) {
         if (currentDirection.len2() > 0 && !isBlocked(currentDirection, delta, gameField)) {
+            //isBlockedByStaticMap(position.x + currentDirection.x * delta * speed, position.y + currentDirection.y * delta * speed, getSize(), gameField))
             velocity.set(currentDirection).scl(speed);
         } else {
             velocity.set(0, 0);

@@ -50,7 +50,7 @@ public class Junkie extends Enemy {
 
         moveTimer += deltaTime;
         Vector2 nextPos = this.nextPosition(deltaTime);
-        boolean willHitWall = gameField.isInsideWall(nextPos.x, nextPos.y, this.getSize());
+        boolean willHitWall = WallOrObstacle(nextPos.x, nextPos.y, this.getSize(), gameField);
         if (moveTimer >= moveInterval || willHitWall) {
             flee();
             moveTimer = 0;
