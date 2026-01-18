@@ -4,13 +4,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.effects.Invis;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.BouncerMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-public class Bouncer extends Enemy {
+public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
 //to loose bouncer you either run far away or hide behind a wall4
     private int lives = 2;
     private static final float DETECTION_RANGE = 7.0f;
@@ -152,6 +153,28 @@ public class Bouncer extends Enemy {
             currentDirection.set(0, Math.signum(awayFromPlayer.y));
         }
         Cooldown = 0.5f;
+    }
+
+    @Override
+    public BouncerMemento getMemento() {
+        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "BOUNCER_DOWN";
+        return new BouncerMemento(
+            this.position.x,
+            this.position.y,
+            this.velocity.x,
+            this.velocity.y,
+            this.speed,
+            animType,
+            this.lives
+        );
+    }
+
+    @Override
+    public void loadFromMemento(BouncerMemento memento) {
+        this.position.set(memento.positionX, memento.positionY);
+        this.velocity.set(memento.velocityX, memento.velocityY);
+        this.speed = memento.speed;
+        this.lives = memento.lives;
     }
 
 }

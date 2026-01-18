@@ -4,11 +4,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.JunkieMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
 
-public class Junkie extends Enemy {
+public class Junkie extends Enemy implements Saveable<JunkieMemento> {
     private final float moveInterval = 2.0f;
     private float moveTimer;
     private boolean isAttacking = false;
@@ -134,5 +136,25 @@ public class Junkie extends Enemy {
                 changeAnimation(AnimationType.JUNKIE_DOWN);
             }
         }
+    }
+
+    @Override
+    public JunkieMemento getMemento() {
+        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "JUNKIE_DOWN";
+        return new JunkieMemento(
+            this.position.x,
+            this.position.y,
+            this.velocity.x,
+            this.velocity.y,
+            this.speed,
+            animType
+        );
+    }
+
+    @Override
+    public void loadFromMemento(JunkieMemento memento) {
+        this.position.set(memento.positionX, memento.positionY);
+        this.velocity.set(memento.velocityX, memento.velocityY);
+        this.speed = memento.speed;
     }
 }

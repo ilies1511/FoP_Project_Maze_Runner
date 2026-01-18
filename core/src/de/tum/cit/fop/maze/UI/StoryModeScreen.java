@@ -13,8 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
+import de.tum.cit.fop.maze.game_saves.SaveManager;
+import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
 
 public class StoryModeScreen {
     private Table storyTable;
@@ -43,7 +47,14 @@ public class StoryModeScreen {
         TextButton continueGame = new TextButton("Continue", game.getSkin(), "vampire-style");
         storyTable.add(continueGame).width(300).left().padLeft(50).padBottom(50);
         continueGame.getLabel().setTouchable(Touchable.disabled);
-        continueGame.setDisabled(true); //TODO Finish continue button after the save/load system is ready
+        
+        // Check if save file exists and enable button accordingly
+        if (SaveManager.hasSave(true)) {
+            continueGame.setDisabled(false);
+        } else {
+            continueGame.setDisabled(true);
+        }
+        
         continueGame.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -53,16 +64,26 @@ public class StoryModeScreen {
             }
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
+                if (!continueGame.isDisabled()) {
+                    soundController.playUI_buttonClickSound(1);
+                }
             }
         });
-        //TODO Finish continue button after the save/load system is ready
-//        continueGame.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                goToStory();
-//            }
-//        });
+        
+        continueGame.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (!continueGame.isDisabled()) {
+                    // Load the saved game
+                    GameScreenMemento memento = SaveManager.loadGame(true);
+                    if (memento != null) {
+                        soundController.dispose();
+                        game.setGameMode(GameMode.STORY_MODE);
+                        game.setScreen(new GameScreen(game, memento));
+                    }
+                }
+            }
+        });
 
         storyTable.row();
 

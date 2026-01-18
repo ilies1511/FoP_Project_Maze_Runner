@@ -1,6 +1,5 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;

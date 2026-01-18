@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.SoundController;
-import de.tum.cit.fop.maze.AchievementController;
 import de.tum.cit.fop.maze.UI.AchievementUI;
 import de.tum.cit.fop.maze.effects.*;
 import de.tum.cit.fop.maze.game_saves.Saveable;
@@ -323,9 +322,23 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
 
     @Override
     public PlayerMemento getMemento() {
+        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "CHARACTER_DOWN";
         return new PlayerMemento(
             this.currentHealth,
-            this.maxHealth
+            this.maxHealth,
+            this.xp,
+            this.canDash,
+            this.canInvis,
+            this.hasKeys,
+            this.currentKeys,
+            this.requiredKeys,
+            this.kills,
+            this.position.x,
+            this.position.y,
+            this.velocity.x,
+            this.velocity.y,
+            this.speed,
+            animType
         );
     }
 
@@ -333,5 +346,21 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
     public void loadFromMemento(PlayerMemento memento) {
         this.currentHealth = memento.currentHealth;
         this.maxHealth = memento.maxHealth;
+        this.xp = memento.xp;
+        this.canDash = memento.canDash;
+        this.canInvis = memento.canInvis;
+        this.hasKeys = memento.hasKeys;
+        this.currentKeys = memento.currentKeys;
+        this.requiredKeys = memento.requiredKeys;
+        this.kills = memento.kills;
+        this.position.set(memento.positionX, memento.positionY);
+        this.velocity.set(memento.velocityX, memento.velocityY);
+        this.speed = memento.speed;
+        // Note: Animation will be restored by the animation type string
+        if (this.gameScreen.getHUD() != null) {
+            this.gameScreen.getHUD().renderPlayerHP();
+            this.gameScreen.getHUD().updatePlayerKeys();
+            this.gameScreen.getHUD().updatePlayerXP();
+        }
     }
 }

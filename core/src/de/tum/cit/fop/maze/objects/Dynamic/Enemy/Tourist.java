@@ -4,12 +4,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.TouristMemento;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
 
-public class Tourist extends Enemy {
+public class Tourist extends Enemy implements Saveable<TouristMemento> {
     private float danceTimer = 0f;
     private float scareTimer = 0f;
     private Vector2 fleeDir = new Vector2();
@@ -110,5 +112,25 @@ public class Tourist extends Enemy {
     @Override
     public void chase(float deltaTime, Vector2 playerPosition, GameField gameField) {
         //Tourist will not chase. Will flee when it sees a kill
+    }
+
+    @Override
+    public TouristMemento getMemento() {
+        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "TOURIST_DOWN";
+        return new TouristMemento(
+            this.position.x,
+            this.position.y,
+            this.velocity.x,
+            this.velocity.y,
+            this.speed,
+            animType
+        );
+    }
+
+    @Override
+    public void loadFromMemento(TouristMemento memento) {
+        this.position.set(memento.positionX, memento.positionY);
+        this.velocity.set(memento.velocityX, memento.velocityY);
+        this.speed = memento.speed;
     }
 }

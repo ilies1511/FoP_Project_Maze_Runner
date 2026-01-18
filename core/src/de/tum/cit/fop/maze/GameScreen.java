@@ -23,6 +23,10 @@ import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.MazeParser;
 import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.UI.*;
+import de.tum.cit.fop.maze.game_saves.SaveManager;
+import de.tum.cit.fop.maze.game_saves.mementos.GameFieldMemento;
+import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
+import de.tum.cit.fop.maze.game_saves.mementos.PlayerMemento;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
@@ -334,5 +338,92 @@ public class GameScreen implements Screen {
 
     public AchievementUI getAchievementUI() {
         return achievementUI;
+    }
+
+    public void saveGame() {
+        try {
+            GameFieldMemento gameFieldMemento = SaveManager.createGameFieldMemento(this.gameField);
+            PlayerMemento playerMemento = this.player.getMemento();
+            
+            boolean isStoryMode = (game.getGameMode() == GameMode.STORY_MODE);
+            String selectedLevel = game.getGameInfo().getSelectedLevel();
+            
+            GameScreenMemento memento = new GameScreenMemento(
+                gameFieldMemento,
+                playerMemento,
+                game.getGameMode().name(),
+                this.currentStoryLevelIndex,
+                selectedLevel
+            );
+            
+            SaveManager.saveGame(memento, isStoryMode);
+            System.out.println("Game saved successfully!");
+        } catch (Exception e) {
+            System.err.println("Failed to save game: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public GameScreen(MazeRunnerGame game, GameScreenMemento memento) {
+        vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
+        VignettingEffect vignette = new VignettingEffect(false);
+        vignette.setIntensity(1.2f);
+        BloomEffect bloom = new BloomEffect();
+        bloom.setBloomIntensity(1.5f);
+        bloom.setBlurPasses(6);
+        bloom.setThreshold(0.7f);
+        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
+        filmGrainEffect.setNoiseAmount(0.3f);
+        vfxManager.addEffect(filmGrainEffect);
+        vfxManager.addEffect(bloom);
+        vfxManager.addEffect(vignette);
+        
+        soundController = new SoundController();
+        soundController.playBackgroundMusic(0.5f);
+        this.game = game;
+        
+        Drawable.initializeTextureMap(game);
+        
+        // Restore game field
+        this.gameField = SaveManager.restoreGameField(memento.gameField);
+        
+        viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), 
+                                   game.getGameInfo().getSettings().getResolutionHeight());
+        stage = new Stage(viewport);
+        devStage = new Stage(viewport);
+        achievementUI = new AchievementUI(stage, game, soundController);
+        achievementUI.startAchievement();
+        
+        this.player = new Player(this);
+        
+        // Restore player state
+        this.player.loadFromMemento(memento.player);
+        
+        this.camera = new Camera();
+        this.hud = new HUD(player, stage, game, this);
+        
+        progressionOverlay = new ProgressionOverlay(game, stage, this);
+        devConsole = new DevConsole(game, this, hud, devStage, player);
+        pausedScreen = new PausedOverlay(game, stage, this);
+        this.mapRenderer = new MapRenderer(game);
+        this.gameController = new GameController(game, player, hud, gameField, soundController, this);
+        
+        // Restore story level index
+        this.currentStoryLevelIndex = memento.currentStoryLevelIndex;
+        
+        // Restore game mode
+        try {
+            GameMode mode = GameMode.valueOf(memento.gameMode);
+            game.setGameMode(mode);
+            
+            if (mode == GameMode.ENDLESS_MODE) {
+                WaveManager waveManager = new WaveManager(gameField, System.currentTimeMillis());
+                this.gameController.setWaveManager(waveManager);
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to restore game mode: " + e.getMessage());
+        }
+        
+        System.out.println("Game loaded successfully!");
     }
 }
