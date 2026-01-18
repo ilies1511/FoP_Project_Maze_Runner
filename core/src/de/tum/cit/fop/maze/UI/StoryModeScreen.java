@@ -166,6 +166,7 @@ public class StoryModeScreen {
         yes.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                soundController.dispose();
                 game.goToBackgroundStory();
             }
         });
