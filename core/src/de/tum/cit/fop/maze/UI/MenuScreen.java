@@ -50,6 +50,7 @@ public class MenuScreen implements Screen {
 
 
         viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+        Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
         stage = new Stage(viewport, game.getSpriteBatch());
         Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
 
@@ -182,8 +183,8 @@ public class MenuScreen implements Screen {
 
         Drawable trophy = new TextureRegionDrawable(game.getTrophy());
         Button.ButtonStyle style = new Button.ButtonStyle();
-        style.up = trophy;             // Image when not pressed
-        style.down = trophy;           // Image when pressed (can be a different region)
+        style.up = trophy;
+        style.down = trophy;
         style.over = trophy;
         Button achievementsButton = new Button(style);
         table.add(achievementsButton).width(150).height(150).bottom().right().padBottom(20).padRight(20);
@@ -246,8 +247,9 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // Update the stage viewport on resize
+        stage.getViewport().update(width, height, true);
     }
+
 
     @Override
     public void dispose() {

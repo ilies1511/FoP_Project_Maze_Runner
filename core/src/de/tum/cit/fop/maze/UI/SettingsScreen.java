@@ -1,6 +1,7 @@
 package de.tum.cit.fop.maze.UI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,11 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -40,6 +37,7 @@ public class SettingsScreen {
     public SettingsScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         var camera = new OrthographicCamera();
         camera.zoom = 1f; // Set camera zoom for a closer view
+
 
         this.soundController = menuScreen.getSoundController();
 
@@ -204,12 +202,34 @@ public class SettingsScreen {
                 }
             }
         });
-
-
         table.add(resolutionWidth).width(400).row();
 
+        TextButton fsButton = new TextButton("Mode: Windowed", skin);
+
+        fsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (Gdx.graphics.isFullscreen()) {
+                    Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+                    stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(),  true); // Update the stage viewport on resize
+                    fsButton.setText("Mode: Windowed");
+                } else {
+                    Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+                    Gdx.graphics.setFullscreenMode(currentMode);
+                    stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(),  true); // Update the stage viewport on resize
+                    fsButton.setText("Mode: Fullscreen");
+                }
+            }
+        });
+
+        fsButton.setText(Gdx.graphics.isFullscreen() ? "Mode: Fullscreen" : "Mode: Windowed");
+
+        table.add(fsButton).colspan(2);
+
+
+
         TextButton restoreDefaultSettingsButton = new TextButton("Restore default settings", game.getSkin(), "vampire-style");
-        table.add(restoreDefaultSettingsButton).width(400).colspan(4).row();
+        table.add(restoreDefaultSettingsButton).width(400).colspan(2).row();
         restoreDefaultSettingsButton.getLabel().setTouchable(Touchable.disabled);
         restoreDefaultSettingsButton.addListener(new ClickListener() {
             @Override
@@ -275,4 +295,6 @@ public class SettingsScreen {
     public Table getTable() {
         return table;
     }
+
+
 }
