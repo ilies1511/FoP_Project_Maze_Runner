@@ -17,6 +17,7 @@ public class Junkie extends Enemy {
     private static final float ATTACK_COOLDOWN = 1.5f;
     private static final float ATTACK_RANGE = 0.3f; //Dracula range
     private float cooldownTimer = 0f;
+    private Vector2 attackDirection = new Vector2();
 
     public Junkie(Vector2 startPos) {
         super(startPos, AnimationType.JUNKIE_DOWN);
@@ -111,11 +112,11 @@ public class Junkie extends Enemy {
     @Override
     public void AnimationDirection() {
         if (isAttacking) {
-            if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
-                if (velocity.x > 0) changeAnimation(AnimationType.JUNKIE_ATTACK_RIGHT);
+            if (Math.abs(attackDirection.x) > Math.abs(attackDirection.y)) {
+                if (attackDirection.x > 0) changeAnimation(AnimationType.JUNKIE_ATTACK_RIGHT);
                 else changeAnimation(AnimationType.JUNKIE_ATTACK_LEFT);
             } else {
-                if (velocity.y > 0) changeAnimation(AnimationType.JUNKIE_ATTACK_UP);
+                if (attackDirection.y > 0) changeAnimation(AnimationType.JUNKIE_ATTACK_UP);
                 else changeAnimation(AnimationType.JUNKIE_ATTACK_DOWN);
             }
             return;
