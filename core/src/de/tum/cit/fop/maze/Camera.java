@@ -11,17 +11,23 @@ public class Camera {
     private static final float ZOOM_CHANGE_MULTIPLIER = 1.01f;
     private static final float MAXIMUM_ZOOM = 1.1f;
     private static final float CAMERA_LERP_SPEED = 3f;
+    private static final float SHAKE_DURATION = 0.8f;
+    private static final float SHAKE_SPEED = 30f;
+    private static final float SHAKE_POWER_DEGREES = 2.5f;
+
 
     private boolean zooming;
 
     private final OrthographicCamera camera;
 
+    private float currentShakeTime = SHAKE_DURATION; // when currentShakeTime < SHAKE_DURATION, camera gonna shake
 
 
     public Camera() {
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         this.camera.zoom = INITIAL_ZOOM_LEVEL;
+
     }
 
     public OrthographicCamera getCamera() {
@@ -59,6 +65,9 @@ public class Camera {
         }
         this.camera.position.x = MathUtils.lerp(this.camera.position.x, target_x, delta * CAMERA_LERP_SPEED);
         this.camera.position.y = MathUtils.lerp(this.camera.position.y, target_y, delta * CAMERA_LERP_SPEED);
+
+        shakeCamera(delta);
+
         this.camera.update();
     }
 
@@ -77,4 +86,28 @@ public class Camera {
         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 4.0f);
     }
 
+
+    // Camera shaking
+    public void shake() {
+        this.currentShakeTime = 0f;
+    }
+
+    private void shakeCamera(float delta) {
+        this.currentShakeTime += delta;
+        if (this.currentShakeTime > SHAKE_DURATION) {
+            setCameraRotation(0f);
+        } else {
+            // damped sine wave
+            float decayFactor = 1.0f - (this.currentShakeTime / SHAKE_DURATION);
+            float oscillation = MathUtils.cos(this.currentShakeTime * SHAKE_SPEED);
+            float currentAngle = SHAKE_POWER_DEGREES * oscillation * decayFactor;
+            setCameraRotation(currentAngle);
+        }
+    }
+
+    private void setCameraRotation(float angle) {
+        this.camera.up.set(0, 1, 0);
+        this.camera.direction.set(0, 0, -1);
+        this.camera.rotate(angle);
+    }
 }

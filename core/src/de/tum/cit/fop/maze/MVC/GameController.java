@@ -219,6 +219,7 @@ public class GameController {
                     iter.remove();
                 } else {
                     if (!this.player.hasEffect(Flicker.class) && ((Dawn) obj).checkPlayerCollision(this.player)) {
+                        this.gameScreen.getCamera().shake();
                         this.player.addOrReapplyEffect(new Flicker(this.player));
                     }
                 }
@@ -254,6 +255,7 @@ public class GameController {
 					System.out.println("YOU WERE DAMAGED!");
 					player.getDamageOrHeal(1);
 					this.player.addOrReapplyEffect(new Flicker(this.player));
+                    this.gameScreen.getCamera().shake();
 					soundController.playPlayerHitSound(1);
 				}
 			}

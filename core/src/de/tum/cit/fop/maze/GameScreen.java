@@ -143,7 +143,6 @@ public class GameScreen implements Screen {
 	// Screen interface methods with necessary functionality
 	@Override
 	public void render(float delta) {
-        this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
 
 
         ScreenUtils.clear(0, 0, 0, 1); // Clear the screen
@@ -155,6 +154,8 @@ public class GameScreen implements Screen {
 		handleGlobalInput();
 
 		if (!isPaused) {
+            this.camera.update(delta, this.player.position, this.gameField.getWidth(), this.gameField.getHeight());
+
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 				pausedScreen.showPausedMenu();
 			}
