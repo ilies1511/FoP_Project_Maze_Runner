@@ -16,11 +16,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public abstract class Enemy extends GameObject implements Enemies {
     protected boolean isDead = false;
     private static TextureRegion shadowTexture;
+    private float deathTime = 0f; // fade
     private static final float detectionRange = 5.5f; // if within 5.5 tiles
+    private static final float fadeDuration = 1.0f;
 
-    public static void setShadowTexture(TextureRegion texture) {
-        shadowTexture = texture;
-    }
 
     public Enemy(Vector2 startPos, Vector2 size, AnimationType animationType) {
         super(
@@ -61,6 +60,15 @@ public abstract class Enemy extends GameObject implements Enemies {
         } else {
             velocity.set(0, 0);
         }
+    }
+    public void updateDeathAnimation(float delta) {
+        if (isDead) {
+            deathTime += delta;
+        }
+    }
+
+    public boolean shouldRemove() {
+        return isDead && deathTime >= fadeDuration;
     }
 
     protected boolean WallOrObstacle(float x, float y, Vector2 size, GameField gameField) {
@@ -104,16 +112,36 @@ public abstract class Enemy extends GameObject implements Enemies {
         if (shadowTexture != null) {
             float shadowWidth = spriteSizes.x * 1.5f;
             batch.draw(shadowTexture, position.x + (spriteSizes.x - shadowWidth) / 2f, position.y - 0.05f, shadowWidth, shadowWidth);
-        super.animate(batch);
+            if (isDead) {
+                // Move and Transparent on each kill
+                float alpha = 1.0f - (deathTime / fadeDuration);
+                if (alpha < 0) {
+                    alpha = 0;
+                }
+                float floatOffset = (deathTime / fadeDuration) * 0.5f;
+                float oldAlpha = batch.getColor().a;
+                //transparent
+                batch.setColor(1f, 1f, 1f, alpha);
+                // offset
+                float originalY = position.y;
+                position.y += floatOffset;
+                super.animate(batch);
+                position.y = originalY;
+                // back to normal
+                batch.setColor(1f, 1f, 1f, oldAlpha);
+            } else {
+                super.animate(batch);}
     }}
+
+    public static void setShadowTexture(TextureRegion texture) {
+        shadowTexture = texture;
+    }
 
     public boolean isDead() {
         return isDead;
     }
 
     public void setDead(boolean dead) {
-        //TODO for Saad: implement enemyDie/Hit sounds
-    //    SoundController.playEnemyDieSound(1);
         isDead = dead;
     }
 

@@ -128,6 +128,7 @@ public class GameController {
 				if (obj instanceof Enemy) {
 					Enemy enemy = (Enemy) obj;
                     float hitRange = 1f;
+                    if (enemy.isDead()) continue;
                     if (player.getPlayerGameObject().position.dst(enemy.getEnemyEntity().position) < hitRange) { //1f is drac's hit range
                         boolean isDead = true;
                         if (enemy instanceof Bouncer) {
@@ -137,7 +138,7 @@ public class GameController {
                             }
                         }
                         if (isDead) {
-                            iter.remove();
+                            enemy.setDead(true);
                             soundController.playEnemyDieSound(1f);
                             Collectable drop = enemy.onDeath(player);
                             iter.add(drop);
@@ -232,6 +233,13 @@ public class GameController {
 
 	private void handleEnemyLogic(Enemy enemy, float delta, Iterator<GameObject> iter) {
 		GameObject enemyGo = enemy.getEnemyEntity();
+        if (enemy.isDead()) {
+            enemy.updateDeathAnimation(delta);
+            if (enemy.shouldRemove()) {
+                iter.remove();
+            }
+            return;
+        }
 		enemy.updateBehavior(delta, player.getPlayerGameObject().position, gameField, player);
 
 		Vector2 nextPos = enemyGo.nextPosition(delta);
