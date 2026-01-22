@@ -137,7 +137,6 @@ public class MazeRunnerGame extends Game {
     // Dawn Animations
     private Animation<TextureRegion> dawnThinAnimation;
     private Animation<TextureRegion> dawnWideAnimation;
-    private TextureRegion shadowTexture;
 	private GameMode gameMode;
 
 	public static final String[] STORY_LEVELS = {
@@ -175,7 +174,6 @@ public class MazeRunnerGame extends Game {
         this.gameInfo.initializeAchievements();
 
         spriteBatch = new SpriteBatch(); // Create SpriteBatch
-        this.Shadow();
 
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
         assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
@@ -269,13 +267,6 @@ public class MazeRunnerGame extends Game {
 //		return enemyTexture;
 //	}
 
-
-    public void Shadow(){
-        Texture shadowSheet = new Texture(Gdx.files.internal("lpc_shadow.png"));
-        TextureRegion[][] tmp = TextureRegion.split(shadowSheet, 64, 64);
-        TextureRegion genericShadow = tmp[10][0];
-        Enemy.setShadowTexture(genericShadow);
-    }
 
     public void disposeAllScreens() {
         List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen, this.gameLostScreen);

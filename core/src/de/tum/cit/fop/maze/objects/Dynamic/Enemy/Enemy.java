@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Enemy extends GameObject implements Enemies {
     protected boolean isDead = false;
-    private static TextureRegion shadowTexture;
     private float deathTime = 0f; // fade
     private static final float detectionRange = 5.5f; // if within 5.5 tiles
     private static final float fadeDuration = 1.0f;
@@ -109,33 +108,27 @@ public abstract class Enemy extends GameObject implements Enemies {
     }
 
     public void animate(Batch batch) {
-        if (shadowTexture != null) {
-            float shadowWidth = spriteSizes.x * 1.5f;
-            batch.draw(shadowTexture, position.x + (spriteSizes.x - shadowWidth) / 2f, position.y - 0.05f, shadowWidth, shadowWidth);
-            if (isDead) {
-                // Move and Transparent on each kill
-                float alpha = 1.0f - (deathTime / fadeDuration);
-                if (alpha < 0) {
-                    alpha = 0;
-                }
-                float floatOffset = (deathTime / fadeDuration) * 0.5f;
-                float oldAlpha = batch.getColor().a;
-                //transparent
-                batch.setColor(1f, 1f, 1f, alpha);
-                // offset
-                float originalY = position.y;
-                position.y += floatOffset;
-                super.animate(batch);
-                position.y = originalY;
-                // back to normal
-                batch.setColor(1f, 1f, 1f, oldAlpha);
-            } else {
-                super.animate(batch);}
-    }}
-
-    public static void setShadowTexture(TextureRegion texture) {
-        shadowTexture = texture;
+        if (isDead) {
+            // Move and Transparent on each kill
+            float alpha = 1.0f - (deathTime / fadeDuration);
+            if (alpha < 0) {
+                alpha = 0;
+            }
+            float floatOffset = (deathTime / fadeDuration) * 0.5f;
+            float oldAlpha = batch.getColor().a;
+            //transparent
+            batch.setColor(1f, 1f, 1f, alpha);
+            // offset
+            float originalY = position.y;
+            position.y += floatOffset;
+            super.animate(batch);
+            position.y = originalY;
+            // back to normal
+            batch.setColor(1f, 1f, 1f, oldAlpha);
+        } else {
+            super.animate(batch);}
     }
+
 
     public boolean isDead() {
         return isDead;
