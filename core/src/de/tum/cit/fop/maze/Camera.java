@@ -11,16 +11,19 @@ public class Camera {
     private static final float ZOOM_CHANGE_MULTIPLIER = 1.01f;
     private static final float MAXIMUM_ZOOM = 1.1f;
     private static final float CAMERA_LERP_SPEED = 3f;
-    private static final float SHAKE_DURATION = 0.8f;
     private static final float SHAKE_SPEED = 30f;
-    private static final float SHAKE_POWER_DEGREES = 2.5f;
+
 
 
     private boolean zooming;
 
     private final OrthographicCamera camera;
 
-    private float currentShakeTime = SHAKE_DURATION; // when currentShakeTime < SHAKE_DURATION, camera gonna shake
+    private float currentShakeTime = 0f; // when currentShakeTime > 0, camera is going to shake
+
+    private float currentShakeDurationTotal = 0f;
+
+    private float currentShakePowerDegrees = 0f;
 
 
     public Camera() {
@@ -88,19 +91,21 @@ public class Camera {
 
 
     // Camera shaking
-    public void shake() {
-        this.currentShakeTime = 0f;
+    public void shake(float shake_duration, float shake_power_degrees) {
+        this.currentShakePowerDegrees = shake_power_degrees;
+        this.currentShakeTime = shake_duration;
+        this.currentShakeDurationTotal = shake_duration;
     }
 
     private void shakeCamera(float delta) {
-        this.currentShakeTime += delta;
-        if (this.currentShakeTime > SHAKE_DURATION) {
+        this.currentShakeTime -= delta;
+        if (this.currentShakeTime < 0f) {
             setCameraRotation(0f);
         } else {
             // damped sine wave
-            float decayFactor = 1.0f - (this.currentShakeTime / SHAKE_DURATION);
+            float decayFactor = 1.0f - (this.currentShakeTime / this.currentShakeDurationTotal);
             float oscillation = MathUtils.cos(this.currentShakeTime * SHAKE_SPEED);
-            float currentAngle = SHAKE_POWER_DEGREES * oscillation * decayFactor;
+            float currentAngle = this.currentShakePowerDegrees * oscillation * decayFactor;
             setCameraRotation(currentAngle);
         }
     }
