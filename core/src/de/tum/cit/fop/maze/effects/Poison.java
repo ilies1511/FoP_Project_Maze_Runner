@@ -2,6 +2,9 @@ package de.tum.cit.fop.maze.effects;
 
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * A Poison effect that deals damage over time and slows the player.
+ */
 public class Poison extends Effect {
     private static final float DURATION = 3;
     private static final float SPEED_MULTIPLIER = 0.7f;
@@ -9,6 +12,10 @@ public class Poison extends Effect {
 
     private int currentTick;
 
+    /**
+     * Creates a new Poison effect.
+     * @param player The player to poison.
+     */
     public Poison(Player player) {
         this.player = player;
         this.timeLeft = DURATION;

@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Manages the game camera, including following the player, zooming, and shake effects.
+ * It handles the camera's position and updates it based on game logic.
+ */
 public class Camera {
     private static final float VIEWPORT_WIDTH = 25f;  // Visible world width
     private static final float VIEWPORT_HEIGHT = 18.75f; // Visible world height
@@ -15,12 +19,15 @@ public class Camera {
     private final OrthographicCamera camera;
     private boolean zooming;
     private float currentShakeTime = 0f; // when currentShakeTime > 0, camera is going to shake
-
+    
     private float currentShakeDurationTotal = 0f;
 
     private float currentShakePowerDegrees = 0f;
 
 
+    /**
+     * Creates a new Camera instance with default settings.
+     */
     public Camera() {
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -28,10 +35,21 @@ public class Camera {
 
     }
 
+    /**
+     * Gets the underlying OrthographicCamera instance.
+     * @return The LibGDX OrthographicCamera.
+     */
     public OrthographicCamera getCamera() {
         return this.camera;
     }
 
+    /**
+     * Updates the camera position to follow the player and handle effects.
+     * @param delta The time elapsed since the last frame.
+     * @param playerPos The current position of the player.
+     * @param gameFieldWidth The width of the game field.
+     * @param gameFieldHeight The height of the game field.
+     */
     public void update(float delta, Vector2 playerPos, int gameFieldWidth, int gameFieldHeight) {
         // Make sure camera stays inside maze always
         if (VIEWPORT_WIDTH > gameFieldWidth && !zooming) {
@@ -68,6 +86,9 @@ public class Camera {
         this.camera.update();
     }
 
+    /**
+     * Zooms the camera out by a small factor.
+     */
     public void zoom_out() {
         zooming = true;
         if (this.camera.zoom < MAXIMUM_ZOOM) {
@@ -76,6 +97,9 @@ public class Camera {
         }
     }
 
+    /**
+     * Zooms the camera in by a small factor.
+     */
     public void zoom_in() {
 
         zooming = true;
@@ -84,7 +108,11 @@ public class Camera {
     }
 
 
-    // Camera shaking
+    /**
+     * Triggers a camera shake effect.
+     * @param shake_duration The duration of the shake in seconds.
+     * @param shake_power_degrees The intensity of the shake in degrees.
+     */
     public void shake(float shake_duration, float shake_power_degrees) {
         this.currentShakePowerDegrees = shake_power_degrees;
         this.currentShakeTime = shake_duration;

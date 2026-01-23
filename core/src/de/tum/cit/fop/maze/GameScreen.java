@@ -59,6 +59,10 @@ public class GameScreen implements Screen {
 
     private final VfxManager vfxManager;
 
+    /**
+     * Constructor for GameScreen. Initializes the game world, UI, and effects.
+     * @param game The main game class.
+     */
     public GameScreen(MazeRunnerGame game) {
         vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
         VignettingEffect vignette = new VignettingEffect(false);
@@ -103,6 +107,11 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Constructor for loading a saved game state.
+     * @param game The main game class.
+     * @param memento The memento containing saved state.
+     */
     public GameScreen(MazeRunnerGame game, GameScreenMemento memento) {
         vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
         VignettingEffect vignette = new VignettingEffect(false);
@@ -167,8 +176,8 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Constructor for GameScreen. Sets up the camera and font.
-     *
+     * Initializes the game mode (Levels, Endless, Story).
+     * Loads appropriate maps or generates mazes.
      */
     private void init_mode() {
         GameMode gameMode = game.getGameMode();
@@ -257,10 +266,18 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Gets the current game field.
+     * @return The game field.
+     */
     public GameField getGameField() {
         return gameField;
     }
 
+    /**
+     * Sets a new game field.
+     * @param newGameField The new game field to set.
+     */
     public void setGameField(GameField newGameField) {
         this.gameField = newGameField;
     }
@@ -271,6 +288,10 @@ public class GameScreen implements Screen {
         gameField.addGameObject(new Key(new Vector2(5f, 5f)));
     }
 
+    /**
+     * Gets the player entity.
+     * @return The player.
+     */
     public Player getPlayer() {
         return player;
     }
@@ -298,45 +319,56 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-//		if (soundController != null) {
-//			soundController.dispose();
-//		}
-////		if (gameController != null && gameController.getSoundController() != null) {
-////			gameController.getSoundController().dispose();
-////        }
     }
 
     @Override
     public void dispose() {
-//		stage.dispose();
-//		if (soundController != null) {
-//			soundController.dispose();
-//		}
-//		if (gameController != null && gameController.getSoundController() != null) {
-//			gameController.getSoundController().dispose();
-//		}
     }
 
+    /**
+     * Checks if the game is paused.
+     * @return True if paused.
+     */
     public boolean isPaused() {
         return isPaused;
     }
 
+    /**
+     * Sets the pause state of the game.
+     * @param paused True to pause, false to unpause.
+     */
     public void setPaused(boolean paused) {
         isPaused = paused;
     }
 
+    /**
+     * Gets the sound controller.
+     * @return The sound controller.
+     */
     public SoundController getSoundController() {
         return soundController;
     }
 
+    /**
+     * Gets the HUD.
+     * @return The HUD.
+     */
     public HUD getHUD() {
         return hud;
     }
 
+    /**
+     * Gets the game controller.
+     * @return The game controller.
+     */
     public GameController getGameController() {
         return gameController;
     }
 
+    /**
+     * Loads the next level in story mode.
+     * Triggers win screen if all levels are completed.
+     */
     public void loadNextStoryLevel() {
         currentStoryLevelIndex++;
         if (currentStoryLevelIndex >= MazeRunnerGame.STORY_LEVELS.length) {
@@ -376,18 +408,33 @@ public class GameScreen implements Screen {
         hud.updatePlayerKeys();
     }
 
+    /**
+     * Gets the camera.
+     * @return The camera.
+     */
     public Camera getCamera() {
         return camera;
     }
 
+    /**
+     * Gets the viewport.
+     * @return The viewport.
+     */
     public Viewport getViewport() {
         return viewport;
     }
 
+    /**
+     * Gets the achievement UI.
+     * @return The achievement UI.
+     */
     public AchievementUI getAchievementUI() {
         return achievementUI;
     }
 
+    /**
+     * Saves the current game state.
+     */
     public void saveGame() {
         try {
             GameFieldMemento gameFieldMemento = SaveManager.createGameFieldMemento(this.gameField);

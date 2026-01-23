@@ -2,12 +2,20 @@ package de.tum.cit.fop.maze.effects;
 
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * A flickering effect that periodically hides the player character.
+ * Used for visual feedback, e.g., after taking damage.
+ */
 public class Flicker extends Effect {
     private static final float DURATION = 3f;
     private static final float HIDE_INTERVAL = 0.2f;
 
     private float hide_count;
 
+    /**
+     * Creates a new Flicker effect.
+     * @param player The player to flicker.
+     */
     public Flicker(Player player) {
         this.player = player;
         this.timeLeft = DURATION;

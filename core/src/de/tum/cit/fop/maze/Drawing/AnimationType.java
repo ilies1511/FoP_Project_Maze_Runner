@@ -1,5 +1,9 @@
 package de.tum.cit.fop.maze.Drawing;
 
+/**
+ * Enumeration of all available animation types in the game.
+ * Used to identify and retrieve specific animations from the texture map.
+ */
 public enum AnimationType {
     CHARACTER_UP,
     CHARACTER_DOWN,

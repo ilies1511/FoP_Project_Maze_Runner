@@ -10,6 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.util.function.IntSupplier;
 
+/**
+ * A UI button that allows users to rebind keys.
+ * It listens for keyboard input to update the associated key binding.
+ */
 public class KeyBindingButton extends TextButton {
     private final String actionName;
     private final KeyBindingCallback callback;
@@ -17,6 +21,14 @@ public class KeyBindingButton extends TextButton {
     private int keycode;
     private boolean isListeningKeys;
 
+    /**
+     * Creates a new KeyBindingButton.
+     * @param actionName The name of the action to bind.
+     * @param keycode The initial key code.
+     * @param skin The UI skin.
+     * @param callback The callback to execute when a new key is bound.
+     * @param keyGetter A supplier to get the current key binding.
+     */
     public KeyBindingButton(String actionName, int keycode, Skin skin, KeyBindingCallback callback, IntSupplier keyGetter) {
         super("", skin);
         this.keycode = keycode;
@@ -47,6 +59,9 @@ public class KeyBindingButton extends TextButton {
         });
     }
 
+    /**
+     * Updates the text displayed on the button to reflect the current key binding.
+     */
     public void updateBindingText() {
         this.keycode = this.keyGetter.getAsInt();
         this.setText(this.actionName + " | " + Input.Keys.toString(this.keycode));
@@ -64,7 +79,14 @@ public class KeyBindingButton extends TextButton {
         this.getStage().setKeyboardFocus(null);
     }
 
+    /**
+     * Callback interface for handling key binding changes.
+     */
     public interface KeyBindingCallback {
+        /**
+         * Called when a new key is bound.
+         * @param keycode The new key code.
+         */
         void handle(int keycode);
     }
 }

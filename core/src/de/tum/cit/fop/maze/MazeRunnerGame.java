@@ -26,6 +26,7 @@ import java.util.List;
  * It manages the screens and global resources like SpriteBatch and Skin.
  */
 public class MazeRunnerGame extends Game {
+    /** Array of file paths for story mode levels. */
     public static final String[] STORY_LEVELS = {
             "story_mode/berghain_main_big.properties",
 //			"story_mode/berghain_eg.properties",
@@ -152,6 +153,10 @@ public class MazeRunnerGame extends Game {
         this.gameInfo = new GameInfo();
     }
 
+    /**
+     * Gets the game info object.
+     * @return The GameInfo.
+     */
     public GameInfo getGameInfo() {
         return this.gameInfo;
     }
@@ -239,14 +244,25 @@ public class MazeRunnerGame extends Game {
         }
     }
 
+    /**
+     * Gets the texture for the key.
+     * @return The key texture region.
+     */
     public TextureRegion getKeyTexture() {
         return keyTexture;
     }
 
+    /**
+     * Gets the texture for the trap.
+     * @return The trap texture region.
+     */
     public TextureRegion getTrapTexture() {
         return trapTexture;
     }
 
+    /**
+     * Disposes all active screens.
+     */
     public void disposeAllScreens() {
         List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen, this.gameLostScreen);
         for (Screen screen : allScreens) {
@@ -274,17 +290,26 @@ public class MazeRunnerGame extends Game {
     }
 
 
+    /**
+     * Switches to the background story screen.
+     */
     public void goToBackgroundStory() {
         disposeAllScreens();
         this.setScreen(new BackgroundStoryScreen(this)); // Set the current screen to GameScreen
     }
 
+    /**
+     * Switches to the game lost screen.
+     */
     public void goToGameLostScreen() {
         disposeAllScreens();
         this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
     }
 
 
+    /**
+     * Switches to the game won screen.
+     */
     public void goToGameWonScreen() {
         disposeAllScreens();
         this.setScreen(new GameWonScreen(this));
@@ -599,473 +624,943 @@ public class MazeRunnerGame extends Game {
         this.sunscreenEffect = effectsAtlas.findRegion("cloudy_sun");
     }
 
+    /**
+     * Gets the arrow texture.
+     * @return The arrow texture region.
+     */
     public TextureRegion getArrow() {
         return arrow;
     }
 
     // Getter methods
+
+    /**
+     * Gets the tourist walking down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getTouristDown() {
         return touristDown;
     }
 
+    /**
+     * Gets the tourist walking up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getTouristUp() {
         return touristUp;
     }
 
+    /**
+     * Gets the tourist walking left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getTouristLeft() {
         return touristLeft;
     }
 
+    /**
+     * Gets the tourist walking right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getTouristRight() {
         return touristRight;
     }
 
 
+    /**
+     * Gets the UI skin.
+     * @return The skin.
+     */
     public Skin getSkin() {
         return skin;
     }
 
+    /**
+     * Gets the sprite batch.
+     * @return The sprite batch.
+     */
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
     }
 
+    /**
+     * Gets the character walking down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterDownAnimation() {
         return characterDownAnimation;
     }
 
+    /**
+     * Gets the character walking up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterUpAnimation() {
         return characterUpAnimation;
     }
 
+    /**
+     * Gets the character walking left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterLeftAnimation() {
         return characterLeftAnimation;
     }
 
+    /**
+     * Gets the character walking right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterRightAnimation() {
         return characterRightAnimation;
     }
 
+    /**
+     * Gets the character jumping down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterDownJumpAnimation() {
         return characterDownJumpAnimation;
     }
 
+    /**
+     * Gets the character jumping up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterUpJumpAnimation() {
         return characterUpJumpAnimation;
     }
 
+    /**
+     * Gets the character jumping left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterLeftJumpAnimation() {
         return characterLeftJumpAnimation;
     }
 
+    /**
+     * Gets the character jumping right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterRightJumpAnimation() {
         return characterRightJumpAnimation;
     }
 
+    /**
+     * Gets the character sad down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterDownSad() {
         return characterDownSad;
     }
 
+    /**
+     * Gets the character sad up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterUpSad() {
         return characterUpSad;
     }
 
+    /**
+     * Gets the character sad left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterLeftSad() {
         return characterLeftSad;
     }
 
+    /**
+     * Gets the exit portal animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getExitPortalAnimation() {
         return exitPortalAnimation;
     }
 
+    /**
+     * Gets the character sad right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterRightSad() {
         return characterRightSad;
     }
 
+    /**
+     * Gets the character win down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterDownWin() {
         return characterDownWin;
     }
 
+    /**
+     * Gets the character win up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterUpWin() {
         return characterUpWin;
     }
 
+    /**
+     * Gets the character win left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterLeftWin() {
         return characterLeftWin;
     }
 
+    /**
+     * Gets the character win right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterRightWin() {
         return characterRightWin;
     }
 
+    /**
+     * Gets the bouncer walking down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getBouncerDown() {
         return bouncerDown;
     }
 
+    /**
+     * Gets the bouncer walking up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getBouncerUp() {
         return bouncerUp;
     }
 
+    /**
+     * Gets the bouncer walking left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getBouncerLeft() {
         return bouncerLeft;
     }
 
+    /**
+     * Gets the bouncer walking right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getBouncerRight() {
         return bouncerRight;
     }
 
+    /**
+     * Gets the junkie walking down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieDown() {
         return junkieDown;
     }
 
+    /**
+     * Gets the junkie walking up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieUp() {
         return junkieUp;
     }
 
+    /**
+     * Gets the junkie walking left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieLeft() {
         return junkieLeft;
     }
 
+    /**
+     * Gets the junkie walking right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieRight() {
         return junkieRight;
     }
 
+    /**
+     * Gets the junkie attack down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieAttackDown() {
         return junkieAttackDown;
     }
 
+    /**
+     * Gets the junkie attack up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieAttackUp() {
         return junkieAttackUp;
     }
 
+    /**
+     * Gets the junkie attack left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieAttackLeft() {
         return junkieAttackLeft;
     }
 
+    /**
+     * Gets the junkie attack right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getJunkieAttackRight() {
         return junkieAttackRight;
     }
 
     // Collectable animation Getters
+
+    /**
+     * Gets the key shine animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getKeyShineAnimation() {
         return this.keyShineAnimation;
     }
 
+    /**
+     * Gets the vampiric heart animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getVampiricHeartAnimation() {
         return this.vampiricHeartAnimation;
     }
 
     // Traps animation Getters
+
+    /**
+     * Gets the garlic trap animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getGarlicTrapAnimation() {
         return this.garlicTrapAnimation;
     }
 
+    /**
+     * Gets the freeze trap animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getFreezeTrapAnimation() {
         return this.freezeTrapAnimation;
     }
 
     // Dawn animation Getters
+
+    /**
+     * Gets the dawn thin animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getDawnThinAnimation() {
         return this.dawnThinAnimation;
     }
 
+    /**
+     * Gets the dawn wide animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getDawnWideAnimation() {
         return this.dawnWideAnimation;
     }
 
     // Maze Tile Getters
+
+    /**
+     * Gets the wall tile 3 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallTile3() {
         return wallTile3;
     }
 
+    /**
+     * Gets the empty tile 1 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile1() {
         return emptyTile1;
     }
 
+    /**
+     * Gets the empty tile 2 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile2() {
         return emptyTile2;
     }
 
+    /**
+     * Gets the empty tile 3 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile3() {
         return emptyTile3;
     }
 
+    /**
+     * Gets the empty tile 5 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile5() {
         return emptyTile5;
     }
 
+    /**
+     * Gets the empty tile 6 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile6() {
         return emptyTile6;
     }
 
+    /**
+     * Gets the empty tile 7 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile7() {
         return emptyTile7;
     }
 
+    /**
+     * Gets the dance floor tile texture.
+     * @return The texture region.
+     */
     public TextureRegion getDanceFloorTile() {
         return danceFloorTile;
     }
 
+    /**
+     * Gets the wall tile 1 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallTile1() {
         return wallTile1;
     }
 
+    /**
+     * Gets the wall tile 2 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallTile2() {
         return wallTile2;
     }
 
+    /**
+     * Gets the wall tile 4 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallTile4() {
         return wallTile4;
     }
 
+    /**
+     * Gets the wall high 5 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh5() {
         return wallTile5;
     }
 
+    /**
+     * Gets the wall high 6 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh6() {
         return wallTile6;
     }
 
+    /**
+     * Gets the wall high 7 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh7() {
         return wallTile7;
     }
 
+    /**
+     * Gets the wall tile 8 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallTile8() {
         return wallTile8;
     }
 
+    /**
+     * Gets the empty tile 4 texture.
+     * @return The texture region.
+     */
     public TextureRegion getEmptyTile4() {
         return emptyTile4;
     }
 
+    /**
+     * Gets the decor 1 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor1() {
         return decor1;
     }
 
+    /**
+     * Gets the decor 2 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor2() {
         return decor2;
     }
 
+    /**
+     * Gets the decor 3 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor3() {
         return decor3;
     }
 
+    /**
+     * Gets the decor 4 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor4() {
         return decor4;
     }
 
+    /**
+     * Gets the decor 5 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor5() {
         return decor5;
     }
 
+    /**
+     * Gets the decor 6 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor6() {
         return decor6;
     }
 
+    /**
+     * Gets the decor 7 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor7() {
         return decor7;
     }
 
+    /**
+     * Gets the decor 8 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor8() {
         return decor8;
     }
 
+    /**
+     * Gets the decor 9 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor9() {
         return decor9;
     }
 
+    /**
+     * Gets the decor 10 texture.
+     * @return The texture region.
+     */
     public TextureRegion getDecor10() {
         return decor10;
     }
 
+    /**
+     * Gets the casket tile texture.
+     * @return The texture region.
+     */
     public TextureRegion getCasketTile() {
         return casketTile;
     }
 
+    /**
+     * Gets the main sprite sheet.
+     * @return The texture.
+     */
     public Texture getSpriteSheet() {
         return spriteSheet;
     }
 
+    /**
+     * Gets the wooden sign texture.
+     * @return The texture region.
+     */
     public TextureRegion getWoodenSign() {
         return woodenSign;
     }
 
     // Status effect getters
+
+    /**
+     * Gets the poison effect texture.
+     * @return The texture region.
+     */
     public TextureRegion getPoisonEffect() {
         return poisonEffect;
     }
 
+    /**
+     * Gets the blood effect texture.
+     * @return The texture region.
+     */
     public TextureRegion getBloodEffect() {
         return bloodEffect;
     }
 
+    /**
+     * Gets the freeze effect texture.
+     * @return The texture region.
+     */
     public TextureRegion getFreezeEffect() {
         return freezeEffect;
     }
 
+    /**
+     * Gets the sunscreen effect texture.
+     * @return The texture region.
+     */
     public TextureRegion getSunscreenEffect() {
         return sunscreenEffect;
     }
 
+    /**
+     * Gets the closed exit texture.
+     * @return The texture region.
+     */
     public TextureRegion getExitClosedTexture() {
         return exitClosedTexture;
     }
 
+    /**
+     * Gets the open exit texture.
+     * @return The texture region.
+     */
     public TextureRegion getExitOpenTexture() {
         return exitOpenTexture;
     }
 
+    /**
+     * Gets the key texture.
+     * @return The texture region.
+     */
     public TextureRegion getKey() {
         return key;
     }
 
+    /**
+     * Gets the key outline texture.
+     * @return The texture region.
+     */
     public TextureRegion getKeyOutline() {
         return keyOutline;
     }
 
+    /**
+     * Gets the character attack down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterAttackDownAnimation() {
         return characterAttackDownAnimation;
     }
 
+    /**
+     * Gets the character attack up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterAttackUpAnimation() {
         return characterAttackUpAnimation;
     }
 
+    /**
+     * Gets the character attack left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterAttackLeftAnimation() {
         return characterAttackLeftAnimation;
     }
 
+    /**
+     * Gets the character attack right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterAttackRightAnimation() {
         return characterAttackRightAnimation;
     }
 
+    /**
+     * Gets the character invisible down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisDownAnimation() {
         return characterInvisDownAnimation;
     }
 
+    /**
+     * Gets the character invisible up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisUpAnimation() {
         return characterInvisUpAnimation;
     }
 
+    /**
+     * Gets the character invisible left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisLeftAnimation() {
         return characterInvisLeftAnimation;
     }
 
+    /**
+     * Gets the character invisible right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisRightAnimation() {
         return characterInvisRightAnimation;
     }
 
+    /**
+     * Gets the character invisible jump down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisDownJumpAnimation() {
         return characterInvisDownJumpAnimation;
     }
 
+    /**
+     * Gets the character invisible jump up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisUpJumpAnimation() {
         return characterInvisUpJumpAnimation;
     }
 
+    /**
+     * Gets the character invisible jump left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisLeftJumpAnimation() {
         return characterInvisLeftJumpAnimation;
     }
 
+    /**
+     * Gets the character invisible jump right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisRightJumpAnimation() {
         return characterInvisRightJumpAnimation;
     }
 
+    /**
+     * Gets the character invisible sad down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisDownSad() {
         return characterInvisDownSad;
     }
 
+    /**
+     * Gets the character invisible sad up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisUpSad() {
         return characterInvisUpSad;
     }
 
+    /**
+     * Gets the character invisible sad left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisLeftSad() {
         return characterInvisLeftSad;
     }
 
+    /**
+     * Gets the character invisible sad right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisRightSad() {
         return characterInvisRightSad;
     }
 
+    /**
+     * Gets the character invisible win down animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisDownWin() {
         return characterInvisDownWin;
     }
 
+    /**
+     * Gets the character invisible win up animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisUpWin() {
         return characterInvisUpWin;
     }
 
+    /**
+     * Gets the character invisible win left animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisLeftWin() {
         return characterInvisLeftWin;
     }
 
+    /**
+     * Gets the character invisible win right animation.
+     * @return The animation.
+     */
     public Animation<TextureRegion> getCharacterInvisRightWin() {
         return characterInvisRightWin;
     }
 
+    /**
+     * Gets the current game mode.
+     * @return The game mode.
+     */
     public GameMode getGameMode() {
         return this.gameMode;
     }
 
+    /**
+     * Sets the game mode.
+     * @param Mode The new game mode.
+     */
     public void setGameMode(GameMode Mode) {
         this.gameMode = Mode;
     }
 
+    /**
+     * Gets the heart texture.
+     * @return The texture region.
+     */
     public TextureRegion getHeart() {
         return heart;
     }
 
+    /**
+     * Gets the trophy texture.
+     * @return The texture region.
+     */
     public TextureRegion getTrophy() {
         return trophy;
     }
 
+    /**
+     * Gets the points achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getPointsAchievement() {
         return pointsAchievement;
     }
 
+    /**
+     * Gets the console achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getConsoleAchievement() {
         return consoleAchievement;
     }
 
+    /**
+     * Gets the invisibility achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getInvisAchievement() {
         return invisAchievement;
     }
 
+    /**
+     * Gets the kills achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getKillsAchievement() {
         return killsAchievement;
     }
 
+    /**
+     * Gets the upgrades achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getUpgradesAchievement() {
         return upgradesAchievement;
     }
 
+    /**
+     * Gets the first blood achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getFirstBloodAchievement() {
         return firstBloodAchievement;
     }
 
+    /**
+     * Gets the end achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getEndAchievement() {
         return endAchievement;
     }
 
+    /**
+     * Gets the start achievement icon.
+     * @return The texture region.
+     */
     public TextureRegion getStartAchievement() {
         return startAchievement;
     }
 
+    /**
+     * Gets the building tile texture.
+     * @return The texture region.
+     */
     public TextureRegion getBuildingTile() {
         return buildingTile;
     }
 
+    /**
+     * Gets the wall high 1 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh1() {
         return wallHigh1;
     }
 
+    /**
+     * Gets the wall high 2 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh2() {
         return wallHigh2;
     }
 
+    /**
+     * Gets the wall high 4 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh4() {
         return wallHigh4;
     }
 
+    /**
+     * Gets the wall high 3 texture.
+     * @return The texture region.
+     */
     public TextureRegion getWallHigh3() {
         return wallHigh3;
     }
