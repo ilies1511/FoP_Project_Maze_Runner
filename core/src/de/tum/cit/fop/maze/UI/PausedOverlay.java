@@ -18,6 +18,10 @@ import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * Overlay screen displayed when the game is paused.
+ * Allows the player to resume the game or exit to the main menu.
+ */
 public class PausedOverlay {
 
     private final GameScreen gameScreen;
@@ -26,6 +30,13 @@ public class PausedOverlay {
     private final SoundController soundController;
     private final MazeRunnerGame game;
 
+    /**
+     * Constructs a PausedOverlay.
+     *
+     * @param game       The main game instance.
+     * @param stage      The stage to add the overlay to.
+     * @param gameScreen The game screen instance.
+     */
     public PausedOverlay(MazeRunnerGame game, Stage stage, GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         this.game = game;
@@ -101,6 +112,10 @@ public class PausedOverlay {
 
     }
 
+    /**
+     * Shows the paused menu overlay.
+     * Pauses the game logic and switches music.
+     */
     public void showPausedMenu() {
         gameScreen.getSoundController().stopBackgroundMusic();
         gameScreen.getSoundController().playMainMenuMusic(0.5f);
@@ -110,6 +125,10 @@ public class PausedOverlay {
         gameScreen.setPaused(true);
     }
 
+    /**
+     * Hides the paused menu overlay.
+     * Resumes the game logic and background music.
+     */
     public void hidePausedMenu() {
         gameScreen.getSoundController().stopMainMenuMusic();
         gameScreen.getSoundController().playBackgroundMusic(0.5f);

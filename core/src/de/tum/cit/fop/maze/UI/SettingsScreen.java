@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 
+/**
+ * Screen for game settings.
+ * Allows the player to change resolution, fullscreen mode, and key bindings.
+ */
 public class SettingsScreen {
     private final Table table;
     private final Skin skin;
@@ -30,9 +34,11 @@ public class SettingsScreen {
     private final List<KeyBindingButton> bindingButtons = new ArrayList<KeyBindingButton>();
 
     /**
-     * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
+     * Constructs a SettingsScreen.
      *
-     * @param game The main game class, used to access global resources and methods.
+     * @param stage      The stage to add actors to.
+     * @param game       The main game instance.
+     * @param menuScreen The main menu screen for navigation.
      */
     public SettingsScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         var camera = new OrthographicCamera();
@@ -289,6 +295,11 @@ public class SettingsScreen {
         }
     }
 
+    /**
+     * Returns the table containing the settings UI.
+     *
+     * @return The settings table.
+     */
     public Table getTable() {
         return table;
     }

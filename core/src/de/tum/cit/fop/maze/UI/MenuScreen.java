@@ -244,6 +244,11 @@ public class MenuScreen implements Screen {
         achievementScreen = new AchievementScreen(stage, game, this);
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
@@ -251,18 +256,29 @@ public class MenuScreen implements Screen {
         stage.draw(); // Draw the stage
     }
 
+    /**
+     * Called when the screen size changes.
+     *
+     * @param width  The new width.
+     * @param height The new height.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
-
+    /**
+     * Disposes of the screen and its resources.
+     */
     @Override
     public void dispose() {
         // Dispose of the stage when screen is disposed
         stage.dispose();
     }
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     */
     @Override
     public void show() {
         // Set the input processor so the stage can receive input events
@@ -270,14 +286,23 @@ public class MenuScreen implements Screen {
     }
 
     // The following methods are part of the Screen interface but are not used in this screen.
+    /**
+     * Called when the application is paused.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Called when the application is resumed from a paused state.
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * Called when this screen is no longer the current screen for the game.
+     */
     @Override
     public void hide() {
     }
@@ -294,48 +319,79 @@ public class MenuScreen implements Screen {
         leaderboardScreen.getLeaderboardTable().setVisible(false);
     }
 
+    /**
+     * Switches to the Story Mode UI.
+     */
     public void goToStory() {
         hideAllTables();
         game.setGameMode(GameMode.STORY_MODE);
         storyModeScreen.getStoryTable().setVisible(true);
     }
 
+    /**
+     * Switches to the Level Mode UI.
+     */
     public void goToLevel() {
         hideAllTables();
         game.setGameMode(GameMode.LEVELS_MODE);
         levelModeScreen.getLevelTable().setVisible(true);
     }
 
+    /**
+     * Switches back to the main menu UI.
+     */
     public void goBackToMenu() {
         hideAllTables();
         table.setVisible(true);
     }
 
+    /**
+     * Switches to the Settings UI.
+     */
     public void goToSettings() {
         hideAllTables();
         settingsScreen.getTable().setVisible(true);
     }
 
+    /**
+     * Switches to the Endless Mode UI.
+     */
     public void goToEndless() {
         hideAllTables();
         game.setGameMode(GameMode.ENDLESS_MODE);
         endlessModeScreen.getEndlessTable().setVisible(true);
     }
 
+    /**
+     * Switches to the Leaderboard UI.
+     */
     public void goToLeaderboard() {
         hideAllTables();
         leaderboardScreen.getLeaderboardTable().setVisible(true);
     }
 
+    /**
+     * Switches to the Achievements UI.
+     */
     public void goToAchievements() {
         hideAllTables();
         achievementScreen.getTable().setVisible(true);
     }
 
+    /**
+     * Returns the SoundController used by this screen.
+     *
+     * @return The SoundController.
+     */
     public SoundController getSoundController() {
         return soundController;
     }
 
+    /**
+     * Returns the Viewport used by this screen.
+     *
+     * @return The Viewport.
+     */
     public Viewport getViewport() {
         return viewport;
     }

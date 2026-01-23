@@ -19,6 +19,10 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Overlay for the character progression system.
+ * Allows the player to spend XP to upgrade stats like health and speed.
+ */
 public class ProgressionOverlay {
     private final GameScreen gameScreen;
     private final Stage stage;
@@ -34,6 +38,13 @@ public class ProgressionOverlay {
 
     private final SoundController soundController;
 
+    /**
+     * Constructs a ProgressionOverlay.
+     *
+     * @param game       The main game instance.
+     * @param stage      The stage to add the overlay to.
+     * @param gameScreen The game screen instance.
+     */
     public ProgressionOverlay(MazeRunnerGame game, Stage stage, GameScreen gameScreen) {
         this.game = game;
         this.player = gameScreen.getPlayer();
@@ -233,6 +244,10 @@ public class ProgressionOverlay {
 
     }
 
+    /**
+     * Shows the progression menu overlay.
+     * Pauses the game while the menu is active.
+     */
     public void showProgressionMenu() {
         table.setVisible(true);
         Gdx.input.setCursorCatched(false);
@@ -240,6 +255,10 @@ public class ProgressionOverlay {
         gameScreen.setPaused(true);
     }
 
+    /**
+     * Hides the progression menu overlay.
+     * Resumes the game and checks for upgrade achievements.
+     */
     public void hideProgressionMenu() {
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);

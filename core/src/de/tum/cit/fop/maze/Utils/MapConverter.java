@@ -26,7 +26,6 @@ public class MapConverter {
     private static final Map<Character, TileType> LEGEND = new HashMap<>();
 
     static {
-//		LEGEND.put('.', TileType.EMPTY.ordinal());
         LEGEND.put('.', TileType.EMPTY);
         LEGEND.put('#', TileType.WALL);
         LEGEND.put('S', TileType.ENTRY_POINT);

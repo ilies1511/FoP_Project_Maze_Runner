@@ -21,6 +21,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+/**
+ * Developer console for debugging and testing.
+ * Allows executing commands to modify game state and player stats.
+ */
 public class DevConsole {
     private final Map<String, Consumer<String>> commandMap = new HashMap<>();
     private final Stage stage;
@@ -34,6 +38,15 @@ public class DevConsole {
     private final GameScreen gameScreen;
 
 
+    /**
+     * Constructs a DevConsole.
+     *
+     * @param game       The main game instance.
+     * @param gameScreen The game screen instance.
+     * @param hud        The HUD instance for UI updates.
+     * @param stage      The stage to add the console to.
+     * @param player     The player object to modify.
+     */
     public DevConsole(MazeRunnerGame game, GameScreen gameScreen, HUD hud, Stage stage, Player player) {
         this.game = game;
         this.hud = hud;
@@ -188,6 +201,9 @@ public class DevConsole {
         stage.addActor(table);
     }
 
+    /**
+     * Hides the developer console.
+     */
     public void hideConsole() {
         table.setVisible(false);
         Gdx.input.setCursorCatched(true);
@@ -195,6 +211,9 @@ public class DevConsole {
         inputField.setText("");
     }
 
+    /**
+     * Shows the developer console.
+     */
     public void showConsole() {
         table.setVisible(true);
         Gdx.input.setCursorCatched(false);

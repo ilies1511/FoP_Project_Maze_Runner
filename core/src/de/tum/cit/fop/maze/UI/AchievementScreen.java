@@ -15,11 +15,22 @@ import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * Screen that displays the list of achievements.
+ * Shows unlocked and locked achievements with their descriptions.
+ */
 public class AchievementScreen {
     private final Table table;
     private final SoundController soundController;
     private final MenuScreen menuScreen;
 
+    /**
+     * Constructs an AchievementScreen.
+     *
+     * @param stage      The stage to add actors to.
+     * @param game       The main game instance.
+     * @param menuScreen The main menu screen for navigation.
+     */
     public AchievementScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         soundController = menuScreen.getSoundController();
         this.menuScreen = menuScreen;
@@ -191,6 +202,11 @@ public class AchievementScreen {
         table.setVisible(false);
     }
 
+    /**
+     * Returns the table containing the achievement UI.
+     *
+     * @return The achievement table.
+     */
     public Table getTable() {
         return table;
     }

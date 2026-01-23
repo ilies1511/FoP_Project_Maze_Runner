@@ -16,11 +16,22 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * Screen for the Level Mode menu.
+ * Allows the player to start a new game (select a level) or return to the main menu.
+ */
 public class LevelModeScreen {
     private final Table levelTable;
     private final SoundController soundController;
     private final LevelSelectionScreen levelSelectionScreen;
 
+    /**
+     * Constructs a LevelModeScreen.
+     *
+     * @param stage      The stage to add actors to.
+     * @param game       The main game instance.
+     * @param menuScreen The main menu screen.
+     */
     public LevelModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         levelTable = new Table();
         Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
@@ -97,13 +108,22 @@ public class LevelModeScreen {
         levelSelectionScreen.getLevelSelectionTable().setVisible(true);
     }
 
+    /**
+     * Returns the table containing the level mode UI.
+     *
+     * @return The level mode table.
+     */
     public Table getLevelTable() {
         return levelTable;
     }
 
+    /**
+     * Returns the LevelSelectionScreen associated with this screen.
+     *
+     * @return The LevelSelectionScreen.
+     */
     public LevelSelectionScreen getLevelSelectionScreen() {
         return levelSelectionScreen;
     }
 
 }
-

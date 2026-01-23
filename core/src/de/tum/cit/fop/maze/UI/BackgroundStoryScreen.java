@@ -17,6 +17,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * Screen displaying the background story of the game.
+ * Shows text narrative with typing effect and background music.
+ */
 public class BackgroundStoryScreen implements Screen {
     private final MazeRunnerGame game;
     private final SoundController soundController;
@@ -33,6 +37,11 @@ public class BackgroundStoryScreen implements Screen {
     private boolean isTextSkipped = false;
     private final Texture backgroundTexture;
 
+    /**
+     * Constructs a BackgroundStoryScreen.
+     *
+     * @param game The main game instance.
+     */
     public BackgroundStoryScreen(MazeRunnerGame game) {
         soundController = new SoundController();
         soundController.playBackgrounStorydMusic(0.5f);
@@ -65,11 +74,19 @@ public class BackgroundStoryScreen implements Screen {
     }
 
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     */
     @Override
     public void show() {
 
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -99,26 +116,44 @@ public class BackgroundStoryScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when the screen size changes.
+     *
+     * @param width  The new width.
+     * @param height The new height.
+     */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     * Called when the application is paused.
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Called when the application is resumed from a paused state.
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Called when this screen is no longer the current screen for the game.
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Disposes of the screen and its resources.
+     */
     @Override
     public void dispose() {
         stage.dispose();

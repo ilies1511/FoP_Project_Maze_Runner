@@ -13,6 +13,10 @@ import com.badlogic.gdx.utils.Align;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * UI component for displaying achievement notifications.
+ * Handles the visual presentation and timing of achievement popups.
+ */
 public class AchievementUI {
     private final Stage stage;
     private final MazeRunnerGame game;
@@ -23,6 +27,13 @@ public class AchievementUI {
     private Cell<Actor> trophy;
     private Image image;
 
+    /**
+     * Constructs an AchievementUI.
+     *
+     * @param stage           The stage to add actors to.
+     * @param game            The main game instance.
+     * @param soundController The sound controller for playing achievement sounds.
+     */
     public AchievementUI(Stage stage, MazeRunnerGame game, SoundController soundController) {
         this.stage = stage;
         this.game = game;
@@ -51,6 +62,9 @@ public class AchievementUI {
         table.setVisible(false);
     }
 
+    /**
+     * Triggers the "Wake up" achievement.
+     */
     public void startAchievement() {
         if (!game.getGameInfo().getAchievementController().isStart()) {
             table.setVisible(true);
@@ -69,6 +83,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "And so it ends" achievement.
+     */
     public void endAchievement() {
         if (!game.getGameInfo().getAchievementController().isEnd()) {
             table.setVisible(true);
@@ -87,6 +104,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "First blood" achievement.
+     */
     public void firstBloodAchievement() {
         if (!game.getGameInfo().getAchievementController().isFirstBlood()) {
             table.setVisible(true);
@@ -105,6 +125,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "Graph Dracula" achievement.
+     */
     public void upgradesAchievement() {
         if (!game.getGameInfo().getAchievementController().isUpgrades()) {
             table.setVisible(true);
@@ -123,6 +146,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "Thirst for blood" achievement.
+     */
     public void killsAchievement() {
         if (!game.getGameInfo().getAchievementController().isKills()) {
             table.setVisible(true);
@@ -141,6 +167,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "Now you see me, now you don't" achievement.
+     */
     public void invisAchievement() {
         if (!game.getGameInfo().getAchievementController().isInvis()) {
             table.setVisible(true);
@@ -160,6 +189,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "Cheater!" achievement.
+     */
     public void consoleAchievement() {
         if (!game.getGameInfo().getAchievementController().isConsole()) {
             table.setVisible(true);
@@ -178,6 +210,9 @@ public class AchievementUI {
         }
     }
 
+    /**
+     * Triggers the "Gamer" achievement.
+     */
     public void pointsAchievement() {
         if (!game.getGameInfo().getAchievementController().isPoints()) {
             table.setVisible(true);

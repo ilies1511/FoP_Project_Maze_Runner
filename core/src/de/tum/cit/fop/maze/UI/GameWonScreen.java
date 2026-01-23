@@ -23,6 +23,10 @@ import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * Screen displayed when the player wins the game.
+ * Shows a victory message or story text depending on the game mode.
+ */
 public class GameWonScreen implements Screen {
     private final MazeRunnerGame game;
     private final Stage stage;
@@ -43,6 +47,11 @@ public class GameWonScreen implements Screen {
     private boolean isTextSkipped = false;
     private Texture backgroundTexture;
 
+    /**
+     * Constructs a GameWonScreen.
+     *
+     * @param game The main game instance.
+     */
     public GameWonScreen(MazeRunnerGame game) {
         this.game = game;
 
@@ -115,12 +124,20 @@ public class GameWonScreen implements Screen {
         }
     }
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCursorCatched(false);
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -151,17 +168,29 @@ public class GameWonScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when the screen size changes.
+     *
+     * @param width  The new width.
+     * @param height The new height.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Disposes of the screen and its resources.
+     */
     @Override
     public void dispose() {
         stage.dispose();
         soundController.dispose();
     }
 
+    /**
+     * Called when this screen is no longer the current screen for the game.
+     */
     @Override
     public void hide() {
         if (soundController != null) {
@@ -169,10 +198,16 @@ public class GameWonScreen implements Screen {
         }
     }
 
+    /**
+     * Called when the application is paused.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Called when the application is resumed from a paused state.
+     */
     @Override
     public void resume() {
     }

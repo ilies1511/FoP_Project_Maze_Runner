@@ -20,10 +20,21 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.game_saves.SaveManager;
 import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
 
+/**
+ * Screen for the Endless Mode menu.
+ * Allows the player to start a new endless game, continue an existing one, or view statistics.
+ */
 public class EndlessModeScreen {
     private final Table table;
     private final SoundController soundController;
 
+    /**
+     * Constructs an EndlessModeScreen.
+     *
+     * @param stage      The stage to add actors to.
+     * @param game       The main game instance.
+     * @param menuScreen The main menu screen for navigation and sound control.
+     */
     public EndlessModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         soundController = menuScreen.getSoundController();
         table = new Table();
@@ -162,6 +173,11 @@ public class EndlessModeScreen {
 
     }
 
+    /**
+     * Returns the table containing the endless mode UI.
+     *
+     * @return The endless mode table.
+     */
     public Table getEndlessTable() {
         return table;
     }

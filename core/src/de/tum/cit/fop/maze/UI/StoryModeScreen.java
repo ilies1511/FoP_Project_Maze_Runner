@@ -20,11 +20,22 @@ import de.tum.cit.fop.maze.SoundController;
 import de.tum.cit.fop.maze.game_saves.SaveManager;
 import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
 
+/**
+ * Screen for the Story Mode menu.
+ * Allows the player to start a new story game or continue an existing one.
+ */
 public class StoryModeScreen {
     private final Table storyTable;
     private final SoundController soundController;
     private final Table confirmationTable;
 
+    /**
+     * Constructs a StoryModeScreen.
+     *
+     * @param stage      The stage to add actors to.
+     * @param game       The main game instance.
+     * @param menuScreen The main menu screen for navigation.
+     */
     public StoryModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         storyTable = new Table();
         Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
@@ -193,18 +204,28 @@ public class StoryModeScreen {
         });
     }
 
+    /**
+     * Returns the table containing the story mode UI.
+     *
+     * @return The story mode table.
+     */
     public Table getStoryTable() {
         return storyTable;
     }
 
+    /**
+     * Shows the confirmation dialog for starting a new game.
+     */
     public void confirmNewGame() {
         storyTable.setVisible(false);
         confirmationTable.setVisible(true);
     }
 
+    /**
+     * Returns to the story mode menu from the confirmation dialog.
+     */
     public void backToStory() {
         storyTable.setVisible(true);
         confirmationTable.setVisible(false);
     }
 }
-

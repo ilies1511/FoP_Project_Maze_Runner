@@ -18,11 +18,20 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * An alternative implementation of the Game Won screen.
+ * This class might be deprecated or used for testing purposes.
+ */
 public class GameWonScreen_broken implements Screen {
     private final MazeRunnerGame game;
     private Stage stage;
     private final SoundController soundController;
 
+    /**
+     * Constructs a GameWonScreen_broken.
+     *
+     * @param game The main game instance.
+     */
     public GameWonScreen_broken(MazeRunnerGame game) {
         this.game = game;
         Gdx.input.setCursorCatched(false);
@@ -69,6 +78,11 @@ public class GameWonScreen_broken implements Screen {
         stage.addActor(table);
     }
 
+    /**
+     * Renders the screen.
+     *
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
@@ -76,33 +90,54 @@ public class GameWonScreen_broken implements Screen {
         stage.draw(); // Draw the stage
     }
 
+    /**
+     * Called when the screen size changes.
+     *
+     * @param width  The new width.
+     * @param height The new height.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true); // Update the stage viewport on resize
     }
 
+    /**
+     * Disposes of the screen and its resources.
+     */
     @Override
     public void dispose() {
         // Dispose of the stage when screen is disposed
         stage.dispose();
     }
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     */
     @Override
     public void show() {
         // Set the input processor so the stage can receive input events
         Gdx.input.setInputProcessor(stage);
     }
 
+    /**
+     * Called when the application is paused.
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Called when the application is resumed from a paused state.
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Called when this screen is no longer the current screen for the game.
+     */
     @Override
     public void hide() {
 

@@ -19,11 +19,22 @@ import de.tum.cit.fop.maze.Utils.ScoreManager;
 
 import java.util.ArrayList;
 
+/**
+ * Screen that displays the leaderboard with high scores.
+ * Shows the top scores achieved by the player.
+ */
 public class LeaderboardScreen {
     private final Table table;
     private final SoundController soundController;
     private final MenuScreen menuScreen;
 
+    /**
+     * Constructs a LeaderboardScreen.
+     *
+     * @param stage      The stage to add actors to.
+     * @param game       The main game instance.
+     * @param menuScreen The main menu screen for navigation and sound control.
+     */
     public LeaderboardScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         this.menuScreen = menuScreen;
         this.soundController = menuScreen.getSoundController();
@@ -89,6 +100,11 @@ public class LeaderboardScreen {
         menuScreen.goToEndless();
     }
 
+    /**
+     * Returns the table containing the leaderboard UI.
+     *
+     * @return The leaderboard table.
+     */
     public Table getLeaderboardTable() {
         return table;
     }

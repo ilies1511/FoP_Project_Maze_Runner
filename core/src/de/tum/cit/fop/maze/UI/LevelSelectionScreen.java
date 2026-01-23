@@ -18,12 +18,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
+/**
+ * Screen for selecting a level to play.
+ * Displays a list of available levels loaded from the maps directory.
+ */
 public class LevelSelectionScreen {
     private final Table levelSelectionTable;
     private final SoundController soundController;
     private final MazeRunnerGame game;
     private final LevelModeScreen levelyModeScreen;
 
+    /**
+     * Constructs a LevelSelectionScreen.
+     *
+     * @param stage             The stage to add actors to.
+     * @param game              The main game instance.
+     * @param levelyModeScreen  The parent level mode screen.
+     * @param menuScreen        The main menu screen for accessing the sound controller.
+     */
     public LevelSelectionScreen(Stage stage, MazeRunnerGame game, LevelModeScreen levelyModeScreen, MenuScreen menuScreen) {
         this.game = game;
         this.levelyModeScreen = levelyModeScreen;
@@ -135,6 +147,11 @@ public class LevelSelectionScreen {
         levelyModeScreen.getLevelTable().setVisible(true);
     }
 
+    /**
+     * Returns the table containing the level selection UI.
+     *
+     * @return The level selection table.
+     */
     public Table getLevelSelectionTable() {
         return levelSelectionTable;
     }

@@ -27,6 +27,10 @@ import de.tum.cit.fop.maze.objects.Static.Exit;
 
 import java.util.List;
 
+/**
+ * Head-Up Display (HUD) for the game.
+ * Displays player health, experience, keys, status effects, and navigation arrows.
+ */
 public class HUD {
 
     private final Player player;
@@ -54,6 +58,14 @@ public class HUD {
     private boolean hasArrow;
 
 
+    /**
+     * Constructs the HUD.
+     *
+     * @param player     The player object to track stats from.
+     * @param stage      The stage to add HUD actors to.
+     * @param game       The main game instance.
+     * @param gameScreen The game screen instance.
+     */
     public HUD(Player player, Stage stage, MazeRunnerGame game, GameScreen gameScreen) {
         shapeRenderer = new ShapeRenderer();
         this.player = player;
@@ -65,6 +77,9 @@ public class HUD {
     }
 
 
+    /**
+     * Renders the HUD elements on the screen.
+     */
     public void renderHUD() {
 
         table = new Table();
@@ -105,6 +120,9 @@ public class HUD {
 
     }
 
+    /**
+     * Creates a navigation arrow pointing to the exit.
+     */
     public void createArrow() {
         if (!hasArrow) {
             arrow = new Image(game.getArrow());
@@ -160,6 +178,9 @@ public class HUD {
 
     }
 
+    /**
+     * Updates the rotation of the navigation arrow to point towards the exit.
+     */
     public void rotateArrow() {
         if (exit != null) {
             arrowFollow();
@@ -169,6 +190,9 @@ public class HUD {
         }
     }
 
+    /**
+     * Removes the navigation arrow from the screen.
+     */
     public void deleteArrow() {
         if (hasArrow) {
             arrow.remove();
@@ -177,6 +201,9 @@ public class HUD {
 
     }
 
+    /**
+     * Updates the key display based on the player's current key count.
+     */
     public void updatePlayerKeys() {
         requiredKeys = player.getRequiredKeys();
         keyStack = new Stack[requiredKeys];
@@ -199,12 +226,18 @@ public class HUD {
 
     }
 
+    /**
+     * Updates the XP label with the player's current XP.
+     */
     public void updatePlayerXP() {
         playerXP = player.getXp();
 
         xpLabel.setText("XP:" + playerXP);
     }
 
+    /**
+     * Renders the player's health using heart icons.
+     */
     public void renderPlayerHP() {
         int redHearts = player.getCurrentHealth();
         int emptyHearts = player.getMaxHealth() - player.getCurrentHealth();
@@ -220,6 +253,9 @@ public class HUD {
         }
     }
 
+    /**
+     * Updates the display of active status effects on the player.
+     */
     public void updatePlayerStatusEffects() {
 
         if (player.hasEffect(Buff.class)) {
