@@ -38,7 +38,7 @@ public class GameSettings {
         this.abilityKey = Input.Keys.Q;
         this.consoleKey = Input.Keys.SLASH;
         this.progressionTreeKey = Input.Keys.I;
-        this.resolutionWidth= 1920;
+        this.resolutionWidth = 1920;
         this.resolutionHeight = 1080;
     }
 
@@ -141,33 +141,33 @@ public class GameSettings {
         return this.zoomInKey;
     }
 
-    public void setInteractKey(int interactKey) {
-        this.interactKey = interactKey;
-    }
-
-    public void setAbilityKey(int abilityKey) {
-        this.abilityKey = abilityKey;
-    }
-
-    public void setConsoleKey(int consoleKey) {
-        this.consoleKey = consoleKey;
+    public void setZoomInKey(int zoomInKey) {
+        this.zoomInKey = zoomInKey;
+        saveToJson();
     }
 
     public int getInteractKey() {
         return interactKey;
     }
 
+    public void setInteractKey(int interactKey) {
+        this.interactKey = interactKey;
+    }
+
     public int getAbilityKey() {
         return abilityKey;
+    }
+
+    public void setAbilityKey(int abilityKey) {
+        this.abilityKey = abilityKey;
     }
 
     public int getConsoleKey() {
         return consoleKey;
     }
 
-    public void setZoomInKey(int zoomInKey) {
-        this.zoomInKey = zoomInKey;
-        saveToJson();
+    public void setConsoleKey(int consoleKey) {
+        this.consoleKey = consoleKey;
     }
 
     public int getResolutionHeight() {

@@ -15,7 +15,8 @@ public class Flicker extends Effect {
     }
 
     @Override
-    public void onStart() {}
+    public void onStart() {
+    }
 
     @Override
     public boolean onTick(float deltaTime) {
@@ -30,5 +31,6 @@ public class Flicker extends Effect {
     } // returns True when effect should be finished
 
     @Override
-    public void onEnd() {}
+    public void onEnd() {
+    }
 }

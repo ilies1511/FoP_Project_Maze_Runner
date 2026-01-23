@@ -11,8 +11,10 @@ public class Sunscreen extends Effect {
     }
 
     @Override
-    public void onStart() {}
+    public void onStart() {
+    }
 
     @Override
-    public void onEnd() {}
+    public void onEnd() {
+    }
 }

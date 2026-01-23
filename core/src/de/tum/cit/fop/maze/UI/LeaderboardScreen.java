@@ -20,9 +20,9 @@ import de.tum.cit.fop.maze.Utils.ScoreManager;
 import java.util.ArrayList;
 
 public class LeaderboardScreen {
-    private Table table;
-    private SoundController soundController;
-    private MenuScreen menuScreen;
+    private final Table table;
+    private final SoundController soundController;
+    private final MenuScreen menuScreen;
 
     public LeaderboardScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         this.menuScreen = menuScreen;
@@ -69,6 +69,7 @@ public class LeaderboardScreen {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);

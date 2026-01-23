@@ -7,7 +7,7 @@ public class BouncerMemento extends GameObjectMemento {
         super();
     }
 
-    public BouncerMemento(float positionX, float positionY, float velocityX, float velocityY, 
+    public BouncerMemento(float positionX, float positionY, float velocityX, float velocityY,
                           float speed, String animationType, int lives) {
         super(positionX, positionY, velocityX, velocityY, speed, animationType, "Bouncer");
         this.lives = lives;

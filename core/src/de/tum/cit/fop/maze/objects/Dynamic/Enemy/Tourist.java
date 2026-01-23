@@ -14,12 +14,25 @@ import java.util.List;
 public class Tourist extends Enemy implements Saveable<TouristMemento> {
     private float danceTimer = 0f;
     private float scareTimer = 0f;
-    private Vector2 fleeDir = new Vector2();
+    private final Vector2 fleeDir = new Vector2();
 
 
     public Tourist(Vector2 startPos) {
         super(startPos, AnimationType.TOURIST_DOWN);
         this.speed = 2.5f; // faster than normal enemies
+    }
+
+    public static boolean scaredTourists(GameField gameField, Vector2 deathPosition) {
+        boolean scared = false;
+        for (GameObject obj : gameField.getGameObjects()) {
+            if (obj instanceof Tourist tourist) {
+                if (tourist.getPosition().dst(deathPosition) < 6.0f) { //6 tiles
+                    tourist.flee();
+                    scared = true;
+                }
+            }
+        }
+        return scared;
     }
 
     @Override
@@ -49,7 +62,8 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
         } else {
             //patrol being dancing in tourist's case
             patrol(deltaTime);
-    }}
+        }
+    }
 
     public void AnimationDirection() {
         if (Math.abs(velocity.x) > Math.abs(velocity.y)) {
@@ -65,20 +79,6 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
                 changeAnimation(AnimationType.TOURIST_DOWN);
             }
         }
-    }
-
-    public static boolean scaredTourists(GameField gameField, Vector2 deathPosition) {
-        boolean scared = false;
-        for (GameObject obj : gameField.getGameObjects()) {
-            if (obj instanceof Tourist) {
-                Tourist tourist = (Tourist) obj;
-                if (tourist.getPosition().dst(deathPosition) < 6.0f) { //6 tiles
-                    tourist.flee();
-                    scared = true;
-                }
-            }
-        }
-        return scared;
     }
 
     private boolean willHitWall(Vector2 velocity, float delta, GameField gameField) {
@@ -106,7 +106,8 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
                     AnimationType.TOURIST_DOWN, AnimationType.TOURIST_LEFT,
                     AnimationType.TOURIST_UP, AnimationType.TOURIST_RIGHT
             };
-            changeAnimation(idleAnims[(int)(Math.random() * idleAnims.length)]);}
+            changeAnimation(idleAnims[(int) (Math.random() * idleAnims.length)]);
+        }
     }
 
     @Override
@@ -118,12 +119,12 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
     public TouristMemento getMemento() {
         String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "TOURIST_DOWN";
         return new TouristMemento(
-            this.position.x,
-            this.position.y,
-            this.velocity.x,
-            this.velocity.y,
-            this.speed,
-            animType
+                this.position.x,
+                this.position.y,
+                this.velocity.x,
+                this.velocity.y,
+                this.speed,
+                animType
         );
     }
 

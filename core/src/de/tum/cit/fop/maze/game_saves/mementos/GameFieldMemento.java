@@ -1,6 +1,7 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
 import de.tum.cit.fop.maze.game_saves.Memento;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class GameFieldMemento implements Memento {
         this.gameObjects = new ArrayList<>();
     }
 
-    public GameFieldMemento(int width, int height, String[] grid, 
-                           List<GameObjectMemento> gameObjects, 
-                           float playerStartPosX, float playerStartPosY) {
+    public GameFieldMemento(int width, int height, String[] grid,
+                            List<GameObjectMemento> gameObjects,
+                            float playerStartPosX, float playerStartPosY) {
         this.width = width;
         this.height = height;
         this.grid = grid;

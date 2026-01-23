@@ -5,7 +5,7 @@ public class JunkieMemento extends GameObjectMemento {
         super();
     }
 
-    public JunkieMemento(float positionX, float positionY, float velocityX, float velocityY, 
+    public JunkieMemento(float positionX, float positionY, float velocityX, float velocityY,
                          float speed, String animationType) {
         super(positionX, positionY, velocityX, velocityY, speed, animationType, "Junkie");
     }

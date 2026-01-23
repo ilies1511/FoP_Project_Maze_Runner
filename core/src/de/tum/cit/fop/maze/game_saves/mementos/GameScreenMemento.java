@@ -13,8 +13,8 @@ public class GameScreenMemento implements Memento {
         // Required for JSON deserialization
     }
 
-    public GameScreenMemento(GameFieldMemento gameField, PlayerMemento player, 
-                            String gameMode, int currentStoryLevelIndex, String selectedLevel) {
+    public GameScreenMemento(GameFieldMemento gameField, PlayerMemento player,
+                             String gameMode, int currentStoryLevelIndex, String selectedLevel) {
         this.gameField = gameField;
         this.player = player;
         this.gameMode = gameMode;

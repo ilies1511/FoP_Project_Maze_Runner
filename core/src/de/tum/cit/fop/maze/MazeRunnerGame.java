@@ -11,12 +11,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import de.tum.cit.fop.maze.Gameplay.GameMode;
-import de.tum.cit.fop.maze.UI.*;
+import de.tum.cit.fop.maze.UI.BackgroundStoryScreen;
+import de.tum.cit.fop.maze.UI.GameLostScreen;
+import de.tum.cit.fop.maze.UI.GameWonScreen;
+import de.tum.cit.fop.maze.UI.MenuScreen;
 import games.spooky.gdx.nativefilechooser.NativeFileChooser;
 
 import java.util.Arrays;
 import java.util.List;
-import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 
 
 /**
@@ -24,6 +26,14 @@ import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
  * It manages the screens and global resources like SpriteBatch and Skin.
  */
 public class MazeRunnerGame extends Game {
+    public static final String[] STORY_LEVELS = {
+            "story_mode/berghain_main_big.properties",
+//			"story_mode/berghain_eg.properties",
+            "story_mode/test.properties",
+            "story_mode/berghain_main.properties",
+            "story_mode/berghain_panorama.properties",
+            "story_mode/berghain_darkroom.properties"
+    };
     // GameInfo with all the useful variables
     private final GameInfo gameInfo;
     // Screens IMPORTANT: add screens to disposeAllScreens when creating a new one
@@ -56,9 +66,8 @@ public class MazeRunnerGame extends Game {
     private Animation<TextureRegion> touristDown, touristUp, touristLeft, touristRight;
     private Animation<TextureRegion> bouncerDown, bouncerUp, bouncerLeft, bouncerRight;
     private Animation<TextureRegion> junkieDown, junkieUp, junkieLeft, junkieRight;
-    private Animation<TextureRegion> junkieAttackDown, junkieAttackUp, junkieAttackLeft, junkieAttackRight;
     // Maze Textures
-
+    private Animation<TextureRegion> junkieAttackDown, junkieAttackUp, junkieAttackLeft, junkieAttackRight;
     private TextureRegion emptyTile1;
     private TextureRegion emptyTile2;
     private TextureRegion emptyTile3;
@@ -67,7 +76,6 @@ public class MazeRunnerGame extends Game {
     private TextureRegion emptyTile6;
     private TextureRegion emptyTile7;
     private TextureRegion danceFloorTile;
-
     private TextureRegion wallTile1;
     private TextureRegion wallTile2;
     private TextureRegion wallTile3;
@@ -81,7 +89,6 @@ public class MazeRunnerGame extends Game {
     private TextureRegion wallHigh2;
     private TextureRegion wallHigh3;
     private TextureRegion wallHigh4;
-
     private TextureRegion decor1;
     private TextureRegion decor2;
     private TextureRegion decor3;
@@ -92,10 +99,7 @@ public class MazeRunnerGame extends Game {
     private TextureRegion decor8;
     private TextureRegion decor9;
     private TextureRegion decor10;
-
     private TextureRegion casketTile;
-
-
     //TODO (Connect Parser to Game Assets): - iziane Texture Regions for our Objects
     private TextureRegion keyTexture;
     private TextureRegion trapTexture;
@@ -130,23 +134,14 @@ public class MazeRunnerGame extends Game {
     // Traps
     private Animation<TextureRegion> garlicTrapAnimation;
     private Animation<TextureRegion> freezeTrapAnimation;
-	// BEGIN -- Exit
-	private TextureRegion exitClosedTexture;
-	private TextureRegion exitOpenTexture;
-	// END -- Exit
+    // BEGIN -- Exit
+    private TextureRegion exitClosedTexture;
+    private TextureRegion exitOpenTexture;
+    // END -- Exit
     // Dawn Animations
     private Animation<TextureRegion> dawnThinAnimation;
     private Animation<TextureRegion> dawnWideAnimation;
-	private GameMode gameMode;
-
-	public static final String[] STORY_LEVELS = {
-			"story_mode/berghain_main_big.properties",
-//			"story_mode/berghain_eg.properties",
-			"story_mode/test.properties",
-			"story_mode/berghain_main.properties",
-			"story_mode/berghain_panorama.properties",
-			"story_mode/berghain_darkroom.properties"
-	};
+    private GameMode gameMode;
 
     /**
      * Constructor for MazeRunnerGame.
@@ -178,19 +173,19 @@ public class MazeRunnerGame extends Game {
         spriteSheet = new Texture(Gdx.files.internal("UI.png"));
         assetsSheet = new Texture(Gdx.files.internal("Game_Assets+.png"));
         achievementsSheet = new Texture(Gdx.files.internal("achievements.png"));
-        startAchievement = new TextureRegion(achievementsSheet, 11, 135,103,122);
-        endAchievement = new TextureRegion(achievementsSheet, 145, 125,105,125);
-        firstBloodAchievement = new TextureRegion(achievementsSheet, 295, 145,55,80);
-        upgradesAchievement = new TextureRegion(achievementsSheet, 405, 135,100,100);
-        killsAchievement = new TextureRegion(achievementsSheet, 11, 285,100,100);
-        invisAchievement = new TextureRegion(achievementsSheet, 165, 280,105,105);
-        consoleAchievement = new TextureRegion(achievementsSheet, 280, 280,90,90);
-        pointsAchievement = new TextureRegion(achievementsSheet, 415, 280,80,90);
+        startAchievement = new TextureRegion(achievementsSheet, 11, 135, 103, 122);
+        endAchievement = new TextureRegion(achievementsSheet, 145, 125, 105, 125);
+        firstBloodAchievement = new TextureRegion(achievementsSheet, 295, 145, 55, 80);
+        upgradesAchievement = new TextureRegion(achievementsSheet, 405, 135, 100, 100);
+        killsAchievement = new TextureRegion(achievementsSheet, 11, 285, 100, 100);
+        invisAchievement = new TextureRegion(achievementsSheet, 165, 280, 105, 105);
+        consoleAchievement = new TextureRegion(achievementsSheet, 280, 280, 90, 90);
+        pointsAchievement = new TextureRegion(achievementsSheet, 415, 280, 80, 90);
         woodenSign = new TextureRegion(spriteSheet, 0, 128, 128, 48);
         Texture heartTexture = new Texture(Gdx.files.internal("heart.png"));
         heart = new TextureRegion(heartTexture);
-        keyOutline = new TextureRegion(assetsSheet, 800,50,168,96);
-        key = new TextureRegion(assetsSheet, 800,139,168,90);
+        keyOutline = new TextureRegion(assetsSheet, 800, 50, 168, 96);
+        key = new TextureRegion(assetsSheet, 800, 139, 168, 90);
         Texture arrowTexture = new Texture(Gdx.files.internal("arrow.png"));
         arrow = new TextureRegion(arrowTexture);
         Texture trophyTexture = new Texture(Gdx.files.internal("trophy.png"));
@@ -234,18 +229,16 @@ public class MazeRunnerGame extends Game {
             this.trapTexture = tmp[0][1];
 //			this.enemyTexture = tmp[0][2]; // TODO: iziane - TBD with Saad
 
-			if (tmp[0].length > 2) {
-				this.exitClosedTexture = tmp[0][2];
-			}
-			else {
-				this.exitClosedTexture = tmp[0][0]; // Fallback to Key if missing
-			}
-			if (tmp[0].length > 3) {
-				this.exitOpenTexture = tmp[0][3];
-			}
-			else {
-				this.exitOpenTexture = tmp[0][1]; // Fallback to Trap if missing
-			}
+            if (tmp[0].length > 2) {
+                this.exitClosedTexture = tmp[0][2];
+            } else {
+                this.exitClosedTexture = tmp[0][0]; // Fallback to Key if missing
+            }
+            if (tmp[0].length > 3) {
+                this.exitOpenTexture = tmp[0][3];
+            } else {
+                this.exitOpenTexture = tmp[0][1]; // Fallback to Trap if missing
+            }
 
         } else {
             Gdx.app.error("Assets", "objects.png not found! Using character texture as fallback.");
@@ -295,22 +288,21 @@ public class MazeRunnerGame extends Game {
     }
 
 
-
-    public void goToBackgroundStory(){
+    public void goToBackgroundStory() {
         disposeAllScreens();
         this.setScreen(new BackgroundStoryScreen(this)); // Set the current screen to GameScreen
     }
 
-    public void goToGameLostScreen(){
+    public void goToGameLostScreen() {
         disposeAllScreens();
         this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
     }
 
 
-	public void goToGameWonScreen() {
-		disposeAllScreens();
-		this.setScreen(new GameWonScreen(this));
-	}
+    public void goToGameWonScreen() {
+        disposeAllScreens();
+        this.setScreen(new GameWonScreen(this));
+    }
 
     /**
      * Loads the character animation from the dracula.png file.
@@ -324,7 +316,7 @@ public class MazeRunnerGame extends Game {
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
         charAnimation(tmp);
-        int startY = 4*frameHeight;
+        int startY = 4 * frameHeight;
 
 
         //Attack
@@ -341,6 +333,7 @@ public class MazeRunnerGame extends Game {
         }
         return new Animation<>(0.1f, frames);
     }
+
     private void loadCharacterInvisAnimation() {
         Texture walkSheet = new Texture(Gdx.files.internal("DraculaInvis.png"));
         int frameWidth = 16;
@@ -351,6 +344,7 @@ public class MazeRunnerGame extends Game {
         // Call your helper to set up the animations
         charInvisAnimation(tmp);
     }
+
     private void charInvisAnimation(TextureRegion[][] tmp) {
         // ROW 0: DOWN
         characterInvisDownAnimation = new Animation<>(0.1f, getFrames(tmp[0], 0, 4)); // Walk 0-3
@@ -412,7 +406,7 @@ public class MazeRunnerGame extends Game {
         this.keyShineAnimation = new Animation<>(0.08f, atlas.findRegions("key"), Animation.PlayMode.LOOP);
     }
 
-    private void loadPortalAnimation(){
+    private void loadPortalAnimation() {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("exit_portal.atlas"));
 
         this.exitPortalAnimation = new Animation<>(0.08f, atlas.findRegions("exit_portal"), Animation.PlayMode.LOOP);
@@ -442,14 +436,14 @@ public class MazeRunnerGame extends Game {
         Texture dawnThinTexture = new Texture(Gdx.files.internal("dawn_thin.png"));
 
         TextureRegion dawnThinTextureRegion = new TextureRegion(dawnThinTexture);
-        this.dawnThinAnimation = new Animation<>(1f,  dawnThinTextureRegion);
+        this.dawnThinAnimation = new Animation<>(1f, dawnThinTextureRegion);
     }
 
     private void loadDawnWideAnimation() {
         Texture dawnWideTexture = new Texture(Gdx.files.internal("dawn_wide.png"));
 
         TextureRegion dawnWideTextureRegion = new TextureRegion(dawnWideTexture);
-        this.dawnWideAnimation = new Animation<>(1f,  dawnWideTextureRegion);
+        this.dawnWideAnimation = new Animation<>(1f, dawnWideTextureRegion);
     }
 
     private void loadTouristAnimation() {
@@ -459,9 +453,9 @@ public class MazeRunnerGame extends Game {
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        touristUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
-        touristLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
-        touristDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
+        touristUp = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
+        touristLeft = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
+        touristDown = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
         touristRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
     }
 
@@ -472,9 +466,9 @@ public class MazeRunnerGame extends Game {
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        bouncerUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
-        bouncerLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
-        bouncerDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
+        bouncerUp = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
+        bouncerLeft = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
+        bouncerDown = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
         bouncerRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
     }
 
@@ -485,9 +479,9 @@ public class MazeRunnerGame extends Game {
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        junkieUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
-        junkieLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
-        junkieDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
+        junkieUp = new Animation<>(0.075f, getFrames(tmp[0], 1, 8));
+        junkieLeft = new Animation<>(0.1f, getFrames(tmp[1], 1, 8));
+        junkieDown = new Animation<>(0.075f, getFrames(tmp[2], 1, 8));
         junkieRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 8));
     }
 
@@ -498,51 +492,51 @@ public class MazeRunnerGame extends Game {
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, frameWidth, frameHeight);
 
-        junkieAttackUp    = new Animation<>(0.075f, getFrames(tmp[0], 1, 12));
-        junkieAttackLeft  = new Animation<>(0.1f, getFrames(tmp[1], 1, 12));
-        junkieAttackDown  = new Animation<>(0.075f, getFrames(tmp[2], 1, 12));
+        junkieAttackUp = new Animation<>(0.075f, getFrames(tmp[0], 1, 12));
+        junkieAttackLeft = new Animation<>(0.1f, getFrames(tmp[1], 1, 12));
+        junkieAttackDown = new Animation<>(0.075f, getFrames(tmp[2], 1, 12));
         junkieAttackRight = new Animation<>(0.1f, getFrames(tmp[3], 1, 12));
     }
 
     private void loadMazeTiles() {
         try {
-            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 22,382,120,120);
-            TextureRegion wallHighTexture1 = new TextureRegion(assetsSheet, 156,382,120,120);
-            TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293,382,120,120);
-            TextureRegion wallHighTexture2 = new TextureRegion(assetsSheet, 432,382,120,120);
-            TextureRegion wallTexture3 = new TextureRegion(assetsSheet, 563,382,120,120);
-            TextureRegion buildingTexture = new TextureRegion(assetsSheet, 694,382,120,120);
-            TextureRegion wallTexture4 = new TextureRegion(assetsSheet, 824,382,120,120);
-            TextureRegion wallHighTexture4 = new TextureRegion(assetsSheet, 958,382,120,120);
-            TextureRegion wallTexture5 = new TextureRegion(assetsSheet, 18,533,120,120);
-            TextureRegion wallTexture6 = new TextureRegion(assetsSheet, 157,533,120,120);
-            TextureRegion wallTexture7 = new TextureRegion(assetsSheet, 293,533,120,120);
-            TextureRegion wallTexture8 = new TextureRegion(assetsSheet, 427,533,120,120);
+            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 22, 382, 120, 120);
+            TextureRegion wallHighTexture1 = new TextureRegion(assetsSheet, 156, 382, 120, 120);
+            TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293, 382, 120, 120);
+            TextureRegion wallHighTexture2 = new TextureRegion(assetsSheet, 432, 382, 120, 120);
+            TextureRegion wallTexture3 = new TextureRegion(assetsSheet, 563, 382, 120, 120);
+            TextureRegion buildingTexture = new TextureRegion(assetsSheet, 694, 382, 120, 120);
+            TextureRegion wallTexture4 = new TextureRegion(assetsSheet, 824, 382, 120, 120);
+            TextureRegion wallHighTexture4 = new TextureRegion(assetsSheet, 958, 382, 120, 120);
+            TextureRegion wallTexture5 = new TextureRegion(assetsSheet, 18, 533, 120, 120);
+            TextureRegion wallTexture6 = new TextureRegion(assetsSheet, 157, 533, 120, 120);
+            TextureRegion wallTexture7 = new TextureRegion(assetsSheet, 293, 533, 120, 120);
+            TextureRegion wallTexture8 = new TextureRegion(assetsSheet, 427, 533, 120, 120);
 
-            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 20,835,120,120);
-            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157,835,120,120);
-            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293,835,120,120);
-            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427,835,120,120);
-            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563,835,120,120);
-            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693,835,120,120);
-            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824,835,120,120);
-            TextureRegion danceFloorTexture = new TextureRegion(assetsSheet, 824,533,120,120);
+            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 20, 835, 120, 120);
+            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157, 835, 120, 120);
+            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293, 835, 120, 120);
+            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427, 835, 120, 120);
+            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563, 835, 120, 120);
+            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693, 835, 120, 120);
+            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824, 835, 120, 120);
+            TextureRegion danceFloorTexture = new TextureRegion(assetsSheet, 824, 533, 120, 120);
 
-            TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 410,670,140,140);
-            TextureRegion decorTexture2 = new TextureRegion(assetsSheet, 585,670,140,140);
-            TextureRegion decorTexture3 = new TextureRegion(assetsSheet, 775,715,140,90);
-            TextureRegion decorTexture4 = new TextureRegion(assetsSheet, 950,670,140,140);
-            TextureRegion decorTexture5 = new TextureRegion(assetsSheet, 18,1000,140,90);
-            TextureRegion decorTexture6 = new TextureRegion(assetsSheet, 280,980,140,110);
-            TextureRegion decorTexture7 = new TextureRegion(assetsSheet, 445,980,127,140);
-            TextureRegion decorTexture8 = new TextureRegion(assetsSheet, 565,950,137,157);
-            TextureRegion decorTexture9 = new TextureRegion(assetsSheet, 695,950,140,140);
-            TextureRegion decorTexture10 = new TextureRegion(assetsSheet, 855,955,110,135);
+            TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 410, 670, 140, 140);
+            TextureRegion decorTexture2 = new TextureRegion(assetsSheet, 585, 670, 140, 140);
+            TextureRegion decorTexture3 = new TextureRegion(assetsSheet, 775, 715, 140, 90);
+            TextureRegion decorTexture4 = new TextureRegion(assetsSheet, 950, 670, 140, 140);
+            TextureRegion decorTexture5 = new TextureRegion(assetsSheet, 18, 1000, 140, 90);
+            TextureRegion decorTexture6 = new TextureRegion(assetsSheet, 280, 980, 140, 110);
+            TextureRegion decorTexture7 = new TextureRegion(assetsSheet, 445, 980, 127, 140);
+            TextureRegion decorTexture8 = new TextureRegion(assetsSheet, 565, 950, 137, 157);
+            TextureRegion decorTexture9 = new TextureRegion(assetsSheet, 695, 950, 140, 140);
+            TextureRegion decorTexture10 = new TextureRegion(assetsSheet, 855, 955, 110, 135);
 
-            TextureRegion exitTexture = new TextureRegion(assetsSheet, 22,686,113,119);
-            TextureRegion wallHighTexture3 = new TextureRegion(assetsSheet, 281,685,120,120);
+            TextureRegion exitTexture = new TextureRegion(assetsSheet, 22, 686, 113, 119);
+            TextureRegion wallHighTexture3 = new TextureRegion(assetsSheet, 281, 685, 120, 120);
 
-            TextureRegion casketTexture = new TextureRegion(assetsSheet, 800,210,240,147);
+            TextureRegion casketTexture = new TextureRegion(assetsSheet, 800, 210, 240, 147);
 
 //            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
 //            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
@@ -599,6 +593,7 @@ public class MazeRunnerGame extends Game {
         }
         return frames;
     }
+
     /**
      * Cleans up resources when the game is disposed.
      */
@@ -716,20 +711,53 @@ public class MazeRunnerGame extends Game {
         return characterRightWin;
     }
 
-    public Animation<TextureRegion> getBouncerDown() { return bouncerDown; }
-    public Animation<TextureRegion> getBouncerUp() { return bouncerUp; }
-    public Animation<TextureRegion> getBouncerLeft() { return bouncerLeft; }
-    public Animation<TextureRegion> getBouncerRight() { return bouncerRight; }
+    public Animation<TextureRegion> getBouncerDown() {
+        return bouncerDown;
+    }
 
-    public Animation<TextureRegion> getJunkieDown() { return junkieDown; }
-    public Animation<TextureRegion> getJunkieUp() { return junkieUp; }
-    public Animation<TextureRegion> getJunkieLeft() { return junkieLeft; }
-    public Animation<TextureRegion> getJunkieRight() { return junkieRight; }
+    public Animation<TextureRegion> getBouncerUp() {
+        return bouncerUp;
+    }
 
-    public Animation<TextureRegion> getJunkieAttackDown() {return junkieAttackDown;}
-    public Animation<TextureRegion> getJunkieAttackUp() {return junkieAttackUp;}
-    public Animation<TextureRegion> getJunkieAttackLeft() {return junkieAttackLeft;}
-    public Animation<TextureRegion> getJunkieAttackRight() {return junkieAttackRight;}
+    public Animation<TextureRegion> getBouncerLeft() {
+        return bouncerLeft;
+    }
+
+    public Animation<TextureRegion> getBouncerRight() {
+        return bouncerRight;
+    }
+
+    public Animation<TextureRegion> getJunkieDown() {
+        return junkieDown;
+    }
+
+    public Animation<TextureRegion> getJunkieUp() {
+        return junkieUp;
+    }
+
+    public Animation<TextureRegion> getJunkieLeft() {
+        return junkieLeft;
+    }
+
+    public Animation<TextureRegion> getJunkieRight() {
+        return junkieRight;
+    }
+
+    public Animation<TextureRegion> getJunkieAttackDown() {
+        return junkieAttackDown;
+    }
+
+    public Animation<TextureRegion> getJunkieAttackUp() {
+        return junkieAttackUp;
+    }
+
+    public Animation<TextureRegion> getJunkieAttackLeft() {
+        return junkieAttackLeft;
+    }
+
+    public Animation<TextureRegion> getJunkieAttackRight() {
+        return junkieAttackRight;
+    }
 
     // Collectable animation Getters
     public Animation<TextureRegion> getKeyShineAnimation() {
@@ -892,13 +920,13 @@ public class MazeRunnerGame extends Game {
         return sunscreenEffect;
     }
 
-	public TextureRegion getExitClosedTexture() {
-		return exitClosedTexture;
-	}
+    public TextureRegion getExitClosedTexture() {
+        return exitClosedTexture;
+    }
 
-	public TextureRegion getExitOpenTexture() {
-		return exitOpenTexture;
-	}
+    public TextureRegion getExitOpenTexture() {
+        return exitOpenTexture;
+    }
 
     public TextureRegion getKey() {
         return key;
@@ -907,6 +935,7 @@ public class MazeRunnerGame extends Game {
     public TextureRegion getKeyOutline() {
         return keyOutline;
     }
+
     public Animation<TextureRegion> getCharacterAttackDownAnimation() {
         return characterAttackDownAnimation;
     }
@@ -987,13 +1016,13 @@ public class MazeRunnerGame extends Game {
         return characterInvisRightWin;
     }
 
-	public void setGameMode(GameMode Mode) {
-		this.gameMode = Mode;
-	}
+    public GameMode getGameMode() {
+        return this.gameMode;
+    }
 
-	public GameMode getGameMode() {
-		return this.gameMode;
-	}
+    public void setGameMode(GameMode Mode) {
+        this.gameMode = Mode;
+    }
 
     public TextureRegion getHeart() {
         return heart;

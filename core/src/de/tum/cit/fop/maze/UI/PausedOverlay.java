@@ -21,10 +21,10 @@ import de.tum.cit.fop.maze.SoundController;
 public class PausedOverlay {
 
     private final GameScreen gameScreen;
-    private Stage stage;
-    private Table table;
-    private SoundController soundController;
-    private MazeRunnerGame game;
+    private final Stage stage;
+    private final Table table;
+    private final SoundController soundController;
+    private final MazeRunnerGame game;
 
     public PausedOverlay(MazeRunnerGame game, Stage stage, GameScreen gameScreen) {
         this.gameScreen = gameScreen;
@@ -60,13 +60,14 @@ public class PausedOverlay {
             }
         });
         goToGameButton.getLabel().setTouchable(Touchable.disabled);
-        goToGameButton.addListener(new ClickListener(){
+        goToGameButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToGameButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -83,13 +84,14 @@ public class PausedOverlay {
             }
         });
         goToMainMenu.getLabel().setTouchable(Touchable.disabled);
-        goToMainMenu.addListener(new ClickListener(){
+        goToMainMenu.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToMainMenu.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);

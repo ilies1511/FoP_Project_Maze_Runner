@@ -16,28 +16,20 @@ import java.util.Arrays;
 public class Player extends GameObject implements Saveable<PlayerMemento> {
     private final static float DEFAULT_PLAYER_SPEED = 3f;
     private final static int STARTING_PLAYER_HEALTH = 3;
-    private int requiredKeys;
-
     private final ArrayList<Effect> effects;
+    private final GameScreen gameScreen;
+    private final SoundController soundController;
+    private final AchievementUI achievementUI;
+    private int requiredKeys;
     private int currentHealth;
     private int maxHealth;
     private int xp;
     private boolean canDash;
     private boolean canInvis;
     private boolean isAttacking = false;
-
-	private boolean hasKeys = false;
+    private boolean hasKeys = false;
     private int currentKeys = 0;
-
     private int kills;
-
-
-    private final GameScreen gameScreen;
-    private final SoundController soundController;
-
-    private final AchievementUI achievementUI;
-
-
 
 
     public Player(GameScreen gameScreen) {
@@ -49,10 +41,10 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         this.currentHealth = STARTING_PLAYER_HEALTH;
         this.maxHealth = STARTING_PLAYER_HEALTH;
         this.effects = new ArrayList<>();
-		this.hasKeys = false;
+        this.hasKeys = false;
 
         this.gameScreen = gameScreen;
-		this.requiredKeys = gameScreen.getGameField().getRequiredKeys();
+        this.requiredKeys = gameScreen.getGameField().getRequiredKeys();
         this.soundController = gameScreen.getSoundController();
         achievementUI = gameScreen.getAchievementUI();
 
@@ -73,11 +65,9 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         // negative damage for heal
         if (currentHealth - damage < 0) {
             currentHealth = 0;
-        }
-        else if (currentHealth - damage > maxHealth) {
+        } else if (currentHealth - damage > maxHealth) {
             currentHealth = maxHealth;
-        }
-        else {
+        } else {
             currentHealth -= damage;
         }
         if (this.gameScreen.getHUD() != null) {
@@ -182,12 +172,12 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         return currentHealth;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public void setMaxHealth(int maxHealth) {
@@ -213,20 +203,19 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
     }
 
     public GameObject getPlayerGameObject() {
-        return (GameObject) this;
+        return this;
     }
 
-	public void collectKey() {
-        this.currentKeys ++;
-        if(currentKeys == requiredKeys){
+    public void collectKey() {
+        this.currentKeys++;
+        if (currentKeys == requiredKeys) {
             this.hasKeys = true;
-        }
-        else if(currentKeys > requiredKeys){
+        } else if (currentKeys > requiredKeys) {
             this.currentKeys = requiredKeys;
         }
 
-		System.out.println("Key collected!");
-	}
+        System.out.println("Key collected!");
+    }
 
     public boolean isAttacking() {
         return isAttacking;
@@ -236,17 +225,18 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         this.isAttacking = attacking;
     }
 
-    public void die(){
+    public void die() {
         soundController.playPlayerDieSound(1f);
     }
 
-	public boolean hasKeys() {
-		return hasKeys;
-	}
+    public boolean hasKeys() {
+        return hasKeys;
+    }
 
     private boolean isDashInCooldown() {
         return hasEffect(DashCooldown.class);
     }
+
     private boolean isInvisInCooldown() {
         return hasEffect(InvisCooldown.class);
     }
@@ -287,18 +277,22 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         return currentKeys;
     }
 
+    public void setCurrentKeys(int keys) {
+        this.currentKeys = keys;
+    }
+
     public int getRequiredKeys() {
         return requiredKeys;
     }
 
-	public void setCurrentKeys(int keys) {
-		this.currentKeys = keys;
-	}
+    public void setRequiredKeys(int requiredKeys) {
+        this.requiredKeys = requiredKeys;
+    }
 
-	public void setPosition(Vector2 pos) {
-		if (pos != null)
-			this.position = pos;
-	}
+    public void setPosition(Vector2 pos) {
+        if (pos != null)
+            this.position = pos;
+    }
 
     public AchievementUI getAchievementUI() {
         return achievementUI;
@@ -312,33 +306,29 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         this.kills = kills;
     }
 
-	public void updateRequiredKeys() {
-		this.requiredKeys = gameScreen.getGameField().getRequiredKeys();
-	}
-
-	public void setRequiredKeys(int requiredKeys) {
-		this.requiredKeys = requiredKeys;
-	}
+    public void updateRequiredKeys() {
+        this.requiredKeys = gameScreen.getGameField().getRequiredKeys();
+    }
 
     @Override
     public PlayerMemento getMemento() {
         String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "CHARACTER_DOWN";
         return new PlayerMemento(
-            this.currentHealth,
-            this.maxHealth,
-            this.xp,
-            this.canDash,
-            this.canInvis,
-            this.hasKeys,
-            this.currentKeys,
-            this.requiredKeys,
-            this.kills,
-            this.position.x,
-            this.position.y,
-            this.velocity.x,
-            this.velocity.y,
-            this.speed,
-            animType
+                this.currentHealth,
+                this.maxHealth,
+                this.xp,
+                this.canDash,
+                this.canInvis,
+                this.hasKeys,
+                this.currentKeys,
+                this.requiredKeys,
+                this.kills,
+                this.position.x,
+                this.position.y,
+                this.velocity.x,
+                this.velocity.y,
+                this.speed,
+                animType
         );
     }
 

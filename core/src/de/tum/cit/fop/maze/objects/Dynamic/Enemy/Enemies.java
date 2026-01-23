@@ -8,7 +8,10 @@ public interface Enemies {
     // throughout the maze, but never leave it. Each enemy type must use a
     // unique behavior (e.g.,Patrol, Attack, Evade, Retreat) depending on the situation.
     void flee();
+
     void patrol(float delta);
+
     void chase(float deltaTime, Vector2 playerPosition, GameField gameField);
+
     void AnimationDirection();
 }

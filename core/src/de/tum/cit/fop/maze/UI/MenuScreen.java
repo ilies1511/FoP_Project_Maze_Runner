@@ -9,7 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -27,7 +30,6 @@ import de.tum.cit.fop.maze.SoundController;
 public class MenuScreen implements Screen {
 
     private final Stage stage;
-    private Table table;
     private final StoryModeScreen storyModeScreen;
     private final LevelModeScreen levelModeScreen;
     private final SettingsScreen settingsScreen;
@@ -35,8 +37,9 @@ public class MenuScreen implements Screen {
     private final EndlessModeScreen endlessModeScreen;
     private final LeaderboardScreen leaderboardScreen;
     private final AchievementScreen achievementScreen;
-	private MazeRunnerGame game;
-    private Viewport viewport;
+    private final Table table;
+    private final MazeRunnerGame game;
+    private final Viewport viewport;
 
     /**
      * Constructor for MenuScreen. Sets up the camera, viewport, stage, and UI elements.
@@ -44,7 +47,7 @@ public class MenuScreen implements Screen {
      * @param game The main game class, used to access global resources and methods.
      */
     public MenuScreen(MazeRunnerGame game) {
-		this.game = game;
+        this.game = game;
         soundController = new SoundController();
         soundController.playMainMenuMusic(0.5f);
 
@@ -60,7 +63,7 @@ public class MenuScreen implements Screen {
 
         table.top();
 
-        Texture  backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
+        Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
         backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
@@ -72,18 +75,17 @@ public class MenuScreen implements Screen {
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
 
 
-
-
         TextButton goToStoryMode = new TextButton("Story Mode", game.getSkin(), "vampire-style");
         table.add(goToStoryMode).width(300).left().padLeft(50).padBottom(50);
         goToStoryMode.getLabel().setTouchable(Touchable.disabled);
-        goToStoryMode.addListener(new ClickListener(){
+        goToStoryMode.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToStoryMode.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -102,13 +104,14 @@ public class MenuScreen implements Screen {
         TextButton goToLevels = new TextButton("Levels", game.getSkin(), "vampire-style");
         table.add(goToLevels).width(300).left().padLeft(50).padBottom(50);
         goToStoryMode.getLabel().setTouchable(Touchable.disabled);
-        goToStoryMode.addListener(new ClickListener(){
+        goToStoryMode.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToStoryMode.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -128,13 +131,14 @@ public class MenuScreen implements Screen {
         TextButton goToEndlessButton = new TextButton("Endless Mode", game.getSkin(), "vampire-style");
         table.add(goToEndlessButton).width(300).left().padLeft(50).padBottom(50);
         goToEndlessButton.getLabel().setTouchable(Touchable.disabled);
-        goToEndlessButton.addListener(new ClickListener(){
+        goToEndlessButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToEndlessButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -146,13 +150,14 @@ public class MenuScreen implements Screen {
         TextButton goToSettingsButton = new TextButton("Settings", game.getSkin(), "vampire-style");
         table.add(goToSettingsButton).width(300).left().padLeft(50).padBottom(50);
         goToSettingsButton.getLabel().setTouchable(Touchable.disabled);
-        goToSettingsButton.addListener(new ClickListener(){
+        goToSettingsButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToSettingsButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -162,17 +167,17 @@ public class MenuScreen implements Screen {
         table.row();
 
 
-
         TextButton goToExitButton = new TextButton("Exit", game.getSkin(), "vampire-style");
         table.add(goToExitButton).width(300).left().padLeft(50).padBottom(50);
         goToExitButton.getLabel().setTouchable(Touchable.disabled);
-        goToExitButton.addListener(new ClickListener(){
+        goToExitButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToExitButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -188,13 +193,14 @@ public class MenuScreen implements Screen {
         style.over = trophy;
         Button achievementsButton = new Button(style);
         table.add(achievementsButton).width(150).height(150).bottom().right().padBottom(20).padRight(20);
-        achievementsButton.addListener(new ClickListener(){
+        achievementsButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !achievementsButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -231,11 +237,11 @@ public class MenuScreen implements Screen {
 
         storyModeScreen = new StoryModeScreen(stage, game, this);
         endlessModeScreen = new EndlessModeScreen(stage, game, this);
-        settingsScreen = new SettingsScreen(stage,game,this);
+        settingsScreen = new SettingsScreen(stage, game, this);
         levelModeScreen = new LevelModeScreen(stage, game, this);
         // TODO add listeners to Statistics, EndlessMode
         leaderboardScreen = new LeaderboardScreen(stage, game, this);
-        achievementScreen = new AchievementScreen(stage,game,this);
+        achievementScreen = new AchievementScreen(stage, game, this);
     }
 
     @Override
@@ -279,7 +285,7 @@ public class MenuScreen implements Screen {
     private void hideAllTables() {
         table.setVisible(false);
         storyModeScreen.getStoryTable().setVisible(false);
-        if(levelModeScreen.getLevelSelectionScreen() != null) {
+        if (levelModeScreen.getLevelSelectionScreen() != null) {
             levelModeScreen.getLevelSelectionScreen().getLevelSelectionTable().setVisible(false);
         }
         levelModeScreen.getLevelTable().setVisible(false);
@@ -288,38 +294,40 @@ public class MenuScreen implements Screen {
         leaderboardScreen.getLeaderboardTable().setVisible(false);
     }
 
-    public void goToStory(){
+    public void goToStory() {
         hideAllTables();
-		game.setGameMode(GameMode.STORY_MODE);
+        game.setGameMode(GameMode.STORY_MODE);
         storyModeScreen.getStoryTable().setVisible(true);
     }
-    public void goToLevel(){
+
+    public void goToLevel() {
         hideAllTables();
-	    game.setGameMode(GameMode.LEVELS_MODE);
+        game.setGameMode(GameMode.LEVELS_MODE);
         levelModeScreen.getLevelTable().setVisible(true);
     }
 
-    public void goBackToMenu(){
+    public void goBackToMenu() {
         hideAllTables();
         table.setVisible(true);
     }
 
-    public void goToSettings(){
+    public void goToSettings() {
         hideAllTables();
         settingsScreen.getTable().setVisible(true);
     }
 
-    public void goToEndless(){
+    public void goToEndless() {
         hideAllTables();
-	    game.setGameMode(GameMode.ENDLESS_MODE);
+        game.setGameMode(GameMode.ENDLESS_MODE);
         endlessModeScreen.getEndlessTable().setVisible(true);
     }
 
-    public void goToLeaderboard(){
+    public void goToLeaderboard() {
         hideAllTables();
         leaderboardScreen.getLeaderboardTable().setVisible(true);
     }
-    public void goToAchievements(){
+
+    public void goToAchievements() {
         hideAllTables();
         achievementScreen.getTable().setVisible(true);
     }

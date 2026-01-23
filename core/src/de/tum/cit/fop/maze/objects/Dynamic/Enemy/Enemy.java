@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
@@ -10,14 +11,12 @@ import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Enemy extends GameObject implements Enemies {
-    protected boolean isDead = false;
-    private float deathTime = 0f; // fade
     private static final float detectionRange = 5.5f; // if within 5.5 tiles
     private static final float fadeDuration = 1.0f;
+    protected boolean isDead = false;
+    private float deathTime = 0f; // fade
 
 
     public Enemy(Vector2 startPos, Vector2 size, AnimationType animationType) {
@@ -30,6 +29,7 @@ public abstract class Enemy extends GameObject implements Enemies {
                 animationType // temporary, might move to each enemy separately
         );
     }
+
     public Enemy(Vector2 startPos, AnimationType animationType) {
         super(
                 startPos,
@@ -40,6 +40,7 @@ public abstract class Enemy extends GameObject implements Enemies {
                 animationType // temporary, might move to each enemy separately
         );
     }
+
     public Enemy(Vector2 startPos) {
         super(
                 startPos,
@@ -52,7 +53,9 @@ public abstract class Enemy extends GameObject implements Enemies {
     }
 
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
-        if (isDead) {return;}
+        if (isDead) {
+            return;
+        }
         if (position.dst(playerPosition) < detectionRange && !player.hasEffect(Invis.class)) {
             Vector2 direction = new Vector2(playerPosition).sub(position).nor(); //chase character
             this.velocity = direction.scl(speed);
@@ -60,6 +63,7 @@ public abstract class Enemy extends GameObject implements Enemies {
             velocity.set(0, 0);
         }
     }
+
     public void updateDeathAnimation(float delta) {
         if (isDead) {
             deathTime += delta;
@@ -96,11 +100,11 @@ public abstract class Enemy extends GameObject implements Enemies {
         player.receiveXP(20);
         player.addOrReapplyEffect(new Buff(player, 2f));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
-        player.setKills(player.getKills()+1);
-        if(player.getKills() == 1){
+        player.setKills(player.getKills() + 1);
+        if (player.getKills() == 1) {
             player.getAchievementUI().firstBloodAchievement();
         }
-        if(player.getKills() == 50){
+        if (player.getKills() == 50) {
             player.getAchievementUI().killsAchievement();
         }
 
@@ -126,7 +130,8 @@ public abstract class Enemy extends GameObject implements Enemies {
             // back to normal
             batch.setColor(1f, 1f, 1f, oldAlpha);
         } else {
-            super.animate(batch);}
+            super.animate(batch);
+        }
     }
 
 
@@ -139,7 +144,7 @@ public abstract class Enemy extends GameObject implements Enemies {
     }
 
     public GameObject getEnemyEntity() {
-        return (GameObject) this;
+        return this;
     }
 
 

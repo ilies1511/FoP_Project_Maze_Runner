@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -19,8 +18,10 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class BackgroundStoryScreen implements Screen {
-    private Label storyLabel;
-    private String fullText = "Wake up child...     " +
+    private final MazeRunnerGame game;
+    private final SoundController soundController;
+    private final Label storyLabel;
+    private final String fullText = "Wake up child...     " +
             "\nYou have been away for too long.     " +
             "\nWho am I? I am your inner dark urge, the one you can trust above all others.     " +
             "\nWake up and make up for 1,000 years spent in this prison, and yearn for blood. But first and foremost, you must find your way home, for your casket has strayed too far from Transylvania.     " +
@@ -28,13 +29,11 @@ public class BackgroundStoryScreen implements Screen {
             "\nHow, you may ask? It is close, but you must find a way to it, on the top floor of Berghain, where you have been sleeping. No more time to speak. Go on, spill the blood of mortals.     " +
             "\n(Press Space to continue)";
     private float timeSeconds = 0f;
-    private Stage stage;
+    private final Stage stage;
     private boolean isTextSkipped = false;
-    private final MazeRunnerGame game;
-    private final SoundController soundController;
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
 
-    public BackgroundStoryScreen( MazeRunnerGame game) {
+    public BackgroundStoryScreen(MazeRunnerGame game) {
         soundController = new SoundController();
         soundController.playBackgrounStorydMusic(0.5f);
         Gdx.input.setCursorCatched(true);
@@ -76,11 +75,10 @@ public class BackgroundStoryScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isTextSkipped){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isTextSkipped) {
             storyLabel.setText(fullText);
             isTextSkipped = true;
-        }
-        else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && isTextSkipped){
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && isTextSkipped) {
             soundController.dispose();
             game.goToGame();
         }
@@ -92,8 +90,7 @@ public class BackgroundStoryScreen implements Screen {
                 charCount = fullText.length();
             }
             storyLabel.setText(fullText.substring(0, charCount));
-        }
-        else{
+        } else {
             isTextSkipped = true;
         }
 

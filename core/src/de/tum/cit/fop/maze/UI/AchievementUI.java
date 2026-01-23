@@ -14,13 +14,13 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class AchievementUI {
-    private Stage stage;
-    private MazeRunnerGame game;
-    private Table table;
-    private Label label;
-    private Label text;
-    private SoundController soundController;
-    private  Cell<Actor> trophy;
+    private final Stage stage;
+    private final MazeRunnerGame game;
+    private final Table table;
+    private final Label label;
+    private final Label text;
+    private final SoundController soundController;
+    private Cell<Actor> trophy;
     private Image image;
 
     public AchievementUI(Stage stage, MazeRunnerGame game, SoundController soundController) {
@@ -44,19 +44,20 @@ public class AchievementUI {
         label = new Label("", game.getSkin(), "vampire-style");
         label.setFontScale(1.5f);
         table.add(label).center();
-        text= new Label("", game.getSkin(), "vampire-style");
+        text = new Label("", game.getSkin(), "vampire-style");
         text.setFontScale(1f);
         table.row();
         table.add(text);
         table.setVisible(false);
     }
-    public void startAchievement(){
-        if(!game.getGameInfo().getAchievementController().isStart()){
+
+    public void startAchievement() {
+        if (!game.getGameInfo().getAchievementController().isStart()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getStartAchievement());
+            image = new Image(game.getStartAchievement());
             trophy.setActor(image);
-            label.setText("Wake up");;
+            label.setText("Wake up");
             text.setText("Start your first story mode game");
             game.getGameInfo().getAchievementController().setStart(true);
             soundController.playWinSound(0.2f);
@@ -67,11 +68,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void endAchievement(){
-        if(!game.getGameInfo().getAchievementController().isEnd()) {
+
+    public void endAchievement() {
+        if (!game.getGameInfo().getAchievementController().isEnd()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getEndAchievement());
+            image = new Image(game.getEndAchievement());
             trophy.setActor(image);
             label.setText("And so it ends");
             text.setText("Finish the story mode");
@@ -84,11 +86,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void firstBloodAchievement(){
-        if(!game.getGameInfo().getAchievementController().isFirstBlood()) {
+
+    public void firstBloodAchievement() {
+        if (!game.getGameInfo().getAchievementController().isFirstBlood()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getFirstBloodAchievement());
+            image = new Image(game.getFirstBloodAchievement());
             trophy.setActor(image);
             label.setText("First blood");
             text.setText("Get your first kill");
@@ -101,11 +104,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void upgradesAchievement(){
-        if(!game.getGameInfo().getAchievementController().isUpgrades()) {
+
+    public void upgradesAchievement() {
+        if (!game.getGameInfo().getAchievementController().isUpgrades()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getUpgradesAchievement());
+            image = new Image(game.getUpgradesAchievement());
             trophy.setActor(image);
             label.setText("Graph Dracula");
             text.setText("Reach maximum upgrades");
@@ -118,11 +122,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void killsAchievement(){
-        if(!game.getGameInfo().getAchievementController().isKills()) {
+
+    public void killsAchievement() {
+        if (!game.getGameInfo().getAchievementController().isKills()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getKillsAchievement());
+            image = new Image(game.getKillsAchievement());
             trophy.setActor(image);
             label.setText("Thirst for blood");
             text.setText("50 kills");
@@ -135,11 +140,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void invisAchievement(){
-        if(!game.getGameInfo().getAchievementController().isInvis()) {
+
+    public void invisAchievement() {
+        if (!game.getGameInfo().getAchievementController().isInvis()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getInvisAchievement());
+            image = new Image(game.getInvisAchievement());
             trophy.setActor(image);
             label.setText("Now you see me,\nnow you don’t");
             label.setAlignment(Align.center);
@@ -153,11 +159,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void consoleAchievement(){
-        if(!game.getGameInfo().getAchievementController().isConsole()) {
+
+    public void consoleAchievement() {
+        if (!game.getGameInfo().getAchievementController().isConsole()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getConsoleAchievement());
+            image = new Image(game.getConsoleAchievement());
             trophy.setActor(image);
             label.setText("Cheater!");
             text.setText("Use a console command");
@@ -170,11 +177,12 @@ public class AchievementUI {
             ));
         }
     }
-    public void pointsAchievement(){
-        if(!game.getGameInfo().getAchievementController().isPoints()) {
+
+    public void pointsAchievement() {
+        if (!game.getGameInfo().getAchievementController().isPoints()) {
             table.setVisible(true);
             trophy = table.getCell(image);
-            image =new Image(game.getPointsAchievement());
+            image = new Image(game.getPointsAchievement());
             trophy.setActor(image);
             label.setText("Gamer");
             text.setText("Reach 1000 points in endless mode"); //TODO Nikita
@@ -188,7 +196,7 @@ public class AchievementUI {
         }
     }
 
-    private void hideAchievement(){
+    private void hideAchievement() {
         table.setVisible(false);
     }
 }

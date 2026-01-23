@@ -2,32 +2,28 @@ package de.tum.cit.fop.maze.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.tum.cit.fop.maze.GameScreen;
-import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class GameLostScreen implements Screen {
-    private MazeRunnerGame game;
+    private final MazeRunnerGame game;
     private Stage stage;
-    private SoundController soundController;
-    public GameLostScreen(MazeRunnerGame game ) {
+    private final SoundController soundController;
+
+    public GameLostScreen(MazeRunnerGame game) {
         this.game = game;
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
@@ -49,13 +45,14 @@ public class GameLostScreen implements Screen {
         TextButton goToMainMenu = new TextButton("Exit", game.getSkin(), "vampire-style");
         table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
         goToMainMenu.getLabel().setTouchable(Touchable.disabled);
-        goToMainMenu.addListener(new ClickListener(){
+        goToMainMenu.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToMainMenu.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -94,6 +91,7 @@ public class GameLostScreen implements Screen {
         // Set the input processor so the stage can receive input events
         Gdx.input.setInputProcessor(stage);
     }
+
     @Override
     public void pause() {
 

@@ -44,7 +44,7 @@ public class HUD {
     private Stack poisonEffect;
     private Stack freezeEffect;
     private Stack sunscreenEffect;
-    private ShapeRenderer shapeRenderer;
+    private final ShapeRenderer shapeRenderer;
     private int playerXP;
     private int playerKeys;
     private int requiredKeys;
@@ -105,29 +105,30 @@ public class HUD {
 
     }
 
-    public void createArrow(){
-       if(!hasArrow){
-           arrow = new Image(game.getArrow());
-           //arrowTable.add(arrow).center().width(150).height(150);
-           arrow.setOrigin(Align.center);
-           arrow.setSize(100, 100);
-           stage.addActor(arrow);
-           arrowFollow();
-           exit = null;
-           float closestDist = Float.MAX_VALUE;
-           List<Exit> exits = gameScreen.getGameField().getObjectsByType(Exit.class);
-           for(Exit e : exits){
-               float currentDist = gameScreen.getPlayer().position.dst2(e.position);
-               if (currentDist < closestDist) {
-                   closestDist = currentDist;
-                   exit = e;
-               }
-           }
-       }
+    public void createArrow() {
+        if (!hasArrow) {
+            arrow = new Image(game.getArrow());
+            //arrowTable.add(arrow).center().width(150).height(150);
+            arrow.setOrigin(Align.center);
+            arrow.setSize(100, 100);
+            stage.addActor(arrow);
+            arrowFollow();
+            exit = null;
+            float closestDist = Float.MAX_VALUE;
+            List<Exit> exits = gameScreen.getGameField().getObjectsByType(Exit.class);
+            for (Exit e : exits) {
+                float currentDist = gameScreen.getPlayer().position.dst2(e.position);
+                if (currentDist < closestDist) {
+                    closestDist = currentDist;
+                    exit = e;
+                }
+            }
+        }
 
         hasArrow = true;
     }
-    private void arrowFollow(){
+
+    private void arrowFollow() {
         if (arrow == null) return;
 
         float playerX = gameScreen.getPlayer().position.x;
@@ -158,23 +159,25 @@ public class HUD {
         );
 
     }
-    public void rotateArrow(){
-        if(exit!=null){
+
+    public void rotateArrow() {
+        if (exit != null) {
             arrowFollow();
             arrow.setOrigin(Align.center);
             float angle = exit.position.cpy().sub(gameScreen.getPlayer().position).angleDeg();
             arrow.setRotation(angle);
         }
     }
-    public void deleteArrow(){
-        if(hasArrow){
+
+    public void deleteArrow() {
+        if (hasArrow) {
             arrow.remove();
         }
         hasArrow = false;
 
     }
 
-    public void updatePlayerKeys(){
+    public void updatePlayerKeys() {
         requiredKeys = player.getRequiredKeys();
         keyStack = new Stack[requiredKeys];
         keyOutlineTable.clearChildren();
@@ -183,14 +186,14 @@ public class HUD {
         keyOutlineTable.add(keyLabel);
         keyOutlineTable.row();
         playerKeys = player.getCurrentKeys();
-        for(int i = 0; i < requiredKeys; i++){
+        for (int i = 0; i < requiredKeys; i++) {
             keyStack[i] = new Stack();
-            Image keyOutline =new Image(game.getKeyOutline());
+            Image keyOutline = new Image(game.getKeyOutline());
             keyStack[i].add(keyOutline);
-            keyOutlineTable.add(keyStack[i]).size(170,100);
+            keyOutlineTable.add(keyStack[i]).size(170, 100);
         }
-        for(int i = 0; i<playerKeys;i ++){
-            Image key =new Image(game.getKey());
+        for (int i = 0; i < playerKeys; i++) {
+            Image key = new Image(game.getKey());
             keyStack[i].add(key);
         }
 
@@ -260,7 +263,8 @@ public class HUD {
             }
         }
     }
-    private void removeStatusEffectUI(Stack stack){
+
+    private void removeStatusEffectUI(Stack stack) {
         if (stack != null) {
             Cell cell = statusEffectsTable.getCell(stack);
             if (cell != null) {
@@ -280,7 +284,7 @@ public class HUD {
         };
 
         stack.add(img);
-        Actor cooldownOverlay = new Actor(){
+        Actor cooldownOverlay = new Actor() {
             private final float maxTime = maxT;
             private float timeLeft = maxT;
 
@@ -359,20 +363,33 @@ public class HUD {
 
     private Stack getActiveEffect(String effectName) {
         switch (effectName) {
-            case "Poison":    return poisonEffect;
-            case "Buff":      return bloodEffect;
-            case "Freeze":    return freezeEffect;
-            case "Sunscreen": return sunscreenEffect;
-            default:          return null;
+            case "Poison":
+                return poisonEffect;
+            case "Buff":
+                return bloodEffect;
+            case "Freeze":
+                return freezeEffect;
+            case "Sunscreen":
+                return sunscreenEffect;
+            default:
+                return null;
         }
     }
 
     private void setActiveEffect(String effectName, Stack stack) {
         switch (effectName) {
-            case "Poison":    poisonEffect = stack; break;
-            case "Buff":      bloodEffect = stack; break;
-            case "Freeze":    freezeEffect = stack; break;
-            case "Sunscreen": sunscreenEffect = stack; break;
+            case "Poison":
+                poisonEffect = stack;
+                break;
+            case "Buff":
+                bloodEffect = stack;
+                break;
+            case "Freeze":
+                freezeEffect = stack;
+                break;
+            case "Sunscreen":
+                sunscreenEffect = stack;
+                break;
         }
     }
 

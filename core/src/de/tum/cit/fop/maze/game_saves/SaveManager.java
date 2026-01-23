@@ -27,23 +27,23 @@ public class SaveManager {
     public static void saveGame(GameScreenMemento memento, boolean isStoryMode) {
         String path = isStoryMode ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
         FileHandle saveFile = Gdx.files.local(path);
-        
+
         Json json = new Json();
         json.setUsePrototypes(false);
         saveFile.writeString(json.prettyPrint(memento), false);
-        
+
         System.out.println("Game saved to: " + path);
     }
 
     public static GameScreenMemento loadGame(boolean isStoryMode) {
         String path = isStoryMode ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
         FileHandle saveFile = Gdx.files.local(path);
-        
+
         if (!saveFile.exists()) {
             System.out.println("No save file found at: " + path);
             return null;
         }
-        
+
         Json json = new Json();
         GameScreenMemento memento = json.fromJson(GameScreenMemento.class, saveFile);
         System.out.println("Game loaded from: " + path);
@@ -76,12 +76,12 @@ public class SaveManager {
         }
 
         return new GameFieldMemento(
-            gameField.getWidth(),
-            gameField.getHeight(),
-            gridStrings,
-            gameObjectMementos,
-            gameField.getPlayerStartPos().x,
-            gameField.getPlayerStartPos().y
+                gameField.getWidth(),
+                gameField.getHeight(),
+                gridStrings,
+                gameObjectMementos,
+                gameField.getPlayerStartPos().x,
+                gameField.getPlayerStartPos().y
         );
     }
 
@@ -110,7 +110,7 @@ public class SaveManager {
     // Helper method to restore GameField from GameFieldMemento
     public static GameField restoreGameField(GameFieldMemento memento) {
         GameField gameField = new GameField(memento.width, memento.height);
-        
+
         // Restore tiles
         for (int y = 0; y < memento.height; y++) {
             for (int x = 0; x < memento.width; x++) {
@@ -119,10 +119,10 @@ public class SaveManager {
                 gameField.setTile(x, y, tileType);
             }
         }
-        
+
         // Restore player start position
         gameField.setPlayerStartPos(new Vector2(memento.playerStartPosX, memento.playerStartPosY));
-        
+
         // Restore game objects
         for (GameObjectMemento objMemento : memento.gameObjects) {
             GameObject obj = restoreGameObject(objMemento);
@@ -130,14 +130,14 @@ public class SaveManager {
                 gameField.addGameObject(obj);
             }
         }
-        
+
         return gameField;
     }
 
     // Helper method to restore GameObject from memento
     private static GameObject restoreGameObject(GameObjectMemento memento) {
         Vector2 pos = new Vector2(memento.positionX, memento.positionY);
-        
+
         switch (memento.objectType) {
             case "Exit":
                 ExitMemento exitMem = (ExitMemento) memento;
@@ -147,41 +147,41 @@ public class SaveManager {
                     exit.open();
                 }
                 return exit;
-                
+
             case "Key":
                 Key key = new Key(pos);
                 return key;
-                
+
             case "Heart":
                 Heart heart = new Heart(pos);
                 return heart;
-                
+
             case "Bouncer":
                 BouncerMemento bouncerMem = (BouncerMemento) memento;
                 Bouncer bouncer = new Bouncer(pos);
                 bouncer.loadFromMemento(bouncerMem);
                 return bouncer;
-                
+
             case "Tourist":
                 TouristMemento touristMem = (TouristMemento) memento;
                 Tourist tourist = new Tourist(pos);
                 tourist.loadFromMemento(touristMem);
                 return tourist;
-                
+
             case "Junkie":
                 JunkieMemento junkieMem = (JunkieMemento) memento;
                 Junkie junkie = new Junkie(pos);
                 junkie.loadFromMemento(junkieMem);
                 return junkie;
-                
+
             case "FreezeTrap":
                 FreezeTrap freezeTrap = new FreezeTrap(pos);
                 return freezeTrap;
-                
+
             case "GarlicTrap":
                 GarlicTrap garlicTrap = new GarlicTrap(pos);
                 return garlicTrap;
-                
+
             default:
                 System.err.println("Unknown GameObject type: " + memento.objectType);
                 return null;

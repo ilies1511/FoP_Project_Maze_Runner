@@ -18,9 +18,9 @@ public class Dash extends Effect {
     @Override
     public void onStart() {
 //        if( player.isCanDash()){
-            this.player.addOrReapplyEffect(new DashCooldown(this.player));
-            this.player.getPlayerGameObject().increaseSpeed(SPEED_BOOST);
-            soundController.playPlayerDashSound(1f);
+        this.player.addOrReapplyEffect(new DashCooldown(this.player));
+        this.player.getPlayerGameObject().increaseSpeed(SPEED_BOOST);
+        soundController.playPlayerDashSound(1f);
 //        }
 
     }

@@ -12,13 +12,8 @@ public class Camera {
     private static final float MAXIMUM_ZOOM = 1.1f;
     private static final float CAMERA_LERP_SPEED = 3f;
     private static final float SHAKE_SPEED = 30f;
-
-
-
-    private boolean zooming;
-
     private final OrthographicCamera camera;
-
+    private boolean zooming;
     private float currentShakeTime = 0f; // when currentShakeTime > 0, camera is going to shake
 
     private float currentShakeDurationTotal = 0f;
@@ -47,7 +42,7 @@ public class Camera {
             camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 4.0f);
 
         }
-            float minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
+        float minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
 //        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 1.6f;
         float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2;
         float maxCameraX = gameFieldWidth - VIEWPORT_WIDTH * this.camera.zoom / 2;

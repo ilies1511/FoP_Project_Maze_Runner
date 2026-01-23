@@ -23,7 +23,7 @@ public class Key extends Collectable implements Saveable<KeyMemento> {
         player.getSoundController().playKeyPickupSound(1f);
         player.collectKey();
         hud.updatePlayerKeys();
-        if(player.hasKeys()){
+        if (player.hasKeys()) {
             hud.deleteArrow();
             hud.createArrow();
         }

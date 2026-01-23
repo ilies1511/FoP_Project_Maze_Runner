@@ -23,19 +23,18 @@ import java.util.regex.Pattern;
 
 public class DevConsole {
     private final Map<String, Consumer<String>> commandMap = new HashMap<>();
-    private Stage stage;
-    private Table table;
-    ;
-    private String setCommands;
-    private String getCommands;
-    private Player player;
-    private  TextField inputField;
-    private MazeRunnerGame game;
-    private HUD hud;
-    private GameScreen gameScreen;
+    private final Stage stage;
+    private final Table table;
+    private final String setCommands;
+    private final String getCommands;
+    private final Player player;
+    private final TextField inputField;
+    private final MazeRunnerGame game;
+    private final HUD hud;
+    private final GameScreen gameScreen;
 
 
-    public DevConsole(MazeRunnerGame game,GameScreen gameScreen, HUD hud,  Stage stage, Player player) {
+    public DevConsole(MazeRunnerGame game, GameScreen gameScreen, HUD hud, Stage stage, Player player) {
         this.game = game;
         this.hud = hud;
         this.gameScreen = gameScreen;
@@ -82,7 +81,7 @@ public class DevConsole {
 //        scrollPane.setStyle(myConsoleStyle);
 
         commandMap.put("setHP", val -> {
-           player.increaseMaxHealth(Integer.parseInt(val) + player.getCurrentHealth());
+            player.increaseMaxHealth(Integer.parseInt(val) + player.getCurrentHealth());
             hud.renderPlayerHP();
         });
         commandMap.put("setXP", val -> {
@@ -104,7 +103,6 @@ public class DevConsole {
         commandMap.put("setDash", val -> {
             if (Integer.parseInt(val) == 1) {
                 player.setCanDash(true);
-                ;
             } else if (Integer.parseInt(val) == 0) {
                 player.setCanDash(false);
             } else {
@@ -114,7 +112,6 @@ public class DevConsole {
         commandMap.put("setInvis", val -> {
             if (Integer.parseInt(val) == 1) {
                 player.setCanInvis(true);
-                ;
             } else if (Integer.parseInt(val) == 0) {
                 player.setCanInvis(false);
             } else {
@@ -122,7 +119,7 @@ public class DevConsole {
             }
         });
         commandMap.put("getHelp", val -> {
-            consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands +"\n> E.g.: setXP:50, getDebuff" );
+            consoleLabel.setText(consoleLabel.getText() + "\n> " + "set[...]: " + "\n> " + setCommands + "\n> " + "get[...]: " + "\n> " + getCommands + "\n> E.g.: setXP:50, getDebuff");
         });
         commandMap.put("getBuff", val -> {
             this.player.addOrReapplyEffect(new Buff(player, 10.0f));
@@ -158,9 +155,9 @@ public class DevConsole {
                         consoleLabel.setText(consoleLabel.getText() + "\n> " + command);
                         String stringCommand = matcher.group(1);
 
-                        if (matcher.group(2) != null ) {
-                            try{
-                                if( Integer.parseInt(matcher.group(2)) < 2147483647 && Integer.parseInt(matcher.group(2))> 0){
+                        if (matcher.group(2) != null) {
+                            try {
+                                if (Integer.parseInt(matcher.group(2)) < 2147483647 && Integer.parseInt(matcher.group(2)) > 0) {
                                     String intCommand = matcher.group(2);
                                     Consumer<String> action = commandMap.get(stringCommand);
 
@@ -170,8 +167,7 @@ public class DevConsole {
                                         consoleLabel.setText(consoleLabel.getText() + "\n> " + "Unknown command logic: " + stringCommand);
                                     }
                                 }
-                            }
-                            catch (Exception e){
+                            } catch (Exception e) {
                                 consoleLabel.setText(consoleLabel.getText() + "\n> " + "Out of bounds value");
                             }
 

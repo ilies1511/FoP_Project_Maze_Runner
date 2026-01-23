@@ -13,10 +13,9 @@ import java.util.function.IntSupplier;
 public class KeyBindingButton extends TextButton {
     private final String actionName;
     private final KeyBindingCallback callback;
+    private final IntSupplier keyGetter;
     private int keycode;
     private boolean isListeningKeys;
-
-    private final IntSupplier keyGetter;
 
     public KeyBindingButton(String actionName, int keycode, Skin skin, KeyBindingCallback callback, IntSupplier keyGetter) {
         super("", skin);
@@ -66,6 +65,6 @@ public class KeyBindingButton extends TextButton {
     }
 
     public interface KeyBindingCallback {
-        public void handle(int keycode);
+        void handle(int keycode);
     }
 }

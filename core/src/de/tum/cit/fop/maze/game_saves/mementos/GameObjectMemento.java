@@ -15,7 +15,7 @@ public class GameObjectMemento implements Memento {
         // For JSON deserialization
     }
 
-    public GameObjectMemento(float positionX, float positionY, float velocityX, float velocityY, 
+    public GameObjectMemento(float positionX, float positionY, float velocityX, float velocityY,
                              float speed, String animationType, String objectType) {
         this.positionX = positionX;
         this.positionY = positionY;

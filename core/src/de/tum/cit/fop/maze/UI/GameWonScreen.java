@@ -19,20 +19,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.tum.cit.fop.maze.AchievementController;
-import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class GameWonScreen implements Screen {
-	private final MazeRunnerGame game;
-	private final Stage stage;
-	private final SoundController soundController;
+    private final MazeRunnerGame game;
+    private final Stage stage;
+    private final SoundController soundController;
     private Table table;
     private Table storyTable;
     private Label storyLabel;
-    private String fullText = "\"Breathe in the mist, child.\n" +
+    private final String fullText = "\"Breathe in the mist, child.\n" +
             "The stench of that prison is but a memory now.\n" +
             "Do you recognize this cold air? You shall step through the veil and return to the freezing peaks of Transylvania, where you belong.\n" +
             "You have done well to heed my voice.\n" +
@@ -45,17 +43,17 @@ public class GameWonScreen implements Screen {
     private boolean isTextSkipped = false;
     private Texture backgroundTexture;
 
-	public GameWonScreen(MazeRunnerGame game) {
-		this.game = game;
+    public GameWonScreen(MazeRunnerGame game) {
+        this.game = game;
 
-		this.soundController = new SoundController();
-		soundController.playBackgrounStorydMusic(0.5f);
+        this.soundController = new SoundController();
+        soundController.playBackgrounStorydMusic(0.5f);
 
 
-		Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
-		this.stage = new Stage(viewport, game.getSpriteBatch());
+        Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+        this.stage = new Stage(viewport, game.getSpriteBatch());
 
-        switch (game.getGameMode()){
+        switch (game.getGameMode()) {
             case STORY_MODE:
                 Gdx.input.setCursorCatched(true);
                 Gdx.input.setInputProcessor(null);
@@ -80,61 +78,60 @@ public class GameWonScreen implements Screen {
                 break;
             case LEVELS_MODE:
                 table = new Table();
-            table.setFillParent(true);
-            table.center();
-            Label label = new Label("Game Won", game.getSkin(), "vampire-style");
-            label.setFontScale(1.7f);
-            table.add(label).center().padTop(50).padBottom(80).row();
+                table.setFillParent(true);
+                table.center();
+                Label label = new Label("Game Won", game.getSkin(), "vampire-style");
+                label.setFontScale(1.7f);
+                table.add(label).center().padTop(50).padBottom(80).row();
 
-            TextButton goToMainMenu = new TextButton("Exit", game.getSkin(), "vampire-style");
-            goToMainMenu.getLabel().setTouchable(Touchable.disabled);
+                TextButton goToMainMenu = new TextButton("Exit", game.getSkin(), "vampire-style");
+                goToMainMenu.getLabel().setTouchable(Touchable.disabled);
 
-            goToMainMenu.addListener(new ClickListener(){
-                @Override
-                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    if (pointer == -1 && !goToMainMenu.isDisabled()) {
-                        soundController.playUI_hoverOverSound(1);
+                goToMainMenu.addListener(new ClickListener() {
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        if (pointer == -1 && !goToMainMenu.isDisabled()) {
+                            soundController.playUI_hoverOverSound(1);
+                        }
                     }
-                }
 
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    soundController.playUI_buttonClickSound(1);
-                }
-            });
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        soundController.playUI_buttonClickSound(1);
+                    }
+                });
 
-            goToMainMenu.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    soundController.dispose();
-                    game.goToMenu();
-                }
-            });
+                goToMainMenu.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        soundController.dispose();
+                        game.goToMenu();
+                    }
+                });
 
-            table.add(goToMainMenu).width(300).padBottom(50).center();
-            stage.addActor(table);
-            break;
+                table.add(goToMainMenu).width(300).padBottom(50).center();
+                stage.addActor(table);
+                break;
         }
-	}
+    }
 
-	@Override
-	public void show() {
-		Gdx.input.setInputProcessor(stage);
-		Gdx.input.setCursorCatched(false);
-	}
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCursorCatched(false);
+    }
 
-	@Override
-	public void render(float delta) {
+    @Override
+    public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if(game.getGameMode() == GameMode.STORY_MODE){
+        if (game.getGameMode() == GameMode.STORY_MODE) {
 
 
-            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isTextSkipped){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isTextSkipped) {
                 storyLabel.setText(fullText);
                 isTextSkipped = true;
-            }
-            else if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && isTextSkipped){
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && isTextSkipped) {
                 soundController.dispose();
                 game.goToMenu();
             }
@@ -146,32 +143,37 @@ public class GameWonScreen implements Screen {
                     charCount = fullText.length();
                 }
                 storyLabel.setText(fullText.substring(0, charCount));
-            }
-            else{
+            } else {
                 isTextSkipped = true;
             }
         }
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		stage.draw();
-	}
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+    }
 
-	@Override
-	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
-	}
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 
-	@Override
-	public void dispose() {
-		stage.dispose();
-		soundController.dispose();
-	}
+    @Override
+    public void dispose() {
+        stage.dispose();
+        soundController.dispose();
+    }
 
-	@Override public void hide() {
-		if (soundController != null) {
-			soundController.dispose();
-		}
-	}
+    @Override
+    public void hide() {
+        if (soundController != null) {
+            soundController.dispose();
+        }
+    }
 
-	@Override public void pause() {}
-	@Override public void resume() {}
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
 }

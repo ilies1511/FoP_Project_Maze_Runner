@@ -8,7 +8,9 @@ import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
 public class CharacterWASD {
-    public  CharacterWASD() {}
+    public CharacterWASD() {
+    }
+
     public static boolean yAxis(Player player, MazeRunnerGame game) {
         boolean isXmoving = Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey()) || Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey());
         float speed = player.getPlayerGameObject().getSpeed();
@@ -32,8 +34,7 @@ public class CharacterWASD {
                 }
             }
             return true;
-        }
-        else {
+        } else {
             player.getPlayerGameObject().velocity.y = 0f;
             return false;
         }
@@ -43,29 +44,26 @@ public class CharacterWASD {
         float speed = player.getPlayerGameObject().getSpeed();
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
             player.getPlayerGameObject().velocity.x = -speed;
-            if(player.hasEffect(Invis.class)){
+            if (player.hasEffect(Invis.class)) {
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_LEFT);
-            }
-            else{
+            } else {
                 player.changeAnimation(AnimationType.CHARACTER_LEFT);
             }
             return true;
-        }
-        else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
+        } else if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey())) {
             player.getPlayerGameObject().velocity.x = speed;
-            if(player.hasEffect(Invis.class)){
+            if (player.hasEffect(Invis.class)) {
                 player.changeAnimation(AnimationType.CHARACTER_INVIS_RIGHT);
-            }
-            else{
+            } else {
                 player.changeAnimation(AnimationType.CHARACTER_RIGHT);
             }
             return true;
-        }
-        else {
+        } else {
             player.getPlayerGameObject().velocity.x = 0f;
             return false;
         }
     }
+
     public static void attackChange(Player player, MazeRunnerGame game) {
         Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
 

@@ -14,12 +14,22 @@ import java.util.Random;
 public class Dawn extends GameObject {
     private static final int DAWN_SPAWN_RADIUS = 2;
     private static final float DAWN_SPAWN_INTERVAL = 1.6f;
-    private static float timeBeforeSpawn = DAWN_SPAWN_INTERVAL;
     private static final Random rand = new Random();
-
+    private static float timeBeforeSpawn = DAWN_SPAWN_INTERVAL;
+    public float timeLeftBeforeRemoved = 1.2f;
     private boolean isActive = false;
     private float timeLeftBeforeActive = 1.8f;
-    public float timeLeftBeforeRemoved = 1.2f;
+
+    public Dawn(Vector2 startPos) {
+        super(
+                startPos,
+                new Vector2(0f, 0f),
+                0f,
+                new Vector2(0.8f, 0.8f),
+                new Vector2(1.3f, 1.1f),
+                AnimationType.DAWN_THIN_ANIMATION
+        );
+    }
 
     public static void spawnNewDawn(float delta, GameField gamefield, Vector2 playerPosition, List<GameObject> gameObjects) {
         // check if enough time left since last spawn
@@ -31,7 +41,7 @@ public class Dawn extends GameObject {
         }
 
         // spawns dawn on empty cell near player in (2 * DAWN_SPAWN_RADIUS + 1) x (2 * DAWN_SPAWN_RADIUS + 1) square
-        List<Vector2> candidatePositions  = new ArrayList<Vector2>();
+        List<Vector2> candidatePositions = new ArrayList<Vector2>();
         int player_x_int = (int) playerPosition.x;
         int player_y_int = (int) playerPosition.y;
         for (int y = player_y_int - DAWN_SPAWN_RADIUS; y <= player_y_int + DAWN_SPAWN_RADIUS; y++) {
@@ -52,17 +62,6 @@ public class Dawn extends GameObject {
         gameObjects.add(new Dawn(spawnPosition));
     }
 
-    public Dawn(Vector2 startPos) {
-        super(
-                startPos,
-                new Vector2(0f, 0f),
-                0f,
-                new Vector2(0.8f, 0.8f),
-                new Vector2(1.3f, 1.1f),
-                AnimationType.DAWN_THIN_ANIMATION
-        );
-    }
-
     public boolean updateDawn(float delta) {
         // returns true if dawn life is over and it must be deleted
         if (!this.isActive) {
@@ -71,8 +70,7 @@ public class Dawn extends GameObject {
                 activate();
             }
             return false;
-        }
-        else {
+        } else {
             this.timeLeftBeforeRemoved -= delta;
             return this.timeLeftBeforeRemoved <= 0.0f;
         }

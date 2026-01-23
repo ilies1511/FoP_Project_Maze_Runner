@@ -21,10 +21,10 @@ import de.tum.cit.fop.maze.game_saves.SaveManager;
 import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
 
 public class StoryModeScreen {
-    private Table storyTable;
-    private SoundController soundController;
-    private Table confirmationTable;
-    
+    private final Table storyTable;
+    private final SoundController soundController;
+    private final Table confirmationTable;
+
     public StoryModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         storyTable = new Table();
         Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
@@ -47,21 +47,18 @@ public class StoryModeScreen {
         TextButton continueGame = new TextButton("Continue", game.getSkin(), "vampire-style");
         storyTable.add(continueGame).width(300).left().padLeft(50).padBottom(50);
         continueGame.getLabel().setTouchable(Touchable.disabled);
-        
+
         // Check if save file exists and enable button accordingly
-        if (SaveManager.hasSave(true)) {
-            continueGame.setDisabled(false);
-        } else {
-            continueGame.setDisabled(true);
-        }
-        
-        continueGame.addListener(new ClickListener(){
+        continueGame.setDisabled(!SaveManager.hasSave(true));
+
+        continueGame.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !continueGame.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!continueGame.isDisabled()) {
@@ -69,7 +66,7 @@ public class StoryModeScreen {
                 }
             }
         });
-        
+
         continueGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -90,13 +87,14 @@ public class StoryModeScreen {
         TextButton newGame = new TextButton("New Game", game.getSkin(), "vampire-style");
         storyTable.add(newGame).width(300).left().padLeft(50).padBottom(50);
         newGame.getLabel().setTouchable(Touchable.disabled);
-        newGame.addListener(new ClickListener(){
+        newGame.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !newGame.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -105,11 +103,10 @@ public class StoryModeScreen {
         newGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(continueGame.isDisabled()){
+                if (continueGame.isDisabled()) {
                     soundController.dispose();
                     game.goToBackgroundStory();
-                }
-              else{
+                } else {
                     confirmNewGame();
                 }
             }
@@ -121,13 +118,14 @@ public class StoryModeScreen {
         TextButton toMainMenu = new TextButton("Main Menu", game.getSkin(), "vampire-style");
         storyTable.add(toMainMenu).width(300).left().padLeft(50).padBottom(50);
         toMainMenu.getLabel().setTouchable(Touchable.disabled);
-        toMainMenu.addListener(new ClickListener(){
+        toMainMenu.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !toMainMenu.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -151,13 +149,14 @@ public class StoryModeScreen {
         TextButton yes = new TextButton("Yes", game.getSkin(), "vampire-style");
         confirmationTable.add(yes).width(300).left().padLeft(50).padBottom(50);
         yes.getLabel().setTouchable(Touchable.disabled);
-        yes.addListener(new ClickListener(){
+        yes.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !yes.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -173,13 +172,14 @@ public class StoryModeScreen {
         TextButton no = new TextButton("No", game.getSkin(), "vampire-style");
         confirmationTable.add(no).width(300).left().padLeft(50).padBottom(50);
         no.getLabel().setTouchable(Touchable.disabled);
-        no.addListener(new ClickListener(){
+        no.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !no.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -196,11 +196,13 @@ public class StoryModeScreen {
     public Table getStoryTable() {
         return storyTable;
     }
-    public void confirmNewGame(){
+
+    public void confirmNewGame() {
         storyTable.setVisible(false);
         confirmationTable.setVisible(true);
     }
-    public void backToStory(){
+
+    public void backToStory() {
         storyTable.setVisible(true);
         confirmationTable.setVisible(false);
     }

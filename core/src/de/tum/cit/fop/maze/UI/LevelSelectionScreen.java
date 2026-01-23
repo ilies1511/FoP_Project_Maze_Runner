@@ -19,16 +19,16 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class LevelSelectionScreen {
-    private Table levelSelectionTable;
-    private SoundController soundController;
-    private MazeRunnerGame game;
-    private LevelModeScreen levelyModeScreen;
+    private final Table levelSelectionTable;
+    private final SoundController soundController;
+    private final MazeRunnerGame game;
+    private final LevelModeScreen levelyModeScreen;
 
     public LevelSelectionScreen(Stage stage, MazeRunnerGame game, LevelModeScreen levelyModeScreen, MenuScreen menuScreen) {
         this.game = game;
         this.levelyModeScreen = levelyModeScreen;
         this.soundController = menuScreen.getSoundController();
-        
+
         levelSelectionTable = new Table();
         Texture backgroundTexture = new Texture(Gdx.files.internal("mainMenu_background.png"));
         backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -52,27 +52,28 @@ public class LevelSelectionScreen {
         scrollPane.setScrollingDisabled(true, false);
 
         createLevelButtons(levelButtonsTable);
-        
+
         levelSelectionTable.add(scrollPane).expand().fill().pad(20).row();
 
         // back button
         TextButton backButton = new TextButton("Back", game.getSkin(), "vampire-style");
         levelSelectionTable.add(backButton).width(300).center().padBottom(50);
         backButton.getLabel().setTouchable(Touchable.disabled);
-        
-        backButton.addListener(new ClickListener(){
+
+        backButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !backButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
             }
         });
-        
+
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -85,30 +86,31 @@ public class LevelSelectionScreen {
         FileHandle mapsDir = Gdx.files.internal("maps");
         if (mapsDir.exists()) {
             FileHandle[] mapFiles = mapsDir.list(".properties");
-            
+
             java.util.Arrays.sort(mapFiles, (a, b) -> a.name().compareTo(b.name()));
-            
+
             for (FileHandle mapFile : mapFiles) {
                 String fileName = mapFile.name();
                 String displayName = fileName.replace(".properties", "");
-                
+
                 TextButton levelButton = new TextButton(displayName, game.getSkin(), "vampire-style");
                 levelButtonsTable.add(levelButton).width(400).center().padBottom(20).row();
                 levelButton.getLabel().setTouchable(Touchable.disabled);
-                
-                levelButton.addListener(new ClickListener(){
+
+                levelButton.addListener(new ClickListener() {
                     @Override
                     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                         if (pointer == -1 && !levelButton.isDisabled()) {
                             soundController.playUI_hoverOverSound(1);
                         }
                     }
+
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         soundController.playUI_buttonClickSound(1);
                     }
                 });
-                
+
                 // Add level selection logic
                 levelButton.addListener(new ChangeListener() {
                     @Override
@@ -122,7 +124,7 @@ public class LevelSelectionScreen {
 
     private void startGameWithLevel(String levelFileName) {
         game.getGameInfo().setSelectedLevel(levelFileName);
-        
+
         // Dispose sound controller and go to background story
         soundController.dispose();
         game.goToBackgroundStory();

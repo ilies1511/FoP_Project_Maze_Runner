@@ -2,14 +2,9 @@ package de.tum.cit.fop.maze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Json;
 
-public class AchievementController{
+public class AchievementController {
     private static final String JSON_PATH = "data/achievements.json";
 
     private boolean start;
@@ -25,7 +20,6 @@ public class AchievementController{
     private int pointsNumber;
 
 
-
     public AchievementController() {
         this.start = false;
         this.end = false;
@@ -36,9 +30,10 @@ public class AchievementController{
         this.console = false;
         this.points = false;
     }
-    public static  AchievementController loadAchievements(){
+
+    public static AchievementController loadAchievements() {
         FileHandle achievements_file = Gdx.files.local(JSON_PATH);
-        if(!achievements_file.exists()){
+        if (!achievements_file.exists()) {
             System.err.println("Could not find achievements file!");
             return createDefaultAchievements();
         }
@@ -46,7 +41,7 @@ public class AchievementController{
         return json.fromJson(AchievementController.class, achievements_file);
     }
 
-    public static  AchievementController createDefaultAchievements(){
+    public static AchievementController createDefaultAchievements() {
         FileHandle achievements_file = Gdx.files.local(JSON_PATH);
 
         AchievementController achievementController = new AchievementController();
@@ -56,13 +51,12 @@ public class AchievementController{
         return achievementController;
     }
 
-    private void saveToJson(){
+    private void saveToJson() {
         FileHandle achievements_file = Gdx.files.local(JSON_PATH);
 
         Json json = new Json();
         achievements_file.writeString(json.toJson(this), false);
     }
-
 
 
     public boolean isStart() {
@@ -136,7 +130,6 @@ public class AchievementController{
         this.points = points;
         saveToJson();
     }
-
 
 
     public int getKillsAmount() {

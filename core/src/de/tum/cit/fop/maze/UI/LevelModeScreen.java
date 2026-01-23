@@ -17,9 +17,9 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class LevelModeScreen {
-    private Table levelTable;
-    private SoundController soundController;
-    private LevelSelectionScreen levelSelectionScreen;
+    private final Table levelTable;
+    private final SoundController soundController;
+    private final LevelSelectionScreen levelSelectionScreen;
 
     public LevelModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         levelTable = new Table();
@@ -69,13 +69,14 @@ public class LevelModeScreen {
         TextButton newGame = new TextButton("New Game", game.getSkin(), "vampire-style");
         levelTable.add(newGame).width(300).left().padLeft(50).padBottom(50);
         newGame.getLabel().setTouchable(Touchable.disabled);
-        newGame.addListener(new ClickListener(){
+        newGame.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !newGame.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -95,13 +96,14 @@ public class LevelModeScreen {
         TextButton toMainMenu = new TextButton("Main Menu", game.getSkin(), "vampire-style");
         levelTable.add(toMainMenu).width(300).left().padLeft(50).padBottom(50);
         toMainMenu.getLabel().setTouchable(Touchable.disabled);
-        toMainMenu.addListener(new ClickListener(){
+        toMainMenu.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !toMainMenu.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);

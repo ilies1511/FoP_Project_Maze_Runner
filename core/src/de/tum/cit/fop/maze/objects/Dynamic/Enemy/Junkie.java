@@ -4,25 +4,25 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.game_saves.Saveable;
-import de.tum.cit.fop.maze.game_saves.mementos.JunkieMemento;
 import de.tum.cit.fop.maze.effects.Flicker;
 import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Invis;
+import de.tum.cit.fop.maze.game_saves.Saveable;
+import de.tum.cit.fop.maze.game_saves.mementos.JunkieMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
 
 public class Junkie extends Enemy implements Saveable<JunkieMemento> {
+    private static final float ATTACK_DURATION = 0.5f;
+    private static final float ATTACK_COOLDOWN = 1.5f;
+    private static final float ATTACK_RANGE = 0.3f; //Dracula range
     private final float moveInterval = 2.0f;
     private float moveTimer;
     private boolean isAttacking = false;
     private float attackTimer = 0f;
-    private static final float ATTACK_DURATION = 0.5f;
-    private static final float ATTACK_COOLDOWN = 1.5f;
-    private static final float ATTACK_RANGE = 0.3f; //Dracula range
     private float cooldownTimer = 0f;
-    private Vector2 attackDirection = new Vector2();
+    private final Vector2 attackDirection = new Vector2();
 
     public Junkie(Vector2 startPos) {
         super(startPos, AnimationType.JUNKIE_DOWN);
@@ -147,12 +147,12 @@ public class Junkie extends Enemy implements Saveable<JunkieMemento> {
     public JunkieMemento getMemento() {
         String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "JUNKIE_DOWN";
         return new JunkieMemento(
-            this.position.x,
-            this.position.y,
-            this.velocity.x,
-            this.velocity.y,
-            this.speed,
-            animType
+                this.position.x,
+                this.position.y,
+                this.velocity.x,
+                this.velocity.y,
+                this.speed,
+                animType
         );
     }
 

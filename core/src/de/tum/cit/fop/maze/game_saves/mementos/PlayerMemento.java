@@ -23,10 +23,10 @@ public class PlayerMemento implements Memento {
         // Required for JSON deserialization
     }
 
-    public PlayerMemento(int currentHealth, int maxHealth, int xp, boolean canDash, 
-                        boolean canInvis, boolean hasKeys, int currentKeys, int requiredKeys,
-                        int kills, float positionX, float positionY, float velocityX, 
-                        float velocityY, float speed, String animationType) {
+    public PlayerMemento(int currentHealth, int maxHealth, int xp, boolean canDash,
+                         boolean canInvis, boolean hasKeys, int currentKeys, int requiredKeys,
+                         int kills, float positionX, float positionY, float velocityX,
+                         float velocityY, float speed, String animationType) {
         this.currentHealth = currentHealth;
         this.maxHealth = maxHealth;
         this.xp = xp;

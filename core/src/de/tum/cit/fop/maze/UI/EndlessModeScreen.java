@@ -21,8 +21,9 @@ import de.tum.cit.fop.maze.game_saves.SaveManager;
 import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
 
 public class EndlessModeScreen {
-    private Table table;
-    private SoundController soundController;
+    private final Table table;
+    private final SoundController soundController;
+
     public EndlessModeScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         soundController = menuScreen.getSoundController();
         table = new Table();
@@ -44,21 +45,18 @@ public class EndlessModeScreen {
         TextButton continueGame = new TextButton("Continue", game.getSkin(), "vampire-style");
         table.add(continueGame).width(300).left().padLeft(50).padBottom(50);
         continueGame.getLabel().setTouchable(Touchable.disabled);
-        
+
         // Check if save file exists and enable button accordingly
-        if (SaveManager.hasSave(false)) {
-            continueGame.setDisabled(false);
-        } else {
-            continueGame.setDisabled(true);
-        }
-        
-        continueGame.addListener(new ClickListener(){
+        continueGame.setDisabled(!SaveManager.hasSave(false));
+
+        continueGame.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !continueGame.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!continueGame.isDisabled()) {
@@ -66,7 +64,7 @@ public class EndlessModeScreen {
                 }
             }
         });
-        
+
         continueGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -88,25 +86,26 @@ public class EndlessModeScreen {
         table.add(newGame).width(300).left().padLeft(50).padBottom(50);
         newGame.getLabel().setTouchable(Touchable.disabled);
         newGame.setDisabled(false);
-        newGame.addListener(new ClickListener(){
+        newGame.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !newGame.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
             }
         });
         newGame.addListener(new ChangeListener() {
-	        @Override
-	        public void changed(ChangeEvent event, Actor actor) {
-		        soundController.dispose();
-				game.setGameMode(GameMode.ENDLESS_MODE);
-		        game.setScreen(new GameScreen(game));
-	        }
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                soundController.dispose();
+                game.setGameMode(GameMode.ENDLESS_MODE);
+                game.setScreen(new GameScreen(game));
+            }
         });
 
         table.row();
@@ -116,19 +115,20 @@ public class EndlessModeScreen {
         goToStatisticsButton.getLabel().setTouchable(Touchable.disabled);
 //        goToStatisticsButton.setDisabled(true);
         goToStatisticsButton.setDisabled(false);
-		goToStatisticsButton.addListener(new ChangeListener() {
-		    @Override
-		    public void changed(ChangeEvent event, Actor actor) {
-			    menuScreen.goToLeaderboard();
-		    }
-		});
-        goToStatisticsButton.addListener(new ClickListener(){
+        goToStatisticsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                menuScreen.goToLeaderboard();
+            }
+        });
+        goToStatisticsButton.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToStatisticsButton.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -139,13 +139,14 @@ public class EndlessModeScreen {
         TextButton toMainMenu = new TextButton("Main Menu", game.getSkin(), "vampire-style");
         table.add(toMainMenu).width(300).left().padLeft(50).padBottom(50);
         toMainMenu.getLabel().setTouchable(Touchable.disabled);
-        toMainMenu.addListener(new ClickListener(){
+        toMainMenu.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !toMainMenu.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);

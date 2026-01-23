@@ -16,9 +16,9 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class AchievementScreen {
-    private Table table;
-    private SoundController soundController;
-    private MenuScreen menuScreen;
+    private final Table table;
+    private final SoundController soundController;
+    private final MenuScreen menuScreen;
 
     public AchievementScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
         soundController = menuScreen.getSoundController();
@@ -31,14 +31,14 @@ public class AchievementScreen {
         label.setFontScale(3f);
         table.add(label).colspan(4).expandX().center().padTop(50).padBottom(200).row();
         Table table1 = new Table();
-        Image image1 =new Image(game.getStartAchievement());
+        Image image1 = new Image(game.getStartAchievement());
         table1.add(image1).row();
         Label label1 = new Label("Wake up\n(Start your first story mode game)", game.getSkin(), "vampire-style");
         label1.setFontScale(1f);
         label1.setAlignment(Align.center);
         table1.add(label1).center().expandX();
         Table table2 = new Table();
-        Image image2 =new Image(game.getEndAchievement());
+        Image image2 = new Image(game.getEndAchievement());
         table2.add(image2).row();
         Label label2 = new Label("And so it ends\n(Finish the story mode)", game.getSkin(), "vampire-style");
         label2.setFontScale(1f);
@@ -59,14 +59,14 @@ public class AchievementScreen {
         label4.setAlignment(Align.center);
         table4.add(label4).center().expandX();
         Table table5 = new Table();
-        Image image5 =new Image(game.getKillsAchievement());
+        Image image5 = new Image(game.getKillsAchievement());
         table5.add(image5).row();
         Label label5 = new Label("Thirst for blood\n(50 kills)", game.getSkin(), "vampire-style");
         label5.setFontScale(1f);
         label5.setAlignment(Align.center);
         table5.add(label5).center().expandX();
         Table table6 = new Table();
-        Image image6 =new Image(game.getInvisAchievement());
+        Image image6 = new Image(game.getInvisAchievement());
         table6.add(image6).row();
         Label label6 = new Label("Now you see me,\nnow you don’t\n(Become invisible for the first time)", game.getSkin(), "vampire-style");
         label6.setFontScale(1f);
@@ -80,7 +80,7 @@ public class AchievementScreen {
         label7.setAlignment(Align.center);
         table7.add(label7).center().expandX();
         Table table8 = new Table();
-        Image image8 =new Image(game.getPointsAchievement());
+        Image image8 = new Image(game.getPointsAchievement());
         table8.add(image8).row();
         Label label8 = new Label("Gamer\n(Reach 1000 points in endless mode)", game.getSkin(), "vampire-style");//TODO Nikita
         label8.setFontScale(1f);
@@ -95,35 +95,35 @@ public class AchievementScreen {
         table.add(table6);
         table.add(table7);
         table.add(table8);
-        if(!game.getGameInfo().getAchievementController().isStart()){
+        if (!game.getGameInfo().getAchievementController().isStart()) {
             image1.setColor(Color.GRAY);
             label1.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isEnd()){
+        if (!game.getGameInfo().getAchievementController().isEnd()) {
             image2.setColor(Color.GRAY);
             label2.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isFirstBlood()){
+        if (!game.getGameInfo().getAchievementController().isFirstBlood()) {
             image3.setColor(Color.GRAY);
             label3.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isUpgrades()){
+        if (!game.getGameInfo().getAchievementController().isUpgrades()) {
             image4.setColor(Color.GRAY);
             label4.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isKills()){
+        if (!game.getGameInfo().getAchievementController().isKills()) {
             image5.setColor(Color.GRAY);
             label5.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isInvis()){
+        if (!game.getGameInfo().getAchievementController().isInvis()) {
             image6.setColor(Color.GRAY);
             label6.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isConsole()){
+        if (!game.getGameInfo().getAchievementController().isConsole()) {
             image7.setColor(Color.GRAY);
             label7.setColor(Color.GRAY);
         }
-        if(!game.getGameInfo().getAchievementController().isPoints()){
+        if (!game.getGameInfo().getAchievementController().isPoints()) {
             image8.setColor(Color.GRAY);
             label8.setColor(Color.GRAY);
         }
@@ -148,22 +148,22 @@ public class AchievementScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.getGameInfo().restoreDefaultAchievements();
-                    image1.setColor(Color.GRAY);
-                    label1.setColor(Color.GRAY);
-                    image2.setColor(Color.GRAY);
-                    label2.setColor(Color.GRAY);
-                    image3.setColor(Color.GRAY);
-                    label3.setColor(Color.GRAY);
-                    image4.setColor(Color.GRAY);
-                    label4.setColor(Color.GRAY);
-                    image5.setColor(Color.GRAY);
-                    label5.setColor(Color.GRAY);
-                    image6.setColor(Color.GRAY);
-                    label6.setColor(Color.GRAY);
-                    image7.setColor(Color.GRAY);
-                    label7.setColor(Color.GRAY);
-                    image8.setColor(Color.GRAY);
-                    label8.setColor(Color.GRAY);
+                image1.setColor(Color.GRAY);
+                label1.setColor(Color.GRAY);
+                image2.setColor(Color.GRAY);
+                label2.setColor(Color.GRAY);
+                image3.setColor(Color.GRAY);
+                label3.setColor(Color.GRAY);
+                image4.setColor(Color.GRAY);
+                label4.setColor(Color.GRAY);
+                image5.setColor(Color.GRAY);
+                label5.setColor(Color.GRAY);
+                image6.setColor(Color.GRAY);
+                label6.setColor(Color.GRAY);
+                image7.setColor(Color.GRAY);
+                label7.setColor(Color.GRAY);
+                image8.setColor(Color.GRAY);
+                label8.setColor(Color.GRAY);
             }
         });
         TextButton goBackToMenu = new TextButton("Back To Menu", game.getSkin(), "vampire-style");
@@ -194,7 +194,8 @@ public class AchievementScreen {
     public Table getTable() {
         return table;
     }
-    private void backToMenu(){
+
+    private void backToMenu() {
         table.setVisible(false);
         menuScreen.goBackToMenu();
     }

@@ -19,10 +19,11 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
 public class GameWonScreen_broken implements Screen {
-    private MazeRunnerGame game;
+    private final MazeRunnerGame game;
     private Stage stage;
-    private SoundController soundController;
-    public GameWonScreen_broken(MazeRunnerGame game ) {
+    private final SoundController soundController;
+
+    public GameWonScreen_broken(MazeRunnerGame game) {
         this.game = game;
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
@@ -45,13 +46,14 @@ public class GameWonScreen_broken implements Screen {
         TextButton goToMainMenu = new TextButton("Exit", game.getSkin(), "vampire-style");
         table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
         goToMainMenu.getLabel().setTouchable(Touchable.disabled);
-        goToMainMenu.addListener(new ClickListener(){
+        goToMainMenu.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (pointer == -1 && !goToMainMenu.isDisabled()) {
                     soundController.playUI_hoverOverSound(1);
                 }
             }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 soundController.playUI_buttonClickSound(1);
@@ -90,6 +92,7 @@ public class GameWonScreen_broken implements Screen {
         // Set the input processor so the stage can receive input events
         Gdx.input.setInputProcessor(stage);
     }
+
     @Override
     public void pause() {
 

@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.objects.Dynamic.Enemy;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
@@ -9,21 +10,20 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.BouncerMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-
 public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
-//to loose bouncer you either run far away or hide behind a wall4
-    private int lives = 2;
     private static final float DETECTION_RANGE = 7.0f;
+    //to loose bouncer you either run far away or hide behind a wall4
+    private int lives = 2;
     private float fleeTimer = 0f;
     private float flickerTimer = 0f;
     private float Cooldown = 0f;
-    private Vector2 currentDirection = new Vector2();
+    private final Vector2 currentDirection = new Vector2();
     private boolean isFlickering = false;
 
     public Bouncer(Vector2 startPos) {
         super(startPos, AnimationType.BOUNCER_DOWN);
-        this.speed = 1.5f;}
+        this.speed = 1.5f;
+    }
 
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
@@ -103,7 +103,7 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
         //Bouncer will not patrol, only chase wherevr the drac is on the map
     }
 
-    public void chase(float deltaTime,  Vector2 playerPosition,  GameField gameField) {
+    public void chase(float deltaTime, Vector2 playerPosition, GameField gameField) {
         //chase until hidden behind a wall
         Cooldown -= deltaTime;
         if (Cooldown <= 0 || isBlocked(currentDirection, deltaTime, gameField)) {
@@ -129,14 +129,14 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
                 currentDirection.set(next);
                 Cooldown = 0.2f;
             } else {
-                currentDirection.set(0,0);
+                currentDirection.set(0, 0);
             }
         }
 
         moveInCurrDirection(deltaTime, gameField);
     }
 
-    private void moveInCurrDirection (float delta, GameField gameField) {
+    private void moveInCurrDirection(float delta, GameField gameField) {
         if (currentDirection.len2() > 0 && !isBlocked(currentDirection, delta, gameField)) {
             //isBlockedByStaticMap(position.x + currentDirection.x * delta * speed, position.y + currentDirection.y * delta * speed, getSize(), gameField))
             velocity.set(currentDirection).scl(speed);
@@ -146,7 +146,7 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
         }
     }
 
-    private void finDirection (Vector2 awayFromPlayer) {
+    private void finDirection(Vector2 awayFromPlayer) {
         if (Math.abs(awayFromPlayer.x) > Math.abs(awayFromPlayer.y)) {
             currentDirection.set(Math.signum(awayFromPlayer.x), 0);
         } else {
@@ -159,13 +159,13 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
     public BouncerMemento getMemento() {
         String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "BOUNCER_DOWN";
         return new BouncerMemento(
-            this.position.x,
-            this.position.y,
-            this.velocity.x,
-            this.velocity.y,
-            this.speed,
-            animType,
-            this.lives
+                this.position.x,
+                this.position.y,
+                this.velocity.x,
+                this.velocity.y,
+                this.speed,
+                animType,
+                this.lives
         );
     }
 

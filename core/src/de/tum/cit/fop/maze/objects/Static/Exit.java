@@ -7,18 +7,18 @@ import de.tum.cit.fop.maze.game_saves.mementos.ExitMemento;
 import de.tum.cit.fop.maze.objects.GameObject;
 
 public class Exit extends GameObject implements Saveable<ExitMemento> {
-	private boolean isLocked = true;
+    private boolean isLocked = true;
 
-	public Exit(float x, float y) {
-		super(
-				new Vector2(x, y),
-				new Vector2(0, 0),
-				0f,
-				new Vector2(1f, 1f), // Hitbox size
-				new Vector2(1f, 1f), // Sprite size
-				AnimationType.EXIT_CLOSED // Start with CLOSED state
-		);
-	}
+    public Exit(float x, float y) {
+        super(
+                new Vector2(x, y),
+                new Vector2(0, 0),
+                0f,
+                new Vector2(1f, 1f), // Hitbox size
+                new Vector2(1f, 1f), // Sprite size
+                AnimationType.EXIT_CLOSED // Start with CLOSED state
+        );
+    }
 
 //	@Override
 //	public void update(float delta) {
@@ -26,26 +26,26 @@ public class Exit extends GameObject implements Saveable<ExitMemento> {
 //		// Exit doesn't move, so no extra logic needed here.
 //	}
 
-	public void open() {
-		if (isLocked) {
-			this.isLocked = false;
-			this.changeAnimation(AnimationType.EXIT_OPEN);
-		}
-	}
+    public void open() {
+        if (isLocked) {
+            this.isLocked = false;
+            this.changeAnimation(AnimationType.EXIT_OPEN);
+        }
+    }
 
-	public boolean isLocked() {
-		return isLocked;
-	}
+    public boolean isLocked() {
+        return isLocked;
+    }
 
-	@Override
-	public ExitMemento getMemento() {
-		String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "EXIT_CLOSED";
-		return new ExitMemento(this.position.x, this.position.y, this.isLocked, animType);
-	}
+    @Override
+    public ExitMemento getMemento() {
+        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "EXIT_CLOSED";
+        return new ExitMemento(this.position.x, this.position.y, this.isLocked, animType);
+    }
 
-	@Override
-	public void loadFromMemento(ExitMemento memento) {
-		this.position.set(memento.positionX, memento.positionY);
-		this.isLocked = memento.isLocked;
-	}
+    @Override
+    public void loadFromMemento(ExitMemento memento) {
+        this.position.set(memento.positionX, memento.positionY);
+        this.isLocked = memento.isLocked;
+    }
 }
