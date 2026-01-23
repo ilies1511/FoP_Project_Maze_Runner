@@ -56,7 +56,7 @@ public class GameController {
         if (player.getCurrentHealth() <= 0) {
             if (waveManager != null) {
                 ScoreManager.getInstance().addScore(waveManager.getScore());
-                if (waveManager.getScore() == 1000) { //TODO Nikita change value
+                if (waveManager.getScore() == 1000) { 
                     gameScreen.getAchievementUI().pointsAchievement();
                 }
             }
@@ -116,7 +116,7 @@ public class GameController {
         }
 
         // Attack Logic
-        //TODO Attack animation + attack animation in INVIS
+        
         if (Gdx.input.isKeyJustPressed(game.getGameInfo().getSettings().getAttackKey())) {
             player.setAttacking(true);
             player.endEffect(Invis.class); // attacking breaks invisibility
@@ -206,7 +206,6 @@ public class GameController {
             } else if (obj instanceof Collectable) {
                 if (((Collectable) obj).checkPlayerCollision(this.player, this.hud)) {
                     iter.remove();
-                    // hud.setHasKey(true); // TODO: Uncomment when HUD ready --> Nikita
                 }
             } else if (obj instanceof Trap) {
                 ((Trap) obj).checkPlayerCollision(this.player, this.hud);

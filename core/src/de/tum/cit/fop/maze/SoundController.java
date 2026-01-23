@@ -21,7 +21,6 @@ public class SoundController {
     private final Sound uiButtonClick;
     private final Sound uiHoverOver;
     private final Sound win;
-//TODO Enemy, key, playerDie, playerHeal, win, touristRun  sounds
 
     public SoundController() {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/background_music.mp3"));

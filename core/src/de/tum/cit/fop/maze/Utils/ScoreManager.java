@@ -65,7 +65,6 @@ public class ScoreManager {
                 scores = new ArrayList<>();
             }
         }
-        //TODO: if file missing, create file
     }
     // END -- Methods
 }

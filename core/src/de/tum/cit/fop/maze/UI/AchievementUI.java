@@ -185,7 +185,7 @@ public class AchievementUI {
             image = new Image(game.getPointsAchievement());
             trophy.setActor(image);
             label.setText("Gamer");
-            text.setText("Reach 1000 points in endless mode"); //TODO Nikita
+            text.setText("Reach 1000 points in endless mode"); 
             game.getGameInfo().getAchievementController().setPoints(true);
             soundController.playWinSound(0.2f);
             table.clearActions();

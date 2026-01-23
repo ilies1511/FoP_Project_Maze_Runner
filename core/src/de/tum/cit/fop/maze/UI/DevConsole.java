@@ -53,13 +53,6 @@ public class DevConsole {
 
         this.player = player;
 
-
-//        Pixmap pixmap = new Pixmap(1000, 950, Pixmap.Format.RGBA8888);
-//        pixmap.setColor(Color.BLACK);
-//        pixmap.fill();
-//        TextureRegionDrawable blackDrawable = new TextureRegionDrawable(new Texture(pixmap));
-//        pixmap.dispose();
-
         table = new Table();
         table.setFillParent(true);
         table.setVisible(false);
@@ -72,13 +65,7 @@ public class DevConsole {
         consoleLabel.setAlignment(Align.topLeft);
 
         ScrollPane scrollPane = new ScrollPane(consoleLabel);
-//        scrollPane.setForceScroll(false, true);
         scrollPane.setFadeScrollBars(false);
-
-//        ScrollPane.ScrollPaneStyle myConsoleStyle = new ScrollPane.ScrollPaneStyle(scrollPane.getStyle());
-//        myConsoleStyle.vScroll = null;
-//        myConsoleStyle.vScrollKnob = blackDrawable;
-//        scrollPane.setStyle(myConsoleStyle);
 
         commandMap.put("setHP", val -> {
             player.increaseMaxHealth(Integer.parseInt(val) + player.getCurrentHealth());

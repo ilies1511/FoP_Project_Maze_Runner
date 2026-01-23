@@ -209,7 +209,6 @@ public class GameScreen implements Screen {
 
         vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
-//        viewport.apply();
 
         handleGlobalInput();
 
@@ -247,9 +246,6 @@ public class GameScreen implements Screen {
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         devStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-//		mapRenderer.render(gameController.getGameField, player, delta, playerHidden); // TODO: iziane 29.12
-
-//        viewport.apply();
 
         stage.draw();
 
@@ -284,10 +280,6 @@ public class GameScreen implements Screen {
 
         stage.getViewport().update(width, height, true);
         vfxManager.resize(width, height);
-//        camera.getCamera().viewportWidth = width;
-//         camera.getCamera().viewportHeight = height;
-//         camera.getCamera().update();
-        //TODO NIKITA
     }
 
     @Override

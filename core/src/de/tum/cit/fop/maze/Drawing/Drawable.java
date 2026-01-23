@@ -10,17 +10,6 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/*
-Animations:
-- get via HashMap
-- pass
-- Should be instantiated in each object (animations are separate)
-- Each Object has current animation time
-- draw (delta) -> just moves animation by delta
-- changeAnimation -> sets animation time to zero, switches animation to other one
-- factory pattern for creating animations
- */
-
 public class Drawable {
     private static Map<AnimationType, Animation<TextureRegion>> textureMap;
 

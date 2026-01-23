@@ -26,7 +26,7 @@ import java.util.Properties;
 	5     | Key
 */
 
-//TODO (Connect Parser to Game Assets) - iziane
+
 public class MazeParser {
     // BEGIN -- Methods
     private static void processTile(GameField field, int x, int y, int id) {

@@ -34,7 +34,7 @@ public abstract class GameObject {
         this.bounds = new Rectangle(position.x, position.y, sizes.x, sizes.y);
     }
 
-    // TODO: iziane - Constructor for static Objects (Exit)
+    
     public GameObject(float x, float y, TextureRegion texture) {
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0, 0); // No movement
@@ -108,7 +108,7 @@ public abstract class GameObject {
 //	public void updateAnimation(float delta) {
 //		this.drawable.update(delta);
 //	}
-    // TODO: change updateAnimation to animate
+    
     public void updateAnimation(float delta) {
 //		if (velocity.x != 0 || velocity.y != 0) {
 //			position.mulAdd(velocity, delta);
@@ -148,7 +148,7 @@ public abstract class GameObject {
     public Vector2 getVelocity() {
         return velocity;
     }
-    // TODO: iziane
+    
     // New animate
 //	public void draw(Batch batch) {
 //		if (drawable != null) {

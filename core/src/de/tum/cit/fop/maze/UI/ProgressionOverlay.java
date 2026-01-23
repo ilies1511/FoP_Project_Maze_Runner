@@ -183,7 +183,7 @@ public class ProgressionOverlay {
         invis.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO LOGIC
+                
                 if (player.getXp() >= 15) {
                     invis.setDisabled(true);
                     invisDisable = true;

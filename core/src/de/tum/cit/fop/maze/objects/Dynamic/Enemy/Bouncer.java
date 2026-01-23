@@ -27,7 +27,7 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
 
     @Override
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
-        //TODO: Redirect when engaging with tourist
+        
         if (flickerTimer > 0) {
             flickerTimer -= deltaTime;
             if (flickerTimer <= 0) {

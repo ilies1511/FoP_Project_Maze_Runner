@@ -90,7 +90,7 @@ public class MapRenderer {
     private TextureRegion getWallFront(TileType t) {
         return switch (t) {
             case WALL, WALL_1 ->
-                    game.getWallHigh1(); // TODO: 11.01 - iziane --> swap to case WALL, WALL_1 -> game.getWallHigh1();
+                    game.getWallHigh1();
             case WALL_2 -> game.getWallHigh2();
             case WALL_3 -> game.getWallHigh3();
             case WALL_4 -> game.getWallHigh4();
@@ -105,7 +105,7 @@ public class MapRenderer {
         return switch (t) {
 //			case WALL_1 -> game.getWallTile1();
             case WALL, WALL_1 ->
-                    game.getWallTile1(); // TODO: 11.01 - iziane --> swap to case WALL, WALL_1 -> game.getWallTile1();
+                    game.getWallTile1();
             case WALL_2 -> game.getWallTile2();
             case WALL_3 -> game.getWallTile3();
             case WALL_4 -> game.getWallTile4();
@@ -156,7 +156,7 @@ public class MapRenderer {
             for (int x = 0; x < gameField.getWidth(); x++) {
                 TileType tile = gameField.getTile(x, y);
 
-                TextureRegion floor = game.getEmptyTile4(); // TODO 11.01 iziane - stick to one default
+                TextureRegion floor = game.getEmptyTile4(); 
 
                 switch (tile) {
                     case EMPTY_1 -> floor = game.getEmptyTile1();

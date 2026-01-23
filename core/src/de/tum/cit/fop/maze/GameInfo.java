@@ -4,7 +4,6 @@ public class GameInfo {
     private GameSettings settings;
     private AchievementController achievementController;
     private String selectedLevel = "level-1.properties";
-//    private final GameField gameField;
 
     public GameInfo() {
         this.settings = null;
@@ -48,8 +47,4 @@ public class GameInfo {
     public void setSelectedLevel(String selectedLevel) {
         this.selectedLevel = selectedLevel;
     }
-
-//    public GameField getGameField() {
-//        return this.gameField;
-//    }
 }

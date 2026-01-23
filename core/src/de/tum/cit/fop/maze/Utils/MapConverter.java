@@ -147,7 +147,7 @@ public class MapConverter {
                 {"maps/tmp/berghain_panorama.txt", "maps/story_mode/berghain_panorama.properties"},
                 {"maps/tmp/test.txt", "maps/story_mode/test.properties"},
                 {"maps/tmp/berghain_eg.txt", "maps/story_mode/berghain_eg.properties"},
-                // TODO: 03.01 Add more
+                
         };
 
         for (String[] mapPair : mapsToConvert) {

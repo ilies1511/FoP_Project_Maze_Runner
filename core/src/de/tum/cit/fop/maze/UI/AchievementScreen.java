@@ -82,7 +82,7 @@ public class AchievementScreen {
         Table table8 = new Table();
         Image image8 = new Image(game.getPointsAchievement());
         table8.add(image8).row();
-        Label label8 = new Label("Gamer\n(Reach 1000 points in endless mode)", game.getSkin(), "vampire-style");//TODO Nikita
+        Label label8 = new Label("Gamer\n(Reach 1000 points in endless mode)", game.getSkin(), "vampire-style");
         label8.setFontScale(1f);
         label8.setAlignment(Align.center);
         table8.add(label8).center().expandX();

@@ -27,9 +27,6 @@ public class Key extends Collectable implements Saveable<KeyMemento> {
             hud.deleteArrow();
             hud.createArrow();
         }
-
-        // hud.setHasKey(true); // TODO: Uncomment when HUD ready --> Nikita
-
     }
 
     @Override

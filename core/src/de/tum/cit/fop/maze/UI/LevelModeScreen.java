@@ -40,32 +40,6 @@ public class LevelModeScreen {
         label.setFontScale(3.0f);
         levelTable.add(label).expandX().center().padTop(50).padBottom(80).row();
 
-//        TextButton continueGame = new TextButton("Continue", game.getSkin(), "vampire-style");
-//        levelTable.add(continueGame).width(300).left().padLeft(50).padBottom(50);
-//        continueGame.getLabel().setTouchable(Touchable.disabled);
-//        continueGame.setDisabled(true); //TODO Finish continue button after the save/load system is ready
-//        continueGame.addListener(new ClickListener(){
-//            @Override
-//            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-//                if (pointer == -1 && !continueGame.isDisabled()) {
-//                    soundController.playUI_hoverOverSound(1);
-//                }
-//            }
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                soundController.playUI_buttonClickSound(1);
-//            }
-//        });
-//        //TODO Finish continue button after the save/load system is ready
-////        continueGame.addListener(new ChangeListener() {
-////            @Override
-////            public void changed(ChangeEvent event, Actor actor) {
-////                goToStory();
-////            }
-////        });
-//
-//        levelTable.row();
-
         TextButton newGame = new TextButton("New Game", game.getSkin(), "vampire-style");
         levelTable.add(newGame).width(300).left().padLeft(50).padBottom(50);
         newGame.getLabel().setTouchable(Touchable.disabled);

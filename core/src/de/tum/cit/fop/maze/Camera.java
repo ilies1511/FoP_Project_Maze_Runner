@@ -43,7 +43,6 @@ public class Camera {
 
         }
         float minCameraX = VIEWPORT_WIDTH * this.camera.zoom / 2;
-//        float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2 - 1.6f;
         float minCameraY = VIEWPORT_HEIGHT * this.camera.zoom / 2;
         float maxCameraX = gameFieldWidth - VIEWPORT_WIDTH * this.camera.zoom / 2;
         float maxCameraY = gameFieldHeight - VIEWPORT_HEIGHT * this.camera.zoom / 2;

@@ -98,7 +98,7 @@ public class GameField {
     // END -- Setters
 
     // BEGIN -- Methods
-    // TODO: 22.12.25 iziane
+    
     public void addGameObject(GameObject obj) {
         this.gameObjects.add(obj);
     }

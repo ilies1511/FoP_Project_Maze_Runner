@@ -91,7 +91,7 @@ public class MenuScreen implements Screen {
                 soundController.playUI_buttonClickSound(1);
             }
         });
-        //TODO change story mode logic
+        
         goToStoryMode.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -117,7 +117,7 @@ public class MenuScreen implements Screen {
                 soundController.playUI_buttonClickSound(1);
             }
         });
-        //TODO change levels logic
+        
         goToLevels.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -239,7 +239,7 @@ public class MenuScreen implements Screen {
         endlessModeScreen = new EndlessModeScreen(stage, game, this);
         settingsScreen = new SettingsScreen(stage, game, this);
         levelModeScreen = new LevelModeScreen(stage, game, this);
-        // TODO add listeners to Statistics, EndlessMode
+        
         leaderboardScreen = new LeaderboardScreen(stage, game, this);
         achievementScreen = new AchievementScreen(stage, game, this);
     }

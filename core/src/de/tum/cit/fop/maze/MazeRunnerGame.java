@@ -100,7 +100,6 @@ public class MazeRunnerGame extends Game {
     private TextureRegion decor9;
     private TextureRegion decor10;
     private TextureRegion casketTile;
-    //TODO (Connect Parser to Game Assets): - iziane Texture Regions for our Objects
     private TextureRegion keyTexture;
     private TextureRegion trapTexture;
     //UI
@@ -209,25 +208,18 @@ public class MazeRunnerGame extends Game {
         this.loadDawnWideAnimation();
         this.loadStatusEffectsTextures();
 
-
-        // TODO: iziane
         this.loadObjectTextures();
         this.loadMazeTiles();
         goToMenu(); // Navigate to the menu screen
     }
 
-
-    // TODO (Connect Parser to Game Assets): iziane
-    // TBD with Nikita
     private void loadObjectTextures() {
         if (Gdx.files.internal("objects.png").exists()) {
             Texture objectsSheet = new Texture(Gdx.files.internal("objects.png"));
             TextureRegion[][] tmp = TextureRegion.split(objectsSheet, 16, 16);
 
-            // TODO: iziane - for now dummy stuff
             this.keyTexture = tmp[0][0];
             this.trapTexture = tmp[0][1];
-//			this.enemyTexture = tmp[0][2]; // TODO: iziane - TBD with Saad
 
             if (tmp[0].length > 2) {
                 this.exitClosedTexture = tmp[0][2];
@@ -244,7 +236,6 @@ public class MazeRunnerGame extends Game {
             Gdx.app.error("Assets", "objects.png not found! Using character texture as fallback.");
             this.keyTexture = characterDownAnimation.getKeyFrame(0);
             this.trapTexture = characterDownAnimation.getKeyFrame(0);
-//			this.enemyTexture = characterDownAnimation.getKeyFrame(0);
         }
     }
 
@@ -255,11 +246,6 @@ public class MazeRunnerGame extends Game {
     public TextureRegion getTrapTexture() {
         return trapTexture;
     }
-
-//	public TextureRegion getEnemyTexture() {
-//		return enemyTexture;
-//	}
-
 
     public void disposeAllScreens() {
         List<Screen> allScreens = Arrays.asList(this.gameScreen, this.backgroundStoryScreen, this.menuScreen, this.gameLostScreen);
