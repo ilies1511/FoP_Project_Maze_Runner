@@ -1,0 +1,15 @@
+de.tum.cit.fop.maze
+de.tum.cit.fop.maze.Drawing
+de.tum.cit.fop.maze.effects
+de.tum.cit.fop.maze.game_saves
+de.tum.cit.fop.maze.game_saves.mementos
+de.tum.cit.fop.maze.Gameplay
+de.tum.cit.fop.maze.MVC
+de.tum.cit.fop.maze.objects
+de.tum.cit.fop.maze.objects.collectables
+de.tum.cit.fop.maze.objects.Dynamic.Enemy
+de.tum.cit.fop.maze.objects.Static
+de.tum.cit.fop.maze.objects.traps
+de.tum.cit.fop.maze.Parser
+de.tum.cit.fop.maze.UI
+de.tum.cit.fop.maze.Utils
