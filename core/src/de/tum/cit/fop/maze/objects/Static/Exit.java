@@ -23,12 +23,6 @@ public class Exit extends GameObject implements Saveable<ExitMemento> {
         );
     }
 
-//	@Override
-//	public void update(float delta) {
-//		super.update(delta);
-//		// Exit doesn't move, so no extra logic needed here.
-//	}
-
     /**
      * Opens the exit by unlocking it.
      */
