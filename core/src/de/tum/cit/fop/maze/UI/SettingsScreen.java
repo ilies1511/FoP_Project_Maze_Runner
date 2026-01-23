@@ -202,7 +202,7 @@ public class SettingsScreen {
         });
         table.add(resolutionWidth).width(400).row();
 
-        TextButton fsButton = new TextButton("Mode: Windowed", skin);
+        TextButton fsButton = new TextButton("Mode: Windowed", skin, "vampire-style");
 
         fsButton.addListener(new ChangeListener() {
             @Override
