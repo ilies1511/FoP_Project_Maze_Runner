@@ -13,22 +13,11 @@ import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 
 public abstract class Enemy extends GameObject implements Enemies {
-    private static final float detectionRange = 5.5f; // if within 5.5 tiles
-    private static final float fadeDuration = 1.0f;
+    private static final float DETECTION_RANGE = 5.5f; // if within 5.5 tiles
+    private static final float FADE_DURATION = 1.0f;
     protected boolean isDead = false;
     private float deathTime = 0f; // fade
 
-
-    public Enemy(Vector2 startPos, Vector2 size, AnimationType animationType) {
-        super(
-                startPos,
-                new Vector2(0f, 0f),
-                2.0f,
-                new Vector2(0.8f, 0.8f),
-                size,
-                animationType // temporary, might move to each enemy separately
-        );
-    }
 
     public Enemy(Vector2 startPos, AnimationType animationType) {
         super(
@@ -41,22 +30,11 @@ public abstract class Enemy extends GameObject implements Enemies {
         );
     }
 
-    public Enemy(Vector2 startPos) {
-        super(
-                startPos,
-                new Vector2(0f, 0f),
-                2.0f,
-                new Vector2(0.8f, 0.8f),
-                new Vector2(0.5f, 0.8f),
-                AnimationType.TOURIST_DOWN // temporary, might move to each enemy separately
-        );
-    }
-
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         if (isDead) {
             return;
         }
-        if (position.dst(playerPosition) < detectionRange && !player.hasEffect(Invis.class)) {
+        if (position.dst(playerPosition) < DETECTION_RANGE && !player.hasEffect(Invis.class)) {
             Vector2 direction = new Vector2(playerPosition).sub(position).nor(); //chase character
             this.velocity = direction.scl(speed);
         } else {
@@ -71,7 +49,7 @@ public abstract class Enemy extends GameObject implements Enemies {
     }
 
     public boolean shouldRemove() {
-        return isDead && deathTime >= fadeDuration;
+        return isDead && deathTime >= FADE_DURATION;
     }
 
     protected boolean WallOrObstacle(float x, float y, Vector2 size, GameField gameField) {
@@ -114,11 +92,11 @@ public abstract class Enemy extends GameObject implements Enemies {
     public void animate(Batch batch) {
         if (isDead) {
             // Move and Transparent on each kill
-            float alpha = 1.0f - (deathTime / fadeDuration);
+            float alpha = 1.0f - (deathTime / FADE_DURATION);
             if (alpha < 0) {
                 alpha = 0;
             }
-            float floatOffset = (deathTime / fadeDuration) * 0.5f;
+            float floatOffset = (deathTime / FADE_DURATION) * 0.5f;
             float oldAlpha = batch.getColor().a;
             //transparent
             batch.setColor(1f, 1f, 1f, alpha);

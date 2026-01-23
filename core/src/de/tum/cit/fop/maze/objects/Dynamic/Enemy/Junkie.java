@@ -17,7 +17,6 @@ public class Junkie extends Enemy implements Saveable<JunkieMemento> {
     private static final float ATTACK_DURATION = 0.5f;
     private static final float ATTACK_COOLDOWN = 1.5f;
     private static final float ATTACK_RANGE = 0.3f; //Dracula range
-    private final float moveInterval = 2.0f;
     private float moveTimer;
     private boolean isAttacking = false;
     private float attackTimer = 0f;
@@ -57,6 +56,7 @@ public class Junkie extends Enemy implements Saveable<JunkieMemento> {
         moveTimer += deltaTime;
         Vector2 nextPos = this.nextPosition(deltaTime);
         boolean willHitWall = WallOrObstacle(nextPos.x, nextPos.y, this.getSize(), gameField);
+        float moveInterval = 2.0f;
         if (moveTimer >= moveInterval || willHitWall) {
             flee();
             moveTimer = 0;
