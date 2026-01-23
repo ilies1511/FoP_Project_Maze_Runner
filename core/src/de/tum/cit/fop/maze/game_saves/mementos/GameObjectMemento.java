@@ -2,6 +2,9 @@ package de.tum.cit.fop.maze.game_saves.mementos;
 
 import de.tum.cit.fop.maze.game_saves.Memento;
 
+/**
+ * Memento storing basic game object state including position, velocity, and animation.
+ */
 public class GameObjectMemento implements Memento {
     public float positionX;
     public float positionY;

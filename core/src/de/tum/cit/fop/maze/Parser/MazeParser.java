@@ -27,9 +27,19 @@ import java.util.Properties;
 */
 
 
+/**
+ * Parses maze map files from properties format into GameField objects.
+ */
 public class MazeParser {
     // BEGIN -- Methods
-    private static void processTile(GameField field, int x, int y, int id) {
+    /**
+     * Loads a map from a properties file.
+     * @param filename The map filename in the maps folder
+     * @param game Game instance for initialization
+     * @return Parsed game field, or null if loading fails
+     */
+    //	public static GameField loadMap(String filename) {
+    public static GameField loadMap(String filename, MazeRunnerGame game) {
         TileType[] allTypes = TileType.values();
         TileType type;
 
@@ -80,9 +90,8 @@ public class MazeParser {
                 break;
         }
     }
-
-
-    private static void parseData(Properties properties, GameField gameField, MazeRunnerGame game) {
+    // END -- Methods
+}
 
         for (String key : properties.stringPropertyNames()) {
             String value = properties.getProperty(key);
@@ -144,5 +153,5 @@ public class MazeParser {
         parseData(properties, gameField, game);
         return gameField;
     }
-    // END -- Methods
-}
+
+    private static void parseData(Properties properties, GameField gameField, MazeRunnerGame game) {

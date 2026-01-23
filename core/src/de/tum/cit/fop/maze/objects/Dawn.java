@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents a dawn hazard that damages players after activating.
+ */
 public class Dawn extends GameObject {
     private static final int DAWN_SPAWN_RADIUS = 2;
     private static final float DAWN_SPAWN_INTERVAL = 1.6f;
@@ -31,6 +34,13 @@ public class Dawn extends GameObject {
         );
     }
 
+    /**
+     * Spawns a new dawn near the player position.
+     * @param delta Time delta
+     * @param gamefield Game field for placement
+     * @param playerPosition Player's current position
+     * @param gameObjects List to add dawn to
+     */
     public static void spawnNewDawn(float delta, GameField gamefield, Vector2 playerPosition, List<GameObject> gameObjects) {
         // check if enough time left since last spawn
         timeBeforeSpawn -= delta;
@@ -62,6 +72,11 @@ public class Dawn extends GameObject {
         gameObjects.add(new Dawn(spawnPosition));
     }
 
+    /**
+     * Updates dawn state and checks for removal.
+     * @param delta Time delta
+     * @return True if dawn should be removed
+     */
     public boolean updateDawn(float delta) {
         // returns true if dawn life is over and it must be deleted
         if (!this.isActive) {
@@ -81,6 +96,11 @@ public class Dawn extends GameObject {
         this.changeAnimation(AnimationType.DAWN_WIDE_ANIMATION);
     }
 
+    /**
+     * Checks collision with player and applies damage.
+     * @param player The player to check
+     * @return True if player was damaged
+     */
     public boolean checkPlayerCollision(Player player) {
         if (this.isActive && !player.hasEffect(Sunscreen.class) && !player.hasEffect(GodMode.class) && GameObject.entitiesOverlap(player, this)) {
             player.getDamageOrHeal(1);

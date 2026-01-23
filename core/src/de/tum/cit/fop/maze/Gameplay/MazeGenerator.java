@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * Generates random mazes using depth-first search algorithm.
+ */
 public class MazeGenerator {
 
     // BEGIN -- Attributes
@@ -111,6 +114,13 @@ public class MazeGenerator {
         }
     }
 
+    /**
+     * Generates a maze with specified dimensions.
+     * @param width Maze width
+     * @param height Maze height
+     * @param game Game instance for initialization
+     * @return Generated game field with maze layout
+     */
     public static GameField generateMaze(int width, int height, MazeRunnerGame game) {
         GameField gameField = new GameField(width, height);
 

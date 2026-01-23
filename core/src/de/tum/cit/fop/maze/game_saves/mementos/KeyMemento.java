@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing Key collectable state.
+ */
 public class KeyMemento extends GameObjectMemento {
     public KeyMemento() {
         super();

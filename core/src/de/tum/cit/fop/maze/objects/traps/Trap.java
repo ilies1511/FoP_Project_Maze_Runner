@@ -7,6 +7,9 @@ import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Base class for traps that apply effects on player contact.
+ */
 public abstract class Trap extends GameObject {
     private final Vector2 spriteShift;
 
@@ -29,6 +32,11 @@ public abstract class Trap extends GameObject {
 
     abstract protected void onEnter(Player player, HUD hud);
 
+    /**
+     * Checks collision with player and triggers trap effect.
+     * @param player The player
+     * @param hud HUD for UI updates
+     */
     public void checkPlayerCollision(Player player, HUD hud) {
         if (GameObject.entitiesOverlap(player, this)) {
             this.onEnter(player, hud);

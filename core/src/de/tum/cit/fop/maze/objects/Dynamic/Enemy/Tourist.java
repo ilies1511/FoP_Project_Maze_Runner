@@ -11,6 +11,9 @@ import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
 
+/**
+ * Tourist enemy that dances idly and flees when startled by kills.
+ */
 public class Tourist extends Enemy implements Saveable<TouristMemento> {
     private float danceTimer = 0f;
     private float scareTimer = 0f;
@@ -22,6 +25,12 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
         this.speed = 2.5f; // faster than normal enemies
     }
 
+    /**
+     * Scares all tourists near a death position.
+     * @param gameField Game field to find tourists
+     * @param deathPosition Position of death
+     * @return True if any tourists were scared
+     */
     public static boolean scaredTourists(GameField gameField, Vector2 deathPosition) {
         boolean scared = false;
         for (GameObject obj : gameField.getGameObjects()) {

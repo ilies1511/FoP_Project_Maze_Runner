@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing Bouncer enemy state including remaining lives.
+ */
 public class BouncerMemento extends GameObjectMemento {
     public int lives;
 

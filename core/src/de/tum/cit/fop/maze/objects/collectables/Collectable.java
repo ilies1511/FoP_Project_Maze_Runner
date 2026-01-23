@@ -7,6 +7,9 @@ import de.tum.cit.fop.maze.UI.HUD;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Base class for collectables that can be picked up by the player.
+ */
 public abstract class Collectable extends GameObject {
     private final Vector2 spriteShift;
 
@@ -29,6 +32,12 @@ public abstract class Collectable extends GameObject {
 
     abstract protected void onPickUp(Player player, HUD hud);
 
+    /**
+     * Checks collision with player and triggers pickup.
+     * @param player The player
+     * @param hud HUD for UI updates
+     * @return True if collected
+     */
     public boolean checkPlayerCollision(Player player, HUD hud) {
         if (GameObject.entitiesOverlap(player, this)) {
             this.onPickUp(player, hud);

@@ -2,6 +2,9 @@ package de.tum.cit.fop.maze.game_saves.mementos;
 
 import de.tum.cit.fop.maze.game_saves.Memento;
 
+/**
+ * Memento storing the complete game screen state including field, player, and mode.
+ */
 public class GameScreenMemento implements Memento {
     public GameFieldMemento gameField;
     public PlayerMemento player;

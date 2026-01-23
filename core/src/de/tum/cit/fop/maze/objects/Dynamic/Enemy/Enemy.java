@@ -12,6 +12,9 @@ import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Collectable;
 import de.tum.cit.fop.maze.objects.collectables.CollectableCreator;
 
+/**
+ * Base enemy class with AI behavior, death handling, and collision detection.
+ */
 public abstract class Enemy extends GameObject implements Enemies {
     private static final float DETECTION_RANGE = 5.5f; // if within 5.5 tiles
     private static final float FADE_DURATION = 1.0f;
@@ -30,6 +33,13 @@ public abstract class Enemy extends GameObject implements Enemies {
         );
     }
 
+    /**
+     * Updates enemy behavior including chasing and idle states.
+     * @param deltaTime Time since last update
+     * @param playerPosition Player's current position
+     * @param gameField Game field for navigation
+     * @param player Player reference
+     */
     public void updateBehavior(float deltaTime, Vector2 playerPosition, GameField gameField, Player player) {
         if (isDead) {
             return;
@@ -42,12 +52,20 @@ public abstract class Enemy extends GameObject implements Enemies {
         }
     }
 
+    /**
+     * Updates death animation fade timer.
+     * @param delta Time since last update
+     */
     public void updateDeathAnimation(float delta) {
         if (isDead) {
             deathTime += delta;
         }
     }
 
+    /**
+     * Checks if enemy should be removed after death.
+     * @return True if fade animation is complete
+     */
     public boolean shouldRemove() {
         return isDead && deathTime >= FADE_DURATION;
     }
@@ -74,6 +92,11 @@ public abstract class Enemy extends GameObject implements Enemies {
         return false;
     }
 
+    /**
+     * Handles enemy death rewards and collectables.
+     * @param player The player who killed the enemy
+     * @return Collectable drop
+     */
     public Collectable onDeath(Player player) {
         player.receiveXP(20);
         player.addOrReapplyEffect(new Buff(player, 2f));
@@ -113,19 +136,35 @@ public abstract class Enemy extends GameObject implements Enemies {
     }
 
 
+    /**
+     * Checks if enemy is dead.
+     * @return True if dead
+     */
     public boolean isDead() {
         return isDead;
     }
 
+    /**
+     * Sets enemy death state.
+     * @param dead New death state
+     */
     public void setDead(boolean dead) {
         isDead = dead;
     }
 
+    /**
+     * Gets enemy as GameObject.
+     * @return This enemy instance
+     */
     public GameObject getEnemyEntity() {
         return this;
     }
 
 
+    /**
+     * Gets enemy position.
+     * @return Position vector
+     */
     public Vector2 getPosition() {
         return position;
     }

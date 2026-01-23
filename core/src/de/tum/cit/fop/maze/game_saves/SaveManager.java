@@ -20,10 +20,19 @@ import de.tum.cit.fop.maze.objects.traps.GarlicTrap;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages saving and loading game state to/from JSON files.
+ * Handles separate save files for story mode and endless mode.
+ */
 public class SaveManager {
     private static final String STORY_SAVE_PATH = "data/save_story.json";
     private static final String ENDLESS_SAVE_PATH = "data/save_endless.json";
 
+    /**
+     * Saves the current game state to a JSON file.
+     * @param memento The game state to save
+     * @param isStoryMode True for story mode, false for endless mode
+     */
     public static void saveGame(GameScreenMemento memento, boolean isStoryMode) {
         String path = isStoryMode ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
         FileHandle saveFile = Gdx.files.local(path);
@@ -35,6 +44,11 @@ public class SaveManager {
         System.out.println("Game saved to: " + path);
     }
 
+    /**
+     * Loads a saved game state from a JSON file.
+     * @param isStoryMode True for story mode, false for endless mode
+     * @return The loaded game state, or null if no save file exists
+     */
     public static GameScreenMemento loadGame(boolean isStoryMode) {
         String path = isStoryMode ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
         FileHandle saveFile = Gdx.files.local(path);
@@ -50,12 +64,22 @@ public class SaveManager {
         return memento;
     }
 
+    /**
+     * Checks if a save file exists for the specified game mode.
+     * @param isStoryMode True for story mode, false for endless mode
+     * @return True if a save file exists
+     */
     public static boolean hasSave(boolean isStoryMode) {
         String path = isStoryMode ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
         return Gdx.files.local(path).exists();
     }
 
     // Helper method to convert GameField to GameFieldMemento
+    /**
+     * Converts a GameField to a GameFieldMemento for serialization.
+     * @param gameField The game field to convert
+     * @return A memento containing the game field state
+     */
     public static GameFieldMemento createGameFieldMemento(GameField gameField) {
         // Convert TileType[] to String[]
         String[] gridStrings = new String[gameField.getWidth() * gameField.getHeight()];
@@ -108,6 +132,11 @@ public class SaveManager {
     }
 
     // Helper method to restore GameField from GameFieldMemento
+    /**
+     * Restores a GameField from a GameFieldMemento.
+     * @param memento The memento containing the game field state
+     * @return The restored game field
+     */
     public static GameField restoreGameField(GameFieldMemento memento) {
         GameField gameField = new GameField(memento.width, memento.height);
 

@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing Exit state including locked status.
+ */
 public class ExitMemento extends GameObjectMemento {
     public boolean isLocked;
 

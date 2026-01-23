@@ -2,6 +2,9 @@ package de.tum.cit.fop.maze.game_saves.mementos;
 
 import de.tum.cit.fop.maze.game_saves.Memento;
 
+/**
+ * Memento storing complete player state including health, abilities, keys, and position.
+ */
 public class PlayerMemento implements Memento {
     public int currentHealth;
     public int maxHealth;

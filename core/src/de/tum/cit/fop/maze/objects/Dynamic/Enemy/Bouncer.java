@@ -10,6 +10,9 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.BouncerMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Bouncer enemy with multiple lives that intelligently chases the player.
+ */
 public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
     private static final float DETECTION_RANGE = 7.0f;
     //to loose bouncer you either run far away or hide behind a wall4
@@ -77,6 +80,11 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
         }
     }
 
+    /**
+     * Handles damage and fleeing behavior.
+     * @param playerPos Player position for flee direction
+     * @return True if enemy died, false if survived
+     */
     public boolean takeDamage(Vector2 playerPos) {
         lives--;
         if (lives <= 0) {

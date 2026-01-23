@@ -7,6 +7,9 @@ import com.badlogic.gdx.utils.Json;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Manages high scores for endless mode with persistent storage.
+ */
 public class ScoreManager {
     // BEGIN -- Attributes
     private static final String FILE_NAME = "data/leaderboard.json";
@@ -22,6 +25,10 @@ public class ScoreManager {
     // END -- Constructor
 
     // BEGIN -- Getters
+    /**
+     * Gets the singleton instance of ScoreManager.
+     * @return The ScoreManager instance
+     */
     public static ScoreManager getInstance() {
         if (instance == null) {
             instance = new ScoreManager();
@@ -29,12 +36,20 @@ public class ScoreManager {
         return instance;
     }
 
+    /**
+     * Gets the list of top scores.
+     * @return Sorted list of scores (highest first)
+     */
     public ArrayList<Long> getScores() {
         return scores;
     }
     // END -- Getters
 
     // BEGIN -- Setters
+    /**
+     * Adds a new score and saves to leaderboard (keeps top 10).
+     * @param score The score to add
+     */
     public void addScore(long score) {
         scores.add(score);
         Collections.sort(scores, Collections.reverseOrder());

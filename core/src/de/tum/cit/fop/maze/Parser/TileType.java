@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.Parser;
 
+/**
+ * Enum defining all possible tile types in the maze including walls, floors, and decorations.
+ */
 public enum TileType {
     WALL,
     ENTRY_POINT,

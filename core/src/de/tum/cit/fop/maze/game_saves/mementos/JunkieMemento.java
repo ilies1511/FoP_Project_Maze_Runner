@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing Junkie enemy state.
+ */
 public class JunkieMemento extends GameObjectMemento {
     public JunkieMemento() {
         super();

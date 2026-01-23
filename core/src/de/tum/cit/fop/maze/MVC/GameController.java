@@ -31,6 +31,9 @@ import de.tum.cit.fop.maze.objects.traps.Trap;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+/**
+ * Main game controller handling input, updates, and game logic.
+ */
 public class GameController {
     private final MazeRunnerGame game;
     private final Player player;
@@ -52,6 +55,10 @@ public class GameController {
         this.gameScreen = gameScreen;
     }
 
+    /**
+     * Main update loop handling player state, input, and game objects.
+     * @param delta Time since last update
+     */
     public void update(float delta) {
         if (player.getCurrentHealth() <= 0) {
             if (waveManager != null) {
@@ -332,6 +339,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Gets the game controller's sound controller.
+     * @return The sound controller instance
+     */
     public SoundController getSoundController() {
         return soundController;
     }
@@ -343,10 +354,17 @@ public class GameController {
         game.goToGameLostScreen();
     }
 
+    /**
+     * Updates the game field reference.
+     * @param newMap The new game field
+     */
     public void setGameField(GameField newMap) {
         this.gameField = newMap;
     }
 
+    /**
+     * Generates and transitions to the next level in endless mode.
+     */
     public void startNextLevel() {
         GameField newMap = MazeGenerator.generateMaze(19, 19, this.game);
         Vector2 entryPos = gameField.getTileTypeCoords(newMap, TileType.ENTRY_POINT);
@@ -364,10 +382,18 @@ public class GameController {
         }
     }
 
+    /**
+     * Gets the wave manager for endless mode.
+     * @return The wave manager instance
+     */
     public WaveManager getWaveManager() {
         return waveManager;
     }
 
+    /**
+     * Sets the wave manager for endless mode.
+     * @param waveManager The wave manager to set
+     */
     public void setWaveManager(WaveManager waveManager) {
         this.waveManager = waveManager;
     }

@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing Tourist enemy state.
+ */
 public class TouristMemento extends GameObjectMemento {
     public TouristMemento() {
         super();

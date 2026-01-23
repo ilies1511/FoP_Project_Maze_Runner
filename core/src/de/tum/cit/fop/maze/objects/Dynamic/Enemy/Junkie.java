@@ -13,6 +13,9 @@ import de.tum.cit.fop.maze.objects.Player;
 
 import java.util.List;
 
+/**
+ * Junkie enemy that randomly moves and occasionally attacks nearby players.
+ */
 public class Junkie extends Enemy implements Saveable<JunkieMemento> {
     private static final float ATTACK_DURATION = 0.5f;
     private static final float ATTACK_COOLDOWN = 1.5f;

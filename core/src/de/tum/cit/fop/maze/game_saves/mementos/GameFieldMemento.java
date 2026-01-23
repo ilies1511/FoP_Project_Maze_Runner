@@ -5,6 +5,9 @@ import de.tum.cit.fop.maze.game_saves.Memento;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Memento storing game field state including tiles, objects, and player start position.
+ */
 public class GameFieldMemento implements Memento {
     public int width;
     public int height;

@@ -8,6 +8,9 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.FreezeTrapMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Trap that applies freeze effect to slow player movement.
+ */
 public class FreezeTrap extends Trap implements Saveable<FreezeTrapMemento> {
     public FreezeTrap(Vector2 startpos) {
         super(startpos,

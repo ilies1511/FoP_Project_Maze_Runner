@@ -9,6 +9,9 @@ import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Tourist;
 
 import java.util.Random;
 
+/**
+ * Manages enemy spawning waves in endless mode with increasing difficulty.
+ */
 public class WaveManager {
     private final Random random;
     private final float minSpawnInterval = 1.0f;
@@ -28,18 +31,30 @@ public class WaveManager {
     // END -- Constructor
 
     // BEGIN -- Getters
+    /**
+     * Calculates the player's score based on survival time.
+     * @return Score value
+     */
     public int getScore() {
         return (int) totalTime * 10;
     }
     // END -- Getters
 
     // BEGIN -- Setters
+    /**
+     * Updates the game field reference for spawning enemies.
+     * @param newMap The new game field
+     */
     public void setGameField(GameField newMap) {
         this.gameField = newMap;
     }
     // END -- Setters
 
     // BEGIN -- Methods
+    /**
+     * Updates wave manager, increasing difficulty and spawning enemies over time.
+     * @param delta Time since last update
+     */
     public void update(float delta) {
         timeSinceLastSpawn += delta;
         totalTime += delta;

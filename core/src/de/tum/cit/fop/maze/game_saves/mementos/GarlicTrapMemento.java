@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing GarlicTrap state.
+ */
 public class GarlicTrapMemento extends GameObjectMemento {
     public GarlicTrapMemento() {
         super();

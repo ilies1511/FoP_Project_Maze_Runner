@@ -8,6 +8,9 @@ import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Handles rendering of the game field including floors, walls, and objects.
+ */
 public class MapRenderer {
     private final MazeRunnerGame game;
     private final SpriteBatch batch;
@@ -175,6 +178,12 @@ public class MapRenderer {
         }
     }
 
+    /**
+     * Renders the complete game scene including field, player, and objects.
+     * @param gameField The game field to render
+     * @param player The player to render
+     * @param delta Time since last render
+     */
     public void render(GameField gameField, Player player, float delta) {
         batch.begin();
 

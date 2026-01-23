@@ -6,6 +6,9 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.ExitMemento;
 import de.tum.cit.fop.maze.objects.GameObject;
 
+/**
+ * Exit portal that can be locked or unlocked with keys.
+ */
 public class Exit extends GameObject implements Saveable<ExitMemento> {
     private boolean isLocked = true;
 
@@ -26,6 +29,9 @@ public class Exit extends GameObject implements Saveable<ExitMemento> {
 //		// Exit doesn't move, so no extra logic needed here.
 //	}
 
+    /**
+     * Opens the exit by unlocking it.
+     */
     public void open() {
         if (isLocked) {
             this.isLocked = false;
@@ -33,6 +39,10 @@ public class Exit extends GameObject implements Saveable<ExitMemento> {
         }
     }
 
+    /**
+     * Checks if exit is locked.
+     * @return True if locked
+     */
     public boolean isLocked() {
         return isLocked;
     }

@@ -7,6 +7,9 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.KeyMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Key collectable required to unlock the exit.
+ */
 public class Key extends Collectable implements Saveable<KeyMemento> {
 
     public Key(Vector2 startpos) {

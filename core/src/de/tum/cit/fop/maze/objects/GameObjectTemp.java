@@ -16,6 +16,9 @@ Value | Type
 5     | Key
 */
 
+/**
+ * Temporary/legacy game object class for simple static objects.
+ */
 public abstract class GameObjectTemp {
     protected Vector2 position;
     protected TextureRegion texture;
@@ -27,16 +30,28 @@ public abstract class GameObjectTemp {
         this.bounds = new Rectangle(x, y, 1.0f, 1.0f);
     }
 
+    /**
+     * Draws the object.
+     * @param batch Sprite batch for rendering
+     */
     public void draw(Batch batch) {
         if (texture != null) {
             batch.draw(texture, position.x, position.y, 1.0f, 1.0f);
         }
     }
 
+    /**
+     * Updates the object state.
+     * @param delta Time since last update
+     */
     public void update(float delta) {
         //
     }
 
+    /**
+     * Gets the object's bounds.
+     * @return Bounds rectangle
+     */
     public Rectangle getBounds() {
         return bounds;
     }

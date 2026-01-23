@@ -8,6 +8,9 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.GarlicTrapMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Trap that applies poison effect to damage player over time.
+ */
 public class GarlicTrap extends Trap implements Saveable<GarlicTrapMemento> {
     public GarlicTrap(Vector2 startpos) {
         super(startpos,

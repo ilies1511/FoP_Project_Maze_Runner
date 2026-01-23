@@ -7,6 +7,9 @@ import de.tum.cit.fop.maze.game_saves.Saveable;
 import de.tum.cit.fop.maze.game_saves.mementos.HeartMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Heart collectable that heals the player.
+ */
 public class Heart extends Collectable implements Saveable<HeartMemento> {
     public Heart(Vector2 startpos) {
         super(startpos,

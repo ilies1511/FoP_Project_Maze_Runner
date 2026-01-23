@@ -1,5 +1,8 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+/**
+ * Memento storing FreezeTrap state.
+ */
 public class FreezeTrapMemento extends GameObjectMemento {
     public FreezeTrapMemento() {
         super();

@@ -7,10 +7,19 @@ import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.effects.Invis;
 import de.tum.cit.fop.maze.objects.Player;
 
+/**
+ * Handles player input for WASD movement and attack animations.
+ */
 public class CharacterWASD {
     public CharacterWASD() {
     }
 
+    /**
+     * Handles vertical (Y-axis) player movement input.
+     * @param player The player to move
+     * @param game Game instance for input settings
+     * @return True if player is moving vertically
+     */
     public static boolean yAxis(Player player, MazeRunnerGame game) {
         boolean isXmoving = Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey()) || Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getRightKey());
         float speed = player.getPlayerGameObject().getSpeed();
@@ -40,6 +49,12 @@ public class CharacterWASD {
         }
     }
 
+    /**
+     * Handles horizontal (X-axis) player movement input.
+     * @param player The player to move
+     * @param game Game instance for input settings
+     * @return True if player is moving horizontally
+     */
     public static boolean xAxis(Player player, MazeRunnerGame game) {
         float speed = player.getPlayerGameObject().getSpeed();
         if (Gdx.input.isKeyPressed(game.getGameInfo().getSettings().getLeftKey())) {
@@ -64,6 +79,11 @@ public class CharacterWASD {
         }
     }
 
+    /**
+     * Changes player animation to appropriate attack direction.
+     * @param player The player performing attack
+     * @param game Game instance for animation data
+     */
     public static void attackChange(Player player, MazeRunnerGame game) {
         Animation<?> currentAnim = player.getDrawable().getCurrentAnimation();
 

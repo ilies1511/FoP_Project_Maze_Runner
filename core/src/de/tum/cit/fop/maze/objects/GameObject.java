@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Drawing.Drawable;
 
+/**
+ * Base class for all game objects with position, movement, and animation.
+ */
 public abstract class GameObject {
     // BEGIN -- Attributes
     public Vector2 position;
@@ -53,16 +56,30 @@ public abstract class GameObject {
     //	public static Boolean entitiesOverlap(GameObject gameObject1, GameObject gameObject2) {
     //		return gameObject1.getBoundingBox().overlaps(gameObject2.getBoundingBox());
     //	}
+    /**
+     * Checks if two game objects overlap.
+     * @param gameObject1 First object
+     * @param gameObject2 Second object
+     * @return True if objects overlap
+     */
     public static Boolean entitiesOverlap(GameObject gameObject1, GameObject gameObject2) {
 //		return gameObject1.getBoundingBox().overlaps(gameObject2.getBoundingBox());
         return gameObject1.getBounds().overlaps(gameObject2.getBounds());
     }
 
     // BEGIN -- Getters
+    /**
+     * Gets the object's hitbox size.
+     * @return Size vector
+     */
     public Vector2 getSize() {
         return this.sizes;
     }
 
+    /**
+     * Gets the object's current speed including modifiers.
+     * @return Effective speed value
+     */
     public float getSpeed() {
         float actualSpeed = this.speed * this.speedMultiplier;
         if (actualSpeed < 0) {
@@ -75,6 +92,10 @@ public abstract class GameObject {
     //	private Rectangle getBoundingBox() {
 //		return new Rectangle(this.position.x, this.position.y, this.sizes.x, this.sizes.y);
 //	}
+    /**
+     * Gets the object's collision bounds.
+     * @return Updated bounds rectangle
+     */
     public Rectangle getBounds() {
         bounds.setPosition(position.x, position.y);
         return bounds;
@@ -82,24 +103,45 @@ public abstract class GameObject {
     // END -- Setters
 
     // BEGIN -- Setters
+    /**
+     * Sets the animation time for the drawable.
+     * @param time Animation time value
+     */
     public void setAnimationTime(float time) {
         if (drawable != null) {
             drawable.setAnimationTime(time);
         }
     }
 
+    /**
+     * Increases the object's speed by a value.
+     * @param extraSpeed Speed increment
+     */
     public void increaseSpeed(float extraSpeed) {
         this.speed += extraSpeed;
     }
 
+    /**
+     * Multiplies the speed multiplier.
+     * @param multiplier Multiplier value
+     */
     public void multiplySpeed(float multiplier) {
         this.speedMultiplier *= multiplier;
     }
 
+    /**
+     * Calculates next position based on current velocity.
+     * @param deltaTime Time delta for movement
+     * @return Predicted position
+     */
     public Vector2 nextPosition(float deltaTime) {
         return new Vector2(this.position.x + deltaTime * this.velocity.x, this.position.y + deltaTime * this.velocity.y);
     }
 
+    /**
+     * Moves the object by its velocity over time.
+     * @param deltaTime Time delta for movement
+     */
     public void move(float deltaTime) {
         this.position = this.nextPosition(deltaTime);
     }
@@ -109,6 +151,10 @@ public abstract class GameObject {
 //		this.drawable.update(delta);
 //	}
     
+    /**
+     * Updates animation state and bounds.
+     * @param delta Time since last update
+     */
     public void updateAnimation(float delta) {
 //		if (velocity.x != 0 || velocity.y != 0) {
 //			position.mulAdd(velocity, delta);
@@ -126,6 +172,10 @@ public abstract class GameObject {
     //	public void changeAnimation(AnimationType animationType) {
 //		this.drawable.changeAnimation(animationType);
 //	}
+    /**
+     * Changes the current animation.
+     * @param animationType New animation type
+     */
     public void changeAnimation(AnimationType animationType) {
         if (drawable != null) {
             drawable.changeAnimation(animationType);
@@ -133,6 +183,10 @@ public abstract class GameObject {
     }
 
     // We can call it draw --> more intuative to use in GameScreen
+    /**
+     * Renders the object using its drawable or texture.
+     * @param batch Sprite batch for rendering
+     */
     public void animate(Batch batch) {
         if (drawable != null) {
             drawable.animate(batch, this.position, this.spriteSizes);
@@ -141,10 +195,18 @@ public abstract class GameObject {
         }
     }
 
+    /**
+     * Gets the drawable component.
+     * @return Drawable instance
+     */
     public Drawable getDrawable() {
         return drawable;
     }
 
+    /**
+     * Gets the object's velocity vector.
+     * @return Velocity vector
+     */
     public Vector2 getVelocity() {
         return velocity;
     }

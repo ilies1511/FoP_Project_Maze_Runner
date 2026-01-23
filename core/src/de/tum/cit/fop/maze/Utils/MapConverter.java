@@ -21,6 +21,9 @@ import java.util.Map;
 	K or 5     | Key
 */
 
+/**
+ * Utility class for converting text-based maze maps to properties format.
+ */
 public class MapConverter {
 
     private static final Map<Character, TileType> LEGEND = new HashMap<>();
