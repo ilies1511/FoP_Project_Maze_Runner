@@ -15,7 +15,6 @@ import de.tum.cit.fop.maze.objects.Player;
  */
 public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
     private static final float DETECTION_RANGE = 7.0f;
-    //to loose bouncer you either run far away or hide behind a wall4
     private int lives = 2;
     private float fleeTimer = 0f;
     private float flickerTimer = 0f;
