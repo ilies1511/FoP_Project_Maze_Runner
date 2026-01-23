@@ -41,6 +41,7 @@ public enum AnimationType {
     EXIT_CLOSED,
     EXIT_OPEN,
     VAMPIRIC_HEART,
+    PILL,
     GARLIC_TRAP,
     FREEZE_TRAP,
     DAWN_THIN_ANIMATION,

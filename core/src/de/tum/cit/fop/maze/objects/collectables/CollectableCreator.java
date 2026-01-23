@@ -14,9 +14,12 @@ public class CollectableCreator {
      * @return New collectable instance
      */
     public static Collectable createRandomCollectable(Vector2 startpos) {
-        int randomNum = ThreadLocalRandom.current().nextInt(1, 2);
+        int randomNum = ThreadLocalRandom.current().nextInt(1, 3);
         if (randomNum == 1) {
             return new Heart(startpos);
+        }
+        else if(randomNum == 2){
+            return new Pill(startpos);
         }
         throw new AssertionError("Unreachable: number is not in possible range!");
     }
