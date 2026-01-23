@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
 
@@ -38,10 +39,10 @@ public class GameLostScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         soundController = new SoundController();
         var camera = new OrthographicCamera();
-        camera.zoom = 1f; // Set camera zoom for a closer view
+        camera.zoom = 1f;
 
         Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight()); // Create a viewport with the camera
-        stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+        stage = new Stage(viewport, game.getSpriteBatch());
 
         Table table = new Table();
         Label label = new Label("Game Lost", game.getSkin(), "vampire-style");
@@ -49,31 +50,96 @@ public class GameLostScreen implements Screen {
         table.setFillParent(true);
         table.center();
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
-        table.row();
+
 
         TextButton goToMainMenu = new TextButton("Exit", game.getSkin(), "vampire-style");
-        table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
-        goToMainMenu.getLabel().setTouchable(Touchable.disabled);
-        goToMainMenu.addListener(new ClickListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                if (pointer == -1 && !goToMainMenu.isDisabled()) {
-                    soundController.playUI_hoverOverSound(1);
-                }
-            }
 
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                soundController.playUI_buttonClickSound(1);
-            }
-        });
-        goToMainMenu.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                soundController.dispose();
-                game.goToMenu();
-            }
-        });
+        switch (game.getGameMode()){
+            case ENDLESS_MODE:
+                //TODO score
+                Label score = new Label("Your score: ", game.getSkin(), "vampire-style");
+                label.setFontScale(1.7f);
+                table.setFillParent(true);
+                table.center();
+                table.add(score).expandX().center().padTop(50).padBottom(80).row();
+
+
+                table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
+                goToMainMenu.getLabel().setTouchable(Touchable.disabled);
+                goToMainMenu.addListener(new ClickListener() {
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        if (pointer == -1 && !goToMainMenu.isDisabled()) {
+                            soundController.playUI_hoverOverSound(1);
+                        }
+                    }
+
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        soundController.playUI_buttonClickSound(1);
+                    }
+                });
+                goToMainMenu.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        soundController.dispose();
+                        game.goToMenu();
+                    }
+                });
+            case STORY_MODE:
+                table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
+                goToMainMenu.getLabel().setTouchable(Touchable.disabled);
+                goToMainMenu.addListener(new ClickListener() {
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        if (pointer == -1 && !goToMainMenu.isDisabled()) {
+                            soundController.playUI_hoverOverSound(1);
+                        }
+                    }
+
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        soundController.playUI_buttonClickSound(1);
+                    }
+                });
+                goToMainMenu.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        soundController.dispose();
+                        game.goToMenu();
+                    }
+                });
+            case LEVELS_MODE:
+                table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
+                goToMainMenu.getLabel().setTouchable(Touchable.disabled);
+                goToMainMenu.addListener(new ClickListener() {
+                    @Override
+                    public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                        if (pointer == -1 && !goToMainMenu.isDisabled()) {
+                            soundController.playUI_hoverOverSound(1);
+                        }
+                    }
+
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        soundController.playUI_buttonClickSound(1);
+                    }
+                });
+                goToMainMenu.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        soundController.dispose();
+                        game.goToMenu();
+                    }
+                });
+
+        }
+
+
+
+
+
+
         stage.addActor(table);
     }
 
