@@ -129,6 +129,7 @@ public class MazeRunnerGame extends Game {
     private TextureRegion keyOutline;
     // Collectables
     private Animation<TextureRegion> keyShineAnimation;
+    private Animation<TextureRegion> pillAnimation;
     private Animation<TextureRegion> vampiricHeartAnimation;
     private Animation<TextureRegion> exitPortalAnimation;
     // Traps
@@ -199,6 +200,8 @@ public class MazeRunnerGame extends Game {
         this.loadCharacterAnimation(); // Dracula
 
         this.loadCharacterInvisAnimation();
+
+        this.loadPillAnimation();
 
         this.loadTouristAnimation();
         this.loadBouncerAnimation();
@@ -415,6 +418,12 @@ public class MazeRunnerGame extends Game {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("key_shine.atlas"));
 
         this.keyShineAnimation = new Animation<>(0.08f, atlas.findRegions("key"), Animation.PlayMode.LOOP);
+    }
+    private void loadPillAnimation(){
+        TextureRegion pill = new TextureRegion(assetsSheet, 265, 53, 133, 133);
+        TextureRegion[] frames = new TextureRegion[]{ pill };
+        this.pillAnimation = new Animation<TextureRegion>(0.05f, frames);
+        this.pillAnimation.setPlayMode(Animation.PlayMode.LOOP);
     }
 
     private void loadPortalAnimation() {
@@ -1563,5 +1572,13 @@ public class MazeRunnerGame extends Game {
      */
     public TextureRegion getWallHigh3() {
         return wallHigh3;
+    }
+
+    /**
+     * Gets the pillAnimation.
+     * @return The texture region.
+     */
+    public Animation<TextureRegion> getPillAnimation() {
+        return pillAnimation;
     }
 }

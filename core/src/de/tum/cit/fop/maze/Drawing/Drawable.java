@@ -67,6 +67,7 @@ public class Drawable {
         tempMap.put(AnimationType.EXIT_CLOSED, createSingleFrameAnim(game.getExitClosedTexture()));
         tempMap.put(AnimationType.EXIT_OPEN, createSingleFrameAnim(game.getExitOpenTexture()));
         tempMap.put(AnimationType.VAMPIRIC_HEART, game.getVampiricHeartAnimation());
+        tempMap.put(AnimationType.PILL, game.getPillAnimation());
         tempMap.put(AnimationType.GARLIC_TRAP, game.getGarlicTrapAnimation());
         tempMap.put(AnimationType.FREEZE_TRAP, game.getFreezeTrapAnimation());
         tempMap.put(AnimationType.DAWN_THIN_ANIMATION, game.getDawnThinAnimation());

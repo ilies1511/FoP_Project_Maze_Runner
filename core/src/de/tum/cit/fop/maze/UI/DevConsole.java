@@ -80,7 +80,7 @@ public class DevConsole {
         });
         commandMap.put("setGodMode", val -> {
             if (Integer.parseInt(val) == 1) {
-                player.addOrReapplyEffect(new GodMode(player));
+                player.addOrReapplyEffect(new GodMode(player,  Float.POSITIVE_INFINITY));
             } else if (Integer.parseInt(val) == 0) {
                 player.endEffect(GodMode.class);
             } else {

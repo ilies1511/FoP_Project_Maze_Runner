@@ -11,9 +11,9 @@ public class GodMode extends Effect {
      * Creates a new GodMode effect.
      * @param player The player to apply god mode to.
      */
-    public GodMode(Player player) {
+    public GodMode(Player player, float duration) {
         this.player = player;
-        this.timeLeft = Float.POSITIVE_INFINITY;
+        this.timeLeft = duration;
     }
 
     @Override
