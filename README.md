@@ -42,7 +42,7 @@ This project is built using **Java 17** and the **libGDX** framework, organized 
 - **`assets`**: Stores all game resources, including textures, sound effects, music, and map files.
 
 ## JavaDoc
-https://ilies1511.github.io/FoP_Project_Maze_Runner/
+[JavaDoc](https://ilies1511.github.io/FoP_Project_Maze_Runner/)
 
 ## How to Build/Export
 
@@ -97,6 +97,12 @@ Please ensure your code follows the existing style and all tests pass before sub
 
 
 ## Architecture Overview
+![UML Diagram](docs/UML/mermaid-diagram-2026-01-23-181557.svg)
+
+<details>
+<summary>Mermaid source</summary>
+See: [docs/UML/UML.md](docs/UML/UML.md)
+
 ```mermaid
 classDiagram
 direction BT
@@ -1200,3 +1206,4 @@ Tourist  ..>  Saveable~T~
 TouristMemento  -->  GameObjectMemento 
 Trap  -->  GameObject 
 ```
+</details>
