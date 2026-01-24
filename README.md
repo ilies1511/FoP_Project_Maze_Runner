@@ -97,7 +97,7 @@ Please ensure your code follows the existing style and all tests pass before sub
 
 
 ## Architecture Overview
-![UML Diagram](docs/UML/mermaid-diagram-2026-01-23-181557.svg)
+![UML Diagram](docs_not_javadocs/UML/mermaid-diagram-2026-01-23-181557.svg)
 
 <details>
 <summary>Mermaid source</summary>
