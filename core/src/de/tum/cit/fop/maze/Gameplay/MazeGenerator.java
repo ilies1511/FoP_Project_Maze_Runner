@@ -122,14 +122,14 @@ public class MazeGenerator {
      * @return Generated game field with maze layout
      */
     public static GameField generateMaze(int width, int height, MazeRunnerGame game) {
-        GameField gameField = new GameField(width, height);
-
         if (width % 2 == 0) {
             width++;
         }
         if (height % 2 == 0) {
             height++;
         }
+
+        GameField gameField = new GameField(width, height);
         putWalls(width, height, gameField);
         carvePath(width, height, gameField);
         gameField.setTile(1, 1, TileType.ENTRY_POINT);
