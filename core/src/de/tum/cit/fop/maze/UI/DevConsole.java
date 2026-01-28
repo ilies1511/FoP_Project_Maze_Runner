@@ -74,7 +74,7 @@ public class DevConsole {
 
         Label consoleLabel = new Label("Developer console \ntype \"getHelp\" for the list of commands", game.getSkin(), "title");
         consoleLabel.setFontScale(0.4f);
-        consoleLabel.setWrap(true); // Important: Allows text to wrap to next line
+        consoleLabel.setWrap(true);
         consoleLabel.setAlignment(Align.topLeft);
 
         ScrollPane scrollPane = new ScrollPane(consoleLabel);
@@ -188,7 +188,7 @@ public class DevConsole {
                     scrollPane.layout();
                     scrollPane.scrollTo(0, 0, 0, 0);
 
-                    textField.setText(""); // Clear input
+                    textField.setText("");
                 }
             }
         });

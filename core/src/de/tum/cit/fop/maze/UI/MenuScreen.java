@@ -55,7 +55,6 @@ public class MenuScreen implements Screen {
         viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
         Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
         stage = new Stage(viewport, game.getSpriteBatch());
-        Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
 
         table = new Table();
         table.setFillParent(true);

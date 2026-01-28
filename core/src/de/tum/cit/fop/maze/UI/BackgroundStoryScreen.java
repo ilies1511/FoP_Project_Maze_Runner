@@ -49,7 +49,7 @@ public class BackgroundStoryScreen implements Screen {
         Gdx.input.setInputProcessor(null);
         this.game = game;
         var camera = new OrthographicCamera();
-        camera.zoom = 1f; // Set camera zoom for a closer view
+        camera.zoom = 1f;
 
         Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight()); // Create a viewport with the camera
         stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements

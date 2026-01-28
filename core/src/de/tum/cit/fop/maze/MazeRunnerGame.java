@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import de.tum.cit.fop.maze.Gameplay.GameMode;
+import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.UI.BackgroundStoryScreen;
 import de.tum.cit.fop.maze.UI.GameLostScreen;
 import de.tum.cit.fop.maze.UI.GameWonScreen;
@@ -305,9 +306,9 @@ public class MazeRunnerGame extends Game {
     /**
      * Switches to the game lost screen.
      */
-    public void goToGameLostScreen() {
+    public void goToGameLostScreen(int score) {
         disposeAllScreens();
-        this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
+        this.setScreen(new GameLostScreen(this, score)); // Set the current screen to GameScreen
     }
 
 
@@ -521,26 +522,26 @@ public class MazeRunnerGame extends Game {
 
     private void loadMazeTiles() {
         try {
-            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 22, 382, 120, 120);
-            TextureRegion wallHighTexture1 = new TextureRegion(assetsSheet, 156, 382, 120, 120);
-            TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293, 382, 120, 120);
-            TextureRegion wallHighTexture2 = new TextureRegion(assetsSheet, 432, 382, 120, 120);
-            TextureRegion wallTexture3 = new TextureRegion(assetsSheet, 563, 382, 120, 120);
-            TextureRegion buildingTexture = new TextureRegion(assetsSheet, 694, 382, 120, 120);
-            TextureRegion wallTexture4 = new TextureRegion(assetsSheet, 824, 382, 120, 120);
-            TextureRegion wallHighTexture4 = new TextureRegion(assetsSheet, 958, 382, 120, 120);
-            TextureRegion wallTexture5 = new TextureRegion(assetsSheet, 18, 533, 120, 120);
-            TextureRegion wallTexture6 = new TextureRegion(assetsSheet, 157, 533, 120, 120);
-            TextureRegion wallTexture7 = new TextureRegion(assetsSheet, 293, 533, 120, 120);
-            TextureRegion wallTexture8 = new TextureRegion(assetsSheet, 427, 533, 120, 120);
+            TextureRegion wallTexture1 = new TextureRegion(assetsSheet, 22, 382, 120, 110);
+            TextureRegion wallHighTexture1 = new TextureRegion(assetsSheet, 156, 380, 120, 110);
+            TextureRegion wallTexture2 = new TextureRegion(assetsSheet, 293, 382, 120, 110);
+            TextureRegion wallHighTexture2 = new TextureRegion(assetsSheet, 432, 382, 120, 110);
+            TextureRegion wallTexture3 = new TextureRegion(assetsSheet, 563, 382, 120, 110);
+            TextureRegion buildingTexture = new TextureRegion(assetsSheet, 694, 382, 120, 110);
+            TextureRegion wallTexture4 = new TextureRegion(assetsSheet, 824, 382, 120, 110);
+            TextureRegion wallHighTexture4 = new TextureRegion(assetsSheet, 958, 382, 120, 110);
+            TextureRegion wallTexture5 = new TextureRegion(assetsSheet, 18, 533, 120, 110);
+            TextureRegion wallTexture6 = new TextureRegion(assetsSheet, 157, 533, 120, 110);
+            TextureRegion wallTexture7 = new TextureRegion(assetsSheet, 293, 533, 120, 110);
+            TextureRegion wallTexture8 = new TextureRegion(assetsSheet, 427, 533, 120, 110);
 
-            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 20, 835, 120, 120);
-            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157, 835, 120, 120);
-            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293, 835, 120, 120);
-            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427, 835, 120, 120);
-            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563, 835, 120, 120);
-            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693, 835, 120, 120);
-            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824, 835, 120, 120);
+            TextureRegion emptyTexture1 = new TextureRegion(assetsSheet, 20, 832, 120, 120);
+            TextureRegion emptyTexture2 = new TextureRegion(assetsSheet, 157, 832, 120, 120);
+            TextureRegion emptyTexture3 = new TextureRegion(assetsSheet, 293, 832, 120, 120);
+            TextureRegion emptyTexture4 = new TextureRegion(assetsSheet, 427, 832, 120, 120);
+            TextureRegion emptyTexture5 = new TextureRegion(assetsSheet, 563, 832, 120, 120);
+            TextureRegion emptyTexture6 = new TextureRegion(assetsSheet, 693, 832, 120, 120);
+            TextureRegion emptyTexture7 = new TextureRegion(assetsSheet, 824, 832, 120, 120);
             TextureRegion danceFloorTexture = new TextureRegion(assetsSheet, 824, 533, 120, 120);
 
             TextureRegion decorTexture1 = new TextureRegion(assetsSheet, 410, 670, 140, 140);
@@ -555,7 +556,7 @@ public class MazeRunnerGame extends Game {
             TextureRegion decorTexture10 = new TextureRegion(assetsSheet, 855, 955, 110, 135);
 
             TextureRegion exitTexture = new TextureRegion(assetsSheet, 22, 686, 113, 119);
-            TextureRegion wallHighTexture3 = new TextureRegion(assetsSheet, 281, 685, 120, 120);
+            TextureRegion wallHighTexture3 = new TextureRegion(assetsSheet, 281, 685, 120, 110);
 
             TextureRegion casketTexture = new TextureRegion(assetsSheet, 800, 210, 240, 147);
 
