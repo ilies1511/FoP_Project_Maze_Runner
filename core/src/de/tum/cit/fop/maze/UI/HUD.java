@@ -20,6 +20,7 @@ import de.tum.cit.fop.maze.GameScreen;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.effects.Buff;
 import de.tum.cit.fop.maze.effects.Freeze;
+import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Poison;
 import de.tum.cit.fop.maze.effects.Sunscreen;
 import de.tum.cit.fop.maze.objects.Player;
@@ -48,6 +49,7 @@ public class HUD {
     private Stack poisonEffect;
     private Stack freezeEffect;
     private Stack sunscreenEffect;
+    private Stack godModeEffect;
     private final ShapeRenderer shapeRenderer;
     private int playerXP;
     private int playerKeys;
@@ -295,6 +297,16 @@ public class HUD {
                 sunscreenEffect = null;
             }
         }
+        if (player.hasEffect(GodMode.class)) {
+            if (godModeEffect == null) {
+                addEffect(new Image(game.getGodModeEffect()), player.getEffectDuration(GodMode.class), "GodMode");
+            }
+        } else {
+            if (godModeEffect != null) {
+                removeStatusEffectUI(godModeEffect);
+                godModeEffect = null;
+            }
+        }
     }
 
     private void removeStatusEffectUI(Stack stack) {
@@ -342,7 +354,7 @@ public class HUD {
                 float r = Math.min(getWidth(), getHeight()) / 1.8f;
                 float cx = getX() + getWidth() / 2f;
                 float cy = getY() + getHeight() / 2f;
-                float percentage = timeLeft / maxTime;
+                float percentage = Float.isInfinite(maxTime) ? 1.0f : timeLeft / maxTime;
 
                 int segments = 30;
                 float startAngle = 90 * MathUtils.degreesToRadians;
@@ -404,6 +416,8 @@ public class HUD {
                 return freezeEffect;
             case "Sunscreen":
                 return sunscreenEffect;
+            case "GodMode":
+                return godModeEffect;
             default:
                 return null;
         }
@@ -422,6 +436,9 @@ public class HUD {
                 break;
             case "Sunscreen":
                 sunscreenEffect = stack;
+                break;
+            case "GodMode":
+                godModeEffect = stack;
                 break;
         }
     }

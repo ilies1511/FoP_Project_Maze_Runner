@@ -157,7 +157,7 @@ public class DevConsole {
 
                         if (matcher.group(2) != null) {
                             try {
-                                if (Integer.parseInt(matcher.group(2)) < 2147483647 && Integer.parseInt(matcher.group(2)) > 0) {
+                                if (Integer.parseInt(matcher.group(2)) < 2147483647 && Integer.parseInt(matcher.group(2)) >= 0) {
                                     String intCommand = matcher.group(2);
                                     Consumer<String> action = commandMap.get(stringCommand);
 

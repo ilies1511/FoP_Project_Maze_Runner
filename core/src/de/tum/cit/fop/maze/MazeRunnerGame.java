@@ -124,6 +124,7 @@ public class MazeRunnerGame extends Game {
     private TextureRegion poisonEffect;
     private TextureRegion freezeEffect;
     private TextureRegion sunscreenEffect;
+    private TextureRegion godModeEffect;
     // Key
     private TextureRegion key;
     private TextureRegion keyOutline;
@@ -629,6 +630,7 @@ public class MazeRunnerGame extends Game {
         this.poisonEffect = effectsAtlas.findRegion("poison");
         this.freezeEffect = effectsAtlas.findRegion("snowflake");
         this.sunscreenEffect = effectsAtlas.findRegion("cloudy_sun");
+        this.godModeEffect = effectsAtlas.findRegion("cloudy_sun");
     }
 
     /**
@@ -1242,6 +1244,14 @@ public class MazeRunnerGame extends Game {
      */
     public TextureRegion getSunscreenEffect() {
         return sunscreenEffect;
+    }
+
+    /**
+     * Gets the god mode effect texture.
+     * @return The texture region.
+     */
+    public TextureRegion getGodModeEffect() {
+        return godModeEffect;
     }
 
     /**
