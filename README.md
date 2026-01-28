@@ -71,64 +71,97 @@ The following table lists the default key bindings:
 
 ## Feature overview
 
-### Story
+### Bonus!
+
+#### Algorithmic 2.5d effect
+- 2.5d effect implemented in a similar way it's done in The Legend of Zelda game
+- Works for any custom map - check **Levels** gamemode
+
+#### Story Mode
+- In addition to required Endless and Levels modes, Story Mode is implemented
+- Multiple levels with custom textures
+- After finishing, End Story is played and you get an achievement
+
+#### Status Effects
+- Effects and their duration are shown in the HUD
+- Killing an Enemy triggers a short "**Thirst**" effect that boosts speed
+- Freeze Trap applies "**Freeze**" effect that slows you down
+- Garlic Trap applies "**Poisoned**" effect that slightly slows you down and deals periodic damage
+- Invincibility pill applies "**Invincibility**" effect. Invincibility can also be triggered with ```setGodMode:1``` console command.
+
+#### Advanced Camera
+- **Cinematic camera** that follows the Player with a slight delay (LERP)
+- Getting hit by Enemy or Dawn triggers **Camera Shake** effect.
+
+#### Attack
+- When hitting (press ```SPACE```) an attack animation is triggered. Works in every direction.
+
+#### Dash
+- Replacing the standart "Run" requirement
+- Locked at the beginning, can be unlocked via Progression Tree (press ```I```)
+- Can also be unlocked via ```setDash:1``` console command
+- Default keybinding for Dash: ```LSHIFT```
+
+#### Invisibility
+- Makes the Player invisible to Enemy pathfinding and immune to their attacks.
+- Locked at the beginning, can be unlocked via Progression Tree (press ```I```)
+- Can also be unlocked via `setInvis:1` console command
+- Default keybinding: ```Q```
+
+#### Flicker effect
+- Upon getting hit by an Enemy or Dawn (sun beam), Player starts flickering and invincible to Enemies and Dawn.
+
+#### Collectable Animations
+- **Key and Droppable Heart have their own animations** - The Key shines and the Heart flies.
+
+### Mandatory part
+
+All the mandatory requirements are implemented. Most important features (but not all) are listed below:
+
+#### Story
 - Everything - Textures, UI, Entities, Music etc. made in **vampiric theme**
 - **Text stories** when starting the game and after beating the Story Mode
 
-### Character
+#### Character
 - Movement, HP, XP
-- **Animated Attack** (Default keybinding: Space)
-- **Dash** (instead of running) - Locked by default, can be unlocked via **Progression Tree**. Default keybinding: LSHIFT.
-- **Invisibility** [**BONUS**] - Makes the player invisible to enemy pathfinding and immune to their attacks. Locked by default, can be unlocked via **Progression Tree**. Default keybinding: Q
-- **Flicker effect** [**BONUS**] - When getting hit by Enemy or Dawn, player starts flickering and becomes immune for a while.
+- **Animated Attack** (Default keybinding: ```Space```)
+- **Dash** (instead of running) - Locked by default, can be unlocked via **Progression Tree**. Default keybinding: ```LSHIFT```.
+- **Flicker effect** - When getting hit by Enemy or Dawn, Player starts flickering and becomes immune for a while.
 - **Environment**: Most of the events (Attacking, Getting Hit, Picking up keys, Player death, Player healing, Enemy death, Winning the level, Dashing) trigger sound effects.
 
-### Obstacles
-- Traps: **Freeze Trap** (slows player down) and **Garlic Trap** (poisons player with periodic damage)
+#### Obstacles
+- Traps: **Freeze Trap** (slows Player down) and **Garlic Trap** (poisons Player with periodic damage)
 - Dawn (AKA Third Obstacle): Sun Rays that follow you around dealing damage when getting hit by it.
 - Enemies:
-    - **Bouncer**: Intelligently chases the player and has multiple lives. Flees for a short time when damaged.
-    - **Junkie**: Moves randomly and attacks nearby players.
+    - **Bouncer**: Intelligently chases the Player and has multiple lives. Flees for a short time when damaged.
+    - **Junkie**: Moves randomly and attacks nearby Players.
     - **Tourist**: Dances idly but flees at high speed when startled by nearby deaths.
 
-### Keys
+#### Keys
 - Looks like a Berghain credit card. Has a "Shining" animation effect.
 
-### HUD
+#### HUD
 - **Hearts**, **XP**
 - **Arrow** pointing to exit shows up when all the keys are collected
 
-### Effects
-[**Bonus**]
-- Effects and their duration are shown in the HUD
-- Killing an enemy triggers a short "**Thirst**" effect that boosts speed
-- Freeze Trap applies "**Freeze**" effect that slows you down
-- Garlic Trap applies "**Poisoned**" effects that slightly slows you down and deals periodic damage
-- Invincibility pill applies "**Invincibility**" effect
+#### Collectibles
+- Killing an Enemy drops a **Heart** or an **Invincibility Pill** on the ground
+- Keys and Lives have their own animations
 
-### Collectibles
-- Killing an enemy drops a **Heart** or an **Invincibility Pill** on the ground
-- Keys and Lives have their own animations [**BONUS**]
-
-### Game Modes
+#### Game Modes
 - **Story Mode** - has a predefined set of levels.
 - **Levels Mode** - loads all the levels from .properties files in maps/ folder.
 - **Endless Mode** - randomized **procedural generation** of levels.
 
-### Advanced Game Systems
+#### Advanced Game Systems
 - **Saves and loads**. For Story and Endless modes. Saves are triggered whenever you go back to main menu.
 - **Achievements**. Press on the **Golden Cup** in the main menu to view your achievements.
-- **Developer Console**. Default keybinding - '**/**'.
+- **Developer Console**. Default keybinding - ```/```.
     - Examples:
-        - `setXP:100` (Sets player XP to 100)
+        - `setXP:100` (Sets Player XP to 100)
         - `getKeys` (Collects all required keys)
 - **Leaderboard**. Endless Mode has a **Statistics** screen with your records.
-- **Progression Tree**. Default keybinding - '**I**'.
-
-### Advanced Camera
-[[**Bonus**]]
-- **Cinematic camera** that follows a player with a slight delay (LERP)
-- Getting hit by Enemy or Dawn triggers **Camera Shake** effect.
+- **Progression Tree**. Default keybinding - `I`.
 
 ## Architecture Overview
 ![UML Diagram](docs_not_javadocs/UML/mermaid-diagram-2026-01-23-181557.svg)
