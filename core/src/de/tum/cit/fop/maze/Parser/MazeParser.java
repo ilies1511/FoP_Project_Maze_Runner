@@ -121,7 +121,6 @@ public class MazeParser {
         return new GameField(maxX + 1, maxY + 1);
     }
 
-    //	public static GameField loadMap(String filename) {
     public static GameField loadMap(String filename, MazeRunnerGame game) {
         Properties properties = new Properties();
 
@@ -138,7 +137,6 @@ public class MazeParser {
             String fileName2 = filename;
             Gdx.app.error("MazeParser", "Could not load map: " + fileName2, e);
             return null;
-//			throw new RuntimeException(e);
         }
         GameField gameField = calculateDimension(properties);
         parseData(properties, gameField, game);

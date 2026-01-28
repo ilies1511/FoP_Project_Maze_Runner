@@ -558,8 +558,6 @@ public class MazeRunnerGame extends Game {
 
             TextureRegion casketTexture = new TextureRegion(assetsSheet, 800, 210, 240, 147);
 
-//            Texture wallTexture = new Texture(Gdx.files.internal("maze_wall.png"));
-//            Texture emptyTexture = new Texture(Gdx.files.internal("maze_empty.png"));
 
             this.wallTile3 = wallTexture3;
             this.wallTile1 = wallHighTexture1;

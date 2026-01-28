@@ -45,7 +45,6 @@ public abstract class GameObjectTemp {
      * @param delta Time since last update
      */
     public void update(float delta) {
-        //
     }
 
     /**

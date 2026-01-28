@@ -53,9 +53,6 @@ public abstract class GameObject {
     // END -- Constructor
 
     // BEGIN -- Methods
-    //	public static Boolean entitiesOverlap(GameObject gameObject1, GameObject gameObject2) {
-    //		return gameObject1.getBoundingBox().overlaps(gameObject2.getBoundingBox());
-    //	}
     /**
      * Checks if two game objects overlap.
      * @param gameObject1 First object
@@ -63,7 +60,6 @@ public abstract class GameObject {
      * @return True if objects overlap
      */
     public static Boolean entitiesOverlap(GameObject gameObject1, GameObject gameObject2) {
-//		return gameObject1.getBoundingBox().overlaps(gameObject2.getBoundingBox());
         return gameObject1.getBounds().overlaps(gameObject2.getBounds());
     }
 
@@ -89,9 +85,6 @@ public abstract class GameObject {
     }
     // END -- Getters
 
-    //	private Rectangle getBoundingBox() {
-//		return new Rectangle(this.position.x, this.position.y, this.sizes.x, this.sizes.y);
-//	}
     /**
      * Gets the object's collision bounds.
      * @return Updated bounds rectangle
@@ -147,31 +140,17 @@ public abstract class GameObject {
     }
 
     // ANIMATIONS //
-//	public void updateAnimation(float delta) {
-//		this.drawable.update(delta);
-//	}
-    
     /**
      * Updates animation state and bounds.
      * @param delta Time since last update
      */
     public void updateAnimation(float delta) {
-//		if (velocity.x != 0 || velocity.y != 0) {
-//			position.mulAdd(velocity, delta);
-//		}
         bounds.setPosition(position.x, position.y);
         if (drawable != null) {
             drawable.update(delta);
         }
     }
 
-//	public void setAnimationTime(float animationTime) {
-//		this.drawable.setAnimationTime(animationTime);
-//	}
-
-    //	public void changeAnimation(AnimationType animationType) {
-//		this.drawable.changeAnimation(animationType);
-//	}
     /**
      * Changes the current animation.
      * @param animationType New animation type
@@ -210,15 +189,6 @@ public abstract class GameObject {
     public Vector2 getVelocity() {
         return velocity;
     }
-    
-    // New animate
-//	public void draw(Batch batch) {
-//		if (drawable != null) {
-//			drawable.animate(batch, this.position, this.spriteSizes);
-//		}
-//		else if (texture != null) {
-//			batch.draw(texture, position.x, position.y, spriteSizes.x, spriteSizes.y);
-//		}
-//	}
+
     // END -- Methods
 }

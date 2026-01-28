@@ -278,11 +278,7 @@ public class GameController {
                         gameField.setTile((int) exit.position.x, (int) exit.position.y, TileType.EMPTY);
                         System.out.println("Door opened!");
                         hud.deleteArrow();
-                    } else {
-                        // System.out.println("Press O to open");
                     }
-                } else {
-                    // System.out.println("Locked. Find the key first.");
                 }
             } else {
                 if (GameObject.entitiesOverlap(player.getPlayerGameObject(), exit)) {

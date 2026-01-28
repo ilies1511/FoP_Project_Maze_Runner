@@ -124,7 +124,6 @@ public class EndlessModeScreen {
         TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(), "vampire-style");
         table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
         goToStatisticsButton.getLabel().setTouchable(Touchable.disabled);
-//        goToStatisticsButton.setDisabled(true);
         goToStatisticsButton.setDisabled(false);
         goToStatisticsButton.addListener(new ChangeListener() {
             @Override

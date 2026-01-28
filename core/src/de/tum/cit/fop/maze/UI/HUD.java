@@ -99,8 +99,6 @@ public class HUD {
 
         uiContainer = new Table();
         uiContainer.top();
-        //TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
-        //uiContainer.setBackground(signDrawable);
 
         heartTable = new Table();
 
@@ -126,7 +124,6 @@ public class HUD {
     public void createArrow() {
         if (!hasArrow) {
             arrow = new Image(game.getArrow());
-            //arrowTable.add(arrow).center().width(150).height(150);
             arrow.setOrigin(Align.center);
             arrow.setSize(100, 100);
             stage.addActor(arrow);

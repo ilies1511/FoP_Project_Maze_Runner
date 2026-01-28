@@ -71,10 +71,6 @@ public class MapRenderer {
         if (!isWallAt(f, x, y) || y == 0) {
             return false;
         }
-//		return !isWallAt(f, x + 1, y)
-//				&& !isWallAt(f, x - 1, y)
-//				&& !isWallAt(f, x, y - 1)
-//				&& !isWallAt(f, x, y + 1);
         return !isWallAt(f, x, y - 1)
                 && !isWallAt(f, x, y + 1);
     }
@@ -106,7 +102,6 @@ public class MapRenderer {
 
     private TextureRegion getWallFront_Small(TileType t) {
         return switch (t) {
-//			case WALL_1 -> game.getWallTile1();
             case WALL, WALL_1 ->
                     game.getWallTile1();
             case WALL_2 -> game.getWallTile2();

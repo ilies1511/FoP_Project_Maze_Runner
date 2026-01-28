@@ -50,8 +50,6 @@ public class MazeGenerator {
 
         exitCoords.x = width - 2;
         exitCoords.y = height - 2;
-//		float exitX = width - 2;
-//		float exitY = height - 2;
 
         while (gameField.getTile((int) exitCoords.x, (int) exitCoords.y) == TileType.WALL) {
             exitCoords.x--;

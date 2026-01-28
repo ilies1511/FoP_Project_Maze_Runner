@@ -401,7 +401,6 @@ public class GameScreen implements Screen {
         player.setCurrentKeys(0);
         player.setHasKeys(false);
 
-//		player.updateRequiredKeys();
         player.setRequiredKeys(newMap.getRequiredKeys());
 
 
