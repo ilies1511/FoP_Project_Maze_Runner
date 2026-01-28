@@ -57,7 +57,7 @@ public class LevelSelectionScreen {
         titleLabel.setFontScale(3.0f);
         levelSelectionTable.add(titleLabel).expandX().center().padTop(50).padBottom(80).row();
 
-        // create level buttons and make it scrollable (in case when too many levels)
+
         Table levelButtonsTable = new Table();
         ScrollPane scrollPane = new ScrollPane(levelButtonsTable, game.getSkin());
         scrollPane.setFadeScrollBars(false);
@@ -67,7 +67,6 @@ public class LevelSelectionScreen {
 
         levelSelectionTable.add(scrollPane).expand().fill().pad(20).row();
 
-        // back button
         TextButton backButton = new TextButton("Back", game.getSkin(), "vampire-style");
         levelSelectionTable.add(backButton).width(300).center().padBottom(50);
         backButton.getLabel().setTouchable(Touchable.disabled);
@@ -122,8 +121,6 @@ public class LevelSelectionScreen {
                         soundController.playUI_buttonClickSound(1);
                     }
                 });
-
-                // Add level selection logic
                 levelButton.addListener(new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {

@@ -238,7 +238,6 @@ public class HUD {
     public void renderPlayerHP() {
         int redHearts = player.getCurrentHealth();
         int emptyHearts = player.getMaxHealth() - player.getCurrentHealth();
-        // call every time after updating player health
         heartTable.clearChildren();
         for (int i = 0; i < redHearts; i++) {
             Image heart = new Image(game.getHeart());

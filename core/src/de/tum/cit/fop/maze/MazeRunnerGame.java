@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import de.tum.cit.fop.maze.Gameplay.GameMode;
+import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.UI.BackgroundStoryScreen;
 import de.tum.cit.fop.maze.UI.GameLostScreen;
 import de.tum.cit.fop.maze.UI.GameWonScreen;
@@ -304,9 +305,9 @@ public class MazeRunnerGame extends Game {
     /**
      * Switches to the game lost screen.
      */
-    public void goToGameLostScreen() {
+    public void goToGameLostScreen(int score) {
         disposeAllScreens();
-        this.setScreen(new GameLostScreen(this)); // Set the current screen to GameScreen
+        this.setScreen(new GameLostScreen(this, score)); // Set the current screen to GameScreen
     }
 
 

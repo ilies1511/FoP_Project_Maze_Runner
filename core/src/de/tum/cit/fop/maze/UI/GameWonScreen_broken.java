@@ -39,10 +39,10 @@ public class GameWonScreen_broken implements Screen {
         soundController = new SoundController();
         soundController.playMainMenuMusic(0.5f);
         var camera = new OrthographicCamera();
-        camera.zoom = 1f; // Set camera zoom for a closer view
+        camera.zoom = 1f;
 
-        Viewport viewport = new FitViewport(2000, 1200); // Create a viewport with the camera
-        stage = new Stage(viewport, game.getSpriteBatch()); // Create a stage for UI elements
+        Viewport viewport = new FitViewport(2000, 1200);
+        stage = new Stage(viewport, game.getSpriteBatch());
 
         Table table = new Table();
         Label label = new Label("Game Won", game.getSkin(), "vampire-style");
@@ -85,9 +85,9 @@ public class GameWonScreen_broken implements Screen {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // Update the stage
-        stage.draw(); // Draw the stage
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
     /**
@@ -98,7 +98,7 @@ public class GameWonScreen_broken implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // Update the stage viewport on resize
+        stage.getViewport().update(width, height, true);
     }
 
     /**
@@ -106,7 +106,6 @@ public class GameWonScreen_broken implements Screen {
      */
     @Override
     public void dispose() {
-        // Dispose of the stage when screen is disposed
         stage.dispose();
     }
 
