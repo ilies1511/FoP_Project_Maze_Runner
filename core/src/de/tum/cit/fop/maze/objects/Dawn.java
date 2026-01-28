@@ -3,7 +3,6 @@ package de.tum.cit.fop.maze.objects;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.Parser.GameField;
-import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Sunscreen;
 
@@ -36,10 +35,11 @@ public class Dawn extends GameObject {
 
     /**
      * Spawns a new dawn near the player position.
-     * @param delta Time delta
-     * @param gamefield Game field for placement
+     *
+     * @param delta          Time delta
+     * @param gamefield      Game field for placement
      * @param playerPosition Player's current position
-     * @param gameObjects List to add dawn to
+     * @param gameObjects    List to add dawn to
      */
     public static void spawnNewDawn(float delta, GameField gamefield, Vector2 playerPosition, List<GameObject> gameObjects) {
         // check if enough time left since last spawn
@@ -56,7 +56,7 @@ public class Dawn extends GameObject {
         int player_y_int = (int) playerPosition.y;
         for (int y = player_y_int - DAWN_SPAWN_RADIUS; y <= player_y_int + DAWN_SPAWN_RADIUS; y++) {
             for (int x = player_x_int - DAWN_SPAWN_RADIUS; x <= player_x_int + DAWN_SPAWN_RADIUS; x++) {
-                if (gamefield.getTile(x, y) == TileType.EMPTY) {
+                if (gamefield.getTile(x, y).is_empty()) {
                     candidatePositions.add(new Vector2(x, y));
                 }
             }
@@ -74,6 +74,7 @@ public class Dawn extends GameObject {
 
     /**
      * Updates dawn state and checks for removal.
+     *
      * @param delta Time delta
      * @return True if dawn should be removed
      */
@@ -98,6 +99,7 @@ public class Dawn extends GameObject {
 
     /**
      * Checks collision with player and applies damage.
+     *
      * @param player The player to check
      * @return True if player was damaged
      */

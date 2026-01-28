@@ -45,6 +45,10 @@ public enum TileType {
     DECOR_8,
     DECOR_9,
     DECOR_10,
-    CASKET
+    CASKET;
     // EMD--Story Mode
+
+    public boolean is_empty() {
+        return this == EMPTY || this == EMPTY_1 || this == EMPTY_2 || this == EMPTY_3 || this == EMPTY_4 || this == EMPTY_5 || this == EMPTY_6 || this == EMPTY_7 || this == DANCE_FLOOR;
+    }
 }
