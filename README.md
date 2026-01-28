@@ -114,6 +114,9 @@ The following table lists the default key bindings:
 #### Collectable Animations
 - **Key and Droppable Heart have their own animations** - The Key shines and the Heart flies.
 
+#### Enemy death animation
+- Upon death, an enemy's ghost appears
+
 ### Mandatory part
 
 All the mandatory requirements are implemented. Most important features (but not all) are listed below:
