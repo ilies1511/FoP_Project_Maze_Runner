@@ -2,7 +2,9 @@
 
 ![Project Logo or Screenshot](assets/mainMenu_background.png)
 
-"Vampire in Berghain" is a top-down maze-runner game where you play as a recently awakened vampire. Trapped in Berghain, a club in Berlin, you must navigate through dangerous mazes, spill the blood of mortals, and find the portal that leads back to your home in Transylvania.
+Welcome to **"Vampire in Berghain"**, a top-down maze-runner game where you play as a recently awakened vampire!
+
+Trapped in Berghain, a club in Berlin, you must navigate through dangerous mazes, spill the blood of mortals, and find the portal that leads back to your home in Transylvania.
 
 ## Quick Start (Getting Started)
 
@@ -41,25 +43,15 @@ This project is built using **Java 17** and the **libGDX** framework, organized 
 - **`desktop`**: The desktop launcher module using **LWJGL3**. It handles window creation and uses **gdx-nativefilechooser** for system file dialogs.
 - **`assets`**: Stores all game resources, including textures, sound effects, music, and map files.
 
-## JavaDoc
-[JavaDoc](https://ilies1511.github.io/FoP_Project_Maze_Runner/)
+## Documentation
 
-## How to Build/Export
-
-To create a standalone, runnable JAR file for the desktop version, execute the following command:
-
-```bash
-./gradlew desktop:dist
-```
-
-The generated JAR file will be located in the `desktop/build/libs/` directory. You can run it using:
-```bash
-java -jar desktop/build/libs/desktop-1.0.jar
-```
+Javadoc documentation can be found [here](https://ilies1511.github.io/FoP_Project_Maze_Runner/)
 
 ## Controls
 
-The following table lists the default key bindings for Maze Runner:
+Open **Settings** to view and modify keybindings.
+
+The following table lists the default key bindings:
 
 | Action | Key |
 | :--- | :--- |
@@ -77,24 +69,66 @@ The following table lists the default key bindings for Maze Runner:
 | **Zoom Out** | `-` |
 | **Pause / Menu** | `ESC` |
 
-## Game Mechanics
+## Feature overview
 
-"Vampire in Berghain" features different mechanics, such as: 
+### Story
+- Everything - Textures, UI, Entities, Music etc. made in **vampiric theme**
+- **Text stories** when starting the game and after beating the Story Mode
 
-1.  
+### Character
+- Movement, HP, XP
+- **Animated Attack** (Default keybinding: Space)
+- **Dash** (instead of running) - Locked by default, can be unlocked via **Progression Tree**. Default keybinding: LSHIFT.
+- **Invisibility** [**BONUS**] - Makes the player invisible to enemy pathfinding and immune to their attacks. Locked by default, can be unlocked via **Progression Tree**. Default keybinding: Q
+- **Flicker effect** [**BONUS**] - When getting hit by Enemy or Dawn, player starts flickering and becomes immune for a while.
+- **Environment**: Most of the events (Attacking, Getting Hit, Picking up keys, Player death, Player healing, Enemy death, Winning the level, Dashing) trigger sound effects.
 
-## Contributing
+### Obstacles
+- Traps: **Freeze Trap** (slows player down) and **Garlic Trap** (poisons player with periodic damage)
+- Dawn (AKA Third Obstacle): Sun Rays that follow you around dealing damage when getting hit by it.
+- Enemies:
+    - **Bouncer**: Intelligently chases the player and has multiple lives. Flees for a short time when damaged.
+    - **Junkie**: Moves randomly and attacks nearby players.
+    - **Tourist**: Dances idly but flees at high speed when startled by nearby deaths.
 
-Contributions are welcome! If you'd like to improve the game, please follow these steps:
+### Keys
+- Looks like a Berghain credit card. Has a "Shining" animation effect.
 
-1. **Fork** the repository.
-2. Create a new **branch** (`git checkout -b feature/amazing-feature`).
-3. **Commit** your changes (`git commit -m 'Add some amazing feature'`).
-4. **Push** to the branch (`git push origin feature/amazing-feature`).
-5. Open a **Pull Request**.
+### HUD
+- **Hearts**, **XP**
+- **Arrow** pointing to exit shows up when all the keys are collected
 
-Please ensure your code follows the existing style and all tests pass before submitting.
+### Effects
+[**Bonus**]
+- Effects and their duration are shown in the HUD
+- Killing an enemy triggers a short "**Thirst**" effect that boosts speed
+- Freeze Trap applies "**Freeze**" effect that slows you down
+- Garlic Trap applies "**Poisoned**" effects that slightly slows you down and deals periodic damage
+- Invincibility pill applies "**Invincibility**" effect
 
+### Collectibles
+- Killing an enemy drops a **Heart** or an **Invincibility Pill** on the ground
+- Keys and Lives have their own animations [**BONUS**]
+
+### Game Modes
+- **Story Mode** - has a predefined set of levels.
+- **Levels Mode** - loads all the levels from .properties files in maps/ folder.
+- **Endless Mode** - randomized **procedural generation** of levels.
+
+### Advanced Game Systems
+- **Saves and loads**. For Story and Endless modes. Saves are triggered whenever you go back to main menu.
+- **Achievements**. Press on the **Golden Cup** in the main menu to view your achievements.
+- **Developer Console**. Default keybinding - '**/**'.
+    - Examples:
+        - `setXP:100` (Sets player XP to 100)
+        - `getKeys` (Collects all required keys)
+- **Leaderboard**. Endless Mode has a **Statistics** screen with your records.
+- **Progression Tree**. Default keybinding - '**I**'.
+
+### Advanced Camera
+[[**Bonus**]]
+- **Cinematic camera** that follows a player with a slight delay (LERP)
+- Getting hit by Enemy or Dawn triggers **Camera Shake** effect.
 
 ## Architecture Overview
 ![UML Diagram](docs_not_javadocs/UML/mermaid-diagram-2026-01-23-181557.svg)
