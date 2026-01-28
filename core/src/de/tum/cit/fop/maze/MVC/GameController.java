@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.GameScreen;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.Gameplay.MazeGenerator;
 import de.tum.cit.fop.maze.Gameplay.WaveManager;
 import de.tum.cit.fop.maze.MazeRunnerGame;
@@ -97,7 +98,6 @@ public class GameController {
                 } else if (currentAnim == game.getCharacterAttackRightAnimation()) {
                     player.changeAnimation(AnimationType.CHARACTER_RIGHT);
                 } else {
-                    // fallback
                     player.changeAnimation(AnimationType.CHARACTER_DOWN);
                 }
             } else {
@@ -348,10 +348,15 @@ public class GameController {
     }
 
     private void playerDie() {
+        int score = 0;
         player.die();
         soundController.dispose();
         gameScreenSoundController.dispose();
-        game.goToGameLostScreen();
+        if(game.getGameMode() == GameMode.ENDLESS_MODE){
+            score = waveManager.getScore();
+        }
+
+        game.goToGameLostScreen(score);
     }
 
     /**

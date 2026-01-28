@@ -88,7 +88,6 @@ public class PausedOverlay {
         goToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // Save the game before going to menu
                 gameScreen.saveGame();
                 soundController.dispose();
                 game.goToMenu();

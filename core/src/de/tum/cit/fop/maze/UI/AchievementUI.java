@@ -40,7 +40,6 @@ public class AchievementUI {
         this.soundController = soundController;
 
         table = new Table();
-        //table.setFillParent(true);
         stage.addActor(table);
         trophy = new Cell<>();
         image = new Image(game.getTrophy());

@@ -15,9 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import de.tum.cit.fop.maze.Gameplay.WaveManager;
+import de.tum.cit.fop.maze.MVC.GameController;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.SoundController;
+
+import java.util.List;
 
 /**
  * Screen displayed when the player loses the game.
@@ -33,7 +35,7 @@ public class GameLostScreen implements Screen {
      *
      * @param game The main game instance.
      */
-    public GameLostScreen(MazeRunnerGame game) {
+    public GameLostScreen(MazeRunnerGame game, int score) {
         this.game = game;
         Gdx.input.setCursorCatched(false);
         Gdx.input.setInputProcessor(stage);
@@ -41,14 +43,15 @@ public class GameLostScreen implements Screen {
         var camera = new OrthographicCamera();
         camera.zoom = 1f;
 
-        Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight()); // Create a viewport with the camera
+        Viewport viewport = new FitViewport(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
         stage = new Stage(viewport, game.getSpriteBatch());
 
         Table table = new Table();
+        stage.addActor(table);
         Label label = new Label("Game Lost", game.getSkin(), "vampire-style");
         label.setFontScale(1.7f);
         table.setFillParent(true);
-        table.center();
+        table.top();
         table.add(label).expandX().center().padTop(50).padBottom(80).row();
 
 
@@ -56,12 +59,8 @@ public class GameLostScreen implements Screen {
 
         switch (game.getGameMode()){
             case ENDLESS_MODE:
-                //TODO score
-                Label score = new Label("Your score: ", game.getSkin(), "vampire-style");
-                label.setFontScale(1.7f);
-                table.setFillParent(true);
-                table.center();
-                table.add(score).expandX().center().padTop(50).padBottom(80).row();
+                Label scoreLbl = new Label("Your score: " + score, game.getSkin(), "vampire-style");
+                table.add(scoreLbl).expandX().center().padTop(50).padBottom(80).row();
 
 
                 table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
@@ -86,6 +85,7 @@ public class GameLostScreen implements Screen {
                         game.goToMenu();
                     }
                 });
+            break;
             case STORY_MODE:
                 table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
                 goToMainMenu.getLabel().setTouchable(Touchable.disabled);
@@ -109,6 +109,7 @@ public class GameLostScreen implements Screen {
                         game.goToMenu();
                     }
                 });
+                break;
             case LEVELS_MODE:
                 table.add(goToMainMenu).width(300).padLeft(50).padBottom(50).center();
                 goToMainMenu.getLabel().setTouchable(Touchable.disabled);
@@ -132,6 +133,7 @@ public class GameLostScreen implements Screen {
                         game.goToMenu();
                     }
                 });
+                break;
 
         }
 
@@ -140,8 +142,8 @@ public class GameLostScreen implements Screen {
 
 
 
-        stage.addActor(table);
     }
+    
 
     /**
      * Renders the screen.
@@ -150,9 +152,9 @@ public class GameLostScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // Update the stage
-        stage.draw(); // Draw the stage
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
     /**
@@ -163,7 +165,7 @@ public class GameLostScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // Update the stage viewport on resize
+        stage.getViewport().update(width, height, true);
     }
 
     /**
@@ -171,7 +173,6 @@ public class GameLostScreen implements Screen {
      */
     @Override
     public void dispose() {
-        // Dispose of the stage when screen is disposed
         stage.dispose();
     }
 
@@ -180,7 +181,7 @@ public class GameLostScreen implements Screen {
      */
     @Override
     public void show() {
-        // Set the input processor so the stage can receive input events
+
         Gdx.input.setInputProcessor(stage);
     }
 

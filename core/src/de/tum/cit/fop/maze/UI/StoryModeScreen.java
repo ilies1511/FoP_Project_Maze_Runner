@@ -59,7 +59,6 @@ public class StoryModeScreen {
         storyTable.add(continueGame).width(300).left().padLeft(50).padBottom(50);
         continueGame.getLabel().setTouchable(Touchable.disabled);
 
-        // Check if save file exists and enable button accordingly
         continueGame.setDisabled(!SaveManager.hasSave(true));
 
         continueGame.addListener(new ClickListener() {
@@ -82,7 +81,6 @@ public class StoryModeScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (!continueGame.isDisabled()) {
-                    // Load the saved game
                     GameScreenMemento memento = SaveManager.loadGame(true);
                     if (memento != null) {
                         soundController.dispose();
@@ -154,11 +152,11 @@ public class StoryModeScreen {
         stage.addActor(confirmationTable);
         confirmationTable.top();
         Label confLabel = new Label("Are you sure you want to start a new game?", game.getSkin(), "vampire-style");
-        confLabel.setFontScale(2.7f);
+        confLabel.setFontScale(2f);
         confirmationTable.add(confLabel).expandX().center().padTop(50).padBottom(400).row();
 
         TextButton yes = new TextButton("Yes", game.getSkin(), "vampire-style");
-        confirmationTable.add(yes).width(300).left().padLeft(50).padBottom(50);
+        confirmationTable.add(yes).width(300).padBottom(50).row();
         yes.getLabel().setTouchable(Touchable.disabled);
         yes.addListener(new ClickListener() {
             @Override
@@ -181,7 +179,7 @@ public class StoryModeScreen {
             }
         });
         TextButton no = new TextButton("No", game.getSkin(), "vampire-style");
-        confirmationTable.add(no).width(300).left().padLeft(50).padBottom(50);
+        confirmationTable.add(no).width(300).padBottom(50);
         no.getLabel().setTouchable(Touchable.disabled);
         no.addListener(new ClickListener() {
             @Override
@@ -202,6 +200,8 @@ public class StoryModeScreen {
                 backToStory();
             }
         });
+        confirmationTable.invalidateHierarchy();
+
     }
 
     /**

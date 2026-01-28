@@ -57,7 +57,6 @@ public class EndlessModeScreen {
         table.add(continueGame).width(300).left().padLeft(50).padBottom(50);
         continueGame.getLabel().setTouchable(Touchable.disabled);
 
-        // Check if save file exists and enable button accordingly
         continueGame.setDisabled(!SaveManager.hasSave(false));
 
         continueGame.addListener(new ClickListener() {
@@ -80,7 +79,6 @@ public class EndlessModeScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (!continueGame.isDisabled()) {
-                    // Load the saved game
                     GameScreenMemento memento = SaveManager.loadGame(false);
                     if (memento != null) {
                         soundController.dispose();
@@ -124,7 +122,6 @@ public class EndlessModeScreen {
         TextButton goToStatisticsButton = new TextButton("Statistics", game.getSkin(), "vampire-style");
         table.add(goToStatisticsButton).width(300).left().padLeft(50).padBottom(50);
         goToStatisticsButton.getLabel().setTouchable(Touchable.disabled);
-//        goToStatisticsButton.setDisabled(true);
         goToStatisticsButton.setDisabled(false);
         goToStatisticsButton.addListener(new ChangeListener() {
             @Override

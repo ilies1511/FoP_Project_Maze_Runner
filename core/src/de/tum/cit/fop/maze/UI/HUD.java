@@ -99,8 +99,6 @@ public class HUD {
 
         uiContainer = new Table();
         uiContainer.top();
-        //TextureRegionDrawable signDrawable = new TextureRegionDrawable(game.getWoodenSign());
-        //uiContainer.setBackground(signDrawable);
 
         heartTable = new Table();
 
@@ -126,7 +124,6 @@ public class HUD {
     public void createArrow() {
         if (!hasArrow) {
             arrow = new Image(game.getArrow());
-            //arrowTable.add(arrow).center().width(150).height(150);
             arrow.setOrigin(Align.center);
             arrow.setSize(100, 100);
             stage.addActor(arrow);
@@ -241,7 +238,6 @@ public class HUD {
     public void renderPlayerHP() {
         int redHearts = player.getCurrentHealth();
         int emptyHearts = player.getMaxHealth() - player.getCurrentHealth();
-        // call every time after updating player health
         heartTable.clearChildren();
         for (int i = 0; i < redHearts; i++) {
             Image heart = new Image(game.getHeart());

@@ -41,8 +41,9 @@ public class SettingsScreen {
      * @param menuScreen The main menu screen for navigation.
      */
     public SettingsScreen(Stage stage, MazeRunnerGame game, MenuScreen menuScreen) {
+
         var camera = new OrthographicCamera();
-        camera.zoom = 1f; // Set camera zoom for a closer view
+        camera.zoom = 1f;
 
 
         this.soundController = menuScreen.getSoundController();
@@ -65,7 +66,6 @@ public class SettingsScreen {
         label.setFontScale(3.0f);
         table.add(label).expandX().center().colspan(4).row();
 
-        // Back to menu button
         TextButton goToMenuButton = new TextButton("Back to menu", game.getSkin(), "vampire-style");
         table.add(goToMenuButton).width(400).colspan(4).row();
         goToMenuButton.getLabel().setTouchable(Touchable.disabled);
@@ -86,11 +86,11 @@ public class SettingsScreen {
         goToMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                menuScreen.goBackToMenu(); // Change to the game screen when button is pressed
+                menuScreen.goBackToMenu();
             }
         });
 
-        // Key Binding buttons
+
         GameSettings settings = game.getGameInfo().getSettings();
 
         addKeyBindingButton("Move left",
@@ -163,6 +163,7 @@ public class SettingsScreen {
                             game.getGameInfo().getSettings().setResolutionHeight(Integer.parseInt(height));
                             Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
                             stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true); // Update the stage viewport on resize
+                            table.invalidateHierarchy();
                         } catch (Exception e) {
                             resolutionHeight.setText("");
                             System.out.println("not an int: " + e.getMessage());
@@ -195,6 +196,8 @@ public class SettingsScreen {
                             game.getGameInfo().getSettings().setResolutionWidth(Integer.parseInt(width));
                             Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
                             stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true);
+                            table.invalidateHierarchy();
+                           // game.goToMenu();
                         } catch (Exception e) {
                             resolutionWidth.setText("");
                             System.out.println("not an int: " + e.getMessage());
@@ -217,11 +220,13 @@ public class SettingsScreen {
                     Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
                     stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true); // Update the stage viewport on resize
                     fsButton.setText("Mode: Windowed");
+
                 } else {
                     Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
                     Gdx.graphics.setFullscreenMode(currentMode);
                     stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true); // Update the stage viewport on resize
                     fsButton.setText("Mode: Fullscreen");
+
                 }
             }
         });
@@ -251,7 +256,7 @@ public class SettingsScreen {
         restoreDefaultSettingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.getGameInfo().restoreDefaultSettings(); // Restore default settings when pressed
+                game.getGameInfo().restoreDefaultSettings();
                 updateKeyBindingButtons();
                 resolutionHeight.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionHeight()));
                 resolutionWidth.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionWidth()));
