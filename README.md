@@ -109,7 +109,8 @@ The following table lists the default key bindings:
 - Default keybinding: ```Q```
 
 #### Flicker effect
-- Upon getting hit by an Enemy or Dawn (sun beam), Player starts flickering and invincible to Enemies and Dawn.
+- Upon getting hit by an **Enemy** or **Dawn** (sun beam), Player starts flickering and invincible to Enemies and Dawn.
+- **Bouncer** enemy also starts flickering upon getting hit the first time.
 
 #### Collectable Animations
 - **Key and Droppable Heart have their own animations** - The Key shines and the Heart flies.
