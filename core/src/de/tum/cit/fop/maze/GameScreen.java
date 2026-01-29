@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -28,6 +29,8 @@ import de.tum.cit.fop.maze.game_saves.mementos.GameFieldMemento;
 import de.tum.cit.fop.maze.game_saves.mementos.GameScreenMemento;
 import de.tum.cit.fop.maze.game_saves.mementos.PlayerMemento;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Junkie;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Tourist;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
 
@@ -184,11 +187,14 @@ public class GameScreen implements Screen {
 
         if (gameMode == GameMode.LEVELS_MODE) {
             this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
-            addTestObjects();
+//            addTestObjects();
         } else if (gameMode == GameMode.ENDLESS_MODE) {
             this.gameField = MazeGenerator.generateMaze(15, 15, game);
         } else if (gameMode == GameMode.STORY_MODE) {
             this.gameField = MazeParser.loadMap(MazeRunnerGame.STORY_LEVELS[0], this.game);
+	        if (this.gameField != null) {
+		        spawnRandomEnemies(35);
+	        }
         }
         if (this.gameField == null) {
             System.err.println("CRITICAL: Map failed to load for mode " + gameMode);
@@ -383,6 +389,11 @@ public class GameScreen implements Screen {
         this.gameField = newMap;
         gameController.setGameField(newMap);
 
+	    if (newMap != null) {
+		    int enemyCount = 40 + (currentStoryLevelIndex * 2);
+		    spawnRandomEnemies(enemyCount);
+	    }
+
         if (newMap != null) {
             Vector2 start = gameField.getPlayerStartPos();
             if (start != null) {
@@ -457,4 +468,62 @@ public class GameScreen implements Screen {
             e.printStackTrace();
         }
     }
+
+
+	private boolean isSafeToPlace(GameField gameField, TileType tile) {
+		return tile != TileType.WALL &&
+				tile != TileType.WALL_1 &&
+				tile != TileType.WALL_2 &&
+				tile != TileType.WALL_3 &&
+				tile != TileType.WALL_4 &&
+				tile != TileType.WALL_5 &&
+				tile != TileType.WALL_6 &&
+				tile != TileType.WALL_7 &&
+				tile != TileType.WALL_8 &&
+				tile != TileType.EXIT &&
+				tile != TileType.DECOR_1 &&
+				tile != TileType.DECOR_2 &&
+				tile != TileType.DECOR_3 &&
+				tile != TileType.DECOR_4 &&
+				tile != TileType.DECOR_5 &&
+				tile != TileType.DECOR_6 &&
+				tile != TileType.DECOR_7 &&
+				tile != TileType.DECOR_8 &&
+				tile != TileType.DECOR_9 &&
+				tile != TileType.DECOR_10 &&
+				tile != TileType.CASKET &&
+				tile != TileType.ENTRY_POINT;
+	}
+
+	/**
+	 * Randomly spawns a specific number of enemies on valid floor tiles.
+	 * @param count The number of enemies to spawn.
+	 */
+	private void spawnRandomEnemies(int count) {
+		java.util.Random random = new java.util.Random();
+		int spawned = 0;
+		int attempts = 0;
+
+		while (spawned < count && attempts < 1000) {
+			int x = random.nextInt(gameField.getWidth());
+			int y = random.nextInt(gameField.getHeight());
+
+			TileType tile = gameField.getTile(x, y);
+
+			if (isSafeToPlace(gameField, tile)) {
+				Vector2 pos = new Vector2(x, y);
+				int roll = MathUtils.random(99);
+
+				if (roll < 10) {
+					gameField.addGameObject(new Bouncer(pos));
+				} else if (roll < 50) {
+					gameField.addGameObject(new Tourist(pos));
+				} else {
+					gameField.addGameObject(new Junkie(pos));
+				}
+				spawned++;
+			}
+			attempts++;
+		}
+	}
 }
