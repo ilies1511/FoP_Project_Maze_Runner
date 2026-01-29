@@ -143,7 +143,7 @@ public class SettingsScreen {
                 () -> game.getGameInfo().getSettings().getZoomOutKey(),
                 (code) -> game.getGameInfo().getSettings().setZoomOutKey(code));
 
-        table.add(new Label("Resolution Height:", game.getSkin(), "vampire-style")).width(400);
+        table.add(new Label("Window Height:", game.getSkin(), "vampire-style")).width(400).padLeft(200);
 
         TextField resolutionHeight = new TextField("", game.getSkin(), "default");
         TextField.TextFieldStyle style = resolutionHeight.getStyle();
@@ -162,7 +162,7 @@ public class SettingsScreen {
                         try {
                             game.getGameInfo().getSettings().setResolutionHeight(Integer.parseInt(height));
                             Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
-                            stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true); // Update the stage viewport on resize
+                            stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
                             table.invalidateHierarchy();
                         } catch (Exception e) {
                             resolutionHeight.setText("");
@@ -175,9 +175,9 @@ public class SettingsScreen {
                 }
             }
         });
-        table.add(resolutionHeight).width(400);
+        table.add(resolutionHeight).width(200);
 
-        table.add(new Label("Resolution Width:", game.getSkin(), "vampire-style")).width(400);
+        table.add(new Label("Window Width:", game.getSkin(), "vampire-style")).width(400);
 
         TextField resolutionWidth = new TextField("", game.getSkin(), "default");
         style = resolutionWidth.getStyle();
@@ -195,7 +195,7 @@ public class SettingsScreen {
                         try {
                             game.getGameInfo().getSettings().setResolutionWidth(Integer.parseInt(width));
                             Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
-                            stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true);
+                            stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
                             table.invalidateHierarchy();
                         } catch (Exception e) {
                             resolutionWidth.setText("");
@@ -208,7 +208,7 @@ public class SettingsScreen {
                 }
             }
         });
-        table.add(resolutionWidth).width(400).row();
+        table.add(resolutionWidth).width(200).row();
 
         TextButton fsButton = new TextButton("Mode: Windowed", skin, "vampire-style");
 
@@ -217,13 +217,15 @@ public class SettingsScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (Gdx.graphics.isFullscreen()) {
                     Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
-                    stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true); // Update the stage viewport on resize
+                    stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+                    table.invalidateHierarchy();
                     fsButton.setText("Mode: Windowed");
 
                 } else {
                     Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
                     Gdx.graphics.setFullscreenMode(currentMode);
-                    stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true); // Update the stage viewport on resize
+                    stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+                    table.invalidateHierarchy();
                     fsButton.setText("Mode: Fullscreen");
 
                 }
@@ -260,7 +262,9 @@ public class SettingsScreen {
                 resolutionHeight.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionHeight()));
                 resolutionWidth.setText(Integer.toString(game.getGameInfo().getSettings().getResolutionWidth()));
                 Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
-                stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true);
+                stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+
             }
         });
     }
