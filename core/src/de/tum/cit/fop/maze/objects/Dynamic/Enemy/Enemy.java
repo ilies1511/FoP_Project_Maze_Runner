@@ -98,7 +98,7 @@ public abstract class Enemy extends GameObject implements Enemies {
      * @return Collectable drop
      */
     public Collectable onDeath(Player player) {
-        player.receiveXP(20);
+        player.receiveXP(4);
         player.addOrReapplyEffect(new Buff(player, 2f));
         Collectable drop = CollectableCreator.createRandomCollectable(this.position);
         player.setKills(player.getKills() + 1);
