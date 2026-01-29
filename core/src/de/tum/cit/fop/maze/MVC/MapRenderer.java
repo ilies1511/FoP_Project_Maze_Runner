@@ -26,9 +26,9 @@ public class MapRenderer {
 	private TextureRegion getExplicitFloorTexture(TileType tile) {
 		return switch (tile) {
 			case EMPTY_1 -> game.getEmptyTile1();
-			case EMPTY_2 -> game.getEmptyTile2();
+			case EMPTY, EMPTY_2 -> game.getEmptyTile2();
 			case EMPTY_3 -> game.getEmptyTile3();
-			case EMPTY, EMPTY_4 -> game.getEmptyTile4();
+			case EMPTY_4 -> game.getEmptyTile4();
 			case EMPTY_5 -> game.getEmptyTile5();
 			case EMPTY_6 -> game.getEmptyTile6();
 			case EMPTY_7 -> game.getEmptyTile7();
@@ -123,11 +123,11 @@ public class MapRenderer {
 
     private TextureRegion getWallFront(TileType t) {
         return switch (t) {
-            case WALL, WALL_1 ->
+            case WALL_1 ->
                     game.getWallHigh1();
             case WALL_2 -> game.getWallHigh2();
             case WALL_3 -> game.getWallHigh3();
-            case WALL_4 -> game.getWallHigh4();
+            case WALL, WALL_4 -> game.getWallHigh4();
             case WALL_5 -> game.getWallHigh5();
             case WALL_6 -> game.getWallHigh6();
             case WALL_7 -> game.getWallHigh7();
@@ -137,11 +137,11 @@ public class MapRenderer {
 
     private TextureRegion getWallFront_Small(TileType t) {
         return switch (t) {
-            case WALL, WALL_1 ->
+            case WALL_1 ->
                     game.getWallTile1();
             case WALL_2 -> game.getWallTile2();
             case WALL_3 -> game.getWallTile3();
-            case WALL_4 -> game.getWallTile4();
+            case WALL, WALL_4 -> game.getWallTile4();
             case WALL_5, WALL_6, WALL_7, WALL_8 -> game.getWallTile8();
             default -> game.getWallTile1();
         };

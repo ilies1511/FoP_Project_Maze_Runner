@@ -148,6 +148,7 @@ public class MapConverter {
                 {"maps/tmp/03.txt", "maps/story_mode/03.properties"},
                 {"maps/tmp/04.txt", "maps/story_mode/04.properties"},
                 {"maps/tmp/05.txt", "maps/story_mode/05.properties"},
+                {"maps/tmp/06.txt", "maps/story_mode/06.properties"},
                 {"maps/tmp/berghain_main_big.txt", "maps/story_mode/berghain_main_big.properties"},
                 {"maps/tmp/berghain_darkroom.txt", "maps/story_mode/berghain_darkroom.properties"},
 ////				{"maps/tmp/berghain_main.txt", "maps/story_mode/berghain_main.properties"},
