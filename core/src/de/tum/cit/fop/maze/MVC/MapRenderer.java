@@ -5,8 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
+import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.traps.Trap;
 
 /**
  * Handles rendering of the game field including floors, walls, and objects.
@@ -23,9 +26,9 @@ public class MapRenderer {
 	private TextureRegion getExplicitFloorTexture(TileType tile) {
 		return switch (tile) {
 			case EMPTY_1 -> game.getEmptyTile1();
-			case EMPTY_2 -> game.getEmptyTile2();
+			case EMPTY, EMPTY_2 -> game.getEmptyTile2();
 			case EMPTY_3 -> game.getEmptyTile3();
-			case EMPTY, EMPTY_4 -> game.getEmptyTile4();
+			case EMPTY_4 -> game.getEmptyTile4();
 			case EMPTY_5 -> game.getEmptyTile5();
 			case EMPTY_6 -> game.getEmptyTile6();
 			case EMPTY_7 -> game.getEmptyTile7();
@@ -120,11 +123,11 @@ public class MapRenderer {
 
     private TextureRegion getWallFront(TileType t) {
         return switch (t) {
-            case WALL, WALL_1 ->
+            case WALL_1 ->
                     game.getWallHigh1();
             case WALL_2 -> game.getWallHigh2();
             case WALL_3 -> game.getWallHigh3();
-            case WALL_4 -> game.getWallHigh4();
+            case WALL, WALL_4 -> game.getWallHigh4();
             case WALL_5 -> game.getWallHigh5();
             case WALL_6 -> game.getWallHigh6();
             case WALL_7 -> game.getWallHigh7();
@@ -134,11 +137,11 @@ public class MapRenderer {
 
     private TextureRegion getWallFront_Small(TileType t) {
         return switch (t) {
-            case WALL, WALL_1 ->
+            case WALL_1 ->
                     game.getWallTile1();
             case WALL_2 -> game.getWallTile2();
             case WALL_3 -> game.getWallTile3();
-            case WALL_4 -> game.getWallTile4();
+            case WALL, WALL_4 -> game.getWallTile4();
             case WALL_5, WALL_6, WALL_7, WALL_8 -> game.getWallTile8();
             default -> game.getWallTile1();
         };
@@ -215,6 +218,20 @@ public class MapRenderer {
         }
     }
 
+	/**
+	 * Determines the rendering layer order.
+	 * Higher numbers are drawn LAST (on top).
+	 */
+	private int getRenderLayer(GameObject obj) {
+		if (obj instanceof Trap || obj instanceof Collectable) {
+			return 0;
+		}
+		if (obj instanceof Player || obj instanceof Enemy) {
+			return 1;
+		}
+		return 0;
+	}
+
     /**
      * Renders the complete game scene including field, player, and objects.
      * @param gameField The game field to render
@@ -228,7 +245,25 @@ public class MapRenderer {
         drawWalls2_5D(gameField);
         drawDecors(gameField);
 
-        gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
+//        gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
+	    gameField.getGameObjects().sort((o1, o2) -> {
+		    float y1 = o1.getPosition().y;
+		    float y2 = o2.getPosition().y;
+
+		    int tileY1 = (int) Math.floor(y1);
+		    int tileY2 = (int) Math.floor(y2);
+
+		    if (tileY1 != tileY2) {
+			    return Float.compare(y2, y1);
+		    }
+		    int layer1 = getRenderLayer(o1);
+		    int layer2 = getRenderLayer(o2);
+		    if (layer1 != layer2) {
+			    return Integer.compare(layer1, layer2);
+		    }
+		    return Float.compare(y2, y1);
+	    });
+
         for (GameObject obj : gameField.getGameObjects()) {
             obj.animate(batch);
         }

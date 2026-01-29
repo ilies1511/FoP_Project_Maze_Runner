@@ -162,7 +162,7 @@ public abstract class GameObject {
     }
 
     // We can call it draw --> more intuative to use in GameScreen
-    /**
+	/**
      * Renders the object using its drawable or texture.
      * @param batch Sprite batch for rendering
      */
@@ -190,5 +190,8 @@ public abstract class GameObject {
         return velocity;
     }
 
-    // END -- Methods
+	public Vector2 getPosition() {
+		return position;
+	}
+	// END -- Methods
 }

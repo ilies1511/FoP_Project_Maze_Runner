@@ -29,13 +29,14 @@ import java.util.List;
 public class MazeRunnerGame extends Game {
     /** Array of file paths for story mode levels. */
     public static final String[] STORY_LEVELS = {
-//            "story_mode/berghain_main_big.properties", // 00
-            "story_mode/02.properties",
-            "story_mode/01.properties",
-            "story_mode/03.properties",
-            "story_mode/04.properties", // geil
-            "story_mode/berghain_darkroom.properties", // geil
+            "story_mode/berghain_main_big.properties", // 00 ---> 1.
+            "story_mode/06.properties", // Berhain tags --> Dance Area 2.
+            "story_mode/02.properties", // DanceFloor aber scheizze
+            "story_mode/04.properties", // geil --> black floor + full beton
+            "story_mode/01.properties", // --> Pflaster boden
+            "story_mode/03.properties", // Aehlicher Aufbau zu 01
 //            "story_mode/05.properties",// Sheize
+            "story_mode/berghain_darkroom.properties", // geil
 //            "story_mode/berghain_panorama.properties", //  Kreuz OK
 //			"story_mode/berghain_eg.properties", // Test file
 //            "story_mode/berghain_main.properties", //scheize

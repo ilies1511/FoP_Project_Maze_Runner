@@ -6,6 +6,7 @@ import de.tum.cit.fop.maze.objects.collectables.Key;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -213,4 +214,35 @@ public class GameField {
         }
         return false;
     }
+
+	/**
+	 * Finds a random tile that is not solid, not the entry/exit, and not occupied by another object.
+	 * @return A Vector2 coordinate of an empty tile, or null if no space is available.
+	 */
+	public Vector2 getRandomEmptySpawnTile() {
+		List<Vector2> validTiles = new ArrayList<>();
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				TileType type = getTile(x, y);
+
+				if (!isSolid(type) && type != TileType.ENTRY_POINT && type != TileType.EXIT) {
+					validTiles.add(new Vector2(x, y));
+				}
+			}
+		}
+		if (playerStartPos != null) {
+			validTiles.removeIf(pos -> pos.dst(playerStartPos) < 0.5f);
+		}
+		for (GameObject obj : gameObjects) {
+			validTiles.removeIf(pos -> pos.dst(obj.getPosition()) < 0.5f);
+		}
+		if (validTiles.isEmpty()) {
+			System.err.println("Warning: No empty tiles found for spawning!");
+			return null;
+		}
+		Random random = new Random();
+		return validTiles.get(random.nextInt(validTiles.size()));
+	}
+
 }

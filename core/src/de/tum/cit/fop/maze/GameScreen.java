@@ -31,8 +31,12 @@ import de.tum.cit.fop.maze.game_saves.mementos.PlayerMemento;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Junkie;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Tourist;
+import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
 import de.tum.cit.fop.maze.objects.collectables.Key;
+import de.tum.cit.fop.maze.objects.traps.TrapCreator;
+
+import java.util.function.Function;
 
 /**
  * The GameScreen class is responsible for rendering the gameplay screen.
@@ -193,6 +197,8 @@ public class GameScreen implements Screen {
         } else if (gameMode == GameMode.STORY_MODE) {
             this.gameField = MazeParser.loadMap(MazeRunnerGame.STORY_LEVELS[0], this.game);
 	        if (this.gameField != null) {
+				spawnObjects(1, pos -> new Key(pos));
+		        spawnObjects(5, pos -> TrapCreator.createRandomTrap(pos));
 		        spawnRandomEnemies(35);
 	        }
         }
@@ -391,6 +397,8 @@ public class GameScreen implements Screen {
 
 	    if (newMap != null) {
 		    int enemyCount = 40 + (currentStoryLevelIndex * 2);
+		    spawnObjects(1, pos -> new Key(pos));
+		    spawnObjects(5, pos -> TrapCreator.createRandomTrap(pos));
 		    spawnRandomEnemies(enemyCount);
 	    }
 
@@ -524,6 +532,24 @@ public class GameScreen implements Screen {
 				spawned++;
 			}
 			attempts++;
+		}
+	}
+
+	/**
+	 * Generic method to spawn GameObjects on empty tiles safely.
+	 * @param count Number of objects to spawn
+	 * @param objectFactory Lambda to create the object
+	 */
+	private void spawnObjects(int count, Function<Vector2, GameObject> objectFactory) {
+		for (int i = 0; i < count; i++) {
+			Vector2 position = gameField.getRandomEmptySpawnTile();
+
+			if (position != null) {
+				GameObject obj = objectFactory.apply(position);
+				gameField.addGameObject(obj);
+			} else {
+				break;
+			}
 		}
 	}
 }
