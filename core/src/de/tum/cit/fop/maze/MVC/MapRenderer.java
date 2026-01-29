@@ -20,6 +20,38 @@ public class MapRenderer {
         this.batch = game.getSpriteBatch();
     }
 
+	private TextureRegion getExplicitFloorTexture(TileType tile) {
+		return switch (tile) {
+			case EMPTY_1 -> game.getEmptyTile1();
+			case EMPTY_2 -> game.getEmptyTile2();
+			case EMPTY_3 -> game.getEmptyTile3();
+			case EMPTY, EMPTY_4 -> game.getEmptyTile4();
+			case EMPTY_5 -> game.getEmptyTile5();
+			case EMPTY_6 -> game.getEmptyTile6();
+			case EMPTY_7 -> game.getEmptyTile7();
+			case DANCE_FLOOR -> game.getDanceFloorTile();
+			default -> null;
+		};
+	}
+
+	private TextureRegion inferFloorFromNeighbors(GameField field, int x, int y) {
+		int[][] offsets = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+
+		for (int[] offset : offsets) {
+			int nx = x + offset[0];
+			int ny = y + offset[1];
+
+			if (nx >= 0 && nx < field.getWidth() && ny >= 0 && ny < field.getHeight()) {
+				TileType neighbor = field.getTile(nx, ny);
+				TextureRegion neighborTex = getExplicitFloorTexture(neighbor);
+				if (neighborTex != null) {
+					return neighborTex;
+				}
+			}
+		}
+		return null;
+	}
+
     private boolean isDecor(TileType t) {
         return t == TileType.DECOR_1
                 || t == TileType.DECOR_2
@@ -154,21 +186,31 @@ public class MapRenderer {
             for (int x = 0; x < gameField.getWidth(); x++) {
                 TileType tile = gameField.getTile(x, y);
 
-                TextureRegion floor = game.getEmptyTile4(); 
+//                TextureRegion floor = game.getEmptyTile4();
+//
+//                switch (tile) {
+//                    case EMPTY_1 -> floor = game.getEmptyTile1();
+//                    case EMPTY_2 -> floor = game.getEmptyTile2();
+//                    case EMPTY_3 -> floor = game.getEmptyTile3();
+//                    case EMPTY, EMPTY_4 -> floor = game.getEmptyTile4();
+//                    case EMPTY_5 -> floor = game.getEmptyTile5();
+//                    case EMPTY_6 -> floor = game.getEmptyTile6();
+//                    case EMPTY_7 -> floor = game.getEmptyTile7();
+//                    case DANCE_FLOOR -> floor = game.getDanceFloorTile();
+//                    default -> {
+//                    }
+//                }
+	            TextureRegion floorToDraw = getExplicitFloorTexture(tile);
 
-                switch (tile) {
-                    case EMPTY_1 -> floor = game.getEmptyTile1();
-                    case EMPTY_2 -> floor = game.getEmptyTile2();
-                    case EMPTY_3 -> floor = game.getEmptyTile3();
-                    case EMPTY, EMPTY_4 -> floor = game.getEmptyTile4();
-                    case EMPTY_5 -> floor = game.getEmptyTile5();
-                    case EMPTY_6 -> floor = game.getEmptyTile6();
-                    case EMPTY_7 -> floor = game.getEmptyTile7();
-                    case DANCE_FLOOR -> floor = game.getDanceFloorTile();
-                    default -> {
-                    }
-                }
-                batch.draw(floor, x, y, 1, 1);
+	            if (floorToDraw == null) {
+		            floorToDraw = inferFloorFromNeighbors(gameField, x, y);
+	            }
+
+	            if (floorToDraw == null) {
+		            floorToDraw = game.getEmptyTile1(); // Default
+	            }
+
+                batch.draw(floorToDraw, x, y, 1, 1);
             }
         }
     }
