@@ -5,8 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.tum.cit.fop.maze.MazeRunnerGame;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
+import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
 import de.tum.cit.fop.maze.objects.GameObject;
 import de.tum.cit.fop.maze.objects.Player;
+import de.tum.cit.fop.maze.objects.collectables.Collectable;
+import de.tum.cit.fop.maze.objects.traps.Trap;
 
 /**
  * Handles rendering of the game field including floors, walls, and objects.
@@ -215,6 +218,20 @@ public class MapRenderer {
         }
     }
 
+	/**
+	 * Determines the rendering layer order.
+	 * Higher numbers are drawn LAST (on top).
+	 */
+	private int getRenderLayer(GameObject obj) {
+		if (obj instanceof Trap || obj instanceof Collectable) {
+			return 0;
+		}
+		if (obj instanceof Player || obj instanceof Enemy) {
+			return 1;
+		}
+		return 0;
+	}
+
     /**
      * Renders the complete game scene including field, player, and objects.
      * @param gameField The game field to render
@@ -228,7 +245,25 @@ public class MapRenderer {
         drawWalls2_5D(gameField);
         drawDecors(gameField);
 
-        gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
+//        gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
+	    gameField.getGameObjects().sort((o1, o2) -> {
+		    float y1 = o1.getPosition().y;
+		    float y2 = o2.getPosition().y;
+
+		    int tileY1 = (int) Math.floor(y1);
+		    int tileY2 = (int) Math.floor(y2);
+
+		    if (tileY1 != tileY2) {
+			    return Float.compare(y2, y1);
+		    }
+		    int layer1 = getRenderLayer(o1);
+		    int layer2 = getRenderLayer(o2);
+		    if (layer1 != layer2) {
+			    return Integer.compare(layer1, layer2);
+		    }
+		    return Float.compare(y2, y1);
+	    });
+
         for (GameObject obj : gameField.getGameObjects()) {
             obj.animate(batch);
         }
