@@ -197,7 +197,6 @@ public class SettingsScreen {
                             Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
                             stage.getViewport().update(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight(), true);
                             table.invalidateHierarchy();
-                           // game.goToMenu();
                         } catch (Exception e) {
                             resolutionWidth.setText("");
                             System.out.println("not an int: " + e.getMessage());
