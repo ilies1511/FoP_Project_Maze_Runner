@@ -158,20 +158,19 @@ public class SettingsScreen {
             public void keyTyped(TextField textField, char c) {
                 if ((c == '\r' || c == '\n') && !textField.getText().isEmpty()) {
                     String height = textField.getText();
-                    if (Integer.parseInt(height) < 2147483647 && Integer.parseInt(height) > 0) {
-                        try {
-                            game.getGameInfo().getSettings().setResolutionHeight(Integer.parseInt(height));
-                            Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
-                            stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-                            table.invalidateHierarchy();
-                        } catch (Exception e) {
+                    try {
+                        if (Integer.parseInt(height) < 2147483647 && Integer.parseInt(height) > 0) {
+                                game.getGameInfo().getSettings().setResolutionHeight(Integer.parseInt(height));
+                                Gdx.graphics.setWindowedMode(game.getGameInfo().getSettings().getResolutionWidth(), game.getGameInfo().getSettings().getResolutionHeight());
+                                stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+                                table.invalidateHierarchy();
+                        } else {
                             resolutionHeight.setText("");
-                            System.out.println("not an int: " + e.getMessage());
                         }
-                    } else {
+                    } catch (Exception e) {
                         resolutionHeight.setText("");
+                        System.out.println("not an int: " + e.getMessage());
                     }
-
                 }
             }
         });
