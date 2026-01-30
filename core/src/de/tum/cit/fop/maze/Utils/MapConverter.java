@@ -151,10 +151,6 @@ public class MapConverter {
                 {"maps/tmp/06.txt", "maps/story_mode/06.properties"},
                 {"maps/tmp/berghain_main_big.txt", "maps/story_mode/berghain_main_big.properties"},
                 {"maps/tmp/berghain_darkroom.txt", "maps/story_mode/berghain_darkroom.properties"},
-////				{"maps/tmp/berghain_main.txt", "maps/story_mode/berghain_main.properties"},
-//                {"maps/tmp/berghain_panorama.txt", "maps/story_mode/berghain_panorama.properties"},
-//                {"maps/tmp/test.txt", "maps/story_mode/test.properties"},
-//                {"maps/tmp/berghain_eg.txt", "maps/story_mode/berghain_eg.properties"},
         };
 
         for (String[] mapPair : mapsToConvert) {

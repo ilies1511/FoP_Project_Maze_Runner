@@ -189,20 +189,6 @@ public class MapRenderer {
             for (int x = 0; x < gameField.getWidth(); x++) {
                 TileType tile = gameField.getTile(x, y);
 
-//                TextureRegion floor = game.getEmptyTile4();
-//
-//                switch (tile) {
-//                    case EMPTY_1 -> floor = game.getEmptyTile1();
-//                    case EMPTY_2 -> floor = game.getEmptyTile2();
-//                    case EMPTY_3 -> floor = game.getEmptyTile3();
-//                    case EMPTY, EMPTY_4 -> floor = game.getEmptyTile4();
-//                    case EMPTY_5 -> floor = game.getEmptyTile5();
-//                    case EMPTY_6 -> floor = game.getEmptyTile6();
-//                    case EMPTY_7 -> floor = game.getEmptyTile7();
-//                    case DANCE_FLOOR -> floor = game.getDanceFloorTile();
-//                    default -> {
-//                    }
-//                }
 	            TextureRegion floorToDraw = getExplicitFloorTexture(tile);
 
 	            if (floorToDraw == null) {
@@ -245,7 +231,6 @@ public class MapRenderer {
         drawWalls2_5D(gameField);
         drawDecors(gameField);
 
-//        gameField.getGameObjects().sort((o1, o2) -> Float.compare(o2.position.y, o1.position.y));
 	    gameField.getGameObjects().sort((o1, o2) -> {
 		    float y1 = o1.getPosition().y;
 		    float y2 = o2.getPosition().y;
