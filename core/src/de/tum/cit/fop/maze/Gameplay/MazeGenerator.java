@@ -45,18 +45,34 @@ public class MazeGenerator {
         }
     }
 
+	/**
+	 * Checks if a specific tile is a dead end (surrounded by 3 walls)
+	 * This prevents the Exit from blocking corridors
+	 */
+	private static boolean isDeadEnd(GameField field, int x, int y) {
+		int wallCount = 0;
+		if (field.getTile(x + 1, y) == TileType.WALL) wallCount++;
+		if (field.getTile(x - 1, y) == TileType.WALL) wallCount++;
+		if (field.getTile(x, y + 1) == TileType.WALL) wallCount++;
+		if (field.getTile(x, y - 1) == TileType.WALL) wallCount++;
+
+		return wallCount >= 3;
+	}
+
     private static void setExit(int width, int height, GameField gameField, MazeRunnerGame game) {
         Vector2 exitCoords = new Vector2();
 
         exitCoords.x = width - 2;
         exitCoords.y = height - 2;
 
-        while (gameField.getTile((int) exitCoords.x, (int) exitCoords.y) == TileType.WALL) {
+        while (gameField.getTile((int) exitCoords.x, (int) exitCoords.y) == TileType.WALL
+		        || !isDeadEnd(gameField, (int) exitCoords.x, (int) exitCoords.y)) {
             exitCoords.x--;
             if (exitCoords.x < 1) {
                 exitCoords.x = width - 2;
                 exitCoords.y--;
             }
+	        if (exitCoords.y < 1) break;
         }
         gameField.setTile((int) exitCoords.x, (int) exitCoords.y, TileType.EXIT);
         gameField.addGameObject(new Exit(exitCoords.x, exitCoords.y));

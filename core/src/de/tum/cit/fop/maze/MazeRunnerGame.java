@@ -35,12 +35,7 @@ public class MazeRunnerGame extends Game {
             "story_mode/04.properties", // geil --> black floor + full beton
             "story_mode/01.properties", // --> Pflaster boden
             "story_mode/03.properties", // Aehlicher Aufbau zu 01
-//            "story_mode/05.properties",// Sheize
             "story_mode/berghain_darkroom.properties", // geil
-//            "story_mode/berghain_panorama.properties", //  Kreuz OK
-//			"story_mode/berghain_eg.properties", // Test file
-//            "story_mode/berghain_main.properties", //scheize
-//            "story_mode/test.properties",
     };
     // GameInfo with all the useful variables
     private final GameInfo gameInfo;
