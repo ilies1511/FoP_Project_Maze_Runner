@@ -11,7 +11,8 @@ import de.tum.cit.fop.maze.game_saves.mementos.BouncerMemento;
 import de.tum.cit.fop.maze.objects.Player;
 
 /**
- * Bouncer enemy with multiple lives that intelligently chases the player.
+ * Bouncer enemy with multiple (2) lives that intelligently chases the player.
+ * Bouncer switches between staying idle or chasing the player based on detection range.
  */
 public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
     private static final float DETECTION_RANGE = 7.0f;
@@ -49,11 +50,6 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
 
         chase(deltaTime, playerPosition, gameField);
         AnimationDirection();
-    }
-
-    private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
-        float lookAhead = speed * delta * 5; //5
-        return WallOrObstacle(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize(), gameField);
     }
 
 
@@ -106,8 +102,8 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
         currentDirection.set(dirX, dirY).nor();
     }
 
+    //Bouncer does not Patrol
     public void patrol(float delta) {
-        //Bouncer will not patrol, only chase wherevr the drac is on the map
     }
 
     public void chase(float deltaTime, Vector2 playerPosition, GameField gameField) {
@@ -145,7 +141,6 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
 
     private void moveInCurrDirection(float delta, GameField gameField) {
         if (currentDirection.len2() > 0 && !isBlocked(currentDirection, delta, gameField)) {
-            //isBlockedByStaticMap(position.x + currentDirection.x * delta * speed, position.y + currentDirection.y * delta * speed, getSize(), gameField))
             velocity.set(currentDirection).scl(speed);
         } else {
             velocity.set(0, 0);
@@ -160,6 +155,11 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
             currentDirection.set(0, Math.signum(awayFromPlayer.y));
         }
         Cooldown = 0.5f;
+    }
+
+    private boolean isBlocked(Vector2 dir, float delta, GameField gameField) {
+        float lookAhead = speed * delta * 5; //5
+        return WallOrObstacle(position.x + (dir.x * lookAhead), position.y + (dir.y * lookAhead), getSize(), gameField);
     }
 
     @Override
