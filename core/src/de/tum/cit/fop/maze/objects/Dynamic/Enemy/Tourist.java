@@ -69,7 +69,7 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
             danceTimer = 0;
             this.AnimationDirection();
         } else {
-            //patrol being dancing in tourist's case
+            //Tourist Dance's in place
             patrol(deltaTime);
         }
     }
@@ -108,9 +108,10 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
     public void patrol(float deltaTime) {
         velocity.set(0, 0);
         danceTimer += deltaTime;
-        if (danceTimer > 0.25f) { // turn every 0.25 seconds
+        // Direction Change (0.25s)
+        if (danceTimer > 0.25f) {
             danceTimer = 0;
-            //  random dir
+            //  Randomizer
             AnimationType[] idleAnims = {
                     AnimationType.TOURIST_DOWN, AnimationType.TOURIST_LEFT,
                     AnimationType.TOURIST_UP, AnimationType.TOURIST_RIGHT
@@ -119,9 +120,9 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
         }
     }
 
+    //Tourist does not chase. Will flee when it sees a kill
     @Override
     public void chase(float deltaTime, Vector2 playerPosition, GameField gameField) {
-        //Tourist will not chase. Will flee when it sees a kill
     }
 
     @Override
