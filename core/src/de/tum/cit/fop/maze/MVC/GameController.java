@@ -19,6 +19,7 @@ import de.tum.cit.fop.maze.effects.Dash;
 import de.tum.cit.fop.maze.effects.Flicker;
 import de.tum.cit.fop.maze.effects.GodMode;
 import de.tum.cit.fop.maze.effects.Invis;
+import de.tum.cit.fop.maze.game_saves.SaveManager;
 import de.tum.cit.fop.maze.objects.Dawn;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Bouncer;
 import de.tum.cit.fop.maze.objects.Dynamic.Enemy.Enemy;
@@ -348,9 +349,11 @@ public class GameController {
         player.die();
         soundController.dispose();
         gameScreenSoundController.dispose();
-        if(game.getGameMode() == GameMode.ENDLESS_MODE){
+        if (game.getGameMode() == GameMode.ENDLESS_MODE){
             score = waveManager.getScore();
         }
+
+        SaveManager.deleteSave(game.getGameMode());
 
         game.goToGameLostScreen(score);
     }

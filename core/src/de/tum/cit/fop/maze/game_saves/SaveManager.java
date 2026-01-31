@@ -157,6 +157,23 @@ public class SaveManager {
         return gameField;
     }
 
+    /**
+     * Deletes save depending on gameMode. For example, when player dies
+     * @param gameMode The gameMode
+     */
+    public static void deleteSave(GameMode gameMode) {
+        if (gameMode == GameMode.LEVELS_MODE) {
+            // we do not save levels mode
+            return;
+        }
+        String path = gameMode == GameMode.STORY_MODE ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
+        FileHandle file = Gdx.files.local(path);
+
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
     // Helper method to restore GameObject from memento
     private static GameObject restoreGameObject(GameObjectMemento memento) {
         Vector2 pos = new Vector2(memento.positionX, memento.positionY);
