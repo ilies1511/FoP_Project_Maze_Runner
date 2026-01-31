@@ -192,7 +192,7 @@ public class GameScreen implements Screen {
         if (gameMode == GameMode.LEVELS_MODE) {
             this.gameField = MazeParser.loadMap(this.game.getGameInfo().getSelectedLevel(), this.game);
         } else if (gameMode == GameMode.ENDLESS_MODE) {
-            this.gameField = MazeGenerator.generateMaze(15, 15, game);
+            this.gameField = MazeGenerator.generateMaze(7, 7, game);
         } else if (gameMode == GameMode.STORY_MODE) {
             this.gameField = MazeParser.loadMap(MazeRunnerGame.STORY_LEVELS[0], this.game);
 	        if (this.gameField != null) {
