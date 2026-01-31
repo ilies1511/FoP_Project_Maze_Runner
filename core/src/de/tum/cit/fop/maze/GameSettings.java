@@ -61,7 +61,7 @@ public class GameSettings {
         this.consoleKey = Input.Keys.SLASH;
         this.progressionTreeKey = Input.Keys.I;
         this.resolutionWidth = 1500;
-        this.resolutionHeight = 1200;
+        this.resolutionHeight = 1000;
     }
 
     /**
