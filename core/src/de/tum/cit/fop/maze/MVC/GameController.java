@@ -44,8 +44,6 @@ public class GameController {
     private final GameScreen gameScreen;
     private GameField gameField;
     private WaveManager waveManager = null;
-	private static final int initial_endlessMode = 7;
-	private int endlessModeLevel;
 
 
     public GameController(MazeRunnerGame game, Player player, HUD hud, GameField gameField, SoundController gameScreenSoundController, GameScreen gameScreen) {
@@ -56,7 +54,6 @@ public class GameController {
         this.gameScreenSoundController = gameScreenSoundController;
         this.soundController = new SoundController();
         this.gameScreen = gameScreen;
-		this.endlessModeLevel = initial_endlessMode;
     }
 
     /**
@@ -347,7 +344,6 @@ public class GameController {
     }
 
     private void playerDie() {
-		endlessModeLevel = initial_endlessMode;
         int score = 0;
         player.die();
         soundController.dispose();
@@ -371,9 +367,9 @@ public class GameController {
      * Generates and transitions to the next level in endless mode.
      */
     public void startNextLevel() {
-		if (endlessModeLevel < 100)
-			endlessModeLevel = endlessModeLevel + 1;
-        GameField newMap = MazeGenerator.generateMaze(endlessModeLevel, endlessModeLevel, this.game);
+        int newWidth = Math.min(gameField.getWidth() + 1, 100);
+        int newHeight = Math.min(gameField.getHeight() + 1, 100);
+        GameField newMap = MazeGenerator.generateMaze(newWidth, newHeight, this.game);
         Vector2 entryPos = gameField.getTileTypeCoords(newMap, TileType.ENTRY_POINT);
 
         this.gameScreen.setGameField(newMap);
