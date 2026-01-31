@@ -457,7 +457,6 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
 
     @Override
     public PlayerMemento getMemento() {
-        System.out.println("GETMEMENTO ANIM TYPE" + this.currentAnimationType);
         return new PlayerMemento(
                 this.currentHealth,
                 this.maxHealth,
@@ -492,8 +491,6 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         this.velocity.set(memento.velocityX, memento.velocityY);
         this.speed = memento.speed;
         this.currentAnimationType = memento.animationType;
-        System.out.println("ANIMTYPE" +  this.currentAnimationType);
-        System.out.println("XP" +  this.xp);
         if (this.gameScreen.getHUD() != null) {
             this.gameScreen.getHUD().renderPlayerHP();
             this.gameScreen.getHUD().updatePlayerKeys();
