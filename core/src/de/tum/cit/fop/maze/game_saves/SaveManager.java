@@ -81,15 +81,6 @@ public class SaveManager {
      * @return A memento containing the game field state
      */
     public static GameFieldMemento createGameFieldMemento(GameField gameField) {
-        // Convert TileType[] to String[]
-        String[] gridStrings = new String[gameField.getWidth() * gameField.getHeight()];
-        for (int y = 0; y < gameField.getHeight(); y++) {
-            for (int x = 0; x < gameField.getWidth(); x++) {
-                TileType tile = gameField.getTile(x, y);
-                gridStrings[y * gameField.getWidth() + x] = tile.name();
-            }
-        }
-
         // Convert GameObjects to GameObjectMementos
         List<GameObjectMemento> gameObjectMementos = new ArrayList<>();
         for (GameObject obj : gameField.getGameObjects()) {
@@ -102,7 +93,7 @@ public class SaveManager {
         return new GameFieldMemento(
                 gameField.getWidth(),
                 gameField.getHeight(),
-                gridStrings,
+                gameField.getGrid(),
                 gameObjectMementos,
                 gameField.getPlayerStartPos().x,
                 gameField.getPlayerStartPos().y
@@ -143,9 +134,7 @@ public class SaveManager {
         // Restore tiles
         for (int y = 0; y < memento.height; y++) {
             for (int x = 0; x < memento.width; x++) {
-                String tileString = memento.grid[y * memento.width + x];
-                TileType tileType = TileType.valueOf(tileString);
-                gameField.setTile(x, y, tileType);
+                gameField.setTile(x, y, memento.grid[y * memento.width + x]);
             }
         }
 

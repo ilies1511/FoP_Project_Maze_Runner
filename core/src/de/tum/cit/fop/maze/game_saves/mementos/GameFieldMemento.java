@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.game_saves.Memento;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 public class GameFieldMemento implements Memento {
     public int width;
     public int height;
-    public String[] grid; // TileType as String array for serialization
+    public TileType[] grid; // TileType as String array for serialization
     public List<GameObjectMemento> gameObjects;
     public float playerStartPosX;
     public float playerStartPosY;
@@ -21,7 +22,7 @@ public class GameFieldMemento implements Memento {
         this.gameObjects = new ArrayList<>();
     }
 
-    public GameFieldMemento(int width, int height, String[] grid,
+    public GameFieldMemento(int width, int height, TileType[] grid,
                             List<GameObjectMemento> gameObjects,
                             float playerStartPosX, float playerStartPosY) {
         this.width = width;

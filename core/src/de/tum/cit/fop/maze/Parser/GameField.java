@@ -63,6 +63,15 @@ public class GameField {
         return playerStartPos;
     }
 
+
+    /**
+     * Gets the grid
+     * @return grid
+     */
+    public TileType[] getGrid() {
+        return grid;
+    }
+
     // BEGIN -- Setters
     /**
      * Sets the player's starting position.
