@@ -457,7 +457,6 @@ public class GameScreen implements Screen {
             GameFieldMemento gameFieldMemento = SaveManager.createGameFieldMemento(this.gameField);
             PlayerMemento playerMemento = this.player.getMemento();
 
-            boolean isStoryMode = (game.getGameMode() == GameMode.STORY_MODE);
             String selectedLevel = game.getGameInfo().getSelectedLevel();
 
             GameScreenMemento memento = new GameScreenMemento(
@@ -468,7 +467,7 @@ public class GameScreen implements Screen {
                     selectedLevel
             );
 
-            SaveManager.saveGame(memento, isStoryMode);
+            SaveManager.saveGame(memento, game.getGameMode());
             System.out.println("Game saved successfully!");
         } catch (Exception e) {
             System.err.println("Failed to save game: " + e.getMessage());

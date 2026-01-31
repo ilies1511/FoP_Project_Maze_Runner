@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
+import de.tum.cit.fop.maze.Gameplay.GameMode;
 import de.tum.cit.fop.maze.Parser.GameField;
 import de.tum.cit.fop.maze.Parser.TileType;
 import de.tum.cit.fop.maze.game_saves.mementos.*;
@@ -31,10 +32,14 @@ public class SaveManager {
     /**
      * Saves the current game state to a JSON file.
      * @param memento The game state to save
-     * @param isStoryMode True for story mode, false for endless mode
+     * @param gameMode which gameMode is attempted to be saved
      */
-    public static void saveGame(GameScreenMemento memento, boolean isStoryMode) {
-        String path = isStoryMode ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
+    public static void saveGame(GameScreenMemento memento, GameMode gameMode) {
+        if (gameMode == GameMode.LEVELS_MODE) {
+            // do not save levels more
+            return;
+        }
+        String path = (gameMode == GameMode.STORY_MODE) ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
         FileHandle saveFile = Gdx.files.local(path);
 
         Json json = new Json();
@@ -167,12 +172,10 @@ public class SaveManager {
                 return exit;
 
             case "Key":
-                Key key = new Key(pos);
-                return key;
+                return new Key(pos);
 
             case "Heart":
-                Heart heart = new Heart(pos);
-                return heart;
+                return new Heart(pos);
 
             case "Bouncer":
                 BouncerMemento bouncerMem = (BouncerMemento) memento;
@@ -193,12 +196,10 @@ public class SaveManager {
                 return junkie;
 
             case "FreezeTrap":
-                FreezeTrap freezeTrap = new FreezeTrap(pos);
-                return freezeTrap;
+                return new FreezeTrap(pos);
 
             case "GarlicTrap":
-                GarlicTrap garlicTrap = new GarlicTrap(pos);
-                return garlicTrap;
+                return new GarlicTrap(pos);
 
             default:
                 System.err.println("Unknown GameObject type: " + memento.objectType);
