@@ -1,5 +1,6 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+import de.tum.cit.fop.maze.Drawing.AnimationType;
 import de.tum.cit.fop.maze.game_saves.Memento;
 
 /**
@@ -20,7 +21,7 @@ public class PlayerMemento implements Memento {
     public float velocityX;
     public float velocityY;
     public float speed;
-    public String animationType;
+    public AnimationType animationType;
 
     public PlayerMemento() {
         // Required for JSON deserialization
@@ -29,7 +30,7 @@ public class PlayerMemento implements Memento {
     public PlayerMemento(int currentHealth, int maxHealth, int xp, boolean canDash,
                          boolean canInvis, boolean hasKeys, int currentKeys, int requiredKeys,
                          int kills, float positionX, float positionY, float velocityX,
-                         float velocityY, float speed, String animationType) {
+                         float velocityY, float speed, AnimationType animationType) {
         this.currentHealth = currentHealth;
         this.maxHealth = maxHealth;
         this.xp = xp;

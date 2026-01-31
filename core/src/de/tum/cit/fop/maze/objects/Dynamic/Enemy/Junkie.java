@@ -148,14 +148,13 @@ public class Junkie extends Enemy implements Saveable<JunkieMemento> {
 
     @Override
     public JunkieMemento getMemento() {
-        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "JUNKIE_DOWN";
         return new JunkieMemento(
                 this.position.x,
                 this.position.y,
                 this.velocity.x,
                 this.velocity.y,
                 this.speed,
-                animType
+                this.currentAnimationType
         );
     }
 

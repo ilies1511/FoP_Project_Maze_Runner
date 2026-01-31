@@ -1,5 +1,7 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+import de.tum.cit.fop.maze.Drawing.AnimationType;
+
 /**
  * Memento storing Exit state including locked status.
  */
@@ -10,7 +12,7 @@ public class ExitMemento extends GameObjectMemento {
         super();
     }
 
-    public ExitMemento(float positionX, float positionY, boolean isLocked, String animationType) {
+    public ExitMemento(float positionX, float positionY, boolean isLocked, AnimationType animationType) {
         super(positionX, positionY, 0, 0, 0, animationType, "Exit");
         this.isLocked = isLocked;
     }

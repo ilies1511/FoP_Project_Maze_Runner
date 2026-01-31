@@ -164,14 +164,13 @@ public class Bouncer extends Enemy implements Saveable<BouncerMemento> {
 
     @Override
     public BouncerMemento getMemento() {
-        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "BOUNCER_DOWN";
         return new BouncerMemento(
                 this.position.x,
                 this.position.y,
                 this.velocity.x,
                 this.velocity.y,
                 this.speed,
-                animType,
+                this.currentAnimationType,
                 this.lives
         );
     }

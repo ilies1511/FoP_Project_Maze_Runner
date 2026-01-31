@@ -1,5 +1,7 @@
 package de.tum.cit.fop.maze.game_saves.mementos;
 
+import de.tum.cit.fop.maze.Drawing.AnimationType;
+
 /**
  * Memento storing Junkie enemy state.
  */
@@ -9,7 +11,7 @@ public class JunkieMemento extends GameObjectMemento {
     }
 
     public JunkieMemento(float positionX, float positionY, float velocityX, float velocityY,
-                         float speed, String animationType) {
+                         float speed, AnimationType animationType) {
         super(positionX, positionY, velocityX, velocityY, speed, animationType, "Junkie");
     }
 }

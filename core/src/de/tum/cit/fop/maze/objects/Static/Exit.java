@@ -43,8 +43,7 @@ public class Exit extends GameObject implements Saveable<ExitMemento> {
 
     @Override
     public ExitMemento getMemento() {
-        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "EXIT_CLOSED";
-        return new ExitMemento(this.position.x, this.position.y, this.isLocked, animType);
+        return new ExitMemento(this.position.x, this.position.y, this.isLocked, this.currentAnimationType);
     }
 
     @Override

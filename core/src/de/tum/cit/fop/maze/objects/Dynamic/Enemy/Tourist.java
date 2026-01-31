@@ -126,14 +126,13 @@ public class Tourist extends Enemy implements Saveable<TouristMemento> {
 
     @Override
     public TouristMemento getMemento() {
-        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "TOURIST_DOWN";
         return new TouristMemento(
                 this.position.x,
                 this.position.y,
                 this.velocity.x,
                 this.velocity.y,
                 this.speed,
-                animType
+                this.currentAnimationType
         );
     }
 

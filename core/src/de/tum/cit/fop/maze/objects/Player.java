@@ -457,7 +457,7 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
 
     @Override
     public PlayerMemento getMemento() {
-        String animType = this.currentAnimationType != null ? this.currentAnimationType.name() : "CHARACTER_DOWN";
+        System.out.println("GETMEMENTO ANIM TYPE" + this.currentAnimationType);
         return new PlayerMemento(
                 this.currentHealth,
                 this.maxHealth,
@@ -473,7 +473,7 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
                 this.velocity.x,
                 this.velocity.y,
                 this.speed,
-                animType
+                this.currentAnimationType
         );
     }
 
@@ -491,7 +491,9 @@ public class Player extends GameObject implements Saveable<PlayerMemento> {
         this.position.set(memento.positionX, memento.positionY);
         this.velocity.set(memento.velocityX, memento.velocityY);
         this.speed = memento.speed;
-        // Note: Animation will be restored by the animation type string
+        this.currentAnimationType = memento.animationType;
+        System.out.println("ANIMTYPE" +  this.currentAnimationType);
+        System.out.println("XP" +  this.xp);
         if (this.gameScreen.getHUD() != null) {
             this.gameScreen.getHUD().renderPlayerHP();
             this.gameScreen.getHUD().updatePlayerKeys();

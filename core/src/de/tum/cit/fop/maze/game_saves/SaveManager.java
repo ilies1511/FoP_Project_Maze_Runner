@@ -36,7 +36,7 @@ public class SaveManager {
      */
     public static void saveGame(GameScreenMemento memento, GameMode gameMode) {
         if (gameMode == GameMode.LEVELS_MODE) {
-            // do not save levels more
+            // do not save levels mode
             return;
         }
         String path = (gameMode == GameMode.STORY_MODE) ? STORY_SAVE_PATH : ENDLESS_SAVE_PATH;
