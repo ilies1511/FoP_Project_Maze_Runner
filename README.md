@@ -75,7 +75,7 @@ The following table lists the default key bindings:
 
 #### Algorithmic 2.5d effect
 - 2.5d effect implemented in a similar way it's done in The Legend of Zelda game
-- Works for any custom map - check **Levels** gamemode
+- Works for any map
 
 #### Story Mode
 - In addition to required Endless and Levels modes, Story Mode is implemented
@@ -189,7 +189,6 @@ All the mandatory requirements are implemented. Most important features (but not
 - **Progression Tree**. Default keybinding - `I`.
 
 ## Architecture Overview
-![UML Diagram](docs_not_javadocs/UML/mermaid-diagram-2026-01-23-181557.svg)
 
 <details>
 <summary>Mermaid source</summary>
