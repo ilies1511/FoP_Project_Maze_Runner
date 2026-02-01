@@ -118,6 +118,27 @@ The following table lists the default key bindings:
 #### Enemy death animation
 - Upon death, an enemy's ghost appears
 
+#### Enemy Behaviour 
+
+**1) Bouncer**
+- **Behavior:** Uses a **Vector-based Best-First pathfinding algorithm** to intelligently navigate corners and chase the player.
+- **Combat:** Has 2 lives. Upon taking damage, it triggers a **Panic State**, causing it to flee in a randomized direction for a short duration before resuming the chase.
+- **Visuals:** Flickers when damaged to indicate temporary immunity/panic state.
+
+**2) Junkie**
+- **Behavior:** moves unpredictably and attacks the player if they step within a close proximity (`0.3f` range).
+- **Collision Avoidance:** Implements a **Repulsion Steering Behavior** to avoid overlapping with other enemies, preventing sprite stacking.
+
+**3) Tourist**
+- **Behavior:** Idle "Dancing" state (patrolling in place). They do not attack the player directly.
+- **Crowd Panic:** If *any* entity dies nearby, all Tourists within a 6-tile radius are triggered into a **Flee State**, running away from the scene of the death.
+- **Flocking (Separation):** Tourists utilize a separation algorithm to push away from other Tourists, simulating a crowded club floor without overlapping.
+
+### Other Extra Implementations
+- **Steering Behaviors (Separation):** Implemented custom physics logic for `Junkie` and `Tourist` classes. They calculate vectors relative to nearby entities and apply a reverse velocity to "push" themselves away, ensuring enemies don't stack on top of one another (Entity Crowding prevention).
+- **Greedy Pathfinding:** The `Bouncer` calculates the dot product of available cardinal directions against the player's position vector to dynamically select the most optimal path without needing a heavy grid-search algorithm.
+- **State Machines:** Enemies utilize state tracking (Idle, Chase, Flee, Attack, Dead) to switch behaviors dynamically based on game events (e.g., Tourist witnessing a death, Bouncer taking damage).
+
 ### Mandatory part
 
 All the mandatory requirements are implemented. Most important features (but not all) are listed below:
