@@ -15,6 +15,10 @@ Open a terminal (Command Prompt or PowerShell) in the project root and run:
 ```bash
 gradlew.bat desktop:run
 ```
+or 
+```bash
+.\gradlew desktop:run
+```
 
 ### Mac
 Open a terminal in the project root and run:
